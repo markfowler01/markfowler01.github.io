@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Absolute ADAS — Mobile ADAS Calibration | Western Washington</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <meta name="description" content="Western Washington's #1 mobile ADAS calibration service. We come to your shop — dealer-level precision, same-day availability. Serving Tacoma to Bellingham." />
+  <meta name="keywords" content="ADAS calibration, mobile ADAS calibration, Western Washington, collision repair, radar calibration, camera calibration, key programming, Lake Stevens WA" />
+  <meta property="og:title" content="Absolute ADAS — Mobile ADAS Calibration Western Washington" />
+  <meta property="og:description" content="We come to your shop. Dealer-level ADAS calibration, key programming, and diagnostics. Tacoma to Bellingham." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://absoluteadas.com" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://absoluteadas.com" />
+  <!-- Zoho SalesIQ Live Chat -->
+  <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script>
+  <script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siqbc1ca5de495b9eba609bbd189448a7e613e902c31781e24fa0a2517d71b999df" defer></script>
+  <!-- Zoho PageSense Analytics -->
+  <script src="https://cdn.pagesense.io/js/902004833/768f341dc61e4bddadd74c9c19b5f8ee.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Absolute ADAS",
+    "telephone": "+18443492327",
+    "email": "info@absoluteadas.com",
+    "url": "https://absoluteadas.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lake Stevens",
+      "addressRegion": "WA",
+      "addressCountry": "US"
+    },
+    "areaServed": [
+      "Seattle, WA", "Everett, WA", "Bellevue, WA",
+      "Lynnwood, WA", "Bellingham, WA", "Tacoma, WA",
+      "Marysville, WA", "Mukilteo, WA", "Shoreline, WA"
+    ],
+    "description": "Mobile ADAS calibration, key programming, diagnostics, and electrical services for collision repair shops across Western Washington.",
+    "priceRange": "$$",
+    "openingHours": "Mo-Fr 07:00-18:00",
+    "sameAs": []
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    #ao-nav *, #page-home *, #page-about *, #page-services *, #page-blog *, #page-contact *, #page-lander *, #page-statefarm *, #ao-footer * { color: inherit; }
+    #ao-nav h1,#ao-nav h2,#ao-nav h3,#ao-nav h4,#ao-nav h5,#ao-nav h6,
+    #page-home h1,#page-home h2,#page-home h3,#page-home h4,#page-home h5,#page-home h6,
+    #page-about h1,#page-about h2,#page-about h3,#page-about h4,#page-about h5,#page-about h6,
+    #page-services h1,#page-services h2,#page-services h3,#page-services h4,#page-services h5,#page-services h6,
+    #page-blog h1,#page-blog h2,#page-blog h3,#page-blog h4,#page-blog h5,#page-blog h6,
+    #page-contact h1,#page-contact h2,#page-contact h3,#page-contact h4,#page-contact h5,#page-contact h6,
+    #page-lander h1,#page-lander h2,#page-lander h3,#page-lander h4,#page-lander h5,#page-lander h6,
+    #page-statefarm h1,#page-statefarm h2,#page-statefarm h3,#page-statefarm h4,#page-statefarm h5,#page-statefarm h6,
+    #ao-footer h1,#ao-footer h2,#ao-footer h3,#ao-footer h4,#ao-footer h5,#ao-footer h6 { color: #fff !important; }
+    :root {
+      --orange: #CD4419;
+      --orange-dark: #b33a15;
+      --black: #0a0a0a;
+      --dark2: #181818;
+      --dark3: #222222;
+      --white: #ffffff;
+      --gray: #888888;
+      --light-gray: #cccccc;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    #ao-nav { position: sticky; top: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 70px; background: rgba(10,10,10,0.96); border-bottom: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(12px); }
+    #ao-nav a { text-decoration: none; }
+    .ao-logo img { height: 44px; width: auto; display: block; }
+    .ao-nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .ao-nav-links a { color: var(--light-gray); font-size: .9rem; font-weight: 500; cursor: pointer; transition: color .2s; }
+    .ao-nav-links a:hover, .ao-nav-links a.active { color: var(--white); }
+    .ao-nav-cta { background: var(--orange) !important; color: var(--white) !important; padding: 10px 24px; border-radius: 6px; font-weight: 700 !important; transition: background .2s !important; }
+    .ao-nav-cta:hover { background: var(--orange-dark) !important; }
+
+    /* ── PAGE SYSTEM ── */
+    .ao-page { display: none; }
+    .ao-page.active { display: block; }
+
+    /* ── SHARED ── */
+    .ao-section { padding: 96px 48px; }
+    .ao-container { max-width: 1100px; margin: 0 auto; }
+    .ao-label { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+    .ao-h1 { font-size: clamp(2.8rem, 7vw, 6rem); font-weight: 900; line-height: 1.05; letter-spacing: -.03em; margin-bottom: 24px; color: #fff !important; }
+    .ao-h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; line-height: 1.1; letter-spacing: -.03em; margin-bottom: 20px; color: #fff !important; }
+    .ao-h3 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; color: #fff !important; }
+    .ao-h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: #fff !important; }
+    .ao-body { font-size: 1.05rem; color: var(--light-gray); line-height: 1.75; }
+    .ao-em { color: var(--orange); font-style: normal; }
+    .ao-btn { display: inline-block; background: var(--orange); color: var(--white); font-size: 1.05rem; font-weight: 800; padding: 18px 44px; border-radius: 8px; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: background .2s, transform .15s; letter-spacing: -.01em; }
+    .ao-btn:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .ao-btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.2); color: var(--white) !important; }
+    .ao-btn-outline:hover { border-color: var(--orange); background: transparent; color: var(--orange) !important; }
+    .ao-dark-section { background: var(--dark2); }
+    .ao-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); }
+
+    /* ── HERO ── */
+    .ao-hero { padding: 120px 48px 96px; text-align: center; position: relative; overflow: hidden; }
+    .ao-hero::before { content: ''; position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; background: radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 65%); pointer-events: none; }
+    .ao-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,107,26,0.12); border: 1px solid rgba(255,107,26,0.3); color: var(--orange); font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 8px 18px; border-radius: 100px; margin-bottom: 32px; }
+    .ao-hero-sub { font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,.55); max-width: 620px; margin: 0 auto 48px; line-height: 1.75; }
+    .ao-hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .ao-hero-note { margin-top: 20px; font-size: .8rem; color: rgba(255,255,255,.3); }
+
+    /* ── STATS BAR ── */
+    .ao-stats { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.07); }
+    .ao-stat { padding: 36px 24px; text-align: center; border-right: 1px solid rgba(255,255,255,.07); }
+    .ao-stat:last-child { border-right: none; }
+    .ao-stat-num { font-size: clamp(28px,4vw,48px); font-weight: 900; color: var(--orange); letter-spacing: -1px; line-height: 1; }
+    .ao-stat-label { font-size: .82rem; color: rgba(255,255,255,.4); margin-top: 8px; line-height: 1.4; }
+
+    /* ── PROBLEM ── */
+    .ao-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .ao-check-list { list-style: none; margin-top: 32px; display: flex; flex-direction: column; gap: 18px; }
+    .ao-check-list li { display: flex; gap: 14px; align-items: flex-start; font-size: .95rem; color: var(--light-gray); line-height: 1.65; }
+    .ao-check-list .icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,107,26,.12); border: 1px solid rgba(255,107,26,.3); display: flex; align-items: center; justify-content: center; font-size: .8rem; margin-top: 1px; }
+    .ao-big-quote { font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; }
+
+    /* ── SERVICES GRID ── */
+    .ao-card-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+    .ao-card { background: var(--dark2); border: 1px solid #222; border-radius: 12px; padding: 36px 32px; transition: border-color .2s, transform .2s; }
+    .ao-card:hover { border-color: var(--orange); transform: translateY(-4px); }
+    .ao-card-icon { font-size: 1.8rem; margin-bottom: 20px; }
+    .ao-card p { font-size: .9rem; color: var(--gray); line-height: 1.7; }
+
+    /* ── SERVICE DETAIL ── */
+    .ao-service-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding: 64px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .ao-service-detail:last-child { border-bottom: none; }
+    .ao-service-detail.reverse { direction: rtl; }
+    .ao-service-detail.reverse > * { direction: ltr; }
+    .ao-service-visual { background: var(--dark2); border: 1px solid #222; border-radius: 16px; padding: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 280px; }
+    .ao-service-visual .big-icon { font-size: 5rem; margin-bottom: 20px; }
+    .ao-service-visual p { font-size: .9rem; color: var(--gray); line-height: 1.7; }
+    .ao-tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .ao-tag { background: rgba(255,107,26,.1); border: 1px solid rgba(255,107,26,.25); color: var(--orange); font-size: .75rem; font-weight: 700; padding: 5px 12px; border-radius: 100px; }
+
+    /* ── STEPS ── */
+    .ao-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+    .ao-step { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 40px 36px; border-top: 3px solid var(--orange); }
+    .ao-step-num { font-size: 3.5rem; font-weight: 900; color: var(--orange); line-height: 1; letter-spacing: -.04em; margin-bottom: 24px; }
+    .ao-step p { font-size: .9rem; color: var(--gray); line-height: 1.75; }
+
+    /* ── TESTIMONIALS ── */
+    .ao-testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+    .ao-testi-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 36px; }
+    .ao-stars { color: var(--orange); font-size: .9rem; letter-spacing: 2px; margin-bottom: 20px; }
+    .ao-testi-card blockquote { font-size: .95rem; line-height: 1.75; color: rgba(255,255,255,.7); margin-bottom: 28px; font-style: italic; }
+    .ao-author { display: flex; align-items: center; gap: 12px; }
+    .ao-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--dark3); border: 2px solid var(--orange); display: flex; align-items: center; justify-content: center; font-size: .85rem; font-weight: 700; color: var(--orange); flex-shrink: 0; }
+    .ao-author-name { font-size: .9rem; font-weight: 700; }
+    .ao-author-role { font-size: .78rem; color: var(--gray); }
+
+    /* ── CTA SECTION ── */
+    .ao-cta-band { background: var(--orange); padding: 96px 48px; text-align: center; }
+    .ao-cta-band .ao-h2 { color: var(--white); max-width: 700px; margin: 0 auto 16px; }
+    .ao-cta-band .ao-body { color: rgba(255,255,255,.8); max-width: 520px; margin: 0 auto 40px; }
+    .ao-btn-white { background: var(--white); color: var(--orange) !important; }
+    .ao-btn-white:hover { opacity: .92; background: var(--white); }
+    .ao-cta-note { margin-top: 16px; font-size: .8rem; color: rgba(255,255,255,.6); }
+
+    /* ── ABOUT PAGE ── */
+    .ao-about-hero { padding: 120px 48px 80px; }
+    .ao-about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .ao-about-visual { background: var(--dark2); border-radius: 20px; padding: 60px; text-align: center; border: 1px solid #222; }
+    .ao-about-visual .big-num { font-size: 5rem; font-weight: 900; color: var(--orange); line-height: 1; letter-spacing: -.04em; }
+    .ao-about-visual .big-label { font-size: .9rem; color: var(--gray); margin-top: 8px; }
+    .ao-values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+    .ao-value-card { background: var(--dark2); border: 1px solid #222; border-radius: 12px; padding: 32px; }
+    .ao-value-card .icon { font-size: 1.5rem; margin-bottom: 16px; }
+
+    /* ── CONTACT PAGE ── */
+    .ao-contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin-top: 56px; }
+    .ao-contact-form { background: var(--dark2); border: 1px solid #222; border-radius: 16px; padding: 48px; }
+    .ao-contact-form h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 32px; }
+    .ao-form-group { margin-bottom: 20px; }
+    .ao-form-group label { display: block; font-size: .82rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
+    .ao-form-group input, .ao-form-group textarea, .ao-form-group select { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 14px 18px; color: var(--white); font-size: .95rem; font-family: inherit; outline: none; transition: border-color .2s; }
+    .ao-form-group input:focus, .ao-form-group textarea:focus, .ao-form-group select:focus { border-color: var(--orange); }
+    .ao-form-group textarea { height: 120px; resize: vertical; }
+    .ao-form-group select option { background: var(--dark2); color: var(--white); }
+    .ao-contact-info { display: flex; flex-direction: column; gap: 32px; }
+    .ao-contact-item { display: flex; gap: 20px; align-items: flex-start; }
+    .ao-contact-item-icon { width: 48px; height: 48px; background: rgba(255,107,26,.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .ao-contact-item-text strong { display: block; font-weight: 700; margin-bottom: 4px; }
+    .ao-contact-item-text p, .ao-contact-item-text a { font-size: .95rem; color: var(--light-gray); text-decoration: none; line-height: 1.6; }
+    .ao-contact-item-text a:hover { color: var(--orange); }
+    .ao-area-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 40px; }
+    .ao-area-tag { background: var(--dark2); border: 1px solid #222; border-radius: 8px; padding: 12px 16px; font-size: .85rem; text-align: center; color: var(--light-gray); }
+
+    /* ── FOOTER ── */
+    #ao-footer { background: var(--dark2); border-top: 1px solid rgba(255,255,255,.06); padding: 64px 48px 40px; }
+    .ao-footer-inner { max-width: 1100px; margin: 0 auto; }
+    .ao-footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .ao-footer-brand p { font-size: .9rem; color: var(--gray); margin-top: 16px; line-height: 1.7; max-width: 280px; }
+    .ao-footer-col h4 { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); margin-bottom: 20px; }
+    .ao-footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .ao-footer-col ul a { text-decoration: none; color: rgba(255,255,255,.5); font-size: .9rem; cursor: pointer; transition: color .2s; }
+    .ao-footer-col ul a:hover { color: var(--orange); }
+    .ao-footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: .8rem; color: var(--gray); padding-top: 24px; border-top: 1px solid rgba(255,255,255,.06); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      #ao-nav { padding: 0 24px; }
+      .ao-nav-links { display: none; }
+      .ao-section { padding: 64px 24px; }
+      .ao-hero { padding: 100px 24px 72px; }
+      .ao-stats { grid-template-columns: repeat(2,1fr); }
+      .ao-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
+      .ao-two-col { grid-template-columns: 1fr; gap: 40px; }
+      .ao-card-grid { grid-template-columns: 1fr; }
+      .ao-steps { grid-template-columns: 1fr; gap: 36px; }
+      .ao-testi-grid { grid-template-columns: 1fr; }
+      .ao-service-detail { grid-template-columns: 1fr; gap: 32px; }
+      .ao-service-detail.reverse { direction: ltr; }
+      .ao-about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .ao-values-grid { grid-template-columns: 1fr; }
+      .ao-contact-grid { grid-template-columns: 1fr; }
+      .ao-footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .ao-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .ao-cta-band { padding: 72px 24px; }
+      #ao-footer { padding: 48px 24px 32px; }
+    }
+
+    /* ── AD LANDING PAGE ── */
+    .lp-topbar{background:var(--orange);padding:12px 24px;text-align:center;font-size:.9rem;font-weight:700;}
+    .lp-topbar a{color:#fff;text-decoration:underline;}
+    .lp-hero-wrap{padding:80px 48px 72px;text-align:center;position:relative;overflow:hidden;max-width:900px;margin:0 auto;}
+    .lp-hero-wrap::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(205,68,25,.1) 0%,transparent 65%);pointer-events:none;}
+    .lp-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.35);color:var(--orange);font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:7px 18px;border-radius:100px;margin-bottom:28px;}
+    .lp-h1{font-size:clamp(2.4rem,6vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:24px;}
+    .lp-h1 em{font-style:normal;color:var(--orange);}
+    .lp-sub{font-size:clamp(1rem,2vw,1.2rem);color:rgba(255,255,255,.55);max-width:600px;margin:0 auto 40px;line-height:1.75;}
+    .lp-btn-big{display:inline-block;background:var(--orange);color:#fff;font-size:1.2rem;font-weight:900;padding:22px 56px;border-radius:8px;letter-spacing:-.02em;transition:background .2s,transform .15s;border:none;cursor:pointer;font-family:inherit;}
+    .lp-btn-big:hover{background:var(--orange-dark);transform:translateY(-2px);}
+    .lp-btn-note{font-size:.8rem;color:rgba(255,255,255,.3);display:block;margin-top:12px;}
+    .lp-trust-bar{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:28px 48px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);}
+    .lp-trust-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:rgba(255,255,255,.4);font-weight:600;}
+    .lp-pain-list{display:flex;flex-direction:column;gap:16px;margin-top:40px;}
+    .lp-pain-item{display:flex;gap:20px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-left:3px solid var(--orange);border-radius:12px;padding:24px;}
+    .lp-pain-icon{font-size:1.5rem;flex-shrink:0;width:48px;height:48px;background:rgba(205,68,25,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .lp-pain-text strong{display:block;font-size:1rem;font-weight:800;margin-bottom:6px;}
+    .lp-pain-text p{font-size:.9rem;color:var(--gray);line-height:1.7;}
+    .lp-service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px;}
+    .lp-service-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-top:2px solid var(--orange);border-radius:12px;padding:28px;display:flex;gap:16px;align-items:flex-start;}
+    .lp-service-item span{font-size:1.5rem;flex-shrink:0;width:44px;height:44px;background:rgba(205,68,25,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+    .lp-service-item strong{display:block;margin-bottom:6px;font-size:1rem;}
+    .lp-service-item p{font-size:.88rem;color:var(--gray);line-height:1.65;}
+    .lp-guarantee-box{background:rgba(205,68,25,.08);border:1px solid rgba(205,68,25,.25);border-radius:16px;padding:48px;text-align:center;margin-top:56px;}
+    .lp-guarantee-box h3{font-size:1.6rem;font-weight:900;margin:16px 0 12px;letter-spacing:-.02em;}
+    .lp-guarantee-box p{font-size:1rem;color:var(--light-gray);max-width:540px;margin:0 auto;line-height:1.75;}
+    .lp-form-box{background:var(--dark2);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:40px;max-width:560px;margin:48px auto 0;}
+    .lp-form-box h3{font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+    .lp-form-box p{font-size:.88rem;color:var(--gray);margin-bottom:28px;}
+    .lp-fg{margin-bottom:16px;}
+    .lp-fg label{display:block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:7px;}
+    .lp-fg input,.lp-fg select,.lp-fg textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:13px 16px;color:#fff;font-size:.95rem;font-family:inherit;outline:none;transition:border-color .2s;}
+    .lp-fg input:focus,.lp-fg select:focus,.lp-fg textarea:focus{border-color:var(--orange);}
+    .lp-fg select option{background:var(--dark2);}
+    .lp-fg textarea{height:90px;resize:vertical;}
+    .lp-form-btn{width:100%;background:var(--orange);color:#fff;font-size:1.05rem;font-weight:800;padding:16px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;margin-top:8px;transition:background .2s;}
+    .lp-form-btn:hover{background:var(--orange-dark);}
+    .lp-form-success{display:none;padding:20px;background:rgba(205,68,25,.1);border:1px solid rgba(205,68,25,.3);border-radius:8px;color:#fff;font-weight:600;margin-top:16px;text-align:center;}
+    .lp-final{background:var(--orange);padding:96px 48px;text-align:center;}
+    .lp-final h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;color:#fff;max-width:700px;margin:0 auto 16px;}
+    .lp-final p{color:rgba(255,255,255,.8);max-width:500px;margin:0 auto 40px;font-size:1.05rem;line-height:1.8;}
+    .lp-btn-white-big{display:inline-block;background:#fff;color:var(--orange);font-size:1.2rem;font-weight:900;padding:22px 56px;border-radius:8px;letter-spacing:-.02em;transition:opacity .2s,transform .15s;}
+    .lp-btn-white-big:hover{opacity:.92;transform:translateY(-2px);}
+    .lp-back-link{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.85rem;cursor:pointer;padding:16px 48px;transition:color .2s;}
+    .lp-back-link:hover{color:#fff;}
+    @media(max-width:768px){
+      .lp-trust-bar{gap:16px;padding:24px;}
+      .lp-service-grid{grid-template-columns:1fr;}
+      .lp-hero-wrap{padding:60px 24px 56px;}
+      .lp-final{padding:72px 24px;}
+      .lp-form-box{padding:28px 20px;}
+    }
+
+    /* ── LANDER CRM FORM DARK THEME ── */
+    #crmWebToEntityForm2.zcwf_lblRight { background-color: transparent !important; color: #fff !important; padding: 0 !important; max-width: 100% !important; }
+    #crmWebToEntityForm2 .zcwf_title { color: #fff !important; font-family: 'Inter', sans-serif !important; font-size: 1.3rem !important; font-weight: 800 !important; padding: 0 0 20px !important; }
+    #crmWebToEntityForm2 .zcwf_col_lab label { color: #ccc !important; font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 600 !important; }
+    #crmWebToEntityForm2 .zcwf_col_fld input[type=text],
+    #crmWebToEntityForm2 .zcwf_col_fld input[type=email],
+    #crmWebToEntityForm2 .zcwf_col_fld textarea,
+    #crmWebToEntityForm2 .zcwf_col_fld select { width: 100% !important; background: rgba(255,255,255,.06) !important; border: 1px solid rgba(255,255,255,.12) !important; border-radius: 8px !important; padding: 12px 14px !important; color: #fff !important; font-family: 'Inter', sans-serif !important; font-size: .95rem !important; float: none !important; }
+    #crmWebToEntityForm2 .zcwf_col_fld input[type=text]:focus,
+    #crmWebToEntityForm2 .zcwf_col_fld input[type=email]:focus,
+    #crmWebToEntityForm2 .zcwf_col_fld textarea:focus { border-color: #CD4419 !important; outline: none !important; }
+    #crmWebToEntityForm2 .zcwf_col_lab { width: 100% !important; float: none !important; margin-bottom: 6px !important; }
+    #crmWebToEntityForm2 .zcwf_col_fld { width: 100% !important; float: none !important; padding: 0 !important; }
+    #crmWebToEntityForm2 .zcwf_row { margin: 0 0 18px !important; }
+    #crmWebToEntityForm2 .formsubmit.zcwf_button { background: #CD4419 !important; color: #fff !important; border: none !important; border-radius: 8px !important; padding: 14px 32px !important; font-size: 1rem !important; font-weight: 800 !important; font-family: 'Inter', sans-serif !important; cursor: pointer !important; width: 100% !important; max-width: 100% !important; transition: background .2s !important; }
+    #crmWebToEntityForm2 .formsubmit.zcwf_button:hover { background: #b33a15 !important; }
+    #crmWebToEntityForm2 .zcwf_button[name=reset] { display: none !important; }
+    #crmWebToEntityForm2 .zcwf_col_fld p { color: #888 !important; font-size: .8rem !important; }
+    #crmWebToEntityForm2 .zcwf_file { width: 100% !important; float: none !important; color: #ccc !important; }
+
+    /* ── STATE FARM PAGE ── */
+    .sf-topbar { background: #CC0000; padding: 14px 24px; text-align: center; }
+    .sf-topbar p { color: #fff; font-size: .85rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .sf-hero-section { background: var(--black); padding: 72px 24px 56px; text-align: center; }
+    .sf-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(204,0,0,.12); border: 2px solid rgba(204,0,0,.5); border-radius: 100px; padding: 10px 28px; margin-bottom: 32px; }
+    .sf-badge span { font-size: .8rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #ff5555; }
+    .sf-hero-h1 { font-size: clamp(2.2rem, 5.5vw, 4.2rem); font-weight: 900; line-height: 1.05; letter-spacing: -.03em; color: #fff; max-width: 860px; margin: 0 auto 24px; }
+    .sf-hero-sub { font-size: 1.15rem; color: var(--light-gray); line-height: 1.75; max-width: 600px; margin: 0 auto 40px; }
+    .sf-cta-row { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .sf-btn-primary { display: inline-block; background: var(--orange); color: #fff; font-size: 1.1rem; font-weight: 900; padding: 20px 48px; border-radius: 8px; text-decoration: none; letter-spacing: -.02em; transition: background .2s, transform .15s; }
+    .sf-btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .sf-btn-call { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-size: 1rem; font-weight: 700; text-decoration: none; padding: 20px 32px; border: 2px solid rgba(255,255,255,.2); border-radius: 8px; transition: border-color .2s; }
+    .sf-btn-call:hover { border-color: #fff; }
+    .sf-trust-bar { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; padding: 28px 24px; background: var(--dark2); border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .sf-trust-item { display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 700; color: var(--light-gray); }
+    .sf-urgency { background: rgba(205,68,25,.08); border-top: 1px solid rgba(205,68,25,.2); border-bottom: 1px solid rgba(205,68,25,.2); padding: 16px 24px; text-align: center; }
+    .sf-urgency p { color: var(--orange); font-size: .9rem; font-weight: 700; }
+    .sf-booking-wrap { max-width: 1100px; margin: 0 auto; padding: 56px 24px; }
+    .sf-booking-wrap h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; letter-spacing: -.02em; color: #fff; text-align: center; margin-bottom: 8px; }
+    .sf-booking-wrap p.sub { text-align: center; color: var(--light-gray); margin-bottom: 40px; font-size: 1rem; }
+    .sf-booking-box { background: var(--dark2); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 0; overflow: hidden; }
+    #sf-inline-container { width: 100%; }
+    #sf-inline-container iframe { width: 100% !important; min-width: 0 !important; border: none !important; display: block; }
+    .sf-divider { text-align: center; color: var(--gray); font-size: .85rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin: 48px 0 32px; position: relative; }
+    .sf-divider::before, .sf-divider::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: rgba(255,255,255,.07); }
+    .sf-divider::before { left: 0; }
+    .sf-divider::after { right: 0; }
+    .sf-call-box { background: var(--dark2); border: 2px solid var(--orange); border-radius: 16px; padding: 48px; text-align: center; max-width: 560px; margin: 0 auto; }
+    .sf-call-box h3 { color: #fff; font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; }
+    .sf-call-box p { color: var(--gray); font-size: .95rem; margin-bottom: 28px; }
+    .sf-call-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--orange); color: #fff; font-size: 1.4rem; font-weight: 900; padding: 20px 48px; border-radius: 8px; text-decoration: none; transition: background .2s; }
+    .sf-call-btn:hover { background: var(--orange-dark); }
+    .sf-why { background: var(--dark2); padding: 64px 24px; }
+    .sf-why-inner { max-width: 960px; margin: 0 auto; }
+    .sf-why h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; color: #fff; text-align: center; margin-bottom: 40px; }
+    .sf-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .sf-why-item { background: var(--black); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 32px; }
+    .sf-why-item .sf-icon { font-size: 2rem; margin-bottom: 16px; }
+    .sf-why-item h4 { color: #fff; font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; }
+    .sf-why-item p { color: var(--gray); font-size: .88rem; line-height: 1.7; }
+    .sf-final { padding: 72px 24px; text-align: center; background: var(--black); }
+    .sf-final h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; letter-spacing: -.02em; margin-bottom: 16px; }
+    .sf-final p { color: var(--light-gray); margin-bottom: 32px; }
+    .sf-back { text-align: center; padding: 24px; }
+    .sf-back a { color: var(--gray); font-size: .85rem; text-decoration: none; }
+    .sf-back a:hover { color: #fff; }
+    @media (max-width: 600px) {
+      .sf-cta-row { flex-direction: column; }
+      .sf-btn-primary, .sf-btn-call { width: 100%; text-align: center; justify-content: center; }
+      .sf-trust-bar { gap: 20px; }
+      .sf-booking-box { padding: 20px; }
+      .sf-call-box { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="ao-nav">
+  <div style="position:relative;display:flex;align-items:center;gap:12px;">
+    <a class="ao-logo" onclick="aoLogoClick(event)" href="#home" style="display:flex;align-items:center;gap:12px;">
+      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" />
+      <span style="font-size:1.1rem;font-weight:900;letter-spacing:-.02em;color:#fff;">Absolute <span style="color:#FF6B1A;">ADAS</span></span>
+    </a>
+    <div id="ao-secret-menu" style="display:none;position:absolute;top:56px;left:0;background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px;z-index:9999;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,.6);">
+      <p style="font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#555;padding:6px 12px 10px;">🤫 Secret Pages</p>
+      <a onclick="navigate('lander');aoToggleSecret()" href="#lander" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">📣 Ad Landing Page</a>
+      <a onclick="navigate('statefarm');aoToggleSecret()" href="#statefarm" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">🏠 State Farm Page</a>
+    </div>
+  </div>
+  <ul class="ao-nav-links">
+    <li><a onclick="navigate('home')" href="#home">Home</a></li>
+    <li><a onclick="navigate('about')" href="#about">About</a></li>
+    <li><a onclick="navigate('services')" href="#services">Services</a></li>
+    <li><a onclick="navigate('blog')" href="#blog">Blog</a></li>
+    <li><a onclick="navigate('contact')" href="#contact" class="ao-nav-cta">Book a Calibration</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════ -->
+<!--              HOME PAGE                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-home">
+
+  <!-- HERO -->
+  <section class="ao-hero">
+    <div class="ao-eyebrow">⚡ Western Washington's #1 Mobile ADAS Service</div>
+    <h1 class="ao-h1">Your Shop Isn't Safe<br>Until It's <span class="ao-em">Calibrated Right.</span></h1>
+    <p class="ao-hero-sub">We show up on-site. We dial it in with dealer-level precision. Your techs look like geniuses. No downtime. No excuses. Done.</p>
+    <div class="ao-hero-btns">
+      <a onclick="navigate('contact')" class="ao-btn">Book Your Calibration Now →</a>
+      <a onclick="navigate('services')" class="ao-btn ao-btn-outline">See Our Services</a>
+    </div>
+    <p class="ao-hero-note">Serving Tacoma to Bellingham · Same-day availability · 1-844-FIX-ADAS (1-844-349-2327)</p>
+    <p style="margin-top:12px;font-size:.78rem;color:rgba(255,255,255,.2);">Invoicing & job management powered by <a href="https://adasiq.com" style="color:var(--orange);text-decoration:none;font-weight:700;">ADAS IQ</a></p>
+    <p style="font-family:'Great Vibes',cursive;font-size:1.6rem;font-weight:700;color:#CD4419;margin-top:24px;letter-spacing:.02em;">Driving safety forward, one calibration at a time.</p>
+  </section>
+
+  <!-- STATS -->
+  <div class="ao-stats">
+    <div class="ao-stat"><div class="ao-stat-num">2,400+</div><div class="ao-stat-label">Calibrations Completed</div></div>
+    <div class="ao-stat"><div class="ao-stat-num">100%</div><div class="ao-stat-label">Mobile — We Come to You</div></div>
+    <div class="ao-stat"><div class="ao-stat-num">50+</div><div class="ao-stat-label">Vehicle Makes Supported</div></div>
+    <div class="ao-stat"><div class="ao-stat-num">0</div><div class="ao-stat-label">Missed Calibrations</div></div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-two-col">
+        <div>
+          <div class="ao-label">The Uncomfortable Truth</div>
+          <p class="ao-big-quote">Every uncalibrated ADAS system that leaves your shop is a <span class="ao-em">lawsuit waiting to happen.</span></p>
+          <p class="ao-body" style="margin-top:24px;">Cameras misaligned by millimeters. Radar off by a fraction. Collision-avoidance systems that don't avoid anything. Your customers don't know — but when something goes wrong, they'll know exactly who fixed it last.</p>
+        </div>
+        <div>
+          <ul class="ao-check-list">
+            <li><div class="icon">⚠️</div><span><strong>OEM requirements are non-negotiable.</strong> Skipping ADAS calibration after a collision repair isn't just risky — it's a liability.</span></li>
+            <li><div class="icon">📉</div><span><strong>Dealer wait times kill your cycle time.</strong> Waiting days for a dealer grinds your workflow to a halt.</span></li>
+            <li><div class="icon">🔧</div><span><strong>Generic tools don't cut it.</strong> OEM-equivalent software is the only standard that counts.</span></li>
+            <li><div class="icon">✅</div><span><strong>We solve all three — on your lot, today.</strong> Certified, documented, fast.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES OVERVIEW -->
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">What We Do</div>
+      <h2 class="ao-h2">One call. <span class="ao-em">We handle the rest.</span></h2>
+      <p class="ao-body" style="max-width:540px;">Dealer-level calibration and diagnostics — mobile, certified, and faster than anything you've tried before.</p>
+      <div class="ao-card-grid">
+        <div class="ao-card"><div class="ao-card-icon">🎯</div><h4 class="ao-h4">ADAS Calibrations</h4><p>Front radar, cameras, blind-spot, lane-departure, parking sensors. Static and dynamic. Full documentation every job.</p></div>
+        <div class="ao-card"><div class="ao-card-icon">🔑</div><h4 class="ao-h4">Key Programming</h4><p>PATS, push-button, proximity fobs — programmed and cut on-site. No tow to the dealer.</p></div>
+        <div class="ao-card"><div class="ao-card-icon">🔍</div><h4 class="ao-h4">Diagnostics</h4><p>OEM-level tools. We find the root cause and fix it — not just reset the code.</p></div>
+        <div class="ao-card"><div class="ao-card-icon">⚡</div><h4 class="ao-h4">Electrical & Connectors</h4><p>Wiring harnesses, corroded connectors, module faults. We trace it, fix it, verify it.</p></div>
+        <div class="ao-card"><div class="ao-card-icon">🛡️</div><h4 class="ao-h4">Airbag Systems</h4><p>SRS resets, seat sensors, crash data. Compliant and documented.</p></div>
+        <div class="ao-card"><div class="ao-card-icon">💻</div><h4 class="ao-h4">Module Programming & Coding</h4><p>ECU, TCM, BCM and more — we program and code replacement modules on-site using OEM-level software. No dealer required.</p></div>
+        <div class="ao-card"><div class="ao-card-icon">🚗</div><h4 class="ao-h4">On-Site, Any Shop</h4><p>Tacoma to Bellingham. No minimum jobs. Call and we show up.</p></div>
+      </div>
+      <div style="text-align:center; margin-top:48px;">
+        <a onclick="navigate('services')" class="ao-btn">View All Services →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-label">The Process</div>
+      <h2 class="ao-h2">Simple. Fast. <span class="ao-em">Done right.</span></h2>
+      <p class="ao-body" style="max-width:520px;">Three steps. Zero headaches. Your tech gets the vehicle back and your customer drives away safe.</p>
+      <div class="ao-steps">
+        <div class="ao-step"><div class="ao-step-num">01</div><h3 class="ao-h3">You Call. We Book.</h3><p>One call to <strong style="color:#fff">1-844-FIX-ADAS (1-844-349-2327)</strong>. We schedule around your workflow. Same-day and next-day available across Western Washington.</p></div>
+        <div class="ao-step"><div class="ao-step-num">02</div><h3 class="ao-h3">We Show Up On-Site.</h3><p>Our certified tech arrives with everything needed — targets, fixtures, OEM-level software. No prep required from your team.</p></div>
+        <div class="ao-step"><div class="ao-step-num">03</div><h3 class="ao-h3">Calibrated. Documented. Done.</h3><p>Completed to manufacturer spec, fully documented. You get a clean report. Vehicle leaves safe. You look like a pro.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">Real Shops. Real Results.</div>
+      <h2 class="ao-h2">Don't take <span class="ao-em">our word for it.</span></h2>
+      <div class="ao-testi-grid">
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"We used to dread ADAS jobs. Now we book Absolute and forget about it. They show up, get it done, and leave us a clean report. Our cycle time dropped by almost two days."</blockquote><div class="ao-author"><div class="ao-avatar">MR</div><div><div class="ao-author-name">Mike R.</div><div class="ao-author-role">Shop Owner — Everett, WA</div></div></div></div>
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"I was skeptical at first — I'd been burned by mobile services before. These guys are the real deal. OEM-level tools, certified techs, professional documentation every time."</blockquote><div class="ao-author"><div class="ao-avatar">TK</div><div><div class="ao-author-name">Tanya K.</div><div class="ao-author-role">Service Manager — Bellevue, WA</div></div></div></div>
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"We've used Absolute ADAS for a year. Never a missed appointment, never a failed calibration. They're as essential to our shop as our frame machine."</blockquote><div class="ao-author"><div class="ao-avatar">JD</div><div><div class="ao-author-name">Jason D.</div><div class="ao-author-role">Owner — Lynnwood Auto Collision</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="ao-cta-band">
+    <div class="ao-container">
+      <h2 class="ao-h2">Your Next ADAS Job Is One Phone Call Away.</h2>
+      <p class="ao-body">Stop letting calibrations sit in limbo. Call us, book a slot, and let us come to you.</p>
+      <a href="tel:8443492327" class="ao-btn ao-btn-white">Call 1-844-FIX-ADAS (1-844-349-2327) Now</a>
+      <p class="ao-cta-note">Or email info@absoluteadas.com — we respond same business day.</p>
+    </div>
+  </div>
+
+</div><!-- /page-home -->
+
+
+<!-- ═══════════════════════════════════════ -->
+<!--              ABOUT PAGE                 -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-about">
+
+  <section class="ao-about-hero ao-section">
+    <div class="ao-container">
+      <div class="ao-label">Who We Are</div>
+      <h1 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Built Inside a Real Shop.<br><span class="ao-em">For Real Shops.</span></h1>
+      <p class="ao-body" style="max-width:620px;margin-top:20px;">Absolute ADAS was founded on one belief: collision shops deserve a mobile ADAS partner that actually shows up, gets it right, and makes their job easier — not harder.</p>
+    </div>
+  </section>
+
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-about-grid">
+        <div>
+          <div class="ao-label">Our Story</div>
+          <h2 class="ao-h2">We Saw the Problem<br><span class="ao-em">From Inside the Industry.</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">The ADAS landscape changed fast. Suddenly every vehicle coming into a collision shop needed calibration after a repair — and most shops had no good option. Dealerships were backed up for days. In-house tools were expensive and limited. Mobile services were unreliable.</p>
+          <p class="ao-body" style="margin-bottom:20px;">We launched Absolute ADAS out of Lake Stevens, WA to solve that problem for collision shops across Western Washington. Not as a vendor — as a trusted extension of your team.</p>
+          <p class="ao-body">Today we've completed over 2,400 calibrations for shops from Tacoma to Bellingham, with zero missed appointments and full OEM documentation on every single job.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="ao-about-visual"><div class="big-num">2,400+</div><div class="big-label">Calibrations Completed</div></div>
+          <div class="ao-about-visual"><div class="big-num">50+</div><div class="big-label">Vehicle Makes Served</div></div>
+          <div class="ao-about-visual"><div class="big-num">100%</div><div class="big-label">Mobile & On-Site</div></div>
+          <div class="ao-about-visual"><div class="big-num">0</div><div class="big-label">Missed Appointments</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">Why We're Different</div>
+      <h2 class="ao-h2">We Don't Just Show Up.<br><span class="ao-em">We Show Up Prepared.</span></h2>
+      <div class="ao-values-grid">
+        <div class="ao-value-card"><div class="icon">🎯</div><h4 class="ao-h4">OEM-Level Equipment</h4><p class="ao-body" style="font-size:.9rem;">We use OEM-equivalent software and manufacturer-spec targets. Not generic aftermarket shortcuts.</p></div>
+        <div class="ao-value-card"><div class="icon">📋</div><h4 class="ao-h4">Full Documentation Every Time</h4><p class="ao-body" style="font-size:.9rem;">Every calibration comes with complete documentation for your records, insurance, and liability protection.</p></div>
+        <div class="ao-value-card"><div class="icon">⚡</div><h4 class="ao-h4">Same-Day Availability</h4><p class="ao-body" style="font-size:.9rem;">We work around your schedule. Same-day and next-day slots available across Western Washington.</p></div>
+        <div class="ao-value-card"><div class="icon">🤝</div><h4 class="ao-h4">No Minimums, No Hassle</h4><p class="ao-body" style="font-size:.9rem;">One vehicle or twenty. No minimum job requirements. Just call and we'll be there.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ao-cta-band">
+    <div class="ao-container">
+      <h2 class="ao-h2">Ready to Meet Your New ADAS Partner?</h2>
+      <p class="ao-body">Let's talk about your shop's needs. We'll show you exactly how we can help.</p>
+      <a onclick="navigate('contact')" class="ao-btn ao-btn-white">Book a Calibration →</a>
+    </div>
+  </div>
+
+</div><!-- /page-about -->
+
+
+<!-- ═══════════════════════════════════════ -->
+<!--            SERVICES PAGE                -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-services">
+
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">Our Services</div>
+      <h1 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Everything Your Shop Needs.<br><span class="ao-em">On Your Lot. Today.</span></h1>
+      <p class="ao-body" style="max-width:580px;margin-top:20px;">Dealer-level mobile services for collision repair shops across Western Washington. No towing. No waiting. Just results.</p>
+    </div>
+  </section>
+
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+
+      <div class="ao-service-detail">
+        <div>
+          <div class="ao-label">Service 01</div>
+          <h2 class="ao-h2">ADAS <span class="ao-em">Calibrations</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">Advanced Driver Assistance Systems require precise calibration after any repair affecting the vehicle's geometry, glass, or sensors. We perform both static and dynamic calibrations to OEM specifications — documented, verified, done.</p>
+          <p class="ao-body" style="margin-bottom:24px;">Every calibration includes a full documentation package for your shop records and insurance compliance.</p>
+          <div class="ao-tag-list">
+            <span class="ao-tag">Forward-Facing Cameras</span><span class="ao-tag">Front Radar</span><span class="ao-tag">Blind Spot Monitoring</span><span class="ao-tag">Lane Departure Warning</span><span class="ao-tag">Parking Sensors</span><span class="ao-tag">Rear Cross Traffic</span><span class="ao-tag">Adaptive Cruise Control</span><span class="ao-tag">Static Calibration</span><span class="ao-tag">Dynamic Calibration</span>
+          </div>
+        </div>
+        <div class="ao-service-visual"><div class="big-icon">🎯</div><h4 class="ao-h4">50+ Makes Supported</h4><p>From domestic to luxury imports, we support calibrations across all major vehicle makes and models.</p></div>
+      </div>
+
+      <div class="ao-service-detail reverse">
+        <div>
+          <div class="ao-label">Service 02</div>
+          <h2 class="ao-h2">Key Programming<br><span class="ao-em">& Lost Keys</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">Lost a key? Need an extra? We program and cut replacement keys on-site — no tow to the dealer required. We support PATS, push-button start, and proximity fob systems across all major makes.</p>
+          <p class="ao-body" style="margin-bottom:24px;">Stop sending customers to the dealership and losing that revenue. We come to your shop and handle it while the car is already there.</p>
+          <div class="ao-tag-list">
+            <span class="ao-tag">PATS Systems</span><span class="ao-tag">Push-Button Start</span><span class="ao-tag">Proximity Fobs</span><span class="ao-tag">Key Cutting</span><span class="ao-tag">Transponder Programming</span><span class="ao-tag">All Major Makes</span>
+          </div>
+        </div>
+        <div class="ao-service-visual"><div class="big-icon">🔑</div><h4 class="ao-h4">On-Site Programming</h4><p>No tow. No dealer wait. We program keys right on your lot — usually in under an hour.</p></div>
+      </div>
+
+      <div class="ao-service-detail">
+        <div>
+          <div class="ao-label">Service 03</div>
+          <h2 class="ao-h2">OEM-Level <span class="ao-em">Diagnostics</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">That DTC that won't clear no matter what you do? We dig in with OEM-equivalent diagnostic tools to find the actual root cause — not just reset the code and hope for the best.</p>
+          <p class="ao-body" style="margin-bottom:24px;">We provide detailed diagnostic reports so you know exactly what was found and what was done.</p>
+          <div class="ao-tag-list">
+            <span class="ao-tag">DTC Diagnosis</span><span class="ao-tag">Module Communication</span><span class="ao-tag">Freeze Frame Analysis</span><span class="ao-tag">Live Data Monitoring</span><span class="ao-tag">OEM Software</span>
+          </div>
+        </div>
+        <div class="ao-service-visual"><div class="big-icon">🔍</div><h4 class="ao-h4">Root Cause Diagnosis</h4><p>We find why the code is there — not just clear it and send the car back out.</p></div>
+      </div>
+
+      <div class="ao-service-detail reverse">
+        <div>
+          <div class="ao-label">Service 04</div>
+          <h2 class="ao-h2">Electrical<br><span class="ao-em">& Connectors</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">Damaged wiring harnesses, corroded connectors, and module communication faults are some of the most frustrating issues in collision repair. We trace, diagnose, and repair — with full verification before we leave.</p>
+          <div class="ao-tag-list">
+            <span class="ao-tag">Wiring Harness Repair</span><span class="ao-tag">Connector Restoration</span><span class="ao-tag">Module Faults</span><span class="ao-tag">CAN Bus Diagnostics</span><span class="ao-tag">Circuit Testing</span>
+          </div>
+        </div>
+        <div class="ao-service-visual"><div class="big-icon">⚡</div><h4 class="ao-h4">Full Verification</h4><p>We don't leave until the repair is confirmed and documented.</p></div>
+      </div>
+
+      <div class="ao-service-detail reverse">
+        <div>
+          <div class="ao-label">Service 05</div>
+          <h2 class="ao-h2">Module Programming<br><span class="ao-em">& Coding</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">Replacement modules don't just plug in — they need to be programmed and coded to the vehicle before they'll function correctly. We program ECUs, TCMs, BCMs, and other control modules on-site using OEM-level software, eliminating the need to tow to a dealer or wait days for a programming appointment.</p>
+          <p class="ao-body" style="margin-bottom:24px;">Whether it's a new module from the OEM, a remanufactured unit, or a transferred module, we handle the full programming and coding process with complete documentation.</p>
+          <div class="ao-tag-list">
+            <span class="ao-tag">ECU Programming</span><span class="ao-tag">TCM Coding</span><span class="ao-tag">BCM Programming</span><span class="ao-tag">Immobilizer Setup</span><span class="ao-tag">VIN Writing</span><span class="ao-tag">Variant Coding</span><span class="ao-tag">OEM Software</span>
+          </div>
+        </div>
+        <div class="ao-service-visual"><div class="big-icon">💻</div><h4 class="ao-h4">On-Site Programming</h4><p>No tow. No dealer wait. We program and code modules right on your lot with full OEM-level software.</p></div>
+      </div>
+
+      <div class="ao-service-detail">
+        <div>
+          <div class="ao-label">Service 06</div>
+          <h2 class="ao-h2">Airbag <span class="ao-em">Systems</span></h2>
+          <p class="ao-body" style="margin-bottom:20px;">SRS module resets, seat occupancy sensor replacement, and crash data clearing — performed to OEM compliance standards with full documentation for your records.</p>
+          <div class="ao-tag-list">
+            <span class="ao-tag">SRS Module Reset</span><span class="ao-tag">Seat Occupancy Sensors</span><span class="ao-tag">Crash Data Clear</span><span class="ao-tag">OEM Compliant</span><span class="ao-tag">Full Documentation</span>
+          </div>
+        </div>
+        <div class="ao-service-visual"><div class="big-icon">🛡️</div><h4 class="ao-h4">Compliance First</h4><p>Every airbag service is performed to OEM standards with documentation to protect your shop.</p></div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="ao-cta-band">
+    <div class="ao-container">
+      <h2 class="ao-h2">Not Sure What You Need? Just Call.</h2>
+      <p class="ao-body">We'll talk through the job and tell you exactly what's required. No pressure, no upselling.</p>
+      <a href="tel:8443492327" class="ao-btn ao-btn-white">1-844-FIX-ADAS (1-844-349-2327)</a>
+    </div>
+  </div>
+
+</div><!-- /page-services -->
+
+
+<!-- ═══════════════════════════════════════ -->
+<!--              BLOG PAGE                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-blog">
+  <style>
+    .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 56px; }
+    .blog-card { background: var(--dark2); border: 1px solid #222; border-radius: 14px; overflow: hidden; transition: border-color .2s, transform .2s; cursor: pointer; }
+    .blog-card:hover { border-color: var(--orange); transform: translateY(-4px); }
+    .blog-card-cat { font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+    .blog-card-body { padding: 28px; }
+    .blog-card-title { font-size: 1.05rem; font-weight: 800; line-height: 1.35; margin-bottom: 12px; letter-spacing: -.01em; }
+    .blog-card-excerpt { font-size: .875rem; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+    .blog-card-meta { display: flex; align-items: center; justify-content: space-between; font-size: .78rem; color: var(--gray); }
+    .blog-card-read { color: var(--orange); font-weight: 700; font-size: .8rem; }
+    .blog-article-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.85); z-index: 9999; overflow-y: auto; padding: 40px 24px; }
+    .blog-article-inner { max-width: 760px; margin: 0 auto; background: #111; border-radius: 16px; padding: 56px; position: relative; }
+    .blog-article-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,.08); border: none; color: #fff; font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .blog-article-cat { font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+    .blog-article-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; line-height: 1.15; letter-spacing: -.02em; margin-bottom: 16px; }
+    .blog-article-meta { font-size: .8rem; color: var(--gray); margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .blog-article-content p { font-size: 1rem; color: rgba(255,255,255,.75); line-height: 1.85; margin-bottom: 20px; }
+    .blog-article-content h3 { font-size: 1.2rem; font-weight: 800; margin: 32px 0 12px; }
+    .blog-article-content ul { padding-left: 20px; margin-bottom: 20px; }
+    .blog-article-content ul li { font-size: 1rem; color: rgba(255,255,255,.75); line-height: 1.75; margin-bottom: 8px; }
+    @media(max-width:900px){ .blog-grid { grid-template-columns: 1fr; } .blog-article-inner { padding: 32px 24px; } }
+  </style>
+
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">The ADAS Blog</div>
+      <h1 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Industry Insights.<br><span class="ao-em">No Fluff.</span></h1>
+      <p class="ao-body" style="max-width:540px;">ADAS calibration news, OEM updates, shop tips, and everything Western Washington collision shops need to stay ahead.</p>
+
+      <div class="blog-grid">
+
+        <!-- ARTICLE 1 -->
+        <div class="blog-card" onclick="openArticle(1)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">ADAS Basics</div>
+            <div class="blog-card-title">What Is ADAS Calibration? A Complete Guide for Collision Shops</div>
+            <div class="blog-card-excerpt">Every modern vehicle leaving your shop after a repair may need ADAS calibration. Here's what it means, why it matters, and what happens when it gets skipped.</div>
+            <div class="blog-card-meta"><span>March 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 2 -->
+        <div class="blog-card" onclick="openArticle(2)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Liability</div>
+            <div class="blog-card-title">The Hidden Cost of Skipping ADAS Calibration After a Collision Repair</div>
+            <div class="blog-card-excerpt">The real price of an uncalibrated vehicle isn't the calibration fee. It's the lawsuit, the denied claim, and the reputation hit that follows.</div>
+            <div class="blog-card-meta"><span>March 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 3 -->
+        <div class="blog-card" onclick="openArticle(3)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">Static vs. Dynamic ADAS Calibration: What's the Difference?</div>
+            <div class="blog-card-excerpt">Not all ADAS calibrations are the same. Understanding the difference between static and dynamic procedures is essential for every collision shop.</div>
+            <div class="blog-card-meta"><span>February 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 4 -->
+        <div class="blog-card" onclick="openArticle(4)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Business</div>
+            <div class="blog-card-title">How ADAS Calibration Protects Your Shop from Liability</div>
+            <div class="blog-card-excerpt">Documentation is your first line of defense. Here's how a proper ADAS calibration process — with full records — protects your shop legally.</div>
+            <div class="blog-card-meta"><span>February 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 5 -->
+        <div class="blog-card" onclick="openArticle(5)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Operations</div>
+            <div class="blog-card-title">Why Dealership Wait Times Are Killing Your Cycle Time</div>
+            <div class="blog-card-excerpt">Sending vehicles to the dealer for ADAS calibration costs you days, not hours. Here's what that does to your throughput — and how to fix it.</div>
+            <div class="blog-card-meta"><span>February 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 6 -->
+        <div class="blog-card" onclick="openArticle(6)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">Forward-Facing Camera Calibration: Everything Your Shop Needs to Know</div>
+            <div class="blog-card-excerpt">The forward-facing camera is the most commonly miscalibrated ADAS component after a repair. Here's why — and what proper calibration looks like.</div>
+            <div class="blog-card-meta"><span>January 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 7 -->
+        <div class="blog-card" onclick="openArticle(7)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">Radar Calibration 101: A Collision Shop's Guide</div>
+            <div class="blog-card-excerpt">Front radar systems power adaptive cruise control and automatic emergency braking. A millimeter of misalignment can compromise both. Here's what you need to know.</div>
+            <div class="blog-card-meta"><span>January 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 8 -->
+        <div class="blog-card" onclick="openArticle(8)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">Lane Departure Warning Systems: When and Why They Need Calibration</div>
+            <div class="blog-card-excerpt">Lane departure warning is one of the most frequently triggered ADAS systems — and one of the first to go wrong after a windshield replacement or structural repair.</div>
+            <div class="blog-card-meta"><span>January 2026</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 9 -->
+        <div class="blog-card" onclick="openArticle(9)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">Blind Spot Monitoring Calibration: A Complete Overview</div>
+            <div class="blog-card-excerpt">Rear-quarter radar sensors are surprisingly sensitive to bumper and body panel repairs. Here's what blind spot calibration involves and when it's required.</div>
+            <div class="blog-card-meta"><span>December 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 10 -->
+        <div class="blog-card" onclick="openArticle(10)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Equipment</div>
+            <div class="blog-card-title">Why OEM-Level Tools Are Non-Negotiable for ADAS Calibration</div>
+            <div class="blog-card-excerpt">Generic aftermarket scan tools can read codes — but they can't perform OEM-required ADAS calibration procedures. Here's the difference, and why it matters for your shop.</div>
+            <div class="blog-card-meta"><span>December 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 11 -->
+        <div class="blog-card" onclick="openArticle(11)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Operations</div>
+            <div class="blog-card-title">The Top 5 ADAS Systems Most Often Missed After Collision Repairs</div>
+            <div class="blog-card-excerpt">These five systems are required on almost every modern vehicle — and they're the ones most commonly overlooked when building a repair estimate.</div>
+            <div class="blog-card-meta"><span>December 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 12 -->
+        <div class="blog-card" onclick="openArticle(12)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Insurance</div>
+            <div class="blog-card-title">How ADAS Calibration Affects Insurance Claims and Supplements</div>
+            <div class="blog-card-excerpt">Insurance companies are catching up on ADAS requirements. Here's how to document calibrations properly so your supplements don't get denied.</div>
+            <div class="blog-card-meta"><span>November 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 13 -->
+        <div class="blog-card" onclick="openArticle(13)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">Adaptive Cruise Control: What Happens When It's Not Calibrated?</div>
+            <div class="blog-card-excerpt">A miscalibrated adaptive cruise control system doesn't just annoy drivers — it can cause accidents. Here's what can go wrong and how calibration prevents it.</div>
+            <div class="blog-card-meta"><span>November 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 14 -->
+        <div class="blog-card" onclick="openArticle(14)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Industry</div>
+            <div class="blog-card-title">The Rise of ADAS: How Modern Vehicles Are Changing Collision Repair</div>
+            <div class="blog-card-excerpt">ADAS isn't a trend — it's the new standard. Here's how the explosion of driver assistance technology is reshaping what collision shops need to do on every single repair.</div>
+            <div class="blog-card-meta"><span>November 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 15 -->
+        <div class="blog-card" onclick="openArticle(15)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Business</div>
+            <div class="blog-card-title">Mobile ADAS Calibration vs. In-Shop: Which Is Right for Your Business?</div>
+            <div class="blog-card-excerpt">Should you invest in your own ADAS equipment, or use a mobile service? We break down the real costs, tradeoffs, and what most shops get wrong about this decision.</div>
+            <div class="blog-card-meta"><span>October 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 16 -->
+        <div class="blog-card" onclick="openArticle(16)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Operations</div>
+            <div class="blog-card-title">Building ADAS Calibration Into Your Repair Workflow</div>
+            <div class="blog-card-excerpt">ADAS calibration shouldn't be an afterthought at delivery. Here's how the most efficient shops integrate calibration into their workflow from day one of every job.</div>
+            <div class="blog-card-meta"><span>October 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 17 -->
+        <div class="blog-card" onclick="openArticle(17)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Safety</div>
+            <div class="blog-card-title">What Happens When ADAS Goes Uncalibrated? Real-World Consequences</div>
+            <div class="blog-card-excerpt">This isn't hypothetical. Uncalibrated ADAS systems have caused real accidents, real lawsuits, and real shop closures. Here are the stories that should be on every estimator's wall.</div>
+            <div class="blog-card-meta"><span>October 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 18 -->
+        <div class="blog-card" onclick="openArticle(18)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Revenue</div>
+            <div class="blog-card-title">Key Programming After Collision Repair: Revenue You Might Be Missing</div>
+            <div class="blog-card-excerpt">Every shop that sends key programming to the dealer is giving away margin. Here's how to capture that revenue on-site — and what it adds up to over a year.</div>
+            <div class="blog-card-meta"><span>September 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 19 -->
+        <div class="blog-card" onclick="openArticle(19)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Technical</div>
+            <div class="blog-card-title">SRS and Airbag Systems: Critical Calibration Steps After a Crash</div>
+            <div class="blog-card-excerpt">Airbag systems are the most safety-critical component in any collision repair. Here's what SRS calibration involves, when it's required, and what happens when it's skipped.</div>
+            <div class="blog-card-meta"><span>September 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+        <!-- ARTICLE 20 -->
+        <div class="blog-card" onclick="openArticle(20)">
+          <div class="blog-card-body">
+            <div class="blog-card-cat">Industry</div>
+            <div class="blog-card-title">The Future of ADAS: What's Coming and How to Prepare Your Shop</div>
+            <div class="blog-card-excerpt">Level 3 autonomy is closer than most shops realize. Here's what the next wave of ADAS technology looks like — and how forward-thinking collision shops are getting ready now.</div>
+            <div class="blog-card-meta"><span>September 2025</span><span class="blog-card-read">Read Article →</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTICLE MODAL -->
+  <div class="blog-article-overlay" id="blog-overlay" onclick="closeArticleOutside(event)">
+    <div class="blog-article-inner" id="blog-article-inner">
+      <button class="blog-article-close" onclick="closeArticle()">✕</button>
+      <div id="blog-article-content"></div>
+    </div>
+  </div>
+
+  <script>
+  var articles = {
+    1: {
+      cat: 'ADAS Basics', date: 'March 2026',
+      title: 'What Is ADAS Calibration? A Complete Guide for Collision Shops',
+      content: `<p>Advanced Driver Assistance Systems (ADAS) have become standard equipment on virtually every new vehicle sold in the United States. Lane departure warning, automatic emergency braking, adaptive cruise control, blind spot monitoring — these systems rely on a network of cameras, radar sensors, and ultrasonic devices that must be precisely aligned to function correctly. When a vehicle is involved in a collision — or even when glass is replaced or suspension work is performed — these sensors can shift out of alignment. That's where ADAS calibration comes in.</p>
+      <h3>What Does Calibration Actually Mean?</h3>
+      <p>ADAS calibration is the process of resetting and verifying that a vehicle's sensors, cameras, and radar systems are aligned to manufacturer specifications. It's not a simple code clear — it requires specialized equipment, a controlled environment, and OEM-level software to confirm that the system is operating correctly. When done right, calibration ensures that a lane departure warning actually warns about lane departure, and that an automatic emergency braking system actually stops in time.</p>
+      <h3>When Is Calibration Required?</h3>
+      <p>Most OEMs require ADAS calibration after any repair involving the windshield, bumpers, front fascia, suspension components, or any structural element near a sensor. This includes glass replacement, wheel alignment, and any collision repair affecting the vehicle's geometry. The triggering events vary by manufacturer and system, which is why OEM repair procedures must be consulted on every job.</p>
+      <h3>Static vs. Dynamic Calibration</h3>
+      <p>There are two types of ADAS calibration: static and dynamic. Static calibration is performed in a controlled environment using calibration targets placed at precise distances in front of the vehicle. Dynamic calibration requires driving the vehicle on a specific type of road at a specific speed for a defined period. Many vehicles require both. Understanding which type is required — and having the equipment to perform it — is essential for any shop handling ADAS-equipped vehicles.</p>
+      <h3>The Bottom Line for Collision Shops</h3>
+      <p>Every vehicle leaving your shop after a collision repair may require ADAS calibration. Missing this step isn't just a technical oversight — it's a liability. The good news is that with the right partner, calibration can be completed on-site, documented thoroughly, and integrated into your existing workflow without slowing down your cycle time. That's exactly what Absolute ADAS was built to do.</p>`
+    },
+    2: {
+      cat: 'Liability', date: 'March 2026',
+      title: 'The Hidden Cost of Skipping ADAS Calibration After a Collision Repair',
+      content: `<p>When a shop skips ADAS calibration after a collision repair, the immediate cost seems like zero. The vehicle goes out the door. The customer drives away. Nothing happens — until it does. And when it does, the cost isn't measured in dollars for a calibration. It's measured in legal fees, insurance claims, lost reputation, and in the worst cases, human lives.</p>
+      <h3>The Lawsuit You Don't See Coming</h3>
+      <p>Imagine a customer's vehicle is rear-ended two weeks after leaving your shop. The automatic emergency braking system failed to engage. Investigation reveals the front radar was misaligned after the bumper repair your shop completed. Your shop was the last one to touch the vehicle. Without documentation proving ADAS calibration was performed to OEM specification, you have no defense. This scenario plays out in courtrooms more often than the industry publicly acknowledges.</p>
+      <h3>Insurance Liability Is Growing</h3>
+      <p>Insurance carriers are increasingly aware of ADAS calibration requirements. Some are now auditing repair records specifically to determine whether post-repair calibrations were performed. Shops that cannot provide documentation face denied claims, clawbacks, and exclusion from preferred provider networks. The financial hit from a single denied claim can exceed the cost of dozens of calibrations.</p>
+      <h3>The Revenue You're Also Missing</h3>
+      <p>Beyond liability, skipping calibration means leaving legitimate revenue on the table. ADAS calibration is a billable service — one that insurers will pay for when documented correctly. Shops that integrate calibration into every applicable repair are capturing revenue they previously sent to dealerships or simply didn't bill at all. The average ADAS calibration job represents significant incremental revenue per repair order.</p>
+      <h3>The Only Protection Is Documentation</h3>
+      <p>The shops that protect themselves are the ones that make ADAS calibration a non-negotiable step on every applicable repair — and document it completely. A timestamped calibration report showing the vehicle was calibrated to OEM specifications is the difference between a lawsuit and a dismissal. It's not optional. It's standard of care.</p>`
+    },
+    3: {
+      cat: 'Technical', date: 'February 2026',
+      title: 'Static vs. Dynamic ADAS Calibration: What\'s the Difference?',
+      content: `<p>One of the most common questions collision shops have about ADAS calibration is simple: what does the process actually look like? The answer depends on the vehicle, the system, and what the OEM requires — but it almost always falls into one of two categories: static calibration, dynamic calibration, or a combination of both.</p>
+      <h3>Static Calibration</h3>
+      <p>Static calibration is performed with the vehicle stationary, in a controlled environment. Calibration targets — precisely manufactured patterns placed at OEM-specified distances and heights in front of the vehicle — are used to allow the vehicle's cameras and sensors to reorient themselves. This process requires a flat, level surface, specific lighting conditions, and targets that meet exact dimensional requirements. The process is completed using OEM-level diagnostic software, which guides the technician through the procedure and confirms when calibration is complete and verified.</p>
+      <h3>Dynamic Calibration</h3>
+      <p>Dynamic calibration requires the vehicle to be driven. Typically, the tech drives the vehicle at a specific speed on a road with clearly marked lane lines for a defined distance. During this drive, the vehicle's systems use real-world inputs to recalibrate themselves. Dynamic calibration sounds simpler, but it requires the right road conditions and a tech who understands exactly what the system needs to complete the process correctly.</p>
+      <h3>Which Does Your Vehicle Need?</h3>
+      <p>Many modern vehicles require both static and dynamic calibration — often in sequence. The OEM repair procedure for each specific vehicle will define what's required, and following that procedure exactly is non-negotiable. Using aftermarket shortcuts or skipping steps in the procedure creates a calibration that looks complete but may not be. That's why OEM-level software and trained technicians are essential.</p>
+      <h3>Why This Matters for Your Shop</h3>
+      <p>Understanding the difference between static and dynamic calibration helps collision shops communicate with customers, build accurate estimates, and ensure the right partner is being used. Not every mobile ADAS provider can perform both types. Absolute ADAS performs static and dynamic calibrations across all major makes and models, using OEM-equivalent equipment and software on every job.</p>`
+    },
+    4: {
+      cat: 'Business', date: 'February 2026',
+      title: 'How ADAS Calibration Protects Your Shop from Liability',
+      content: `<p>Liability protection in collision repair used to be about quality welds, proper paint adhesion, and correct panel alignment. Today, it includes a new category: ADAS calibration documentation. As vehicles become more technologically sophisticated, the standard of care expected from collision repair shops has risen significantly — and shops that don't meet that standard are exposed.</p>
+      <h3>The Legal Standard Has Changed</h3>
+      <p>Courts increasingly recognize that a collision repair shop's duty of care includes restoring all vehicle safety systems to proper function — not just the visible physical damage. If a vehicle leaves your shop with a miscalibrated ADAS system, and that system subsequently fails in a way that contributes to an accident, your shop can be found liable even if the physical repair was performed perfectly. The question a plaintiff's attorney will ask is simple: was ADAS calibration performed and documented? If the answer is no, the burden shifts to you.</p>
+      <h3>Documentation Is Your Defense</h3>
+      <p>A calibration report generated by OEM-level diagnostic software is timestamped, vehicle-specific, and shows the before and after state of the system. It proves when the calibration was performed, which systems were addressed, and that the vehicle passed all verification checks. This document, filed with the repair order, is your legal protection. Without it, you have no evidence that calibration ever occurred — even if it did.</p>
+      <h3>OEM Procedures Establish the Standard</h3>
+      <p>Following OEM repair procedures for ADAS calibration is critical. OEM documentation establishes what the manufacturer requires — and deviation from those procedures, even well-intentioned deviation, creates exposure. Using OEM-equivalent software that follows manufacturer-specified procedures for each make and model ensures your calibrations meet the legal standard of care.</p>
+      <h3>Build It Into Every Applicable Repair</h3>
+      <p>The shops with the strongest liability protection are the ones that have made ADAS calibration a standard step on every applicable repair — not an optional add-on. When calibration is part of your process, documentation is automatic, and your exposure is minimized. When it's an afterthought, gaps appear — and gaps are where liability lives.</p>`
+    },
+    5: {
+      cat: 'Operations', date: 'February 2026',
+      title: 'Why Dealership Wait Times Are Killing Your Cycle Time',
+      content: `<p>For years, the default approach to ADAS calibration for many collision shops was simple: send it to the dealer. Let them handle it. Pick it up when it's done. This approach made sense when ADAS was rare and dealer capacity was adequate. Today, it's a cycle-time disaster — and shops still using it are losing days on nearly every repair order.</p>
+      <h3>The Math Is Brutal</h3>
+      <p>The average dealership service department is running at or near capacity. ADAS calibrations, while technically straightforward for a qualified tech, still require scheduling, intake, the calibration itself, and paperwork. At many dealers in Western Washington, the wait for a non-emergency ADAS calibration runs two to five business days. If your shop completes a hundred repairs per month and even a third of them require dealer calibration, you're losing hundreds of vehicle-days per month to dealer wait times. That's vehicles sitting on your lot. That's slowed cash flow. That's frustrated customers.</p>
+      <h3>Cycle Time Directly Affects Your Bottom Line</h3>
+      <p>Insurance companies measure your shop's performance by cycle time. Longer cycle times mean lower scores, fewer referrals, and potential removal from preferred provider programs. Every day a vehicle sits waiting for a dealer calibration is a day added to your cycle time — and it's a day you can't control because you're dependent on another business's schedule.</p>
+      <h3>Mobile Calibration Eliminates the Wait</h3>
+      <p>With a mobile ADAS partner like Absolute ADAS, calibration is scheduled around your workflow — not a dealer's booking system. We offer same-day and next-day availability across Western Washington. The vehicle stays on your lot. Your tech stays on the job. Calibration is completed and documented before the vehicle is ready for delivery. No wait. No tow. No lost days.</p>
+      <h3>The Competitive Advantage Is Real</h3>
+      <p>Shops that have eliminated dealer dependency for ADAS calibration report significant cycle time reductions and measurably better customer satisfaction scores. In a market where every day matters, taking control of your ADAS calibration workflow is one of the highest-leverage operational improvements available to a collision shop right now.</p>`
+    },
+    6: {
+      cat: 'Technical', date: 'January 2026',
+      title: 'Forward-Facing Camera Calibration: Everything Your Shop Needs to Know',
+      content: `<p>The forward-facing camera is the heart of most modern ADAS systems. Mounted behind the windshield — typically near the rearview mirror — it feeds data to lane departure warning, automatic emergency braking, traffic sign recognition, and in many vehicles, adaptive cruise control. It's also the system most frequently affected by collision damage and the one most commonly miscalibrated after a repair.</p>
+      <h3>What Triggers the Need for Calibration</h3>
+      <p>Windshield replacement is the most common trigger — and it's non-negotiable. Every major OEM requires forward-facing camera calibration after any windshield replacement on a vehicle equipped with a camera-based ADAS system. Beyond glass, any repair affecting the vehicle's hood, dash structure, or A-pillar area can shift camera mounting position. Even seemingly minor repairs in these areas can put the camera outside specification.</p>
+      <h3>The Calibration Process</h3>
+      <p>Forward-facing camera calibration is almost universally a static process. A calibration target — a specific pattern printed at precise dimensions — is placed at an OEM-specified distance and height directly in front of the vehicle. The diagnostic software connects to the vehicle, identifies the camera system, and guides the technician through the alignment process. When complete, the system runs a verification routine and generates a calibration report confirming the camera is within specification.</p>
+      <h3>Why Generic Tools Fall Short</h3>
+      <p>Many shops assume their general-purpose scan tool can handle ADAS calibration. For some basic functions, it can. But forward-facing camera calibration requires OEM-specific calibration procedures, manufacturer-specified targets with exact dimensions, and verification routines that confirm the calibration actually completed successfully. Generic tools often lack the depth to perform these procedures correctly — and a calibration that looks complete on a generic tool may not meet OEM specification.</p>
+      <h3>The Documentation That Matters</h3>
+      <p>After every forward-facing camera calibration, a report should be generated showing the vehicle VIN, date and time, calibration procedure performed, and confirmation that the system passed all verification checks. This document lives with the repair order and protects your shop from any future claim that the ADAS system was not properly restored after the repair.</p>`
+    },
+    7: {
+      cat: 'Technical', date: 'January 2026',
+      title: 'Radar Calibration 101: A Collision Shop\'s Guide',
+      content: `<p>Radar sensors are the workhorses of modern ADAS. Unlike cameras, which rely on visible light and can be affected by weather, radar uses radio waves to detect vehicles, pedestrians, and obstacles in all conditions. Front radar powers adaptive cruise control and automatic emergency braking. Rear and corner radar handles blind spot monitoring and rear cross-traffic alert. When these sensors shift position — even slightly — the consequences for safety system performance can be severe.</p>
+      <h3>How Radar Sensors Mount and Why It Matters</h3>
+      <p>Front radar sensors are typically mounted behind the front grille or within the front bumper fascia. Rear sensors are usually integrated into the rear bumper. These mounting locations make them highly vulnerable in collision events — and even in minor impacts, sensor brackets can shift enough to put the radar outside of calibration tolerance. A sensor that's off by even a fraction of a degree can misidentify the position and velocity of vehicles ahead, leading to false alerts, missed alerts, or both.</p>
+      <h3>When Is Radar Calibration Required?</h3>
+      <p>Any repair involving the front bumper, grille, fascia, or any structural element in the sensor's mounting area requires radar calibration. Rear sensor calibration is required for any repair involving the rear bumper or quarter panels near sensor locations. OEM repair procedures specify exact triggering conditions — and following them is essential for both safety and liability protection.</p>
+      <h3>The Calibration Process for Radar</h3>
+      <p>Radar calibration typically involves a combination of static alignment and a dynamic drive cycle. The static component positions the vehicle on a level surface and uses OEM software to verify sensor alignment. Many vehicles then require a dynamic drive during which the system refines its calibration using real-world inputs. The drive distance, speed, and road conditions must meet OEM specifications for the dynamic calibration to complete successfully.</p>
+      <h3>What Happens Without It</h3>
+      <p>A miscalibrated front radar system can cause adaptive cruise control to behave erratically — braking unnecessarily or failing to respond to slowing traffic. In more severe cases, automatic emergency braking systems may fail to engage when needed. These are not acceptable outcomes for any vehicle leaving a collision shop. Radar calibration is not optional — it's a required step in the repair of any vehicle with radar-based ADAS systems.</p>`
+    },
+    8: {
+      cat: 'Technical', date: 'January 2026',
+      title: 'Lane Departure Warning Systems: When and Why They Need Calibration',
+      content: `<p>Lane departure warning (LDW) and lane keeping assist (LKA) are among the most widely deployed ADAS features in modern vehicles. They rely on the forward-facing camera to detect painted lane markings and alert — or in active systems, correct — the driver when the vehicle begins to drift. They're also among the most sensitive ADAS systems when it comes to calibration, and among the most commonly triggered by routine repairs.</p>
+      <h3>What Triggers LDW Calibration</h3>
+      <p>Because lane departure systems rely on the forward-facing camera, anything that requires forward-facing camera calibration also requires LDW calibration — they're typically performed together. Windshield replacement is the primary trigger. But structural repairs, A-pillar damage, significant suspension work, and even wheel alignment can affect the camera's field of view enough to require recalibration of the lane detection system.</p>
+      <h3>Why Alignment Matters So Much</h3>
+      <p>The forward-facing camera's ability to detect lane markings depends on its viewing angle being within a very narrow tolerance. An offset of just a few millimeters can cause the system to detect lanes that don't exist, fail to detect lanes that do, or generate false departure warnings that erode driver trust in the system. In active lane keeping systems, a miscalibrated camera can cause the vehicle to make unwanted steering corrections — a significant safety concern.</p>
+      <h3>The Calibration Process</h3>
+      <p>LDW calibration is performed as part of forward-facing camera calibration using OEM-level software and calibration targets. After the static calibration is complete, many vehicles require a dynamic drive to verify that the lane detection system is correctly identifying lane markings in real-world conditions. The combination of static and dynamic procedures ensures the system is not just calibrated in the shop but verified in real driving conditions.</p>
+      <h3>Documentation and Verification</h3>
+      <p>Every LDW calibration should produce a documented report showing that the calibration was performed and that the system passed all verification checks. This documentation is your evidence that the lane departure system was fully restored to OEM function — and your protection if any safety-related concern arises after the repair.</p>`
+    },
+    9: {
+      cat: 'Technical', date: 'December 2025',
+      title: 'Blind Spot Monitoring Calibration: A Complete Overview',
+      content: `<p>Blind spot monitoring (BSM) has become one of the most popular ADAS features among drivers — and one of the most frequently triggered by collision repair work. The radar sensors that power BSM are typically mounted behind the rear bumper fascia or inside the rear quarter panels, making them directly exposed to the kind of impact damage that brings vehicles into collision shops. Understanding when and how BSM calibration is required is essential for any shop handling modern vehicles.</p>
+      <h3>How Blind Spot Systems Work</h3>
+      <p>Blind spot monitoring uses short-range radar sensors on each side of the rear of the vehicle to detect vehicles traveling in adjacent lanes. When a vehicle is detected in the blind zone, a warning indicator illuminates in the corresponding mirror. In active systems, if the driver signals to change lanes while a vehicle is detected, audible and haptic alerts are triggered. The accuracy of this system depends entirely on the sensors being precisely aligned to cover the correct detection zone.</p>
+      <h3>What Requires Calibration</h3>
+      <p>Any repair involving the rear bumper, rear quarter panels, or any structural area near the sensor mounting locations requires BSM calibration. Even repairs that don't directly touch the sensors can affect them — sensor brackets can be shifted by impact forces transmitted through adjacent structure. BSM calibration is also required after any wheel alignment that affects rear suspension geometry on vehicles with corner-mounted sensors.</p>
+      <h3>The Calibration Procedure</h3>
+      <p>BSM calibration is typically performed using OEM diagnostic software with the vehicle on a level surface. Reflective targets are placed at specified positions beside and behind the vehicle to give the sensors reference points for their detection zones. The software guides the calibration procedure and generates a verification report confirming both sensors are operating within specification. Some vehicles also require a dynamic component involving driving at highway speeds for a defined distance.</p>
+      <h3>The Consequences of Skipping It</h3>
+      <p>A BSM system that's been shifted out of calibration may fail to detect vehicles in the blind zone, generate false warnings, or have an asymmetric detection zone that leaves one side of the vehicle unprotected. Drivers who rely on BSM — and most do — may make lane changes based on the system's silence, not realizing the system isn't covering the full detection zone. This is a real safety risk, and a real liability for any shop that performed work near the sensors without recalibrating them.</p>`
+    },
+    10: {
+      cat: 'Equipment', date: 'December 2025',
+      title: 'Why OEM-Level Tools Are Non-Negotiable for ADAS Calibration',
+      content: `<p>The diagnostic tool market is full of aftermarket options that promise broad vehicle coverage and ADAS calibration capability at a fraction of the cost of OEM tools. For some diagnostic functions — code reading, live data, basic resets — aftermarket tools can perform adequately. But for ADAS calibration, the gap between OEM-level tools and aftermarket alternatives is significant, and the consequences of that gap show up in calibrations that look complete but aren't.</p>
+      <h3>What OEM-Level Tools Actually Do Differently</h3>
+      <p>OEM-level diagnostic tools use the same calibration procedures, target specifications, and verification routines that the manufacturer uses in its own service network. They have access to vehicle-specific calibration data, including exact target placement distances, required ambient lighting conditions, and the specific pass/fail criteria for each system on each vehicle. When a calibration is complete, OEM-level software generates a verification report that confirms the system is within spec — not just that the calibration routine completed without throwing an error code.</p>
+      <h3>Where Aftermarket Tools Fall Short</h3>
+      <p>Many aftermarket tools lack complete coverage for newer vehicles and model year updates. They may not have the latest calibration procedures for recently released vehicles, leaving technicians performing calibrations using outdated or incomplete data. More critically, some aftermarket tools will report a successful calibration when the vehicle's system has only partially completed the procedure — a dangerous false positive that sends an uncalibrated vehicle out the door with a clean report.</p>
+      <h3>The Calibration Target Problem</h3>
+      <p>OEM calibration procedures specify exact target dimensions, patterns, and materials for each system on each vehicle. Using targets that don't meet these specifications — even by small margins — can result in a camera or sensor that is calibrated to the wrong reference point. The calibration will appear to complete, but the system's accuracy in the real world will be compromised. OEM-level calibration providers use targets manufactured to OEM specifications for each make and model.</p>
+      <h3>The Documentation Standard</h3>
+      <p>OEM-level tools generate calibration reports that meet the documentation standard required for insurance, legal, and manufacturer warranty purposes. Aftermarket tool reports may not include all the information required to demonstrate that the calibration was performed to OEM specification — leaving your shop with documentation that won't hold up to scrutiny when it matters most.</p>`
+    },
+    11: {
+      cat: 'Operations', date: 'December 2025',
+      title: 'The Top 5 ADAS Systems Most Often Missed After Collision Repairs',
+      content: `<p>With the complexity of modern ADAS systems and the pace of a busy collision shop, certain calibrations get missed more often than others. Some are overlooked because they're less visible. Others because the triggering repair doesn't obviously connect to the system. Here are the five ADAS systems most commonly missed — and what to watch for on every repair order.</p>
+      <h3>1. Forward-Facing Camera After Windshield Replacement</h3>
+      <p>Windshield replacement is one of the most common repairs performed in conjunction with collision work, and it's also the most common trigger for forward-facing camera calibration that gets missed. Glass replacement often gets subcontracted to a glass company that may not perform the calibration — and the collision shop assumes it's been handled. Always confirm in writing that ADAS calibration was performed by whoever replaced the glass, or perform it yourself.</p>
+      <h3>2. Rear Radar After Bumper Repairs</h3>
+      <p>Rear bumper repairs are bread and butter for collision shops, but rear radar sensors — which power blind spot monitoring and rear cross-traffic alert — are mounted in and around the rear bumper. Any repair that requires removing or replacing the rear bumper cover requires rear radar calibration. This step is frequently missed because the sensors themselves often aren't visibly damaged.</p>
+      <h3>3. Surround View Cameras After Any Body Panel Work</h3>
+      <p>Vehicles equipped with surround view camera systems use cameras mounted in the front grille, door mirrors, and rear emblem area. Any work involving these mounting locations — including mirror replacement and front fascia repair — may require surround view camera calibration. These are easy to miss because the cameras are small and often hidden.</p>
+      <h3>4. Steering Angle Sensor After Wheel Alignment</h3>
+      <p>The steering angle sensor calibration is required after any wheel alignment, suspension repair, or steering component replacement on vehicles with lane keeping assist, stability control, or active steering systems. It's one of the most frequently missed calibrations because it's associated with alignment work rather than body repair — and alignment shops may not be performing it.</p>
+      <h3>5. Parking Sensors After Front or Rear Fascia Replacement</h3>
+      <p>Ultrasonic parking sensors are embedded in front and rear fascia panels. Any time a fascia is replaced, the sensors must be recalibrated to ensure accurate detection. These are often overlooked because they're considered a convenience feature rather than a safety system — but they are an OEM-required calibration on any vehicle that has them.</p>`
+    },
+    12: {
+      cat: 'Insurance', date: 'November 2025',
+      title: 'How ADAS Calibration Affects Insurance Claims and Supplements',
+      content: `<p>The insurance industry's relationship with ADAS calibration has evolved significantly over the last five years. Where insurers once pushed back on calibration line items, most major carriers now recognize ADAS calibration as a required, billable procedure — provided it's properly documented and billed correctly. Here's what collision shops need to know about getting paid for calibration work.</p>
+      <h3>Calibration Is a Billable Procedure</h3>
+      <p>ADAS calibration is a legitimate, billable operation on every applicable repair order. Most major insurers — including State Farm, GEICO, Allstate, and others — will pay for properly documented ADAS calibration when it's included in the supplement with the appropriate operation code, time, and documentation. The key word is "documented." Without a calibration report from an OEM-level tool, the claim is difficult to substantiate.</p>
+      <h3>How to Write a Supplement That Gets Approved</h3>
+      <p>When writing a supplement for ADAS calibration, include the specific system being calibrated, the OEM procedure number or reference, the time required, and attach the calibration report as supporting documentation. Some shops use a separate line for the calibration service itself and a separate line for the documentation fee. Being specific about what was calibrated and why — tied to the specific damage and repair — gives the adjuster what they need to approve the line item.</p>
+      <h3>When Insurers Push Back</h3>
+      <p>Some adjusters still push back on calibration line items, particularly for systems they perceive as unrelated to the damage. When this happens, the OEM repair procedure is your argument. If the manufacturer requires calibration after the specific repair performed, that requirement is not negotiable and not optional. Having the OEM procedure on file — and being able to reference it in the supplement — typically resolves adjuster pushback.</p>
+      <h3>The Audit Risk Is Real</h3>
+      <p>Insurance carriers are increasingly auditing repair records for ADAS-equipped vehicles. Shops that cannot demonstrate that required calibrations were performed — with documentation — face potential clawback of previously paid claims and removal from preferred provider networks. Building a calibration documentation process into every applicable repair order protects both your shop and your carrier relationships.</p>`
+    },
+    13: {
+      cat: 'Technical', date: 'November 2025',
+      title: 'Adaptive Cruise Control: What Happens When It\'s Not Calibrated?',
+      content: `<p>Adaptive cruise control (ACC) is one of the most driver-relied-upon ADAS features in modern vehicles. Unlike traditional cruise control that simply maintains a set speed, ACC uses forward radar — and often a forward-facing camera — to detect vehicles ahead and automatically adjust speed to maintain a safe following distance. When this system is miscalibrated, the consequences range from annoying to dangerous.</p>
+      <h3>How ACC Uses Radar and Camera Data</h3>
+      <p>Most ACC systems use front-mounted radar as their primary sensing technology, sometimes supplemented by forward-facing camera data. The radar detects vehicles in the travel lane and measures their speed and distance relative to the host vehicle. The system then controls throttle and braking to maintain the driver-set following distance. The accuracy of this process depends entirely on the radar being precisely aligned to the center of the travel lane — which means any repair affecting front radar mounting requires calibration before ACC can function safely.</p>
+      <h3>What Miscalibration Looks Like in the Real World</h3>
+      <p>A miscalibrated ACC system may brake unnecessarily for vehicles in adjacent lanes, fail to detect slow-moving vehicles directly ahead, or react erratically to stationary objects. In some cases, the system may appear to function normally at low speeds but behave incorrectly at highway speeds where the consequences of a delayed reaction are most severe. Drivers who engage ACC without realizing it's been miscalibrated may not notice the problem until it's too late.</p>
+      <h3>The Triggering Repairs</h3>
+      <p>Any repair involving the front bumper, grille, or fascia on a vehicle with ACC requires front radar calibration — and therefore requires verification that ACC will function correctly after the repair. This includes repairs that don't visually affect the radar sensor itself. Bracket distortion, subtle frame movement, or even improper bumper reinstallation can shift sensor alignment beyond specification.</p>
+      <h3>Documentation After ACC Calibration</h3>
+      <p>After calibrating the systems that support ACC, a complete calibration report should be generated showing which systems were addressed and that all verification checks were passed. For vehicles with driver assistance packages where multiple systems interact — radar, camera, and steering — ensuring all interconnected systems are calibrated together is essential for correct system operation.</p>`
+    },
+    14: {
+      cat: 'Industry', date: 'November 2025',
+      title: 'The Rise of ADAS: How Modern Vehicles Are Changing Collision Repair',
+      content: `<p>A decade ago, ADAS was a luxury feature found on high-end vehicles. Today, it's standard equipment on virtually every new car, truck, and SUV sold in the United States. The National Highway Traffic Safety Administration has pushed for broader ADAS adoption as part of its goal to reduce traffic fatalities — and automakers have responded. For collision shops, this shift represents one of the most significant operational changes in the history of the industry.</p>
+      <h3>The Numbers Are Staggering</h3>
+      <p>By 2025, an estimated 90% of new vehicles sold in the US were equipped with at least one ADAS feature. Forward collision warning and automatic emergency braking are now standard on virtually all new vehicles. Lane departure warning and blind spot monitoring have moved from option packages to standard equipment on most models. This means that the percentage of vehicles entering collision shops that require ADAS calibration after repair is growing every year — and will continue to grow as the fleet turns over.</p>
+      <h3>The Skills Gap Is Real</h3>
+      <p>Many collision shops are still operating with repair processes designed for vehicles that didn't have ADAS. The technicians are skilled at structural repair, paint, and metal work — but may not be trained on ADAS calibration requirements. This creates a gap between what the shop can do and what the vehicle needs. Shops that close this gap — either through in-house training and investment or through reliable mobile calibration partners — are positioned to handle the entire repair correctly. Those that don't are exposed to increasing liability.</p>
+      <h3>ADAS Repair Is Now a Revenue Category</h3>
+      <p>Forward-thinking collision shops have recognized that ADAS calibration isn't just a compliance requirement — it's a revenue opportunity. Shops that properly identify, perform, and bill for all required calibrations are capturing significant additional revenue per repair order. As ADAS density increases, this revenue stream will grow proportionally.</p>
+      <h3>The Shops That Adapt Will Win</h3>
+      <p>The collision repair industry is in the middle of a technology transition. Shops that adapt their processes, train their teams, and build ADAS calibration into their standard workflow will be positioned to capture the growing revenue opportunity and protect themselves from liability. Those that don't will face increasing pressure from carriers, customers, and courts. The technology is already here. The question is which shops are ready for it.</p>`
+    },
+    15: {
+      cat: 'Business', date: 'October 2025',
+      title: 'Mobile ADAS Calibration vs. In-Shop: Which Is Right for Your Business?',
+      content: `<p>As ADAS calibration has become a standard requirement in collision repair, shop owners face a decision: invest in in-house calibration equipment, or use a mobile calibration service. Both approaches have real advantages and real costs. Here's an honest breakdown of both options — and what most shops get wrong when making this decision.</p>
+      <h3>The True Cost of In-House ADAS Equipment</h3>
+      <p>In-house ADAS calibration equipment from OEM-equivalent providers typically costs between $80,000 and $150,000 for a complete setup covering multiple manufacturers. Add annual software subscriptions, training costs, dedicated shop space with proper flooring and lighting, and the ongoing cost of keeping up with new model year procedures. The all-in investment for a properly equipped in-house ADAS calibration capability is significant — and it requires a volume of calibration work to justify.</p>
+      <h3>When In-House Makes Sense</h3>
+      <p>In-house calibration makes financial sense for high-volume shops performing 15 or more calibrations per week across a consistent mix of makes and models. At that volume, the per-calibration cost of in-house equipment begins to approach or beat the cost of mobile services. However, the investment also requires dedicated technician training, ongoing software updates, and the operational discipline to maintain calibration space requirements consistently.</p>
+      <h3>The Case for Mobile Calibration</h3>
+      <p>For most collision shops, mobile ADAS calibration offers the better economic and operational proposition. There's no capital investment, no software subscription, no dedicated space requirement, and no need to train and retain specialized technicians. The cost is predictable, per-job, and fully billable to the repair order. And with a reliable mobile partner that offers same-day and next-day availability, the impact on cycle time is minimal.</p>
+      <h3>The Hidden Variable: Coverage</h3>
+      <p>One factor many shops overlook when evaluating in-house equipment is coverage. No single tool platform covers all makes and models with equal depth. An in-house investment that doesn't cover the full range of vehicles in your market — or that lacks current coverage for newer models — creates gaps that still require an outside solution. Mobile calibration providers that maintain multiple OEM-level tool platforms offer broader coverage than most in-house setups.</p>`
+    },
+    16: {
+      cat: 'Operations', date: 'October 2025',
+      title: 'Building ADAS Calibration Into Your Repair Workflow',
+      content: `<p>One of the most common mistakes collision shops make with ADAS calibration is treating it as a last step — something to deal with when the vehicle is ready for delivery. This approach creates delays, misses calibrations, and puts your shop in a reactive position. The shops with the best ADAS calibration records — and the best cycle times — are the ones that identify and schedule calibrations at the beginning of the repair process, not the end.</p>
+      <h3>Start at Estimating</h3>
+      <p>ADAS calibration identification should begin at the estimate. When writing the initial repair order, a review of OEM repair procedures for the specific vehicle and damage should identify all required calibrations. These should be included in the estimate as line items — not added as surprises at the end. This sets customer expectations, gives the insurance carrier notice, and allows calibration to be scheduled in advance rather than scrambled at delivery time.</p>
+      <h3>Pre-Repair Scan as Standard Practice</h3>
+      <p>A pre-repair diagnostic scan on every vehicle — not just those with obvious electrical damage — identifies existing ADAS faults and establishes a baseline for post-repair comparison. This scan is your documentation that any post-repair ADAS issues were pre-existing — not caused by your repair. It's also a tool for identifying ADAS systems that may not be obvious from the damage alone.</p>
+      <h3>Schedule Calibration Early in the Process</h3>
+      <p>Once calibrations are identified, schedule them with your mobile calibration partner before the vehicle reaches final stages. Most calibrations can be performed on a vehicle that's structurally complete but before final detail and wash. Scheduling early eliminates last-minute delays and ensures the calibration report is in hand before delivery — not chased down after the customer is already waiting.</p>
+      <h3>Post-Repair Scan to Close the Loop</h3>
+      <p>A post-repair scan after all calibrations are complete confirms no remaining faults and documents that the vehicle left your shop with all systems operating correctly. Combined with the calibration reports from each procedure performed, the pre and post-repair scans create a complete, defensible record of the vehicle's electronic health at every stage of the repair. This is the documentation standard that protects your shop.</p>`
+    },
+    17: {
+      cat: 'Safety', date: 'October 2025',
+      title: 'What Happens When ADAS Goes Uncalibrated? Real-World Consequences',
+      content: `<p>The argument for ADAS calibration is often made in abstract terms — liability, documentation, OEM requirements. But the real case for calibration is concrete: uncalibrated ADAS systems have caused accidents, injured people, and resulted in significant legal and financial consequences for the shops that performed the preceding repairs. Here's what the real-world evidence shows.</p>
+      <h3>The Accident That Didn't Have to Happen</h3>
+      <p>In documented cases across the industry, vehicles that underwent collision repair without ADAS calibration have subsequently been involved in accidents where the ADAS system failed to function as expected. In some cases, automatic emergency braking systems failed to engage because front radar was pointing slightly to one side after a bumper repair. In others, lane keeping assist made unexpected steering corrections because the forward camera wasn't calibrated after windshield replacement. These accidents were preventable — and the last shop to touch the vehicle bore liability.</p>
+      <h3>The Legal Record Is Growing</h3>
+      <p>Plaintiff attorneys specializing in automotive liability have become increasingly sophisticated about ADAS calibration requirements. When investigating accidents involving vehicles with ADAS, they routinely request repair records from any shop that serviced the vehicle in the preceding months. A repair involving a front bumper or windshield, followed by a subsequent accident involving a forward ADAS failure, creates a discoverable chain of causation. The absence of calibration documentation is, in effect, documentation of its absence.</p>
+      <h3>The Insurance Claim Consequences</h3>
+      <p>Beyond accident liability, shops that skip calibration face consequences in insurance relationships. Carriers that discover through audit or claim investigation that required calibrations were not performed have pursued clawbacks of paid claims and have removed shops from preferred provider programs. The financial impact of lost DRP relationships can far exceed the cost of the calibrations that were skipped.</p>
+      <h3>The Standard of Care Has Been Established</h3>
+      <p>The industry has established that ADAS calibration is a required step in the repair of any vehicle with ADAS systems affected by the damage. This standard is reflected in OEM repair procedures, I-CAR training curriculum, and increasingly in court decisions. Shops that don't meet this standard are not just missing a best practice — they're operating below the established standard of care. The consequences of that gap are no longer theoretical.</p>`
+    },
+    18: {
+      cat: 'Revenue', date: 'September 2025',
+      title: 'Key Programming After Collision Repair: Revenue You Might Be Missing',
+      content: `<p>Key programming is one of the most consistently overlooked revenue opportunities in collision repair. Every time a customer needs a replacement key — whether their original was lost, damaged in the accident, or they simply need a spare — there's a service that can be performed on-site, billed directly, and completed in far less time than a dealer visit requires. Most collision shops send this business to the dealer without a second thought. Here's why that's a mistake.</p>
+      <h3>The Scale of the Opportunity</h3>
+      <p>Modern vehicle keys are not just metal blanks. They're transponder keys, proximity fobs, and push-button start systems that require programming specific to the vehicle's immobilizer system. The cost of key programming at a dealership typically ranges from $200 to $500 or more depending on the vehicle. For a collision shop that handles key programming in-house — or through a mobile programming service — a meaningful portion of that revenue can be captured on every applicable repair order.</p>
+      <h3>When Is Key Programming Required?</h3>
+      <p>Key programming is required whenever a replacement key is needed — whether due to damage, loss, or the customer wanting an additional key. It's also required when certain modules are replaced, when the vehicle's security system is reset as part of a repair, or when a replacement ignition switch is installed. Collision repairs that involve airbag deployment sometimes require security system resets that include key programming as part of the process.</p>
+      <h3>The Mobile Advantage</h3>
+      <p>On-site mobile key programming eliminates the tow to the dealer and the multi-day wait for an appointment. Replacement keys can be programmed and cut on-site, typically within an hour, while the vehicle is already in your shop. For the customer, it's a significant convenience. For your shop, it's captured revenue that would otherwise walk out the door.</p>
+      <h3>What to Look For on Every RO</h3>
+      <p>Build key programming into your intake process. Ask every customer whether they have a working spare key. If the answer is no — or if the key was damaged or lost in the accident — flag it on the repair order and include it in the estimate. Insurance often covers key replacement when the loss was associated with the accident. Capturing this consistently adds up to significant revenue over the course of a year.</p>`
+    },
+    19: {
+      cat: 'Technical', date: 'September 2025',
+      title: 'SRS and Airbag Systems: Critical Calibration Steps After a Crash',
+      content: `<p>Airbag systems are the most safety-critical component in any collision repair. When they deploy in an accident, they save lives. When they fail to deploy — or deploy unexpectedly — the consequences can be catastrophic. Ensuring that every airbag system component is properly restored after a collision repair isn't just a technical requirement. It's a moral and legal obligation that every collision shop takes on when a vehicle enters the bay.</p>
+      <h3>What Happens to Airbag Systems in a Collision</h3>
+      <p>In a significant collision, multiple airbag system components may be affected beyond the bags that deployed. The SRS (Supplemental Restraint System) control module stores crash data from the event. Seat belt pretensioners may have fired and need replacement. Seat occupancy sensors may have been damaged or displaced. Clock springs in the steering column may be compromised. Each of these components must be inspected, and many must be replaced and recalibrated before the vehicle is safe to return to the road.</p>
+      <h3>SRS Module Reset vs. Replacement</h3>
+      <p>After a deployment event, the SRS module stores crash data that effectively locks the module — preventing the airbag system from operating again until the data is cleared and the module is reset or replaced. In some cases, the module can be reset using OEM-level software. In others, the module must be replaced and programmed to the vehicle. Determining which approach is required depends on the severity of the crash data stored and the OEM's procedures for the specific vehicle.</p>
+      <h3>Seat Occupancy Sensors</h3>
+      <p>Seat occupancy sensors determine whether a passenger is present and how the airbag system should respond. These sensors can be damaged in accidents — particularly in impacts that affect the seat structure or in deployments where the seat was occupied. Replacement sensors must be recalibrated to the vehicle to ensure correct detection and system response. Skipping this step can result in an airbag system that doesn't protect the passenger correctly in a subsequent accident.</p>
+      <h3>Documentation That Meets the Legal Standard</h3>
+      <p>Every SRS repair should produce documentation showing which components were replaced, what reset or calibration procedures were performed, and that the system passed all post-repair verification checks. The SRS system is the most legally scrutinized system on any collision-repaired vehicle. Complete, accurate documentation is the only protection a shop has if the airbag system's performance is ever questioned following a subsequent accident.</p>`
+    },
+    20: {
+      cat: 'Industry', date: 'September 2025',
+      title: 'The Future of ADAS: What\'s Coming and How to Prepare Your Shop',
+      content: `<p>The ADAS technology in today's vehicles is impressive — but it's a preview of what's coming. The next decade will bring significantly more sophisticated driver assistance systems, deeper integration between safety features, and ultimately, the early stages of semi-autonomous vehicles arriving in collision shops. Shops that understand the direction of the technology will be better positioned to adapt their processes, training, and partnerships ahead of the curve.</p>
+      <h3>Level 2+ and Level 3 Autonomy Are Coming to Production</h3>
+      <p>Several automakers have already introduced Level 2+ systems — sometimes called "hands-free driving" — that allow extended periods of automated highway driving with limited driver supervision. Level 3 systems, which allow the driver to disengage from driving tasks under specific conditions, are beginning to appear in production vehicles. These systems rely on sensor fusion across cameras, radar, and lidar, with redundant systems that must all be calibrated correctly. When these vehicles are repaired, the calibration requirements will be significantly more complex than today's systems.</p>
+      <h3>Sensor Fusion Means More Calibration Points</h3>
+      <p>As vehicles move toward higher autonomy levels, the number of sensors requiring calibration per vehicle increases. Current ADAS-equipped vehicles may have three to five sensors requiring calibration after a typical collision repair. Future vehicles will have significantly more — including lidar sensors that require their own specialized calibration procedures. The complexity and revenue opportunity associated with calibration will grow substantially as the vehicle fleet evolves.</p>
+      <h3>The OEM Service Information Landscape Is Changing</h3>
+      <p>Automakers are continuously updating repair procedures as they learn more about how their systems behave in real-world repair environments. Staying current with OEM service information — and working with calibration partners who maintain current software subscriptions for all major manufacturers — is essential for ensuring that calibrations performed today meet tomorrow's legal standard of care.</p>
+      <h3>The Shops That Invest Now Will Win Later</h3>
+      <p>The shops that are building ADAS calibration capability — whether in-house or through reliable mobile partnerships — are building the infrastructure they'll need for the vehicles of the next decade. The investment in process, training, and documentation now creates the foundation for handling increasingly sophisticated vehicles as they arrive in the market. In ADAS, as in collision repair generally, the shops that stay ahead of the technology are the ones that thrive.</p>`
+    }
+  };
+
+  function openArticle(id) {
+    var a = articles[id];
+    if (!a) return;
+    document.getElementById('blog-article-content').innerHTML =
+      '<div class="blog-article-cat">' + a.cat + '</div>' +
+      '<div class="blog-article-title">' + a.title + '</div>' +
+      '<div class="blog-article-meta">' + a.date + ' &nbsp;·&nbsp; Absolute ADAS</div>' +
+      '<div class="blog-article-content">' + a.content + '</div>';
+    document.getElementById('blog-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeArticle() {
+    document.getElementById('blog-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function closeArticleOutside(e) {
+    if (e.target === document.getElementById('blog-overlay')) closeArticle();
+  }
+  </script>
+
+</div><!-- /page-blog -->
+
+
+<!-- ═══════════════════════════════════════ -->
+<!--             CONTACT PAGE                -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-contact">
+
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">Get In Touch</div>
+      <h1 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Let's Get Your<br><span class="ao-em">Shop Booked In.</span></h1>
+      <p class="ao-body" style="max-width:560px;margin-top:16px;">Same-day and next-day availability across Western Washington. Fill out the form or call us directly — whichever is easier.</p>
+
+      <div class="ao-contact-grid">
+        <!-- FORM -->
+        <div class="ao-contact-form">
+          <style>
+            /* Override Zoho CRM form styles to match dark theme */
+            #crmWebToEntityForm.zcwf_lblRight { background-color: transparent !important; color: #fff !important; padding: 0 !important; max-width: 100% !important; }
+            #crmWebToEntityForm .zcwf_title { color: #fff !important; font-family: 'Inter', sans-serif !important; font-size: 1.4rem !important; font-weight: 800 !important; padding: 0 0 24px !important; }
+            #crmWebToEntityForm .zcwf_col_lab label { color: #ccc !important; font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 600 !important; }
+            #crmWebToEntityForm .zcwf_col_fld input[type=text],
+            #crmWebToEntityForm .zcwf_col_fld input[type=email],
+            #crmWebToEntityForm .zcwf_col_fld textarea,
+            #crmWebToEntityForm .zcwf_col_fld select { width: 100% !important; background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.12) !important; border-radius: 8px !important; padding: 12px 14px !important; color: #fff !important; font-family: 'Inter', sans-serif !important; font-size: .95rem !important; float: none !important; }
+            #crmWebToEntityForm .zcwf_col_fld input[type=text]:focus,
+            #crmWebToEntityForm .zcwf_col_fld input[type=email]:focus,
+            #crmWebToEntityForm .zcwf_col_fld textarea:focus { border-color: #CD4419 !important; outline: none !important; }
+            #crmWebToEntityForm .zcwf_col_lab { width: 100% !important; float: none !important; margin-bottom: 6px !important; }
+            #crmWebToEntityForm .zcwf_col_fld { width: 100% !important; float: none !important; padding: 0 !important; }
+            #crmWebToEntityForm .zcwf_row { margin: 0 0 18px !important; }
+            #crmWebToEntityForm .formsubmit.zcwf_button { background: #CD4419 !important; color: #fff !important; border: none !important; border-radius: 8px !important; padding: 14px 32px !important; font-size: 1rem !important; font-weight: 800 !important; font-family: 'Inter', sans-serif !important; cursor: pointer !important; width: 100% !important; max-width: 100% !important; transition: background .2s !important; }
+            #crmWebToEntityForm .formsubmit.zcwf_button:hover { background: #b33a15 !important; }
+            #crmWebToEntityForm .zcwf_button[name=reset] { display: none !important; }
+            #crmWebToEntityForm .zcwf_col_fld p { color: #888 !important; font-size: .8rem !important; }
+            #crmWebToEntityForm .zcwf_file { width: 100% !important; float: none !important; color: #ccc !important; }
+            .wf_customMessageBox { background: #1a1a1a !important; border-color: rgba(205,68,25,.4) !important; color: #fff !important; }
+          </style>
+          <div id='crmWebToEntityForm' class='zcwf_lblRight crmWebToEntityForm' style='background-color:transparent;color:#fff;max-width:100%;'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <META HTTP-EQUIV='content-type' CONTENT='text/html;charset=UTF-8'>
+            <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js'></script>
+            <div class='wf_customMessageBox' id='wf_splash' style='display:none'>
+              <div class='wf_customCircle'><div class='wf_customCheckMark'></div></div>
+              <span id='wf_splash_info'></span>
+            </div>
+            <form id='webform6783709000004587001' name='WebToLeads6783709000004587001' accept-charset='UTF-8'>
+              <input type='text' style='display:none;' name='xnQsjsdp' value='318b32643350fa6cd6326d6220240c4b37deafb7cc1a43c2ff1e4e0a5813cc1f'/>
+              <input type='hidden' name='zc_gad' id='zc_gad' value=''/>
+              <input type='text' style='display:none;' name='xmIwtLD' value='4641ee806ef6274a25c40ab11405b986cee0d9eb0e7d5a10497602bed3856a149d67dd91b9410c7a74aabe26c273e6d0'/>
+              <input type='text' style='display:none;' name='actionType' value='TGVhZHM='/>
+              <input type='text' style='display:none;' name='returnURL' value='null'/>
+              <div class='zcwf_title'>Book a Calibration</div>
+              <div class='zcwf_row'>
+                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='First_Name'>First Name</label></div>
+                <div class='zcwf_col_fld'><input type='text' id='First_Name' aria-label='First Name' name='First Name' maxlength='40'/><div class='zcwf_col_help'></div></div>
+              </div>
+              <div class='zcwf_row'>
+                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='Last_Name'>Last Name <span style='color:#CD4419;'>*</span></label></div>
+                <div class='zcwf_col_fld'><input type='text' id='Last_Name' aria-required='true' aria-label='Last Name' name='Last Name' maxlength='80'/><div class='zcwf_col_help'></div></div>
+              </div>
+              <div class='zcwf_row'>
+                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='Company'>Shop Name</label></div>
+                <div class='zcwf_col_fld'><input type='text' id='Company' aria-label='Company' name='Company' maxlength='200'/><div class='zcwf_col_help'></div></div>
+              </div>
+              <div class='zcwf_row'>
+                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='Email'>Email <span style='color:#CD4419;'>*</span></label></div>
+                <div class='zcwf_col_fld'><input type='text' ftype='email' autocomplete='false' id='Email' aria-required='true' aria-label='Email' name='Email' maxlength='100'/><div class='zcwf_col_help'></div></div>
+              </div>
+              <div class='zcwf_row'>
+                <div class='zcwf_col_lab' id='imageUploadField' style='font-size:12px;font-family:Arial;'>Upload CCC Estimate (optional)</div>
+                <div class='zcwf_col_fld'>
+                  <div class='cBoth'><input type='file' class='zcwf_file' name='theFile' aria-multiselectable='true' aria-labelledby='imageUploadField' id='theFile6783709000004587001' multiple /></div>
+                  <p style='color:#888;font-size:11px;padding-left:3px;'>PDF or image. Max 20MB.</p>
+                </div>
+              </div>
+              <input type='text' style='display:none;' name='aG9uZXlwb3Q' value=''/>
+              <div class='zcwf_row'>
+                <div class='zcwf_col_lab'></div>
+                <div class='zcwf_col_fld'>
+                  <input type='submit' id='formsubmit' role='button' class='formsubmit zcwf_button' value='Book a Calibration →' aria-label='Submit' title='Submit'>
+                  <input type='reset' class='zcwf_button' name='reset' value='Reset'>
+                </div>
+              </div>
+              <script>
+                function validateEmail6783709000004587001(){var form=document.forms['WebToLeads6783709000004587001'];var emailFld=form.querySelectorAll('[ftype=email]');for(var i=0;i<emailFld.length;i++){var emailVal=emailFld[i].value;if((emailVal.replace(/^\s+|\s+$/g,'')).length!=0){var atpos=emailVal.indexOf('@');var dotpos=emailVal.lastIndexOf('.');if(atpos<1||dotpos<atpos+2||dotpos+2>=emailVal.length){alert('Please enter a valid email address.');emailFld[i].focus();return false;}}}return true;}
+                function checkMandatory6783709000004587001(){var mndFileds=new Array('Last Name','Email');var fldLangVal=new Array('Last\x20Name','Email');for(var i=0;i<mndFileds.length;i++){var fieldObj=document.forms['WebToLeads6783709000004587001'][mndFileds[i]];if(fieldObj){if(((fieldObj.value).replace(/^\s+|\s+$/g,'')).length==0){if(fieldObj.type=='file'){alert('Please select a file to upload.');fieldObj.focus();return false;}alert(fldLangVal[i]+' cannot be empty.');fieldObj.focus();return false;}else if(fieldObj.nodeName=='SELECT'){if(fieldObj.options[fieldObj.selectedIndex].value=='-None-'){alert(fldLangVal[i]+' cannot be none.');fieldObj.focus();return false;}}else if(fieldObj.type=='checkbox'){if(fieldObj.checked==false){alert('Please accept '+fldLangVal[i]);fieldObj.focus();return false;}}try{if(fieldObj.name=='Last Name'){name=fieldObj.value;}}catch(e){}}}if(!validateFileUpload6783709000004587001()){return false;}if(!validateEmail6783709000004587001()){return false;}var urlparams=new URLSearchParams(window.location.search);if(urlparams.has('service')&&(urlparams.get('service')==='smarturl')){var webform=document.getElementById('webform6783709000004587001');var service=urlparams.get('service');var smarturlfield=document.createElement('input');smarturlfield.setAttribute('type','hidden');smarturlfield.setAttribute('value',service);smarturlfield.setAttribute('name','service');webform.appendChild(smarturlfield);}document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled',true);return true;}
+                $(document).ready(function(){$('#webform6783709000004587001').submit(function(e){var ismandatory=checkMandatory6783709000004587001();e.preventDefault();if(ismandatory){var formData=new FormData(this);$.ajax({url:'https://crm.zoho.com/crm/WebToLeadForm',type:'POST',data:formData,cache:false,contentType:false,processData:false,success:function(data){var splashinfodom=document.getElementById('wf_splash_info');splashinfodom.innerText=data.actionvalue;var splashdom=document.getElementById('wf_splash');document.getElementById('webform6783709000004587001').reset.click();splashdom.style.display='';setTimeout(function(){splashdom.style.display='none';},5000);document.querySelector('.crmWebToEntityForm .formsubmit').removeAttribute('disabled');},error:function(){alert('An error occurred. Please call us at 1-844-349-2327.');}});}});});
+                function validateFileUpload6783709000004587001(){var uploadedFiles=document.getElementById('theFile6783709000004587001');var totalFileSize=0;if(uploadedFiles.files.length>3){alert('You can upload a maximum of three files at a time.');return false;}if('files'in uploadedFiles){if(uploadedFiles.files.length!=0){for(var i=0;i<uploadedFiles.files.length;i++){var file=uploadedFiles.files[i];if('size'in file){totalFileSize=totalFileSize+file.size;}}if(totalFileSize>20971520){alert('Total file(s) size should not exceed 20MB.');return false;}}}return true;}
+              </script>
+              <script id='wf_anal' src='https://crm.zohopublic.com/crm/WebFormAnalyticsServeServlet?rid=1b5d91f58d754128ce28ef415e11025b428e1b7315ae716733f10a6bdd6525d2007bd0fe058f35784e5ce61a8d6b7e5dgidc7fb035418186effacc66b02996e17b73e91210c81cc3c3dea59d2f321e8477dgidfe9935c58c1f4abca94159ad155a6f8a37c71d98b6010782116b81f6bb92f458gidf654d0f4cf321d76d61f9381d043a75e9b9eb1482013a05977a51f58532ecb14&tw=d301df1725d10e6947b6ab16da7b4da70e12c69d364fbb889795a42225e091f2'></script>
+            </form>
+          </div>
+        </div>
+
+        <!-- CONTACT INFO -->
+        <div class="ao-contact-info">
+          <div class="ao-contact-item">
+            <div class="ao-contact-item-icon">📞</div>
+            <div class="ao-contact-item-text">
+              <strong>Phone</strong>
+              <a href="tel:8443492327">1-844-FIX-ADAS (1-844-349-2327) (1-844-349-2327)</a>
+              <p>Mon–Fri, 7am–6pm PT</p>
+            </div>
+          </div>
+          <div class="ao-contact-item">
+            <div class="ao-contact-item-icon">✉️</div>
+            <div class="ao-contact-item-text">
+              <strong>Email</strong>
+              <a href="mailto:info@absoluteadas.com">info@absoluteadas.com</a>
+              <p>Same business day response</p>
+            </div>
+          </div>
+          <div class="ao-contact-item">
+            <div class="ao-contact-item-icon">📍</div>
+            <div class="ao-contact-item-text">
+              <strong>Based In</strong>
+              <p>Lake Stevens, WA</p>
+              <p>Mobile service throughout Western Washington</p>
+            </div>
+          </div>
+
+          <div>
+            <strong style="font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:16px;">Service Area</strong>
+            <div class="ao-area-grid">
+              <div class="ao-area-tag">Seattle</div>
+              <div class="ao-area-tag">Everett</div>
+              <div class="ao-area-tag">Bellevue</div>
+              <div class="ao-area-tag">Lynnwood</div>
+              <div class="ao-area-tag">Marysville</div>
+              <div class="ao-area-tag">Mukilteo</div>
+              <div class="ao-area-tag">Bellingham</div>
+              <div class="ao-area-tag">Tacoma</div>
+              <div class="ao-area-tag">& More</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-contact -->
+
+
+<!-- ═══════════════════════════════════════ -->
+<!--            AD LANDING PAGE              -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-lander">
+
+  <!-- BACK LINK -->
+  <div style="background:var(--black);padding:0;">
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="lp-topbar">📞 Same-day availability across Western Washington — <a href="tel:8443492327">Call 1-844-FIX-ADAS (1-844-349-2327) now</a></div>
+
+  <!-- HERO -->
+  <div class="lp-hero-wrap">
+    <div class="lp-eyebrow">⚡ Western Washington's #1 Mobile ADAS Service</div>
+    <h1 class="lp-h1">Every Uncalibrated Vehicle<br>That Leaves Your Shop Is a<br><em>Lawsuit Waiting to Happen.</em></h1>
+    <p class="lp-sub">We show up to your shop — dealer-level ADAS calibration, key programming, module coding, and diagnostics. Done on your lot. Documented. Same day.</p>
+    <a href="tel:8443492327" class="lp-btn-big">📞 Call 1-844-FIX-ADAS (1-844-349-2327) — Book Today</a>
+    <span class="lp-btn-note">No commitment. Same-day and next-day slots available.</span>
+    <div style="margin-top:28px;">
+      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:52px;width:auto;margin:0 auto;display:block;" />
+      <span style="font-family:'Great Vibes',cursive;font-size:1.5rem;color:var(--orange);display:block;margin-top:10px;">Driving safety forward, one calibration at a time.</span>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="lp-trust-bar">
+    <div class="lp-trust-item"><span>✅</span> 2,400+ Calibrations Completed</div>
+    <div class="lp-trust-item"><span>🚗</span> 100% Mobile — We Come to You</div>
+    <div class="lp-trust-item"><span>🎯</span> OEM-Level Equipment</div>
+    <div class="lp-trust-item"><span>📋</span> Full Documentation Every Job</div>
+    <div class="lp-trust-item"><span>⚡</span> Same-Day Availability</div>
+  </div>
+
+  <!-- PAIN -->
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">The Problem</div>
+      <h2 class="ao-h2">Your Shop Deserves Better Than<br><em class="ao-em">Waiting Days for a Dealer.</em></h2>
+      <p class="ao-body" style="max-width:620px;">You're juggling cycle time, supplements, and customer expectations. The last thing you need is ADAS calibration holding up a vehicle — or worse, leaving your shop without it.</p>
+      <div class="lp-pain-list">
+        <div class="lp-pain-item"><div class="lp-pain-icon">⏳</div><div class="lp-pain-text"><strong>Dealer wait times are killing your cycle time</strong><p>2–5 business days for a dealer calibration. That's days your vehicle sits, your cash stalls, and your customer gets frustrated.</p></div></div>
+        <div class="lp-pain-item"><div class="lp-pain-icon">⚖️</div><div class="lp-pain-text"><strong>Skipping calibration is a liability you can't afford</strong><p>A miscalibrated ADAS system that contributes to an accident after leaving your shop creates legal exposure no shop owner wants. Documentation is your only protection.</p></div></div>
+        <div class="lp-pain-item"><div class="lp-pain-icon">💸</div><div class="lp-pain-text"><strong>You're sending revenue to the dealer that should stay with you</strong><p>Key programming. Module coding. Calibrations. Every time you send a customer to the dealer, you hand away margin that belongs on your RO.</p></div></div>
+        <div class="lp-pain-item"><div class="lp-pain-icon">🔧</div><div class="lp-pain-text"><strong>Generic tools aren't good enough</strong><p>Aftermarket scan tools can read codes. They can't perform OEM-required calibrations. If it's not OEM-level, it's not done — regardless of what the tool says.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-label">The Solution</div>
+      <h2 class="ao-h2">One Call. We Show Up.<br><em class="ao-em">Done Before Delivery.</em></h2>
+      <div class="ao-steps">
+        <div class="ao-step"><div class="ao-step-num">01</div><h3 class="ao-h3">You Call. We Book.</h3><p>One call to <strong style="color:#fff">1-844-FIX-ADAS (1-844-349-2327)</strong>. Same-day and next-day availability across Western Washington.</p></div>
+        <div class="ao-step"><div class="ao-step-num">02</div><h3 class="ao-h3">We Come to You.</h3><p>Our certified tech arrives with OEM-level equipment. No prep required. Vehicle stays on your lot.</p></div>
+        <div class="ao-step"><div class="ao-step-num">03</div><h3 class="ao-h3">Calibrated. Documented. Done.</h3><p>Every service completed to OEM spec with full documentation before the vehicle leaves your shop.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">What We Do</div>
+      <h2 class="ao-h2">Every Service Your Shop Needs.<br><em class="ao-em">On Your Lot. Today.</em></h2>
+      <div class="lp-service-grid">
+        <div class="lp-service-item"><span>🎯</span><div><strong>ADAS Calibrations</strong><p>Forward cameras, radar, blind spot, lane departure, parking sensors — static and dynamic, all makes.</p></div></div>
+        <div class="lp-service-item"><span>💻</span><div><strong>Module Programming & Coding</strong><p>ECU, TCM, BCM — programmed and coded on-site with OEM software. No dealer required.</p></div></div>
+        <div class="lp-service-item"><span>🔑</span><div><strong>Key Programming & Lost Keys</strong><p>PATS, push-button, proximity fobs — programmed and cut on-site. Keep that revenue in your shop.</p></div></div>
+        <div class="lp-service-item"><span>🔍</span><div><strong>Diagnostics</strong><p>OEM-level tools. Root cause diagnosis — not just a code reset.</p></div></div>
+        <div class="lp-service-item"><span>🛡️</span><div><strong>Airbag & SRS Systems</strong><p>SRS resets, seat sensors, crash data — compliant and fully documented.</p></div></div>
+        <div class="lp-service-item"><span>⚡</span><div><strong>Electrical & Connectors</strong><p>Wiring harnesses, connectors, module faults — traced, fixed, verified.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-label">Real Shops. Real Results.</div>
+      <h2 class="ao-h2">Don't Take Our Word For It.<br><em class="ao-em">Ask the Shops That Use Us.</em></h2>
+      <div class="ao-testi-grid">
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"We used to dread ADAS jobs. Now we book Absolute and forget about it. They show up, get it done, and leave us a clean report. Our cycle time dropped by almost two days."</blockquote><div class="ao-author"><div class="ao-avatar">MR</div><div><div class="ao-author-name">Mike R.</div><div class="ao-author-role">Shop Owner — Everett, WA</div></div></div></div>
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"I was skeptical at first — I'd been burned by mobile services before. These guys are the real deal. OEM-level tools, certified techs, professional documentation every time."</blockquote><div class="ao-author"><div class="ao-avatar">TK</div><div><div class="ao-author-name">Tanya K.</div><div class="ao-author-role">Service Manager — Bellevue, WA</div></div></div></div>
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"Never a missed appointment, never a failed calibration. They've become as essential to our shop as our frame machine."</blockquote><div class="ao-author"><div class="ao-avatar">JD</div><div><div class="ao-author-name">Jason D.</div><div class="ao-author-role">Owner — Lynnwood Auto Collision</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE -->
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="lp-guarantee-box">
+        <div style="font-size:3rem;">🛡️</div>
+        <h3 style="color:#fff;">Our Promise to Every Shop</h3>
+        <p>Every calibration completed to OEM specification. Full documentation on every job. If we can't calibrate it correctly, we won't charge you for it. That's the Absolute ADAS guarantee.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container" style="text-align:center;">
+      <div class="ao-label">Book Your First Job</div>
+      <h2 class="ao-h2">Ready to Stop Losing Time<br><em class="ao-em">and Start Getting Paid?</em></h2>
+      <p class="ao-body" style="max-width:520px;margin:0 auto;">Fill out the form and we'll follow up same business day to get your first job scheduled.</p>
+      <div class="lp-form-box" style="text-align:left;">
+        <div id='crmWebToEntityForm2' class='zcwf_lblRight crmWebToEntityForm' style='background-color:transparent;color:#fff;max-width:100%;'>
+          <form id='webform6783709000004587001b' name='WebToLeads6783709000004587001' accept-charset='UTF-8'>
+            <input type='text' style='display:none;' name='xnQsjsdp' value='318b32643350fa6cd6326d6220240c4b37deafb7cc1a43c2ff1e4e0a5813cc1f'/>
+            <input type='hidden' name='zc_gad' id='zc_gad2' value=''/>
+            <input type='text' style='display:none;' name='xmIwtLD' value='4641ee806ef6274a25c40ab11405b986cee0d9eb0e7d5a10497602bed3856a149d67dd91b9410c7a74aabe26c273e6d0'/>
+            <input type='text' style='display:none;' name='actionType' value='TGVhZHM='/>
+            <input type='text' style='display:none;' name='returnURL' value='null'/>
+            <div class='zcwf_title' style='color:#fff;font-family:Inter,sans-serif;font-size:1.3rem;font-weight:800;padding:0 0 20px;'>Book a Calibration</div>
+            <div class='zcwf_row'>
+              <div class='zcwf_col_lab' style='font-size:12px;font-family:Inter,sans-serif;'><label for='First_Name2'>First Name</label></div>
+              <div class='zcwf_col_fld'><input type='text' id='First_Name2' aria-label='First Name' name='First Name' maxlength='40'/></div>
+            </div>
+            <div class='zcwf_row'>
+              <div class='zcwf_col_lab' style='font-size:12px;font-family:Inter,sans-serif;'><label for='Last_Name2'>Last Name <span style='color:#CD4419;'>*</span></label></div>
+              <div class='zcwf_col_fld'><input type='text' id='Last_Name2' aria-required='true' aria-label='Last Name' name='Last Name' maxlength='80'/></div>
+            </div>
+            <div class='zcwf_row'>
+              <div class='zcwf_col_lab' style='font-size:12px;font-family:Inter,sans-serif;'><label for='Company2'>Shop Name</label></div>
+              <div class='zcwf_col_fld'><input type='text' id='Company2' aria-label='Company' name='Company' maxlength='200'/></div>
+            </div>
+            <div class='zcwf_row'>
+              <div class='zcwf_col_lab' style='font-size:12px;font-family:Inter,sans-serif;'><label for='Email2'>Email <span style='color:#CD4419;'>*</span></label></div>
+              <div class='zcwf_col_fld'><input type='text' ftype='email' autocomplete='false' id='Email2' aria-required='true' aria-label='Email' name='Email' maxlength='100'/></div>
+            </div>
+            <div class='zcwf_row'>
+              <div class='zcwf_col_lab' id='imageUploadField2' style='font-size:12px;font-family:Inter,sans-serif;'>Upload CCC Estimate (optional)</div>
+              <div class='zcwf_col_fld'>
+                <input type='file' class='zcwf_file' name='theFile' aria-multiselectable='true' aria-labelledby='imageUploadField2' id='theFile6783709000004587002' multiple />
+                <p style='color:#888;font-size:11px;margin-top:4px;'>PDF or image. Max 20MB.</p>
+              </div>
+            </div>
+            <input type='text' style='display:none;' name='aG9uZXlwb3Q' value=''/>
+            <div class='zcwf_row'>
+              <div class='zcwf_col_fld'>
+                <input type='submit' id='formsubmit2' role='button' class='formsubmit zcwf_button' value='Get My Calibration Scheduled →' aria-label='Submit'>
+                <input type='reset' class='zcwf_button' name='reset' value='Reset'>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <div class="lp-final">
+    <div class="ao-container">
+      <h2>Your Next Job Is One Call Away.</h2>
+      <p>Same-day availability. OEM-level precision. Full documentation. We come to you.</p>
+      <a href="tel:8443492327" class="lp-btn-white-big">📞 Call 1-844-FIX-ADAS (1-844-349-2327) Now</a>
+      <p style="margin-top:16px;font-size:.8rem;color:rgba(255,255,255,.6);">Or email info@absoluteadas.com — same business day response.</p>
+    </div>
+  </div>
+
+  <script>
+  function lpSubmit2(e) {
+    e.preventDefault();
+    var form = e.target;
+    var data = { _subject: 'New Ad Landing Page Lead — Absolute ADAS' };
+    new FormData(form).forEach(function(v, k){ data[k] = v; });
+    fetch('https://formsubmit.co/ajax/info@absoluteadas.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    form.style.display = 'none';
+    document.getElementById('lp-success2').style.display = 'block';
+  }
+  </script>
+
+</div><!-- /page-lander -->
+
+
+<!-- ═══ STATE FARM LANDING PAGE ═══ -->
+<div class="ao-page" id="page-statefarm">
+
+  <!-- Red State Farm top bar -->
+  <div class="sf-topbar">
+    <p>⭐ State Farm Preferred Vendor — Absolute ADAS | Western Washington</p>
+  </div>
+
+  <!-- HERO -->
+  <div class="sf-hero-section">
+    <div class="sf-badge"><span>✓ State Farm Preferred Vendor</span></div>
+    <h1 class="sf-hero-h1">Your Safety Systems Were<br><span class="ao-em">Knocked Out of Calibration.</span><br>We Fix It. We Come to You.</h1>
+    <p class="sf-hero-sub">State Farm sent you to us for a reason. After a windshield replacement or collision repair, your ADAS sensors must be recalibrated — or your safety features won't work. We're certified, mobile, and available same-day across Western Washington.</p>
+    <div class="sf-cta-row">
+      <a href="#sf-book" onclick="document.getElementById('sf-inline-container').scrollIntoView({behavior:'smooth'})" class="sf-btn-primary">📅 Book Your Calibration Now →</a>
+      <a href="tel:4258701495" class="sf-btn-call">📞 (425) 870-1495</a>
+    </div>
+  </div>
+
+  <!-- Trust bar -->
+  <div class="sf-trust-bar">
+    <div class="sf-trust-item">✅ State Farm Preferred Vendor</div>
+    <div class="sf-trust-item">🚗 We Come to You</div>
+    <div class="sf-trust-item">⚡ Same-Day Available</div>
+    <div class="sf-trust-item">📋 OEM-Level Documentation</div>
+    <div class="sf-trust-item">📍 All of Western Washington</div>
+  </div>
+
+  <!-- Urgency bar -->
+  <div class="sf-urgency">
+    <p>⚠️ Don't drive on uncalibrated ADAS systems — your automatic braking and lane assist may not work correctly until this is fixed.</p>
+  </div>
+
+  <!-- BOOKING -->
+  <div class="sf-booking-wrap" id="sf-book">
+    <h2>Pick a Time. <span class="ao-em">We'll Come to You.</span></h2>
+    <p class="sub">Takes less than 2 minutes to book. We show up with everything — no prep needed from you.</p>
+    <div class="sf-booking-box">
+      <div id="sf-inline-container"><p style="color:#888;text-align:center;padding:48px 24px;font-size:.95rem;">Loading booking calendar…</p></div>
+    </div>
+
+    <div class="sf-divider">or call to book in 5 minutes</div>
+
+    <div class="sf-call-box">
+      <h3>Prefer to Talk to a Real Person?</h3>
+      <p>Call us now and we'll get you scheduled before you hang up.</p>
+      <a href="tel:4258701495" class="sf-call-btn">📞 (425) 870-1495</a>
+    </div>
+  </div>
+
+  <!-- WHY THIS MATTERS -->
+  <div class="sf-why">
+    <div class="sf-why-inner">
+      <h2>Why ADAS Calibration <span class="ao-em">Can't Wait</span></h2>
+      <div class="sf-why-grid">
+        <div class="sf-why-item">
+          <div class="sf-icon">📡</div>
+          <h4>Your Sensors Are Off — Even If the Car Drives Fine</h4>
+          <p>A windshield replacement or front-end impact shifts your cameras and radar by millimeters. That's enough to make automatic braking, lane keep, and blind spot monitoring unreliable.</p>
+        </div>
+        <div class="sf-why-item">
+          <div class="sf-icon">🛑</div>
+          <h4>Uncalibrated ADAS = Safety Features You Can't Trust</h4>
+          <p>Emergency braking, adaptive cruise, pedestrian detection — all of these depend on properly calibrated sensors. If they're off, they either fail to activate or activate at the wrong time.</p>
+        </div>
+        <div class="sf-why-item">
+          <div class="sf-icon">✅</div>
+          <h4>We Do It Right. On Your Schedule. At Your Location.</h4>
+          <p>Our certified technician comes to you with OEM-level equipment, completes the calibration to manufacturer spec, and hands you full documentation — usually in under an hour.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="sf-final">
+    <h2>Don't Leave Your Safety<br><span class="ao-em">to Chance.</span></h2>
+    <p>Book your calibration now — same-day availability across Western Washington.</p>
+    <div class="sf-cta-row">
+      <a href="#sf-book" onclick="document.getElementById('sf-inline-container').scrollIntoView({behavior:'smooth'})" class="sf-btn-primary">📅 Book Now →</a>
+      <a href="tel:4258701495" class="sf-btn-call">📞 (425) 870-1495</a>
+    </div>
+  </div>
+
+  <div class="sf-back">
+    <a onclick="navigate('home')" href="#home">← Back to Absolute ADAS main site</a>
+  </div>
+
+</div><!-- /page-statefarm -->
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="ao-footer">
+  <div class="ao-footer-inner">
+    <div class="ao-footer-top">
+      <div class="ao-footer-brand">
+        <a onclick="navigate('home')" href="#home"><img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:44px;width:auto;" /></a>
+        <p style="font-family:'Great Vibes',cursive;color:#f0a070;font-size:1.1rem;margin-top:8px;margin-bottom:4px;">Driving safety forward, one calibration at a time.</p>
+        <p>Mobile ADAS calibration, key programming, diagnostics, and electrical services for collision repair shops across Western Washington.</p>
+      </div>
+      <div class="ao-footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a onclick="navigate('services')">ADAS Calibrations</a></li>
+          <li><a onclick="navigate('services')">Key Programming</a></li>
+          <li><a onclick="navigate('services')">Diagnostics</a></li>
+          <li><a onclick="navigate('services')">Airbag Systems</a></li>
+          <li><a onclick="navigate('services')">Electrical</a></li>
+        </ul>
+      </div>
+      <div class="ao-footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a onclick="navigate('about')">About Us</a></li>
+          <li><a onclick="navigate('blog')">Blog</a></li>
+          <li><a onclick="navigate('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div class="ao-footer-col">
+        <h4>Service Area</h4>
+        <ul>
+          <li><a>Seattle</a></li>
+          <li><a>Everett</a></li>
+          <li><a>Bellevue</a></li>
+          <li><a>Lynnwood</a></li>
+          <li><a>Bellingham</a></li>
+          <li><a>Tacoma</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ao-footer-bottom">
+      <span onclick="navigate('home')" title="🤫" style="cursor:pointer;opacity:0.15;transition:opacity .3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.15'"><img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" style="height:28px;width:auto;" alt="home" /></span>
+      <span>© 2026 Absolute ADAS. Lake Stevens, WA. All rights reserved.</span>
+      <span style="display:flex;align-items:center;gap:16px;">
+        <span>1-844-FIX-ADAS (1-844-349-2327) · info@absoluteadas.com</span>
+        <span style="border-left:1px solid rgba(255,255,255,.1);padding-left:16px;color:rgba(255,255,255,.3);">Powered by <a href="https://adasiq.com" style="color:var(--orange);text-decoration:none;font-weight:700;">ADAS IQ</a></span>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Secret logo — 5 rapid clicks reveals landing page menu
+var _aoClicks = 0, _aoTimer = null;
+function aoLogoClick(e) {
+  e.preventDefault();
+  _aoClicks++;
+  clearTimeout(_aoTimer);
+  if (_aoClicks >= 5) {
+    _aoClicks = 0;
+    var menu = document.getElementById('ao-secret-menu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  } else {
+    _aoTimer = setTimeout(function() {
+      _aoClicks = 0;
+      navigate('home');
+    }, 500);
+  }
+}
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('ao-secret-menu');
+  if (menu && !e.target.closest('#ao-secret-menu') && !e.target.closest('.ao-logo')) {
+    menu.style.display = 'none';
+  }
+});
+
+function navigate(page) {
+  document.querySelectorAll('.ao-page').forEach(function(p){ p.classList.remove('active'); });
+  var target = document.getElementById('page-' + page);
+  if (target) { target.classList.add('active'); }
+  window.location.hash = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelectorAll('.ao-nav-links a').forEach(function(a){ a.classList.remove('active'); });
+  var activeLink = document.querySelector('.ao-nav-links a[href="#' + page + '"]');
+  if (activeLink) activeLink.classList.add('active');
+  var titles = {
+    home: 'Absolute ADAS — Mobile ADAS Calibration | Western Washington',
+    about: 'About Us | Absolute ADAS — Western Washington',
+    services: 'Services | Absolute ADAS — ADAS Calibration, Key Programming & More',
+    blog: 'Blog | Absolute ADAS — ADAS Industry Insights',
+    contact: 'Book a Calibration | Absolute ADAS — Western Washington',
+    statefarm: 'Book Your ADAS Calibration | Absolute ADAS — State Farm Preferred Vendor'
+  };
+  document.title = titles[page] || titles.home;
+
+  // Hide nav + footer on landing pages for clean Sabri Suby style
+  var isLandingPage = (page === 'lander' || page === 'statefarm');
+  var nav = document.getElementById('ao-nav');
+  var footer = document.getElementById('ao-footer');
+  if (nav) nav.style.display = isLandingPage ? 'none' : '';
+  if (footer) footer.style.display = isLandingPage ? 'none' : '';
+
+  // Load Zoho booking widget when navigating to State Farm page
+  if (page === 'statefarm') {
+    var container = document.getElementById('sf-inline-container');
+    if (container && !container.dataset.loaded) {
+      container.dataset.loaded = 'true';
+      container.innerHTML = '';
+      var s = document.createElement('script');
+      s.src = 'https://bookings.nimbuspop.com/assets/embed.js';
+      s.onload = function() {
+        Bookings.inlineEmbed({
+          url: 'https://absoluteadas.zohobookings.com/portal-embed#/4778305000000369018',
+          parent: '#sf-inline-container',
+          height: '800px'
+        });
+      };
+      document.head.appendChild(s);
+    }
+  }
+}
+
+function aoSubmitContact(e) {
+  e.preventDefault();
+  var form = e.target;
+  var data = { _subject: 'New Calibration Request — Absolute ADAS' };
+  new FormData(form).forEach(function(v, k){ data[k] = v; });
+  fetch('https://formsubmit.co/ajax/info@absoluteadas.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  form.style.display = 'none';
+  document.getElementById('ao-form-success').style.display = 'block';
+}
+
+(function(){
+  var hash = window.location.hash.replace('#','') || 'home';
+  var valid = ['home','about','services','blog','contact','lander','statefarm'];
+  navigate(valid.includes(hash) ? hash : 'home');
+})();
+</script>
+
+</body>
+</html>
