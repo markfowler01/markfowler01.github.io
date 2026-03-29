@@ -355,14 +355,13 @@
 
     /* ══ VISUAL DEPTH UPGRADES ══ */
 
-    /* Hero — richer glow */
-    .ao-hero::before { background: radial-gradient(circle, rgba(255,107,26,0.14) 0%, rgba(205,68,25,.04) 50%, transparent 70%); width: 1100px; height: 1100px; top: -220px; }
-    .ao-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(205,68,25,.5), transparent); }
+    /* Hero */
+    .ao-hero::before { display: none; }
+    .ao-hero::after { display: none; }
     .ao-hero-sub { color: rgba(255,255,255,.7); }
 
     /* Stats bar gradient */
     .ao-stats { background: linear-gradient(135deg, rgba(205,68,25,.07) 0%, rgba(0,0,0,0) 60%); }
-    .ao-stat-num { text-shadow: 0 0 28px rgba(205,68,25,.5); }
 
     /* Section background glows */
     .ao-dark-section { position: relative; overflow: hidden; }
@@ -392,8 +391,6 @@
     .ao-testi-card:hover { border-color: rgba(205,68,25,.3); box-shadow: 0 0 24px rgba(205,68,25,.08); }
     .ao-testi-card blockquote { color: rgba(255,255,255,.78); }
 
-    /* Section label — slight glow */
-    .ao-label { text-shadow: 0 0 20px rgba(205,68,25,.4); }
 
 
     /* Check list — brighter icons */
@@ -411,7 +408,6 @@
 
     /* About visual stat boxes */
     .ao-about-visual { background: linear-gradient(145deg, #1d1d1d, #111); border: 1px solid rgba(205,68,25,.2); }
-    .ao-about-visual .big-num { text-shadow: 0 0 28px rgba(205,68,25,.5); }
 
     /* Service detail visual panels */
     .ao-service-visual { background: linear-gradient(145deg, #1c1c1c, #0f0f0f); border: 1px solid rgba(205,68,25,.15); }
