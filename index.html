@@ -226,7 +226,7 @@
     .ao-nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
     .ao-nav-links a { color: var(--light-gray); font-size: .9rem; font-weight: 500; cursor: pointer; transition: color .2s; }
     .ao-nav-links a:hover { color: var(--white); }
-    .ao-nav-links a.active { color: var(--orange); }
+    .ao-nav-links a.active { color: var(--orange) !important; font-weight: 700 !important; }
     .ao-nav-cta { background: var(--orange) !important; color: var(--white) !important; padding: 10px 24px; border-radius: 6px; font-weight: 700 !important; transition: background .2s !important; }
     .ao-nav-cta:hover { background: var(--orange-dark) !important; }
 
@@ -792,11 +792,11 @@
     </div>
   </div>
   <ul class="ao-nav-links">
-    <li><a onclick="navigate('home')" href="#home">Home</a></li>
-    <li><a onclick="navigate('about')" href="#about">About</a></li>
-    <li><a onclick="navigate('services')" href="#services">Services</a></li>
-    <li><a onclick="navigate('blog')" href="#blog">Blog</a></li>
-    <li><a onclick="navigate('contact')" href="#contact" class="ao-nav-cta">Book a Calibration</a></li>
+    <li><a onclick="navigate('home')" href="#home" data-page="home">Home</a></li>
+    <li><a onclick="navigate('about')" href="#about" data-page="about">About</a></li>
+    <li><a onclick="navigate('services')" href="#services" data-page="services">Services</a></li>
+    <li><a onclick="navigate('blog')" href="#blog" data-page="blog">Blog</a></li>
+    <li><a onclick="navigate('contact')" href="#contact" data-page="contact" class="ao-nav-cta">Book a Calibration</a></li>
   </ul>
 </nav>
 
@@ -2389,7 +2389,7 @@ function navigate(page) {
   window.location.hash = page;
   window.scrollTo({ top: 0, behavior: 'smooth' });
   document.querySelectorAll('.ao-nav-links a').forEach(function(a){ a.classList.remove('active'); });
-  var activeLink = document.querySelector('.ao-nav-links a[href="#' + page + '"]');
+  var activeLink = document.querySelector('.ao-nav-links a[data-page="' + page + '"]');
   if (activeLink) activeLink.classList.add('active');
   var titles = {
     home: 'Absolute ADAS — Mobile ADAS Calibration | Western Washington',
@@ -2445,7 +2445,7 @@ function aoSubmitContact(e) {
 
 (function(){
   var hash = window.location.hash.replace('#','') || 'home';
-  var valid = ['home','about','services','blog','contact','lander','statefarm'];
+  var valid = ['home','about','services','blog','contact','lander','statefarm','acquire'];
   navigate(valid.includes(hash) ? hash : 'home');
 })();
 </script>
