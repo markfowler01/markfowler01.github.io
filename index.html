@@ -504,6 +504,36 @@
       .sf-booking-box { padding: 20px; }
       .sf-call-box { padding: 32px 24px; }
     }
+  @keyframes glow-pulse {
+    0%, 100% {
+      text-shadow:
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px rgba(255,100,30,1),
+        0 0 80px rgba(255,80,10,1),
+        0 0 140px rgba(205,68,25,.9),
+        0 0 220px rgba(205,68,25,.6);
+      transform: scale(1);
+    }
+    50% {
+      text-shadow:
+        0 0 15px #fff,
+        0 0 35px #fff,
+        0 0 60px rgba(255,140,60,1),
+        0 0 110px rgba(255,100,20,1),
+        0 0 180px rgba(205,68,25,1),
+        0 0 300px rgba(205,68,25,.7);
+      transform: scale(1.04);
+    }
+  }
+  .tagline-glow {
+    font-family: 'Great Vibes', cursive;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: .03em;
+    display: block;
+    animation: glow-pulse 2.2s ease-in-out infinite;
+  }
   </style>
 </head>
 <body>
@@ -546,7 +576,7 @@
     </div>
     <p class="ao-hero-note">Serving Tacoma to Bellingham · Same-day availability · 1-844-FIX-ADAS (1-844-349-2327)</p>
     <p style="margin-top:16px;"><a href="https://adas-iq.com" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.4);color:#fff;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:100px;transition:background .2s,border-color .2s;">⚡ Powered by ADAS IQ</a></p>
-    <p style="font-family:'Great Vibes',cursive;font-size:2.2rem;font-weight:700;color:#ffffff;margin-top:24px;letter-spacing:.03em;text-shadow:0 0 20px rgba(205,68,25,1),0 0 45px rgba(205,68,25,.7),0 0 90px rgba(205,68,25,.4);">Driving safety forward, one calibration at a time.</p>
+    <p class="tagline-glow" style="font-size:2.2rem;margin-top:24px;">Driving safety forward, one calibration at a time.</p>
   </section>
 
   <!-- STATS -->
@@ -1504,7 +1534,7 @@
     <span class="lp-btn-note">No commitment. Same-day and next-day slots available.</span>
     <div style="margin-top:28px;">
       <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:52px;width:auto;margin:0 auto;display:block;" />
-      <span style="font-family:'Great Vibes',cursive;font-size:1.9rem;color:#ffffff;display:block;margin-top:10px;letter-spacing:.03em;text-shadow:0 0 20px rgba(205,68,25,1),0 0 45px rgba(205,68,25,.7),0 0 90px rgba(205,68,25,.4);">Driving safety forward, one calibration at a time.</span>
+      <span class="tagline-glow" style="font-size:1.9rem;display:block;margin-top:10px;">Driving safety forward, one calibration at a time.</span>
     </div>
   </div>
 
@@ -1762,7 +1792,7 @@
     <div class="ao-footer-top">
       <div class="ao-footer-brand">
         <a onclick="navigate('home')" href="#home"><img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:44px;width:auto;" /></a>
-        <p style="font-family:'Great Vibes',cursive;color:#ffffff;font-size:1.3rem;margin-top:8px;margin-bottom:4px;letter-spacing:.03em;text-shadow:0 0 16px rgba(205,68,25,.9),0 0 35px rgba(205,68,25,.5);">Driving safety forward, one calibration at a time.</p>
+        <p class="tagline-glow" style="font-size:1.3rem;margin-top:8px;margin-bottom:4px;">Driving safety forward, one calibration at a time.</p>
         <p>Mobile ADAS calibration, key programming, diagnostics, and electrical services for collision repair shops across Western Washington.</p>
       </div>
       <div class="ao-footer-col">
