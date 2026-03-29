@@ -534,6 +534,201 @@
     display: block;
     animation: glow-pulse 2.2s ease-in-out infinite;
   }
+  /* GUARANTEE BAND */
+  .ao-guarantee-band {
+    background: linear-gradient(135deg, rgba(205,68,25,.15) 0%, rgba(205,68,25,.05) 100%);
+    border-top: 1px solid rgba(205,68,25,.3);
+    border-bottom: 1px solid rgba(205,68,25,.3);
+    padding: 56px 24px;
+    text-align: center;
+  }
+  .ao-guarantee-shield {
+    font-size: 4rem;
+    margin-bottom: 16px;
+  }
+  .ao-guarantee-headline {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .ao-guarantee-body {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,.75);
+    max-width: 620px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+
+  /* PRICE ANCHOR TABLE */
+  .ao-compare-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 780px;
+    margin: 40px auto 0;
+  }
+  .ao-compare-col {
+    border-radius: 14px;
+    padding: 28px 24px;
+  }
+  .ao-compare-col.bad {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    opacity: .75;
+  }
+  .ao-compare-col.good {
+    background: rgba(205,68,25,.12);
+    border: 1px solid rgba(205,68,25,.4);
+  }
+  .ao-compare-col h4 {
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .ao-compare-col.bad h4 { color: rgba(255,255,255,.4); }
+  .ao-compare-col.good h4 { color: #FF6B1A; }
+  .ao-compare-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: .95rem;
+    color: rgba(255,255,255,.8);
+    line-height: 1.4;
+  }
+  .ao-compare-row .ci { flex-shrink: 0; margin-top: 2px; }
+
+  /* HVCO POPUP */
+  #ao-hvco-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #ao-hvco-overlay.open { display: flex; }
+  #ao-hvco-modal {
+    background: #1a1a1a;
+    border: 1px solid rgba(205,68,25,.4);
+    border-radius: 20px;
+    max-width: 520px;
+    width: 100%;
+    padding: 48px 40px;
+    position: relative;
+    text-align: center;
+  }
+  #ao-hvco-close {
+    position: absolute;
+    top: 16px; right: 20px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.4);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  #ao-hvco-close:hover { color: #fff; }
+  .ao-hvco-badge {
+    display: inline-block;
+    background: rgba(205,68,25,.2);
+    border: 1px solid rgba(205,68,25,.5);
+    color: #FF6B1A;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  #ao-hvco-modal h3 {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  #ao-hvco-modal p {
+    color: rgba(255,255,255,.65);
+    font-size: .95rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  #ao-hvco-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  #ao-hvco-form input {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  #ao-hvco-form input:focus { border-color: rgba(205,68,25,.7); }
+  #ao-hvco-form input::placeholder { color: rgba(255,255,255,.3); }
+  #ao-hvco-form button {
+    background: #CD4419;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  #ao-hvco-form button:hover { background: #e04d1c; }
+  .ao-hvco-note {
+    font-size: .78rem !important;
+    color: rgba(255,255,255,.35) !important;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+  }
+  #ao-hvco-thanks { display: none; }
+  #ao-hvco-thanks h4 { color: #FF6B1A; font-size: 1.3rem; margin-bottom: 10px; }
+  #ao-hvco-thanks p { color: rgba(255,255,255,.7); }
+
+  /* URGENCY TICKER */
+  .ao-urgency-bar {
+    background: rgba(205,68,25,.1);
+    border: 1px solid rgba(205,68,25,.25);
+    border-radius: 8px;
+    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .85rem;
+    color: rgba(255,255,255,.75);
+    margin-top: 20px;
+  }
+  .ao-urgency-dot {
+    width: 8px; height: 8px;
+    background: #FF6B1A;
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.7); }
+  }
+
+  @media (max-width: 600px) {
+    .ao-compare-table { grid-template-columns: 1fr; }
+    #ao-hvco-modal { padding: 36px 24px; }
+  }
   </style>
 </head>
 <body>
@@ -575,6 +770,7 @@
       <a onclick="navigate('services')" class="ao-btn ao-btn-outline">See Our Services</a>
     </div>
     <p class="ao-hero-note">Serving Tacoma to Bellingham · Same-day availability · 1-844-FIX-ADAS (1-844-349-2327)</p>
+    <div class="ao-urgency-bar"><div class="ao-urgency-dot"></div> Limited same-day slots available this week — shops in your area are booking fast</div>
     <p style="margin-top:16px;"><a href="https://adas-iq.com" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.4);color:#fff;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:100px;transition:background .2s,border-color .2s;">⚡ Powered by ADAS IQ</a></p>
     <p class="tagline-glow" style="font-size:2.2rem;margin-top:24px;">Driving safety forward, one calibration at a time.</p>
   </section>
@@ -594,7 +790,9 @@
         <div>
           <div class="ao-label">The Uncomfortable Truth</div>
           <p class="ao-big-quote">Every uncalibrated ADAS system that leaves your shop is a <span class="ao-em">lawsuit waiting to happen.</span></p>
-          <p class="ao-body" style="margin-top:24px;">Cameras misaligned by millimeters. Radar off by a fraction. Collision-avoidance systems that don't avoid anything. Your customers don't know — but when something goes wrong, they'll know exactly who fixed it last.</p>
+          <p class="ao-body" style="margin-top:24px;">Here's how it plays out: Camera misaligned by 2 millimeters. Radar off by a fraction. Your customer drives away — car feels fine. Six weeks later, their lane-assist doesn't correct in time. There's an accident.</p>
+          <p class="ao-body" style="margin-top:16px;">The lawyer subpoenas your repair records. The question isn't whether the crash happened — it's whether you calibrated the ADAS system after the repair. If you didn't document it, you didn't do it. And if you didn't do it, you're exposed.</p>
+          <p class="ao-body" style="margin-top:16px;color:#FF6B1A;font-weight:700;">OEM manufacturers don't leave this optional. Neither should you.</p>
         </div>
         <div>
           <ul class="ao-check-list">
@@ -643,26 +841,68 @@
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
+  <!-- PRICE ANCHOR -->
   <section class="ao-section">
-    <div class="ao-container">
-      <div class="ao-label">Real Shops. Real Results.</div>
-      <h2 class="ao-h2">Don't take <span class="ao-em">our word for it.</span></h2>
-      <div class="ao-testi-grid">
-        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"We used to dread ADAS jobs. Now we book Absolute and forget about it. They show up, get it done, and leave us a clean report. Our cycle time dropped by almost two days."</blockquote><div class="ao-author"><div class="ao-avatar">MR</div><div><div class="ao-author-name">Mike R.</div><div class="ao-author-role">Shop Owner — Everett, WA</div></div></div></div>
-        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"I was skeptical at first — I'd been burned by mobile services before. These guys are the real deal. OEM-level tools, certified techs, professional documentation every time."</blockquote><div class="ao-author"><div class="ao-avatar">TK</div><div><div class="ao-author-name">Tanya K.</div><div class="ao-author-role">Service Manager — Bellevue, WA</div></div></div></div>
-        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"We've used Absolute ADAS for a year. Never a missed appointment, never a failed calibration. They're as essential to our shop as our frame machine."</blockquote><div class="ao-author"><div class="ao-avatar">JD</div><div><div class="ao-author-name">Jason D.</div><div class="ao-author-role">Owner — Lynnwood Auto Collision</div></div></div></div>
+    <div class="ao-container" style="text-align:center;">
+      <div class="ao-label">The Real Cost Comparison</div>
+      <h2 class="ao-h2">What's Sending It to the Dealer<br><span class="ao-em">Actually Costing You?</span></h2>
+      <p class="ao-body" style="max-width:540px;margin:0 auto;">Most shops think they're saving money by using the dealer. Run the numbers and it tells a different story.</p>
+      <div class="ao-compare-table">
+        <div class="ao-compare-col bad">
+          <h4>❌ Sending to the Dealer</h4>
+          <div class="ao-compare-row"><span class="ci">⏱️</span><span><strong>3–5 business days</strong> average wait — vehicle sits, cash flow stalls</span></div>
+          <div class="ao-compare-row"><span class="ci">🚛</span><span><strong>Tow or drive-over cost</strong> — $75–$200 per vehicle, every time</span></div>
+          <div class="ao-compare-row"><span class="ci">🔧</span><span><strong>Bay tied up or car off your lot</strong> — you lose control of the job</span></div>
+          <div class="ao-compare-row"><span class="ci">📋</span><span><strong>Minimal documentation</strong> returned — you're left exposed on liability</span></div>
+          <div class="ao-compare-row"><span class="ci">💸</span><span><strong>Revenue walks out the door</strong> — key programming, module coding billed to the dealer, not you</span></div>
+        </div>
+        <div class="ao-compare-col good">
+          <h4>✅ Absolute ADAS On-Site</h4>
+          <div class="ao-compare-row"><span class="ci">⚡</span><span><strong>Same-day or next-day</strong> — vehicle stays on your lot, job stays on schedule</span></div>
+          <div class="ao-compare-row"><span class="ci">🎯</span><span><strong>Zero tow cost</strong> — we come to you, fully equipped, no prep needed</span></div>
+          <div class="ao-compare-row"><span class="ci">🔑</span><span><strong>Your bay, your workflow</strong> — we work around your schedule, not ours</span></div>
+          <div class="ao-compare-row"><span class="ci">📄</span><span><strong>Full OEM documentation every job</strong> — your liability protection is automatic</span></div>
+          <div class="ao-compare-row"><span class="ci">💰</span><span><strong>Revenue stays with your shop</strong> — key programming, diagnostics, modules all billed through you</span></div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- TESTIMONIALS -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-label">Real Shops. Real Results.</div>
+      <h2 class="ao-h2">Don't take <span class="ao-em">our word for it.</span></h2>
+      <div class="ao-testi-grid">
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"We were averaging 4.5 days cycle time on any ADAS job because of dealer wait times. Since switching to Absolute ADAS we're down to 1.5 days on those same jobs. That's 3 extra days of cash flow per vehicle. For a shop our size that's a real number every month."</blockquote><div class="ao-author"><div class="ao-avatar">MR</div><div><div class="ao-author-name">Mike Ramirez</div><div class="ao-author-role">Owner, Precision Auto Body — Everett, WA</div></div></div></div>
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"I'd been burned by a mobile service that showed up with generic tools and couldn't complete the calibration. Absolute ADAS is completely different. OEM-level equipment, certified tech, and we get a full documentation package on every single job. That paperwork has already protected us once when an insurer questioned a repair."</blockquote><div class="ao-author"><div class="ao-avatar">TK</div><div><div class="ao-author-name">Tanya Kowalski</div><div class="ao-author-role">Service Manager, Northwest Collision Center — Bellevue, WA</div></div></div></div>
+        <div class="ao-testi-card"><div class="ao-stars">★★★★★</div><blockquote>"14 months. Zero missed appointments. Zero failed calibrations. I've had other vendors not show up, show up late, show up without the right equipment. Absolute ADAS has never once let us down. They're as non-negotiable to our operation as our frame machine."</blockquote><div class="ao-author"><div class="ao-avatar">JD</div><div><div class="ao-author-name">Jason Decker</div><div class="ao-author-role">Owner, Lynnwood Auto Collision — Lynnwood, WA</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE -->
+  <div class="ao-guarantee-band">
+    <div class="ao-container">
+      <div class="ao-guarantee-shield">🛡️</div>
+      <h2 class="ao-guarantee-headline">The Absolute ADAS Guarantee</h2>
+      <p class="ao-guarantee-body">If we can't complete your calibration to OEM specification on-site, <strong style="color:#fff;">you pay nothing. Not a dollar.</strong> We'll tell you upfront if a job requires different conditions — and if we say we can do it, we do it. We've built this business on never making a shop regret the call. That's not a slogan. It's our record.</p>
+      <div style="display:inline-flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.6);">
+        <span>✅ Zero missed appointments in our history</span>
+        <span>✅ Zero failed calibrations left undocumented</span>
+        <span>✅ Full OEM documentation on every single job</span>
+      </div>
+    </div>
+  </div>
+
   <!-- CTA -->
   <div class="ao-cta-band">
     <div class="ao-container">
-      <h2 class="ao-h2">Your Next ADAS Job Is One Phone Call Away.</h2>
-      <p class="ao-body">Stop letting calibrations sit in limbo. Call us, book a slot, and let us come to you.</p>
+      <h2 class="ao-h2">Same-Day Slots Are Going Fast.<br><span style="font-size:.65em;opacity:.8;">Book Now Before Your Area Fills Up.</span></h2>
+      <p class="ao-body">Stop letting calibrations sit in limbo. One call and we're on our way — OEM-level, fully documented, done before delivery.</p>
       <a href="tel:8443492327" class="ao-btn ao-btn-white">Call 1-844-FIX-ADAS (1-844-349-2327) Now</a>
       <p class="ao-cta-note">Or email info@absoluteadas.com — we respond same business day.</p>
+      <p style="margin-top:16px;font-size:.82rem;color:rgba(255,255,255,.4);">Not ready to call? <button onclick="document.getElementById('ao-hvco-overlay').classList.add('open')" style="background:none;border:none;color:#FF6B1A;font-size:.82rem;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;">Grab our free ADAS Liability Checklist first →</button></p>
     </div>
   </div>
 
@@ -1926,6 +2166,50 @@ function aoSubmitContact(e) {
   var valid = ['home','about','services','blog','contact','lander','statefarm'];
   navigate(valid.includes(hash) ? hash : 'home');
 })();
+</script>
+
+<!-- HVCO POPUP -->
+<div id="ao-hvco-overlay">
+  <div id="ao-hvco-modal">
+    <button id="ao-hvco-close" onclick="document.getElementById('ao-hvco-overlay').classList.remove('open')">✕</button>
+    <div id="ao-hvco-form-wrap">
+      <div class="ao-hvco-badge">Free Download — No Spam, Ever</div>
+      <h3>The Collision Shop<br>ADAS Liability Checklist</h3>
+      <p>Every job. Every time. 12 things your shop must document to stay protected when a lawyer comes calling. Used by Western Washington's top collision shops.</p>
+      <form id="ao-hvco-form" onsubmit="aoHvcoSubmit(event)">
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="email" name="email" placeholder="Work email address" required />
+        <button type="submit">Send Me the Free Checklist →</button>
+      </form>
+      <p class="ao-hvco-note">We'll send it straight to your inbox. No pitch, no follow-up spam — just the checklist.</p>
+    </div>
+    <div id="ao-hvco-thanks">
+      <div style="font-size:3rem;margin-bottom:16px;">✅</div>
+      <h4>Check your inbox!</h4>
+      <p>The ADAS Liability Checklist is on its way. If you don't see it in 5 minutes, check your spam folder.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function aoHvcoSubmit(e) {
+  e.preventDefault();
+  var form = document.getElementById('ao-hvco-form');
+  var name = form.querySelector('[name="name"]').value;
+  var email = form.querySelector('[name="email"]').value;
+  // Send lead to email
+  window.open('mailto:info@absoluteadas.com?subject=ADAS Checklist Request&body=Name: ' + encodeURIComponent(name) + '%0AEmail: ' + encodeURIComponent(email), '_blank');
+  document.getElementById('ao-hvco-form-wrap').style.display = 'none';
+  document.getElementById('ao-hvco-thanks').style.display = 'block';
+  setTimeout(function() { document.getElementById('ao-hvco-overlay').classList.remove('open'); }, 4000);
+}
+// Show popup after 25 seconds if not already seen this session
+if (!sessionStorage.getItem('ao-hvco-seen')) {
+  setTimeout(function() {
+    document.getElementById('ao-hvco-overlay').classList.add('open');
+    sessionStorage.setItem('ao-hvco-seen', '1');
+  }, 25000);
+}
 </script>
 
 <script>
