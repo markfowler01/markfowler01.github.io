@@ -1928,5 +1928,38 @@ function aoSubmitContact(e) {
 })();
 </script>
 
+<script>
+(function() {
+  function countUp(el, start, end, duration, suffix) {
+    var startTime = null;
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      var current = Math.floor(start + (end - start) * ease);
+      el.textContent = current.toLocaleString() + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        countUp(el, 49850, 50000, 2000, '+');
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.ao-stat-num, .big-num').forEach(function(el) {
+    if (el.textContent.trim() === '50,000+') {
+      el.textContent = '49,850+';
+      observer.observe(el);
+    }
+  });
+})();
+</script>
 </body>
 </html>
