@@ -221,6 +221,7 @@
 
     /* ── NAV ── */
     #ao-nav { position: sticky; top: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 70px; background: rgba(10,10,10,0.96); border-bottom: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(12px); }
+    #ao-hamburger { display: none; }
     #ao-nav a { text-decoration: none; }
     .ao-logo img { height: 44px; width: auto; display: block; }
     .ao-nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
@@ -426,6 +427,12 @@
     @media (max-width: 900px) {
       #ao-nav { padding: 0 24px; }
       .ao-nav-links { display: none; }
+      .ao-nav-links.open { display: flex; flex-direction: column; align-items: flex-start; gap: 0; position: absolute; top: 70px; left: 0; right: 0; background: rgba(10,10,10,0.98); border-bottom: 1px solid rgba(255,255,255,.08); padding: 16px 24px 24px; z-index: 998; }
+      .ao-nav-links.open li { width: 100%; }
+      .ao-nav-links.open a { display: block; padding: 14px 0; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,.06); }
+      .ao-nav-links.open li:last-child a { border-bottom: none; margin-top: 8px; text-align: center; }
+      #ao-hamburger { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 36px; height: 36px; cursor: pointer; background: none; border: none; padding: 4px; }
+      #ao-nav { position: relative; }
       .ao-section { padding: 64px 24px; }
       .ao-hero { padding: 100px 24px 72px; }
       .ao-stats { grid-template-columns: repeat(2,1fr); }
@@ -791,12 +798,17 @@
       <a onclick="navigate('statefarm');aoToggleSecret()" href="#statefarm" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">🏠 State Farm Page</a>
     </div>
   </div>
-  <ul class="ao-nav-links">
-    <li><a onclick="navigate('home')" href="#home" data-page="home">Home</a></li>
-    <li><a onclick="navigate('about')" href="#about" data-page="about">About</a></li>
-    <li><a onclick="navigate('services')" href="#services" data-page="services">Services</a></li>
-    <li><a onclick="navigate('blog')" href="#blog" data-page="blog">Blog</a></li>
-    <li><a onclick="navigate('contact')" href="#contact" data-page="contact" class="ao-nav-cta">Book a Calibration</a></li>
+  <button id="ao-hamburger" onclick="aoToggleNav()" aria-label="Toggle menu">
+    <span style="display:block;height:2px;background:#fff;border-radius:2px;transition:all .25s;"></span>
+    <span style="display:block;height:2px;background:#fff;border-radius:2px;transition:all .25s;"></span>
+    <span style="display:block;height:2px;background:#fff;border-radius:2px;transition:all .25s;"></span>
+  </button>
+  <ul class="ao-nav-links" id="ao-nav-links">
+    <li><a onclick="navigate('home');aoCloseNav()" href="#home" data-page="home">Home</a></li>
+    <li><a onclick="navigate('about');aoCloseNav()" href="#about" data-page="about">About</a></li>
+    <li><a onclick="navigate('services');aoCloseNav()" href="#services" data-page="services">Services</a></li>
+    <li><a onclick="navigate('blog');aoCloseNav()" href="#blog" data-page="blog">Blog</a></li>
+    <li><a onclick="navigate('contact');aoCloseNav()" href="#contact" data-page="contact" class="ao-nav-cta">Book a Calibration</a></li>
   </ul>
 </nav>
 
@@ -2932,6 +2944,14 @@
 <script>
 // Secret logo — 5 rapid clicks reveals landing page menu
 var _aoClicks = 0, _aoTimer = null;
+function aoToggleNav() {
+  var links = document.getElementById('ao-nav-links');
+  links.classList.toggle('open');
+}
+function aoCloseNav() {
+  document.getElementById('ao-nav-links').classList.remove('open');
+}
+
 function aoLogoClick(e) {
   e.preventDefault();
   _aoClicks++;
