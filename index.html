@@ -571,35 +571,12 @@
       .sf-booking-box { padding: 20px; }
       .sf-call-box { padding: 32px 24px; }
     }
-  @keyframes glow-pulse {
-    0%, 100% {
-      text-shadow:
-        0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 40px rgba(255,100,30,1),
-        0 0 80px rgba(255,80,10,1),
-        0 0 140px rgba(205,68,25,.9),
-        0 0 220px rgba(205,68,25,.6);
-      transform: scale(1);
-    }
-    50% {
-      text-shadow:
-        0 0 15px #fff,
-        0 0 35px #fff,
-        0 0 60px rgba(255,140,60,1),
-        0 0 110px rgba(255,100,20,1),
-        0 0 180px rgba(205,68,25,1),
-        0 0 300px rgba(205,68,25,.7);
-      transform: scale(1.04);
-    }
-  }
   .tagline-glow {
     font-family: 'Great Vibes', cursive;
     font-weight: 700;
-    color: #fff;
+    color: rgba(255,255,255,0.85);
     letter-spacing: .03em;
     display: block;
-    animation: glow-pulse 2.2s ease-in-out infinite;
   }
   /* GUARANTEE BAND */
   .ao-guarantee-band {
