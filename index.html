@@ -321,8 +321,8 @@
     .ao-about-visual .big-num { font-size: 5rem; font-weight: 900; color: var(--orange); line-height: 1; letter-spacing: -.04em; }
     .ao-about-visual .big-label { font-size: .9rem; color: var(--gray); margin-top: 8px; }
     .ao-values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
-    .ao-value-card { background: var(--dark2); border: 1px solid #222; border-radius: 12px; padding: 32px; }
-    .ao-value-card .icon { font-size: 1.5rem; margin-bottom: 16px; }
+    .ao-value-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.06); border-top: 2px solid var(--orange); border-radius: 12px; padding: 32px; transition: border-color .2s; }
+    .ao-value-card .icon { font-size: 1.4rem; margin-bottom: 16px; width: 48px; height: 48px; background: rgba(205,68,25,.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
 
     /* ── CONTACT PAGE ── */
     .ao-contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin-top: 56px; }
@@ -644,7 +644,7 @@
 <!-- ═══════════════════════════════════════ -->
 <div class="ao-page" id="page-about">
 
-  <section class="ao-about-hero ao-section">
+  <section class="ao-about-hero ao-section" style="background:radial-gradient(ellipse at 0% 50%, rgba(205,68,25,.18) 0%, transparent 60%), var(--black); border-bottom: 1px solid rgba(205,68,25,.15);">
     <div class="ao-container">
       <div class="ao-label">Who We Are</div>
       <h2 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Built Inside a Real Shop.<br><span class="ao-em">For Real Shops.</span></h2>
