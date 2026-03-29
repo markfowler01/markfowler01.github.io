@@ -1742,7 +1742,7 @@
             #crmWebToEntityForm_contact .zcwf_button[name=reset] { display: none !important; }
             #crmWebToEntityForm_contact .zcwf_col_fld p { color: #888 !important; font-size: .8rem !important; }
             #crmWebToEntityForm_contact .zcwf_file { width: 100% !important; float: none !important; color: #ccc !important; }
-            #wf_splash_contact { background: #1a1a1a !important; border-color: rgba(205,68,25,.4) !important; color: #fff !important; }
+            #wf_splash_contact { background: #CD4419 !important; border: none !important; color: #fff !important; border-radius: 12px !important; box-shadow: 0 4px 32px rgba(205,68,25,.55) !important; font-size: 1.05rem !important; font-weight: 600 !important; padding: 20px 28px !important; }
           </style>
           <div id='crmWebToEntityForm_contact' class='zcwf_lblRight crmWebToEntityForm' style='background-color:transparent;color:#fff;max-width:100%;'>
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
@@ -1752,7 +1752,7 @@
               <span id='wf_splash_info_contact'></span>
             </div>
             <iframe name='contact_zoho_iframe' style='display:none;'></iframe>
-            <form id='webform6783709000004587001' name='WebToLeads6783709000004587001' action='https://crm.zoho.com/crm/WebToLeadForm' method='POST' accept-charset='UTF-8' target='contact_zoho_iframe' onsubmit='return aoContactSubmit6783709000004587001()'>
+            <form id='webform6783709000004587001' name='WebToLeads6783709000004587001' accept-charset='UTF-8' onsubmit='aoContactSubmit6783709000004587001(event)'>
               <input type='text' style='display:none;' name='xnQsjsdp' value='318b32643350fa6cd6326d6220240c4b37deafb7cc1a43c2ff1e4e0a5813cc1f'/>
               <input type='hidden' name='zc_gad' id='zc_gad' value=''/>
               <input type='text' style='display:none;' name='xmIwtLD' value='4641ee806ef6274a25c40ab11405b986cee0d9eb0e7d5a10497602bed3856a149d67dd91b9410c7a74aabe26c273e6d0'/>
@@ -1794,7 +1794,7 @@
                 function validateEmail6783709000004587001(){var form=document.forms['WebToLeads6783709000004587001'];var emailFld=form.querySelectorAll('[ftype=email]');for(var i=0;i<emailFld.length;i++){var emailVal=emailFld[i].value;if((emailVal.replace(/^\s+|\s+$/g,'')).length!=0){var atpos=emailVal.indexOf('@');var dotpos=emailVal.lastIndexOf('.');if(atpos<1||dotpos<atpos+2||dotpos+2>=emailVal.length){alert('Please enter a valid email address.');emailFld[i].focus();return false;}}}return true;}
                 function validateFileUpload6783709000004587001(){var uploadedFiles=document.getElementById('theFile6783709000004587001');var totalFileSize=0;if(uploadedFiles.files.length>3){alert('You can upload a maximum of three files at a time.');return false;}if('files'in uploadedFiles){if(uploadedFiles.files.length!=0){for(var i=0;i<uploadedFiles.files.length;i++){var file=uploadedFiles.files[i];if('size'in file){totalFileSize=totalFileSize+file.size;}}if(totalFileSize>20971520){alert('Total file(s) size should not exceed 20MB.');return false;}}}return true;}
                 function checkMandatory6783709000004587001(){var mndFileds=new Array('Last Name','Email');var fldLangVal=new Array('Last\x20Name','Email');for(var i=0;i<mndFileds.length;i++){var fieldObj=document.forms['WebToLeads6783709000004587001'][mndFileds[i]];if(fieldObj){if(((fieldObj.value).replace(/^\s+|\s+$/g,'')).length==0){alert(fldLangVal[i]+' cannot be empty.');fieldObj.focus();return false;}}}if(!validateFileUpload6783709000004587001()){return false;}if(!validateEmail6783709000004587001()){return false;}return true;}
-                function aoContactSubmit6783709000004587001(){if(!checkMandatory6783709000004587001()){return false;}setTimeout(function(){var splash=document.getElementById('wf_splash_contact');var info=document.getElementById('wf_splash_info_contact');info.innerText="We'll be in touch within one business day. Your inquiry is completely confidential. Thank you.";splash.style.display='flex';document.getElementById('webform6783709000004587001').reset();setTimeout(function(){splash.style.display='none';},6000);},800);return true;}
+                function aoContactSubmit6783709000004587001(e){e.preventDefault();if(!checkMandatory6783709000004587001()){return;}var form=document.getElementById('webform6783709000004587001');var fd=new FormData(form);fetch('https://crm.zoho.com/crm/WebToLeadForm',{method:'POST',mode:'no-cors',body:fd}).catch(function(){});var splash=document.getElementById('wf_splash_contact');var info=document.getElementById('wf_splash_info_contact');info.innerText="We'll be in touch within 20 minutes.";splash.style.display='flex';form.reset();setTimeout(function(){splash.style.display='none';},6000);}
               </script>
               <script id='wf_anal' src='https://crm.zohopublic.com/crm/WebFormAnalyticsServeServlet?rid=1b5d91f58d754128ce28ef415e11025b428e1b7315ae716733f10a6bdd6525d2007bd0fe058f35784e5ce61a8d6b7e5dgidc7fb035418186effacc66b02996e17b73e91210c81cc3c3dea59d2f321e8477dgidfe9935c58c1f4abca94159ad155a6f8a37c71d98b6010782116b81f6bb92f458gidf654d0f4cf321d76d61f9381d043a75e9b9eb1482013a05977a51f58532ecb14&tw=d301df1725d10e6947b6ab16da7b4da70e12c69d364fbb889795a42225e091f2'></script>
             </form>
@@ -2230,8 +2230,9 @@
         #crmWebToEntityForm .zcwf_row { margin: 14px 0 !important; }
         #crmWebToEntityForm .zcwf_col_lab { color: rgba(255,255,255,.75) !important; }
         /* Splash message override */
-        .wf_customMessageBox { background: #181818 !important; color: #fff !important; border: 1px solid #CD4419 !important; border-radius: 8px !important; }
-        .wf_customCircle { background-color: #CD4419 !important; }
+        .wf_customMessageBox { background: #CD4419 !important; color: #fff !important; border: none !important; border-radius: 12px !important; box-shadow: 0 4px 32px rgba(205,68,25,.55) !important; font-size: 1.05rem !important; font-weight: 600 !important; }
+        .wf_customCircle { background-color: #fff !important; }
+        .wf_customCheckMark { border-color: #CD4419 !important; }
         #wf_splash_info { color: #fff !important; font-family: 'Inter', sans-serif !important; }
       </style>
 
