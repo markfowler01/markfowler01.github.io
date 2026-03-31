@@ -809,6 +809,7 @@
     <li><a onclick="navigate('about');aoCloseNav()" href="#about" data-page="about">About</a></li>
     <li><a onclick="navigate('services');aoCloseNav()" href="#services" data-page="services">Services</a></li>
     <li><a onclick="navigate('blog');aoCloseNav()" href="#blog" data-page="blog">Blog</a></li>
+    <li><a onclick="navigate('swag');aoCloseNav()" href="#swag" data-page="swag">Swag</a></li>
     <li><a onclick="navigate('contact');aoCloseNav()" href="#contact" data-page="contact" class="ao-nav-cta">Book a Calibration</a></li>
   </ul>
 </nav>
@@ -3126,6 +3127,113 @@
 </div><!-- /page-enthusiast -->
 
 
+<!-- ═══════════════════════════════════════ -->
+<!--              SWAG PAGE                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="ao-page" id="page-swag">
+
+  <!-- HERO -->
+  <section class="ao-hero" style="padding:100px 48px 72px;">
+    <div class="ao-eyebrow">🧢 Represent the Calibration Nation</div>
+    <h1 class="ao-h1">Absolute ADAS<br><span style="color:var(--orange);">Swag Store</span></h1>
+    <p class="ao-hero-sub">Gear up with premium Absolute ADAS gear. Quality threads for the techs, shops, and car enthusiasts who take safety seriously.</p>
+    <div class="ao-hero-btns">
+      <a href="mailto:info@absoluteadas.com?subject=Swag Order" class="ao-btn">Order Now →</a>
+      <a onclick="navigate('contact')" class="ao-btn ao-btn-outline">Contact Us</a>
+    </div>
+    <p class="ao-hero-note">Questions? Call 1-844-FIX-ADAS or email info@absoluteadas.com</p>
+  </section>
+
+  <!-- PRODUCT GRID — loaded dynamically from swag-products.json (auto-updated by GitHub Actions) -->
+  <section class="ao-section">
+    <div class="ao-container">
+      <div class="ao-label">Official Gear</div>
+      <h2 class="ao-h2">Shop the Collection</h2>
+      <p class="ao-body" style="max-width:560px;margin-bottom:48px;">All items feature the Absolute ADAS logo and are printed to order. Click any item to email us your order, or reach us at <a href="mailto:info@absoluteadas.com?subject=Swag Order" style="color:var(--orange);">info@absoluteadas.com</a>.</p>
+
+      <div id="swag-product-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+        <div style="grid-column:1/-1;text-align:center;padding:80px 0;color:var(--gray);">Loading gear...</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function loadSwagProducts() {
+    var grid = document.getElementById('swag-product-grid');
+    fetch('/swag-products.json?t=' + Date.now())
+      .then(function(r) { return r.json(); })
+      .then(function(products) {
+        if (!products || !products.length) {
+          grid.innerHTML = '<p style="color:var(--gray);text-align:center;grid-column:1/-1;padding:80px 0;">No products available right now — check back soon!</p>';
+          return;
+        }
+        grid.style.gridTemplateColumns = products.length === 1 ? '1fr' : products.length === 2 ? 'repeat(2,1fr)' : 'repeat(3,1fr)';
+        grid.innerHTML = products.map(function(p) {
+          var minP = (p.min_price / 100).toFixed(2);
+          var maxP = (p.max_price / 100).toFixed(2);
+          var price = p.min_price === p.max_price ? '$' + minP : '$' + minP + ' &ndash; $' + maxP;
+          var sizes = p.sizes && p.sizes.length ? p.sizes.join(' / ') : 'One Size';
+          var subject = encodeURIComponent('Swag Order \u2014 ' + p.title);
+          var orderLink = 'mailto:info@absoluteadas.com?subject=' + subject;
+          var imgHtml = p.image
+            ? '<img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />'
+            : '<div style="font-size:4rem;display:flex;align-items:center;justify-content:center;height:100%;">🧢</div>';
+          return '<div class="ao-card" style="padding:0;overflow:hidden;">'
+            + '<div style="background:linear-gradient(145deg,#1c1c1c,#111);aspect-ratio:1;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.07);">' + imgHtml + '</div>'
+            + '<div style="padding:28px 28px 32px;">'
+            + '<h3 class="ao-h4" style="font-size:1.1rem;">' + p.title + '</h3>'
+            + '<p style="font-size:.88rem;color:var(--gray);line-height:1.65;margin-bottom:16px;">' + (p.description || '') + '</p>'
+            + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">'
+            + '<span style="font-size:1.3rem;font-weight:900;color:#fff;">' + price + '</span>'
+            + '<div class="ao-tag">' + sizes + '</div>'
+            + '</div>'
+            + '<a href="' + orderLink + '" class="ao-btn" style="width:100%;text-align:center;padding:13px 24px;font-size:.92rem;display:block;">Order This Item</a>'
+            + '</div></div>';
+        }).join('');
+      })
+      .catch(function() {
+        grid.innerHTML = '<p style="color:var(--gray);text-align:center;grid-column:1/-1;padding:80px 0;">Unable to load products. Email <a href="mailto:info@absoluteadas.com" style="color:var(--orange);">info@absoluteadas.com</a> to order.</p>';
+      });
+  })();
+  </script>
+
+  <!-- HOW TO ORDER -->
+  <section class="ao-section ao-dark-section">
+    <div class="ao-container">
+      <div class="ao-label">Ordering Is Easy</div>
+      <h2 class="ao-h2">How to Get Your Gear</h2>
+      <div class="ao-steps">
+        <div class="ao-step">
+          <div class="ao-step-num">01</div>
+          <h3 class="ao-h4">Pick Your Items</h3>
+          <p>Browse the collection above and note the items, sizes, and quantities you want. Mix and match — no minimum order.</p>
+        </div>
+        <div class="ao-step">
+          <div class="ao-step-num">02</div>
+          <h3 class="ao-h4">Send Us a Message</h3>
+          <p>Click "Order This Item" or email <strong style="color:#fff;">info@absoluteadas.com</strong> with your selections. We'll confirm availability and send a total.</p>
+        </div>
+        <div class="ao-step">
+          <div class="ao-step-num">03</div>
+          <h3 class="ao-h4">We Ship to You</h3>
+          <p>Items are printed to order and shipped directly to you. Typical turnaround is 7–10 business days. Bulk shop orders welcome.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BULK CTA -->
+  <div class="ao-cta-band">
+    <div class="ao-container">
+      <h2 class="ao-h2">Outfit Your Whole Shop</h2>
+      <p class="ao-body" style="color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 40px;">Ordering for a team? Ask about bulk pricing on polos, tees, and hats. We'll hook you up.</p>
+      <a href="mailto:info@absoluteadas.com?subject=Bulk Swag Order" class="ao-btn ao-btn-white">Get Bulk Pricing →</a>
+    </div>
+  </div>
+
+</div><!-- /page-swag -->
+
+
 <!-- ═══ FOOTER ═══ -->
 <footer id="ao-footer">
   <div class="ao-footer-inner">
@@ -3151,6 +3259,7 @@
           <li><a onclick="navigate('about')">About Us</a></li>
           <li><a onclick="navigate('blog')">Blog</a></li>
           <li><a onclick="navigate('contact')">Contact</a></li>
+          <li><a onclick="navigate('swag')">Swag Store</a></li>
           <li><a onclick="navigate('acquire')" style="color:var(--orange);">Want to sell your ADAS business?</a></li>
         </ul>
       </div>
@@ -3227,7 +3336,8 @@ function navigate(page) {
     contact: 'Book a Calibration | Absolute ADAS — Western Washington',
     statefarm: 'Book Your ADAS Calibration | Absolute ADAS — State Farm Preferred Vendor',
     acquire: 'Sell Your ADAS Business | Absolute ADAS Acquisitions',
-    enthusiast: 'ADAS Calibration for Car Owners | Absolute ADAS — Western Washington'
+    enthusiast: 'ADAS Calibration for Car Owners | Absolute ADAS — Western Washington',
+    swag: 'Swag Store | Absolute ADAS — Official Gear & Apparel'
   };
   document.title = titles[page] || titles.home;
 
@@ -3274,7 +3384,7 @@ function aoSubmitContact(e) {
 
 (function(){
   var hash = window.location.hash.replace('#','') || 'home';
-  var valid = ['home','about','services','blog','contact','lander','statefarm','acquire','enthusiast'];
+  var valid = ['home','about','services','blog','contact','lander','statefarm','acquire','enthusiast','swag'];
   navigate(valid.includes(hash) ? hash : 'home');
 })();
 </script>
