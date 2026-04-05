@@ -1519,8 +1519,9 @@
   <style>
     .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 56px; }
     .blog-card { background: var(--dark2); border: 1px solid #222; border-radius: 14px; overflow: hidden; transition: border-color .2s, transform .2s; cursor: pointer; }
-    .blog-card-img { width: 100%; height: 180px; overflow: hidden; position: relative; }
+    .blog-card-img { width: 100%; height: 180px; overflow: hidden; position: relative; background: linear-gradient(135deg, #1a1a1a 0%, #111 100%); }
     .blog-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; display: block; }
+    .blog-card-img img.img-error { display: none; }
     .blog-card:hover .blog-card-img img { transform: scale(1.06); }
     .blog-card-img-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.5) 100%); }
     .blog-card:hover { border-color: var(--orange); transform: translateY(-4px); }
@@ -1861,7 +1862,7 @@
 
         <!-- ARTICLE 29 -->
         <div class="blog-card" onclick="openArticle(29)">
-          <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1518770196-aa6dccc07d1b?w=600&h=280&fit=crop&auto=format&q=80" alt="CAN bus diagnostics" loading="lazy"><div class="blog-card-img-overlay"></div></div>
+          <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=280&fit=crop&auto=format&q=80" alt="CAN bus diagnostics" loading="lazy"><div class="blog-card-img-overlay"></div></div>
           <div class="blog-card-body">
             <div class="blog-card-cat">Technical</div>
             <div class="blog-card-title">CAN Bus Faults After Collision: What They Mean and How to Fix Them</div>
@@ -1949,7 +1950,7 @@
 
         <!-- ARTICLE 37 -->
         <div class="blog-card" onclick="openArticle(37)">
-          <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd65?w=600&h=280&fit=crop&auto=format&q=80" alt="360 surround view camera" loading="lazy"><div class="blog-card-img-overlay"></div></div>
+          <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=280&fit=crop&auto=format&q=80" alt="360 surround view camera" loading="lazy"><div class="blog-card-img-overlay"></div></div>
           <div class="blog-card-body">
             <div class="blog-card-cat">Technical</div>
             <div class="blog-card-title">360-Degree Surround View Camera Systems: Calibration Complexity Most Shops Miss</div>
@@ -1982,7 +1983,7 @@
 
         <!-- ARTICLE 40 -->
         <div class="blog-card" onclick="openArticle(40)">
-          <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=280&fit=crop&auto=format&q=80" alt="Premium shop reputation" loading="lazy"><div class="blog-card-img-overlay"></div></div>
+          <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1521791499698-9e1dae2bd522?w=600&h=280&fit=crop&auto=format&q=80" alt="Premium shop reputation" loading="lazy"><div class="blog-card-img-overlay"></div></div>
           <div class="blog-card-body">
             <div class="blog-card-cat">Business</div>
             <div class="blog-card-title">How ADAS Mastery Builds a Premium Shop Reputation — and Justifies Higher Rates</div>
@@ -3694,6 +3695,13 @@ if (!sessionStorage.getItem('ao-hvco-seen')) {
     }
   });
 })();
+</script>
+<script>
+  // Hide broken images gracefully — dark fallback bg shows instead
+  document.querySelectorAll('.blog-card-img img').forEach(function(img) {
+    img.addEventListener('error', function() { this.classList.add('img-error'); });
+    if (img.complete && img.naturalWidth === 0) img.classList.add('img-error');
+  });
 </script>
 </body>
 </html>
