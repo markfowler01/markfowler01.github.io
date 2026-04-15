@@ -21,61 +21,68 @@ jobs:
         run: |
           curl -s -H "Authorization: Bearer $PRINTIFY_TOKEN" \
             "https://api.printify.com/v1/shops/27019610/products.json" \
-          | python3 -c "
-import json, sys, re
+            -o raw_products.json
 
-data = json.load(sys.stdin)
-products = []
+      - name: Transform product data
+        run: |
+          python3 << 'PYEOF'
+          import json, sys, re
 
-for p in data['data']:
-    if not p.get('visible', True):
-        continue
-    enabled_variants = [v for v in p['variants'] if v['is_enabled']]
-    if not enabled_variants:
-        continue
+          with open('raw_products.json') as f:
+              data = json.load(f)
 
-    prices = [v['price'] for v in enabled_variants]
-    min_price = min(prices)
-    max_price = max(prices)
+          products = []
 
-    default_img = next((img['src'] for img in p['images'] if img['is_default']),
-                        p['images'][0]['src'] if p['images'] else '')
+          for p in data['data']:
+              if not p.get('visible', True):
+                  continue
+              enabled_variants = [v for v in p['variants'] if v['is_enabled']]
+              if not enabled_variants:
+                  continue
 
-    sizes = []
-    for opt in p['options']:
-        if opt['type'] == 'size':
-            size_id_set = {v['id'] for v in opt['values']}
-            enabled_opt_ids = set()
-            for v in enabled_variants:
-                for oid in v['options']:
-                    if oid in size_id_set:
-                        enabled_opt_ids.add(oid)
-            sizes = [v['title'] for v in opt['values'] if v['id'] in enabled_opt_ids]
+              prices = [v['price'] for v in enabled_variants]
+              min_price = min(prices)
+              max_price = max(prices)
 
-    # Strip HTML tags from description
-    desc = re.sub(r'<[^>]+>', ' ', p.get('description', ''))
-    desc = re.sub(r'\s+', ' ', desc).strip()
-    # Trim to first sentence or 160 chars
-    match = re.match(r'^(.{40,160}?[.!?])\s', desc)
-    short_desc = match.group(1) if match else desc[:160]
+              default_img = next(
+                  (img['src'] for img in p['images'] if img['is_default']),
+                  p['images'][0]['src'] if p['images'] else ''
+              )
 
-    products.append({
-        'id': p['id'],
-        'title': p['title'],
-        'description': short_desc,
-        'min_price': min_price,
-        'max_price': max_price,
-        'image': default_img,
-        'sizes': sizes,
-        'tags': p.get('tags', []),
-    })
+              sizes = []
+              for opt in p['options']:
+                  if opt['type'] == 'size':
+                      size_id_set = {v['id'] for v in opt['values']}
+                      enabled_opt_ids = set()
+                      for v in enabled_variants:
+                          for oid in v['options']:
+                              if oid in size_id_set:
+                                  enabled_opt_ids.add(oid)
+                      sizes = [v['title'] for v in opt['values'] if v['id'] in enabled_opt_ids]
 
-print(json.dumps(products, indent=2))
-" > swag-products.json
+              desc = re.sub(r'<[^>]+>', ' ', p.get('description', ''))
+              desc = re.sub(r'\s+', ' ', desc).strip()
+              match = re.match(r'^(.{40,160}?[.!?])\s', desc)
+              short_desc = match.group(1) if match else desc[:160]
+
+              products.append({
+                  'id': p['id'],
+                  'title': p['title'],
+                  'description': short_desc,
+                  'min_price': min_price,
+                  'max_price': max_price,
+                  'image': default_img,
+                  'sizes': sizes,
+                  'tags': p.get('tags', []),
+              })
+
+          with open('swag-products.json', 'w') as f:
+              json.dump(products, f, indent=2)
+          PYEOF
 
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add swag-products.json
-          git diff --staged --quiet || git commit -m "chore: update swag products from Printify" && git push
+          git diff --staged --quiet || (git commit -m "chore: update swag products from Printify" && git push)
