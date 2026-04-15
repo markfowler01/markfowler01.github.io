@@ -1,12 +1,135 @@
 [
   {
+    "id": "69df96e62ce01629fd048322",
+    "title": "Minimal Black Desk Mat with Small Orange Car Logo | Mouse Pad Desk Mat",
+    "description": "A sleek, low-profile desk mat that brings quiet focus to your workspace.",
+    "min_price": 2499,
+    "max_price": 2799,
+    "image": "https://images-api.printify.com/mockup/69df96e62ce01629fd048322/65240/6570/minimal-black-desk-mat-with-small-orange-car-logo-mouse-pad-desk-mat.jpg?camera_label=front",
+    "sizes": [
+      "12\" \u00d7 18\"",
+      "12\" \u00d7 22\"",
+      "16\" \u00d7 32\""
+    ],
+    "tags": [
+      "Home & Living",
+      "Stationery",
+      "Fall Bestsellers",
+      "Mouse pad",
+      "Mousepad",
+      "Accessories",
+      "Mouse Pads",
+      "Desk",
+      "Seasonal Picks",
+      "TikTok",
+      "Holiday Picks",
+      "Back to School",
+      "Bestsellers"
+    ]
+  },
+  {
+    "id": "69cbff7863333f98cc0cd309",
+    "title": "Connected Car Sticker | Kiss-Cut Sticker, Car Tech Decal",
+    "description": "A compact, glossy kiss-cut sticker featuring a bold orange car silhouette with signal waves \u2014 a small emblem that speaks to car lovers, tech-savvy drivers, and ",
+    "min_price": 399,
+    "max_price": 399,
+    "image": "https://images-api.printify.com/mockup/69cbff7863333f98cc0cd309/45750/16655/connected-car-sticker-kiss-cut-sticker-car-tech-decal.jpg?camera_label=front",
+    "sizes": [
+      "3\" \u00d7 3\""
+    ],
+    "tags": [
+      "Home & Living",
+      "Stickers",
+      "Fall Bestsellers",
+      "Magnets & Stickers",
+      "Kiss cut",
+      "TikTok",
+      "Back to School",
+      "Mother's Day"
+    ]
+  },
+  {
+    "id": "69cbfc909c775902070ac829",
+    "title": "Autonomous Car Icon Crewneck Sweatshirt | Self-Driving Car Graphic",
+    "description": "This crewneck sweatshirt carries a quiet, modern energy\u2014soft, slightly structured, and centered around a minimalist car icon that reads like a small signal: mov",
+    "min_price": 3299,
+    "max_price": 4799,
+    "image": "https://images-api.printify.com/mockup/69cbfc909c775902070ac829/25458/98502/autonomous-car-icon-crewneck-sweatshirt-self-driving-car-graphic.jpg?camera_label=front",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL",
+      "4XL",
+      "5XL"
+    ],
+    "tags": [
+      "Men's Clothing",
+      "Sweatshirts",
+      "Women's Clothing",
+      "DTG",
+      "Unisex",
+      "Crew neck",
+      "Regular fit",
+      "Neck Labels",
+      "TikTok",
+      "Personalization Picks",
+      "Embroidery",
+      "Mother's Day",
+      "Sale",
+      "On Sale"
+    ]
+  },
+  {
+    "id": "69cbfc68bc99c0222409cdc1",
+    "title": "Autonomous Car Icon Hoodie | Self-Driving Car Graphic Hooded Sweatshirt",
+    "description": "A cozy, everyday hoodie with a clean, modern icon at the chest \u2014 made for people who live with their wheels and tech.",
+    "min_price": 3597,
+    "max_price": 4248,
+    "image": "https://images-api.printify.com/mockup/69cbfc68bc99c0222409cdc1/32912/98425/autonomous-car-icon-hoodie-self-driving-car-graphic-hooded-sweatshirt.jpg?camera_label=back",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL",
+      "4XL",
+      "5XL"
+    ],
+    "tags": [
+      "Men's Clothing",
+      "Hoodies",
+      "Women's Clothing",
+      "DTG",
+      "Unisex",
+      "Regular fit",
+      "Neck Labels",
+      "TikTok",
+      "Embroidery",
+      "Personalization Picks",
+      "Sale",
+      "On Sale"
+    ]
+  },
+  {
     "id": "69cbf8543e9060c1fe0750a6",
-    "title": "Trucker Caps",
-    "description": "Trucker caps are perfect for merchandising—they're versatile and fit almost any occasion. A 100% polyester front and 100% nylon mesh weave back make these hats super durable through regular wear and tear.",
-    "min_price": 2136,
-    "max_price": 2136,
-    "image": "https://images-api.printify.com/mockup/69cbf8543e9060c1fe0750a6/84650/110578/trucker-caps.jpg?camera_label=front",
-    "sizes": ["One size"],
-    "tags": ["hat", "Hats", "Accessories", "Unisex"]
+    "title": "Connected Car trucker cap | Car with WiFi icon embroidery",
+    "description": "This breathable trucker hat brings a modern, on-the-road vibe to everyday wear.",
+    "min_price": 2137,
+    "max_price": 2137,
+    "image": "https://images-api.printify.com/mockup/69cbf8543e9060c1fe0750a6/84650/110578/connected-car-trucker-cap-car-with-wifi-icon-embroidery.jpg?camera_label=front",
+    "sizes": [
+      "One size"
+    ],
+    "tags": [
+      "hat",
+      "Hats",
+      "Sublimation",
+      "Accessories",
+      "Unisex"
+    ]
   }
 ]
