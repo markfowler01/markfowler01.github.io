@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADAS Brew — A 5-min calibration & body shop digest, every weekday</title>
+  <meta name="description" content="The OEM bulletins, recalls, insurance signals, and calibration craft tips that actually matter. Built by Mark Fowler — owner of Absolute ADAS. Free. Mon-Fri." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://absoluteadas.com/brew" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ADAS Brew — Calibration & Body Shop Digest" />
+  <meta property="og:description" content="A 5-min industry digest, every weekday. OEM bulletins, recalls, insurance signals, calibration craft. Free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://absoluteadas.com/brew" />
+  <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" />
+
+  <link rel="icon" href="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #CD4419;
+      --orange-dark: #b33a15;
+      --dark: #0d0d0d;
+      --dark-2: #151515;
+      --white: #ffffff;
+      --off-white: #f0ece6;
+      --gray: #888;
+      --light-gray: #ccc;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .topbar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+    .topbar img { height: 32px; }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 56px 24px;
+    }
+    .card {
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+    }
+    .brand {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 0 0 18px;
+      letter-spacing: -0.02em;
+    }
+    h1 em { color: var(--orange); font-style: normal; }
+    .lede {
+      font-size: 18px;
+      color: var(--light-gray);
+      margin: 0 auto 36px;
+      max-width: 540px;
+      line-height: 1.55;
+    }
+    .bullets {
+      list-style: none;
+      max-width: 480px;
+      margin: 0 auto 36px;
+      text-align: left;
+      padding: 0;
+    }
+    .bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      font-size: 16px;
+      color: var(--off-white);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.5;
+    }
+    .bullets li:last-child { border-bottom: none; }
+    .bullets li::before {
+      content: '→';
+      color: var(--orange);
+      font-weight: 800;
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .row { display: flex; gap: 10px; }
+    .row > * { flex: 1; }
+    input[type="email"], input[type="text"] {
+      padding: 16px 18px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      font-family: inherit;
+      width: 100%;
+    }
+    input:focus { outline: none; border-color: var(--orange); }
+    button {
+      padding: 16px 32px;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+      width: 100%;
+    }
+    button:hover { background: var(--orange-dark); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .hp { position: absolute; left: -9999px; }
+    .msg {
+      margin-top: 18px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      min-height: 20px;
+      line-height: 1.5;
+    }
+    .msg.ok { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .msg.err { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .credibility {
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.55;
+    }
+    .credibility strong { color: var(--off-white); font-weight: 600; }
+    .footer-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    footer {
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    footer a { color: var(--gray); text-decoration: none; }
+    footer a:hover { color: var(--white); }
+    @media (max-width: 600px) {
+      .row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="https://absoluteadas.com">
+      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" />
+      <span>Absolute ADAS</span>
+    </a>
+  </div>
+
+  <main>
+    <div class="card">
+      <div class="brand">ADAS Brew · Free Daily Newsletter</div>
+      <h1>Grab a coffee. Get caught up on <em>calibration and body shop</em>.</h1>
+      <p class="lede">A 5-minute industry digest in your inbox every weekday morning. The OEM bulletins, recalls, insurance signals, and calibration craft tips that actually matter — without the press-release fluff.</p>
+
+      <ul class="bullets">
+        <li><span><strong style="color:var(--white)">Mon–Fri at 6am Pacific.</strong> Designed to read with your first coffee, before the shop opens.</span></li>
+        <li><span><strong style="color:var(--white)">5 stories. 5 minutes.</strong> Curated, not aggregated. Skip the news cycle, get the signal.</span></li>
+        <li><span><strong style="color:var(--white)">Built by a real practitioner.</strong> Not a content team. Not a magazine. One shop owner who's on the floor every week.</span></li>
+      </ul>
+
+      <form id="brew-form" onsubmit="return brewSubscribe(event)">
+        <div class="row">
+          <input id="brew-email" type="email" name="email" placeholder="you@yourshop.com" required autocomplete="email" />
+          <input id="brew-name" type="text" name="name" placeholder="First name" autocomplete="given-name" />
+        </div>
+        <input id="brew-shop" type="text" name="shop" placeholder="Shop name (optional)" autocomplete="organization" />
+        <input id="brew-hp" type="text" name="website" tabindex="-1" autocomplete="off" class="hp" />
+        <button id="brew-btn" type="submit">Subscribe — Free</button>
+      </form>
+
+      <div id="brew-msg" class="msg" style="display:none"></div>
+
+      <p class="credibility">Built by <strong>Mark Fowler</strong> — owner of Absolute ADAS, mobile ADAS calibration in Western Washington.</p>
+      <p class="footer-note">No spam. Unsubscribe anytime.</p>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 <strong>Absolute ADAS</strong> · ADAS Brew newsletter · <a href="mailto:brew@adas-iq.com">brew@adas-iq.com</a>
+  </footer>
+
+  <script>
+  function brewSubscribe(e) {
+    e.preventDefault();
+    var btn = document.getElementById('brew-btn');
+    var msg = document.getElementById('brew-msg');
+    btn.disabled = true; btn.textContent = 'Subscribing…';
+    msg.style.display = 'none'; msg.className = 'msg';
+
+    var params = new URLSearchParams();
+    params.append('email', document.getElementById('brew-email').value);
+    params.append('name', document.getElementById('brew-name').value);
+    params.append('shop', document.getElementById('brew-shop').value);
+    params.append('website', document.getElementById('brew-hp').value);
+
+    fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/cron/brew/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+    .then(function (r) {
+      msg.style.display = 'block';
+      if (r.ok && r.d.ok) {
+        msg.className = 'msg ok';
+        msg.textContent = r.d.already ? 'You\'re already on the list. See you Monday morning.' : '✓ You\'re in. Check your inbox for a quick welcome — first issue lands the next weekday at 6am Pacific.';
+        document.getElementById('brew-form').reset();
+        btn.textContent = 'Subscribed!';
+      } else {
+        msg.className = 'msg err';
+        msg.textContent = (r.d && r.d.error) || 'Something went wrong. Try again.';
+        btn.disabled = false; btn.textContent = 'Subscribe — Free';
+      }
+    })
+    .catch(function () {
+      msg.style.display = 'block';
+      msg.className = 'msg err';
+      msg.textContent = 'Network error. Try again.';
+      btn.disabled = false; btn.textContent = 'Subscribe — Free';
+    });
+    return false;
+  }
+  </script>
+</body>
+</html>
