@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Absolute ADAS Mousepad - Car Diagram</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px;
+  }
+
+  .mousepad {
+    width: 925px;
+    height: 775px;
+    background: #0a0a0a;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    color: #e6edf3;
+    padding: 24px 28px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle radial glow behind car */
+  .mousepad::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(232,105,44,.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #CD4419, #e8692c);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .brand-text h1 {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+
+  .brand-text p {
+    font-size: 9px;
+    color: #8b949e;
+    font-weight: 500;
+    margin-top: 1px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .header-right .phone {
+    font-size: 14px;
+    font-weight: 700;
+    color: #CD4419;
+  }
+
+  .header-right .web {
+    font-size: 8.5px;
+    color: #8b949e;
+    margin-top: 1px;
+    font-weight: 500;
+  }
+
+  .title-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-bar h2 {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #CD4419;
+    white-space: nowrap;
+  }
+
+  .title-bar .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #CD441944, transparent);
+  }
+
+  /* CAR DIAGRAM AREA */
+  .diagram-area {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Top-down car SVG */
+  .car-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Callout labels */
+  .callout {
+    position: absolute;
+    z-index: 2;
+  }
+
+  .callout-label {
+    background: rgba(22, 27, 34, 0.92);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 5px 9px;
+    white-space: nowrap;
+  }
+
+  .callout-title {
+    font-size: 9px;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+  }
+
+  .callout-detail {
+    font-size: 7.5px;
+    color: #8b949e;
+    margin-top: 1px;
+    font-weight: 500;
+  }
+
+  .callout-cal {
+    font-size: 7.5px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .callout-cal.static { color: #58a6ff; }
+  .callout-cal.dynamic { color: #3fb950; }
+  .callout-cal.both { color: #d2a8ff; }
+
+  /* Callout dots */
+  .callout-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #CD4419;
+    position: absolute;
+    box-shadow: 0 0 8px rgba(232,105,44,.5);
+  }
+
+  /* Callout lines - drawn with SVG */
+  .callout-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .callout-lines line {
+    stroke: #CD4419;
+    stroke-width: 1;
+    stroke-dasharray: 3,3;
+    opacity: 0.5;
+  }
+
+  /* FOOTER */
+  .footer-area {
+    position: relative;
+    z-index: 1;
+    margin-top: 6px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 8px;
+    font-weight: 600;
+  }
+
+  .legend-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+  }
+
+  .legend-dot.s-dot { background: #58a6ff; }
+  .legend-dot.d-dot { background: #3fb950; }
+  .legend-dot.sd-dot { background: #d2a8ff; }
+
+  .cta-strip {
+    background: linear-gradient(90deg, #CD4419, #e8692c);
+    border-radius: 6px;
+    padding: 7px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cta-strip .left {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .cta-strip .right {
+    font-size: 8.5px;
+    color: rgba(255,255,255,.85);
+    font-weight: 600;
+  }
+
+  .disclaimer {
+    font-size: 6.5px;
+    color: #484f58;
+    text-align: center;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mousepad">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:48px;width:auto;" />
+    </div>
+    <div class="header-right">
+      <div class="phone">(425) 366-8845</div>
+      <div class="web">absoluteadas.com | We come to your shop</div>
+    </div>
+  </div>
+
+  <div class="title-bar">
+    <h2>Where ADAS Sensors Live -- Know What Needs Calibration</h2>
+    <div class="line"></div>
+  </div>
+
+  <!-- CAR DIAGRAM -->
+  <div class="diagram-area">
+
+    <!-- Top-down car outline -->
+    <svg class="car-svg" width="260" height="480" viewBox="0 0 260 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Car body outline -->
+      <path d="
+        M 90 40
+        Q 90 15, 130 12
+        Q 170 15, 170 40
+        L 175 60
+        Q 180 65, 185 80
+        L 195 120
+        Q 205 140, 210 160
+        L 215 200
+        Q 218 230, 218 260
+        L 218 300
+        Q 218 340, 210 370
+        L 200 400
+        Q 190 425, 180 440
+        L 170 455
+        Q 160 468, 130 470
+        Q 100 468, 90 455
+        L 80 440
+        Q 70 425, 60 400
+        L 50 370
+        Q 42 340, 42 300
+        L 42 260
+        Q 42 230, 45 200
+        L 50 160
+        Q 55 140, 65 120
+        L 75 80
+        Q 80 65, 85 60
+        Z
+      " stroke="#30363d" stroke-width="2" fill="rgba(22,27,34,0.6)" />
+
+      <!-- Windshield -->
+      <path d="M 95 115 Q 130 105, 165 115 L 160 160 Q 130 155, 100 160 Z"
+        stroke="#4a5568" stroke-width="1.5" fill="rgba(88,166,255,0.08)" />
+
+      <!-- Rear window -->
+      <path d="M 95 365 Q 130 375, 165 365 L 160 330 Q 130 325, 100 330 Z"
+        stroke="#4a5568" stroke-width="1.5" fill="rgba(88,166,255,0.08)" />
+
+      <!-- Roof -->
+      <ellipse cx="130" cy="240" rx="55" ry="70" stroke="#30363d" stroke-width="1" fill="none" stroke-dasharray="4,4" />
+
+      <!-- Front wheels -->
+      <rect x="30" y="100" width="22" height="50" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1.5" />
+      <rect x="208" y="100" width="22" height="50" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1.5" />
+
+      <!-- Rear wheels -->
+      <rect x="30" y="330" width="22" height="50" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1.5" />
+      <rect x="208" y="330" width="22" height="50" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1.5" />
+
+      <!-- Headlights -->
+      <ellipse cx="85" cy="55" rx="12" ry="6" fill="rgba(255,200,50,0.15)" stroke="#4a5568" stroke-width="1" />
+      <ellipse cx="175" cy="55" rx="12" ry="6" fill="rgba(255,200,50,0.15)" stroke="#4a5568" stroke-width="1" />
+
+      <!-- Taillights -->
+      <ellipse cx="85" cy="455" rx="10" ry="5" fill="rgba(255,50,50,0.15)" stroke="#4a5568" stroke-width="1" />
+      <ellipse cx="175" cy="455" rx="10" ry="5" fill="rgba(255,50,50,0.15)" stroke="#4a5568" stroke-width="1" />
+
+      <!-- Side mirrors -->
+      <ellipse cx="30" cy="140" rx="8" ry="5" fill="#21262d" stroke="#30363d" stroke-width="1" />
+      <ellipse cx="230" cy="140" rx="8" ry="5" fill="#21262d" stroke="#30363d" stroke-width="1" />
+
+      <!-- Front grille area / radar -->
+      <rect x="105" y="20" width="50" height="8" rx="3" fill="rgba(232,105,44,0.15)" stroke="#CD4419" stroke-width="0.8" stroke-dasharray="2,2" />
+
+      <!-- Center label -->
+      <text x="130" y="245" text-anchor="middle" fill="#30363d" font-size="10" font-family="Inter" font-weight="700" letter-spacing="2">TOP VIEW</text>
+    </svg>
+
+    <!-- CALLOUT LINES SVG -->
+    <svg class="callout-lines" viewBox="0 0 869 580">
+      <!-- Forward Camera (windshield) to left label -->
+      <line x1="415" y1="128" x2="155" y2="80" />
+      <!-- Front Radar (grille) to left label -->
+      <line x1="430" y1="52" x2="155" y2="32" />
+      <!-- Adaptive Headlights to left label -->
+      <line x1="380" y1="70" x2="155" y2="140" />
+      <!-- Side Mirror left to left label -->
+      <line x1="350" y1="155" x2="155" y2="200" />
+      <!-- Rain sensor to left label -->
+      <line x1="415" y1="110" x2="155" y2="260" />
+      <!-- Parking sensors rear to right label -->
+      <line x1="465" y1="470" x2="715" y2="430" />
+      <!-- BSM right to right label -->
+      <line x1="530" y1="380" x2="715" y2="360" />
+      <!-- Rear camera to right label -->
+      <line x1="435" y1="485" x2="715" y2="490" />
+      <!-- Surround view to right label -->
+      <line x1="505" y1="250" x2="715" y2="260" />
+      <!-- HUD to right label -->
+      <line x1="420" y1="190" x2="715" y2="120" />
+      <!-- Front parking sensors to right label -->
+      <line x1="465" y1="52" x2="715" y2="45" />
+      <!-- Steering angle to right label -->
+      <line x1="430" y1="180" x2="715" y2="190" />
+    </svg>
+
+    <!-- LEFT SIDE CALLOUTS -->
+
+    <!-- Front Radar -->
+    <div class="callout" style="left:12px; top:16px;">
+      <div class="callout-label">
+        <div class="callout-title">Front Radar</div>
+        <div class="callout-detail">ACC, AEB, Collision Warning</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Forward Camera -->
+    <div class="callout" style="left:12px; top:63px;">
+      <div class="callout-label">
+        <div class="callout-title">Forward Camera</div>
+        <div class="callout-detail">FCW, AEB, LDW, LKA, Auto High Beam</div>
+        <div class="callout-cal both">Static and/or Dynamic</div>
+      </div>
+    </div>
+
+    <!-- Adaptive Headlights -->
+    <div class="callout" style="left:12px; top:124px;">
+      <div class="callout-label">
+        <div class="callout-title">Adaptive Headlights</div>
+        <div class="callout-detail">Auto-leveling, ADB, Curve Lighting</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Side Mirror Cameras -->
+    <div class="callout" style="left:12px; top:184px;">
+      <div class="callout-label">
+        <div class="callout-title">Side Mirror Cameras</div>
+        <div class="callout-detail">Blind Spot Indicators, Surround View</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Rain Sensor -->
+    <div class="callout" style="left:12px; top:244px;">
+      <div class="callout-label">
+        <div class="callout-title">Rain / Light Sensor</div>
+        <div class="callout-detail">Auto wipers, Auto headlights</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE CALLOUTS -->
+
+    <!-- Front Parking Sensors -->
+    <div class="callout" style="right:12px; top:28px;">
+      <div class="callout-label">
+        <div class="callout-title">Front Parking Sensors</div>
+        <div class="callout-detail">Ultrasonic, Front Cross Traffic</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div class="callout" style="right:12px; top:103px;">
+      <div class="callout-label">
+        <div class="callout-title">Heads-Up Display</div>
+        <div class="callout-detail">Windshield projection, Dash-mounted</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Steering Angle -->
+    <div class="callout" style="right:12px; top:173px;">
+      <div class="callout-label">
+        <div class="callout-title">Steering Angle Sensor</div>
+        <div class="callout-detail">ESC, Lane Centering reference</div>
+        <div class="callout-cal dynamic">Dynamic calibration</div>
+      </div>
+    </div>
+
+    <!-- Surround View -->
+    <div class="callout" style="right:12px; top:243px;">
+      <div class="callout-label">
+        <div class="callout-title">360 Surround View</div>
+        <div class="callout-detail">4-camera bird's eye system</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Blind Spot -->
+    <div class="callout" style="right:12px; top:343px;">
+      <div class="callout-label">
+        <div class="callout-title">Blind Spot Monitoring</div>
+        <div class="callout-detail">BSM, Rear Cross-Traffic Alert</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Rear Parking Sensors -->
+    <div class="callout" style="right:12px; top:413px;">
+      <div class="callout-label">
+        <div class="callout-title">Rear Parking Sensors</div>
+        <div class="callout-detail">Ultrasonic, Park Assist</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+    <!-- Rear Camera -->
+    <div class="callout" style="right:12px; top:473px;">
+      <div class="callout-label">
+        <div class="callout-title">Rear View Camera</div>
+        <div class="callout-detail">Backup camera, Trailer Assist</div>
+        <div class="callout-cal static">Static calibration</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-area">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot s-dot"></div> <span style="color:#58a6ff;">Static</span> = In-shop with targets</div>
+      <div class="legend-item"><div class="legend-dot d-dot"></div> <span style="color:#3fb950;">Dynamic</span> = Road-driven</div>
+      <div class="legend-item"><div class="legend-dot sd-dot"></div> <span style="color:#d2a8ff;">S/D</span> = Varies by make/model</div>
+      <div style="flex:1;"></div>
+      <div class="legend-item" style="color:#6e7681;font-size:7.5px;">Pre + post scan required on every ADAS vehicle. Always verify OEM procedures.</div>
+    </div>
+    <div class="cta-strip">
+      <div class="left">Need a calibration? We come to your shop. Same-day available.</div>
+      <div class="right">Call or text (425) 366-8845 | absoluteadas.com</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
