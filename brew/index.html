@@ -341,6 +341,23 @@
       line-height: 1.55;
     }
     .ps strong { color: var(--orange); }
+    .library-section { padding: 64px 24px 24px; background: var(--dark); }
+    .library-inner { max-width: 960px; margin: 0 auto; }
+    .library-header { text-align: center; margin-bottom: 36px; }
+    .library-eyebrow { font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 14px; }
+    .library-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 40px); font-weight: 900; line-height: 1.1; letter-spacing: -.015em; margin-bottom: 14px; color: var(--white); }
+    .library-lede { font-size: 16px; color: var(--light-gray); max-width: 560px; margin: 0 auto; line-height: 1.55; }
+    .library-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .library-card { background: var(--dark-2); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 28px 26px; text-decoration: none; color: inherit; transition: border-color .15s, transform .12s; display: block; }
+    .library-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+    .library-card-tag { font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .16em; color: var(--orange); text-transform: uppercase; margin-bottom: 14px; }
+    .library-card-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 800; line-height: 1.25; margin-bottom: 10px; color: var(--white); }
+    .library-card-desc { font-size: 14px; color: var(--light-gray); line-height: 1.55; margin-bottom: 16px; }
+    .library-card-cta { font-size: 13px; font-weight: 700; color: var(--orange); }
+    .library-bonus { text-align: center; margin-top: 36px; }
+    .library-bonus a { display: inline-block; font-size: 14px; color: var(--gray); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,.2); padding-bottom: 2px; }
+    .library-bonus a:hover { color: var(--white); border-bottom-color: var(--orange); }
+    @media (max-width: 600px) { .library-grid { grid-template-columns: 1fr; } }
     footer {
       padding: 24px;
       text-align: center;
@@ -433,34 +450,34 @@
         <strong>P.S.</strong> Most readers find at least one calibration line item they were leaving on the table in the first issue. Pays for itself before you finish your second cup of coffee.
       </div>
     </div>
-
-    <section style="max-width:960px;margin:64px auto 0;padding:0 24px;">
-      <div style="text-align:center;margin-bottom:36px;">
-        <div style="font-family:monospace;font-size:11px;font-weight:800;letter-spacing:.22em;color:var(--orange);text-transform:uppercase;margin-bottom:14px;">The ADAS Brew Library</div>
-        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,40px);font-weight:900;line-height:1.1;letter-spacing:-.015em;margin-bottom:14px;">Browse Everything. <span style="color:var(--orange);">Free.</span></h2>
-        <p style="font-size:16px;color:var(--light-gray);max-width:560px;margin:0 auto;line-height:1.55;">Two formats, one mission: keep your calibration line items paid. No email required to read.</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px;">
-        <a href="/brew/archive" style="background:var(--dark-2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:28px 26px;text-decoration:none;color:inherit;transition:border-color .15s,transform .12s;display:block;">
-          <div style="font-family:monospace;font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--orange);text-transform:uppercase;margin-bottom:14px;">Daily Issues</div>
-          <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;line-height:1.25;margin-bottom:10px;color:#fff;">The Newsletter Archive</h3>
-          <p style="font-size:14px;color:var(--light-gray);line-height:1.55;margin-bottom:16px;">Every weekday issue, indexed. 5-story digests of carrier moves, OEM bulletins, recalls, and craft tips. Read past issues even if you missed the email.</p>
-          <div style="font-size:13px;font-weight:700;color:var(--orange);">Read past issues →</div>
-        </a>
-        <a href="/brew/articles/" style="background:var(--dark-2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:28px 26px;text-decoration:none;color:inherit;transition:border-color .15s,transform .12s;display:block;">
-          <div style="font-family:monospace;font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--orange);text-transform:uppercase;margin-bottom:14px;">Field Notes</div>
-          <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;line-height:1.25;margin-bottom:10px;color:#fff;">The Article Library</h3>
-          <p style="font-size:14px;color:var(--light-gray);line-height:1.55;margin-bottom:16px;">40 evergreen long-form takes on calibration craft, insurance denials, OEM procedures, liability, and the calls that move shop margins. The depth-reads.</p>
-          <div style="font-size:13px;font-weight:700;color:var(--orange);">Browse 40 articles →</div>
-        </a>
-      </div>
-
-      <div style="text-align:center;margin-top:36px;">
-        <a href="/brew/oem-cheat-sheet" style="display:inline-block;font-size:14px;color:var(--gray);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.2);padding-bottom:2px;">📋 Bonus: The OEM Position Statement Cheat Sheet →</a>
-      </div>
-    </section>
   </main>
+
+  <section class="library-section">
+    <div class="library-inner">
+      <div class="library-header">
+        <div class="library-eyebrow">The ADAS Brew Library</div>
+        <h2 class="library-title">Browse Everything. <span style="color:var(--orange);">Free.</span></h2>
+        <p class="library-lede">Two formats, one mission: keep your calibration line items paid. No email required to read.</p>
+      </div>
+      <div class="library-grid">
+        <a href="/brew/archive" class="library-card">
+          <div class="library-card-tag">Daily Issues</div>
+          <h3 class="library-card-title">The Newsletter Archive</h3>
+          <p class="library-card-desc">Every weekday issue, indexed. 5-story digests of carrier moves, OEM bulletins, recalls, and craft tips. Read past issues even if you missed the email.</p>
+          <div class="library-card-cta">Read past issues →</div>
+        </a>
+        <a href="/brew/articles/" class="library-card">
+          <div class="library-card-tag">Field Notes</div>
+          <h3 class="library-card-title">The Article Library</h3>
+          <p class="library-card-desc">40 evergreen long-form takes on calibration craft, insurance denials, OEM procedures, liability, and the calls that move shop margins. The depth-reads.</p>
+          <div class="library-card-cta">Browse 40 articles →</div>
+        </a>
+      </div>
+      <div class="library-bonus">
+        <a href="/brew/oem-cheat-sheet">📋 Bonus: The OEM Position Statement Cheat Sheet →</a>
+      </div>
+    </div>
+  </section>
 
   <footer>
     © 2026 <strong>ADAS Brew</strong> · Powered by ADAS IQ · <a href="mailto:brew@absoluteadas.com">brew@absoluteadas.com</a>
