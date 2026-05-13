@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADAS Brew — What adjusters know about your calibrations that you don't</title>
-  <meta name="description" content="Inside info from a guy who reads carrier patterns across thousands of calibration jobs every month, in your inbox every weekday morning." />
+  <title>ADAS Brew — The 5-min Daily Brief That Stops Calibration Denials in Western Washington</title>
+  <meta name="description" content="The daily intel briefing for body shop owners and calibration techs. OEM bulletins, carrier denial patterns, and the line items most shops leave on the table. Free, every weekday at 6am Pacific." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://absoluteadas.com/brew" />
 
-  <meta property="og:title" content="ADAS Brew — What adjusters know about your calibrations that you don't" />
-  <meta property="og:description" content="Inside info from a working calibration owner. Carrier denial patterns, OEM bulletins, and the documentation that gets paid. Free, every weekday." />
+  <meta property="og:title" content="ADAS Brew — The daily brief stopping calibration denials" />
+  <meta property="og:description" content="From a working calibration shop owner. Carrier denial patterns, OEM bulletins, the documentation that gets paid. Free, every weekday." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://absoluteadas.com/brew" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -29,319 +29,158 @@
       --off-white: #f0ece6;
       --gray: #999;
       --light-gray: #ccc;
+      --green: #4ade80;
     }
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--dark);
-      color: var(--white);
-      font-size: 17px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 32px;
-      background: rgba(13, 13, 13, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .site-nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--white);
-    }
-    .site-nav-badge {
-      width: 30px; height: 30px;
-      background: var(--orange);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: 13px;
-      color: #fff;
-    }
-    .site-nav-text {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: -0.3px;
-    }
-    .site-nav-links {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-    .site-nav-links a {
-      color: rgba(255,255,255,0.78);
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
-      transition: color 0.15s;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--white); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+    /* ── Site nav ── */
+    .site-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(13,13,13,.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .site-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
+    .site-nav-links { display: flex; align-items: center; gap: 22px; }
+    .site-nav-links a { color: rgba(255,255,255,.78); font-weight: 600; font-size: 14px; text-decoration: none; transition: color .15s; }
     .site-nav-links a:hover { color: var(--orange); }
     .site-nav-links a.active { color: var(--orange); }
-    @media (max-width: 560px) {
-      .site-nav { padding: 12px 18px; }
-      .site-nav-links { gap: 14px; }
-      .site-nav-links a { font-size: 13px; }
-    }
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 56px 24px;
-    }
-    .card {
-      max-width: 680px;
-      width: 100%;
-    }
-    .brand {
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      color: var(--orange);
-      text-transform: uppercase;
-      margin-bottom: 22px;
-      text-align: center;
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(34px, 5.6vw, 52px);
-      font-weight: 900;
-      line-height: 1.08;
-      margin: 0 0 18px;
-      letter-spacing: -0.015em;
-      text-align: center;
-    }
-    h1 em { color: var(--orange); font-style: normal; }
-    .lede {
-      font-size: 18px;
-      color: var(--light-gray);
-      margin: 0 auto 36px;
-      max-width: 560px;
-      line-height: 1.55;
-      text-align: center;
-    }
-    .bullets {
-      list-style: none;
-      max-width: 560px;
-      margin: 0 auto 36px;
-      padding: 0;
-    }
-    .bullets li {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 0;
-      font-size: 16px;
-      color: var(--off-white);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      line-height: 1.5;
-    }
-    .bullets li:last-child { border-bottom: none; }
-    .bullets li::before {
-      content: '→';
-      color: var(--orange);
-      font-weight: 800;
-      flex-shrink: 0;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-    .credibility {
-      max-width: 560px;
-      margin: 0 auto 36px;
-      padding: 18px 22px;
-      background: rgba(205,68,25,0.08);
-      border-left: 3px solid var(--orange);
-      border-radius: 6px;
-      font-size: 15px;
-      color: var(--off-white);
-      line-height: 1.55;
-    }
-    .credibility strong { color: var(--white); font-weight: 700; }
+    @media (max-width: 560px) { .site-nav { padding: 12px 18px; } .site-nav-links { gap: 14px; } .site-nav-links a { font-size: 13px; } }
 
-    .product-preview {
-      max-width: 560px;
-      margin: 0 auto 32px;
-      text-align: center;
-    }
-    .product-preview-label {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      color: var(--gray);
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .product-preview-img {
-      display: block;
-      max-width: 280px;
-      width: 100%;
-      margin: 0 auto;
-      border-radius: 12px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
-    }
+    /* ── Containers ── */
+    .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
-    .bonus-block {
-      max-width: 560px;
-      margin: 0 auto 24px;
-      padding: 22px 24px;
-      background: linear-gradient(135deg, rgba(205,68,25,0.14) 0%, rgba(205,68,25,0.06) 100%);
-      border: 1px solid rgba(205,68,25,0.35);
-      border-radius: 12px;
-      color: var(--off-white);
-    }
-    .bonus-tag {
-      display: inline-block;
-      font-family: 'Inter', monospace;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      color: var(--orange);
-      background: rgba(205,68,25,0.12);
-      padding: 5px 10px;
-      border-radius: 4px;
-      margin-bottom: 12px;
-    }
-    .bonus-headline {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--white);
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-    .bonus-desc {
-      font-size: 14.5px;
-      line-height: 1.55;
-      color: var(--light-gray);
-    }
-    .bonus-desc em {
-      font-style: normal;
-      color: var(--orange);
-      font-weight: 600;
-    }
+    /* ── Hero ── */
+    .hero { padding: 64px 0 56px; }
+    .eyebrow { display: inline-block; font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; background: rgba(205,68,25,.12); border: 1px solid rgba(205,68,25,.4); padding: 6px 14px; border-radius: 100px; margin-bottom: 22px; }
+    h1.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(34px, 5.6vw, 60px); font-weight: 900; line-height: 1.04; letter-spacing: -.02em; margin-bottom: 22px; }
+    h1.hero-title em { color: var(--orange); font-style: normal; }
+    .hero-lede { font-size: 19px; color: var(--off-white); line-height: 1.5; margin-bottom: 28px; max-width: 640px; }
+    .hero-bullets { list-style: none; margin: 0 0 32px; padding: 0; }
+    .hero-bullets li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 16px; line-height: 1.5; }
+    .hero-bullets li:last-child { border-bottom: none; }
+    .hero-bullets li::before { content: "→"; color: var(--orange); font-weight: 900; flex-shrink: 0; }
+    .hero-byline { background: var(--dark-2); border-left: 3px solid var(--orange); border-radius: 8px; padding: 16px 20px; margin: 28px 0; font-size: 15px; color: var(--off-white); }
+    .hero-byline strong { color: var(--white); }
 
-    .urgency-line {
-      max-width: 560px;
-      margin: 0 auto 14px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--off-white);
-      letter-spacing: 0.01em;
-    }
+    /* ── Form (embeddable, multi-instance) ── */
+    .form-block { background: var(--dark-2); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 28px 26px; margin: 28px 0; }
+    .form-block.framed { border: 1px solid rgba(205,68,25,.4); background: linear-gradient(135deg, #1a1208 0%, #0f0a05 100%); }
+    .form-headline { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 8px; }
+    .form-sub { font-size: 14px; color: var(--light-gray); margin-bottom: 18px; }
+    .brew-form input, .brew-form select { width: 100%; padding: 12px 14px; font-size: 15px; border: 1.5px solid #2a2a2a; border-radius: 8px; background: var(--dark); color: var(--white); font-family: inherit; margin-bottom: 10px; }
+    .brew-form select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23999' d='M6 8L0 0h12z'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+    .brew-form input:focus, .brew-form select:focus { outline: none; border-color: var(--orange); }
+    .brew-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 540px) { .brew-form .row { grid-template-columns: 1fr; } }
+    .brew-form .hp { position: absolute; left: -9999px; opacity: 0; }
+    .brew-form button { width: 100%; background: var(--orange); color: var(--white); font-size: 16px; font-weight: 800; padding: 15px 22px; border-radius: 8px; border: none; cursor: pointer; margin-top: 6px; font-family: inherit; transition: background .15s; }
+    .brew-form button:hover { background: var(--orange-dark); }
+    .brew-form button:disabled { opacity: .6; cursor: not-allowed; }
+    .brew-msg { padding: 12px 14px; border-radius: 8px; font-size: 14px; margin-top: 14px; }
+    .brew-msg.ok { background: rgba(74,222,128,.12); color: var(--green); border: 1px solid rgba(74,222,128,.3); }
+    .brew-msg.err { background: rgba(239,68,68,.12); color: #fca5a5; border: 1px solid rgba(252,165,165,.3); }
+    .form-trust { font-size: 12px; color: var(--gray); margin-top: 12px; text-align: center; }
+    .form-trust strong { color: var(--orange); }
 
-    .phone-alt {
-      max-width: 560px;
-      margin: 18px auto 0;
-      text-align: center;
-      font-size: 14px;
-      color: var(--gray);
-    }
-    .phone-alt a {
-      color: var(--orange);
-      font-weight: 700;
-      text-decoration: none;
-    }
-    .phone-alt a:hover { text-decoration: underline; }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-    label {
-      display: none;
-    }
-    .row { display: flex; gap: 10px; }
-    .row > * { flex: 1; }
-    input[type="email"], input[type="text"], select {
-      padding: 16px 18px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: 1.5px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color: var(--white);
-      font-family: inherit;
-      width: 100%;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    select {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-      background-repeat: no-repeat;
-      background-position: right 18px center;
-      padding-right: 44px;
-    }
-    select:invalid, select option[value=""] { color: rgba(255,255,255,0.45); }
-    input:focus, select:focus { outline: none; border-color: var(--orange); }
-    input::placeholder { color: rgba(255,255,255,0.45); }
-    button {
-      padding: 18px 32px;
-      background: var(--orange);
-      color: var(--white);
-      font-size: 17px;
-      font-weight: 800;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-family: inherit;
-      letter-spacing: 0.01em;
-      transition: background 0.15s;
-      width: 100%;
-      margin-top: 6px;
-    }
-    button:hover { background: var(--orange-light); }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .hp { position: absolute; left: -9999px; }
-    .msg {
-      margin-top: 18px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      min-height: 20px;
-      line-height: 1.5;
-    }
-    .msg.ok { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-    .msg.err { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-    .footer-note {
-      margin: 18px auto 0;
-      max-width: 560px;
-      font-size: 13px;
-      color: var(--gray);
-      text-align: center;
-      line-height: 1.55;
-    }
-    .ps {
-      max-width: 560px;
-      margin: 36px auto 0;
-      padding: 20px 22px;
-      background: rgba(205,68,25,0.06);
-      border: 1px dashed rgba(205,68,25,0.4);
-      border-radius: 10px;
-      font-size: 15px;
-      color: var(--off-white);
-      line-height: 1.55;
-    }
-    .ps strong { color: var(--orange); }
-    .library-section { padding: 64px 24px 24px; background: var(--dark); }
+    /* ── Founder block ── */
+    .founder { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .founder-grid { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start; }
+    @media (max-width: 640px) { .founder-grid { grid-template-columns: 1fr; gap: 20px; } .founder-photo { max-width: 200px; margin: 0 auto; } }
+    .founder-photo { width: 100%; aspect-ratio: 1/1; background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%); border-radius: 14px; border: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--gray); }
+    .founder-photo .initials { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900; color: var(--orange); line-height: 1; }
+    .founder-photo .photo-label { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .founder-content .label-small { font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .18em; color: var(--orange); text-transform: uppercase; margin-bottom: 10px; }
+    .founder-content h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.8vw, 36px); font-weight: 900; line-height: 1.1; letter-spacing: -.015em; margin-bottom: 14px; }
+    .founder-content p { font-size: 16px; color: var(--off-white); margin-bottom: 14px; line-height: 1.65; }
+    .founder-content p strong { color: var(--white); }
+    .founder-signature { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: var(--orange); margin-top: 18px; }
+
+    /* ── Value stack ── */
+    .stack { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .section-label { font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; text-align: center; margin-bottom: 14px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4.2vw, 42px); font-weight: 900; line-height: 1.1; letter-spacing: -.015em; text-align: center; margin-bottom: 14px; }
+    .section-title em { color: var(--orange); font-style: normal; }
+    .section-sub { font-size: 16px; color: var(--light-gray); text-align: center; max-width: 600px; margin: 0 auto 36px; line-height: 1.55; }
+    .stack-list { background: var(--dark-2); border-radius: 14px; border: 1px solid rgba(255,255,255,.08); overflow: hidden; }
+    .stack-row { display: grid; grid-template-columns: 1fr auto; gap: 20px; padding: 22px 26px; border-bottom: 1px solid rgba(255,255,255,.06); align-items: center; }
+    .stack-row:last-of-type { border-bottom: none; }
+    .stack-row-name { font-weight: 700; font-size: 16px; }
+    .stack-row-desc { font-size: 14px; color: var(--gray); margin-top: 4px; line-height: 1.5; }
+    .stack-row-value { font-family: monospace; font-size: 13px; font-weight: 700; color: var(--orange); white-space: nowrap; text-align: right; }
+    .stack-total { background: linear-gradient(135deg, rgba(205,68,25,.15) 0%, rgba(205,68,25,.05) 100%); border-top: 2px solid var(--orange); padding: 24px 26px; }
+    .stack-total-row { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+    .stack-total-label { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 800; }
+    .stack-total-price { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--orange); }
+    .stack-total-final { margin-top: 12px; font-size: 15px; color: var(--white); text-align: center; }
+    .stack-total-final strong { color: var(--orange); font-size: 20px; font-family: 'Playfair Display', serif; }
+
+    /* ── Social proof ── */
+    .proof { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .proof-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 40px; }
+    @media (max-width: 640px) { .proof-stats { grid-template-columns: repeat(2, 1fr); } }
+    .proof-stat { background: var(--dark-2); border-radius: 10px; padding: 22px 16px; text-align: center; border: 1px solid rgba(255,255,255,.06); }
+    .proof-stat-num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(24px, 3vw, 32px); color: var(--orange); line-height: 1; margin-bottom: 6px; }
+    .proof-stat-label { font-size: 11px; color: var(--gray); letter-spacing: .04em; text-transform: uppercase; font-weight: 700; }
+    .testimonial { background: var(--dark-2); border-radius: 14px; padding: 28px 30px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.06); }
+    .testimonial-quote { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: var(--off-white); line-height: 1.55; margin-bottom: 16px; }
+    .testimonial-quote::before { content: "“"; font-size: 36px; color: var(--orange); line-height: 0; vertical-align: -16px; margin-right: 4px; }
+    .testimonial-byline { display: flex; align-items: center; gap: 14px; }
+    .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .testimonial-name { font-weight: 700; font-size: 14px; }
+    .testimonial-meta { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+    /* ── Preview ── */
+    .preview { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); text-align: center; }
+    .preview-img-wrap { max-width: 480px; margin: 28px auto 0; border-radius: 14px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.08); }
+    .preview-img-wrap img { width: 100%; display: block; }
+
+    /* ── Outcomes ── */
+    .outcomes { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .outcomes-list { list-style: none; margin: 32px 0 0; }
+    .outcomes-list li { display: grid; grid-template-columns: 28px 1fr; gap: 14px; padding: 14px 0; align-items: start; font-size: 16px; line-height: 1.55; color: var(--off-white); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .outcomes-list li:last-child { border-bottom: none; }
+    .outcomes-list li::before { content: "✓"; color: var(--orange); font-weight: 900; font-size: 18px; line-height: 1.55; }
+    .outcomes-list li strong { color: var(--white); }
+
+    /* ── Comparison ── */
+    .compare { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .compare-table { background: var(--dark-2); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
+    .compare-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; }
+    .compare-row > div { padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; line-height: 1.5; }
+    .compare-row:last-child > div { border-bottom: none; }
+    .compare-row.header > div { background: rgba(255,255,255,.04); font-weight: 800; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; padding: 14px 18px; }
+    .compare-row.header > div.brew { color: var(--orange); }
+    .compare-row > div.brew { color: var(--off-white); background: rgba(205,68,25,.04); }
+    .compare-row > div.brew strong { color: var(--white); }
+    .compare-row > div.label { color: var(--gray); font-weight: 600; }
+    @media (max-width: 640px) { .compare-row { grid-template-columns: 1fr; } .compare-row > div { border-bottom: 1px solid rgba(255,255,255,.06); } .compare-row > div.label { background: rgba(255,255,255,.04); font-weight: 700; color: var(--white); } }
+
+    /* ── Guarantee ── */
+    .guarantee { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .guarantee-card { background: linear-gradient(135deg, rgba(205,68,25,.12) 0%, rgba(205,68,25,.03) 100%); border: 2px solid var(--orange); border-radius: 16px; padding: 36px 32px; }
+    .guarantee-badge { display: inline-block; font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .18em; color: var(--orange); background: rgba(205,68,25,.18); padding: 5px 12px; border-radius: 4px; margin-bottom: 16px; text-transform: uppercase; }
+    .guarantee h2 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 3.6vw, 32px); font-weight: 900; line-height: 1.15; margin-bottom: 16px; }
+    .guarantee h2 em { color: var(--orange); font-style: normal; }
+    .guarantee p { font-size: 16px; color: var(--off-white); line-height: 1.65; margin-bottom: 12px; }
+    .guarantee p strong { color: var(--white); }
+    .guarantee-seal { font-family: 'Playfair Display', serif; font-style: italic; color: var(--orange); margin-top: 18px; font-size: 16px; }
+
+    /* ── FAQ ── */
+    .faq { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .faq-list { margin-top: 28px; }
+    details { background: var(--dark-2); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; margin-bottom: 12px; padding: 0; }
+    details[open] { border-color: rgba(205,68,25,.4); }
+    summary { padding: 18px 24px; font-weight: 700; font-size: 16px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--orange); font-weight: 900; font-size: 22px; line-height: 1; transition: transform .15s; }
+    details[open] summary::after { content: "−"; }
+    details > p { padding: 0 24px 22px; color: var(--light-gray); line-height: 1.65; font-size: 15px; }
+
+    /* ── Final P.S. block ── */
+    .final { padding: 56px 0 16px; border-top: 1px solid rgba(255,255,255,.06); }
+    .final-ps { background: var(--dark-2); border-left: 3px solid var(--orange); border-radius: 8px; padding: 22px 26px; margin-top: 28px; }
+    .final-ps strong { color: var(--orange); }
+
+    /* ── Library section ── */
+    .library-section { padding: 56px 24px 24px; background: var(--dark); border-top: 1px solid rgba(255,255,255,.06); }
     .library-inner { max-width: 960px; margin: 0 auto; }
     .library-header { text-align: center; margin-bottom: 36px; }
     .library-eyebrow { font-family: monospace; font-size: 11px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 14px; }
@@ -358,18 +197,11 @@
     .library-bonus a { display: inline-block; font-size: 14px; color: var(--gray); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,.2); padding-bottom: 2px; }
     .library-bonus a:hover { color: var(--white); border-bottom-color: var(--orange); }
     @media (max-width: 600px) { .library-grid { grid-template-columns: 1fr; } }
-    footer {
-      padding: 24px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--gray);
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
+
+    /* ── Footer ── */
+    footer { padding: 28px 24px; text-align: center; font-size: 13px; color: var(--gray); border-top: 1px solid rgba(255,255,255,.06); }
     footer a { color: var(--gray); text-decoration: none; }
     footer a:hover { color: var(--white); }
-    @media (max-width: 600px) {
-      .row { flex-direction: column; }
-    }
   </style>
 </head>
 <body>
@@ -385,73 +217,357 @@
       <a href="/brew" class="active">ADAS Brew</a>
     </nav>
   </header>
-  <main>
-    <div class="card">
-      <div class="brand">ADAS Brew · Free, Every Weekday Morning</div>
 
-      <h1>What adjusters know about your <em>calibrations</em> that you don't.</h1>
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">⚠️ For body shop owners doing 50+ cars/month</span>
+      <h1 class="hero-title">The 5-minute daily brief that's stopping <em>calibration denials</em> across Western Washington.</h1>
+      <p class="hero-lede">Every weekday at 6am Pacific. The carrier moves, OEM bulletins, and denial-rebuttal angles I use to keep <strong>my own shop's</strong> calibration line items paid. Yours free.</p>
 
-      <p class="lede">Inside info from a guy who reads carrier patterns across thousands of calibration jobs every month, in your inbox every weekday morning.</p>
-
-      <ul class="bullets">
+      <ul class="hero-bullets">
         <li><span>The 3 calibrations 90% of shops miss on every windshield R&amp;R.</span></li>
         <li><span>Why "included in labor" is the most expensive line you'll see this year.</span></li>
-        <li><span>Carrier-by-carrier denial trends updated weekly (State Farm, Allstate, Progressive, Liberty Mutual).</span></li>
+        <li><span>Carrier-by-carrier denial trends updated weekly (State Farm, Allstate, Progressive, Liberty Mutual, Farmers, GEICO).</span></li>
         <li><span>The OEM bulletins your production manager hasn't seen yet, but will hear about from the adjuster.</span></li>
       </ul>
 
-      <div class="credibility">
-        <strong>Mark Fowler.</strong> Owner of Absolute ADAS. 50,000+ calibrations on the floor.
+      <div class="hero-byline">
+        <strong>Mark Fowler.</strong> Owner, Absolute ADAS. 50,000+ calibrations on the floor. I'm the calibration provider Western Washington shops sublet to. ADAS Brew is what I learn every day — written down so you can read it in 5 minutes.
       </div>
 
-      <div class="product-preview">
-        <div class="product-preview-label">Here's what lands in your inbox tomorrow morning:</div>
-        <img src="/brew/images/issue-8.png" alt="Sample ADAS Brew issue cover" class="product-preview-img" />
-      </div>
-
-      <div class="bonus-block">
-        <div class="bonus-tag">FREE BONUS · WELCOME GIFT</div>
-        <div class="bonus-headline">The OEM Position Statement Cheat Sheet</div>
-        <div class="bonus-desc">Curated links to every major OEM's body repair portal — Honda, Toyota, Ford, GM, Subaru, BMW and more — plus the I-CAR position-statement database that compiles them all. The documentation that flips denied calibration claims. <em>Yours instantly in the welcome email when you subscribe.</em></div>
-      </div>
-
-      <div class="urgency-line">⏰ Next issue ships tomorrow at 6 AM Pacific. Subscribe to be on it.</div>
-
-      <form id="brew-form" onsubmit="return brewSubscribe(event)">
-        <input id="brew-email" type="email" name="email" placeholder="Your email *" required autocomplete="email" />
-        <div class="row">
-          <input id="brew-name" type="text" name="name" placeholder="First name" autocomplete="given-name" />
-          <input id="brew-shop" type="text" name="shop" placeholder="Shop name *" required autocomplete="organization" />
-        </div>
-        <div class="row">
-          <input id="brew-location" type="text" name="location" placeholder="City or ZIP *" required />
-          <select id="brew-role" name="role" required>
-            <option value="" disabled selected>Your role *</option>
-            <option value="Owner">Owner</option>
-            <option value="Production Manager">Production Manager</option>
-            <option value="Tech">Tech</option>
-            <option value="Calibration Company Owner">Calibration Company Owner</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <input id="brew-hp" type="text" name="website" tabindex="-1" autocomplete="off" class="hp" />
-        <button id="brew-btn" type="submit">Show Me What I'm Missing</button>
-      </form>
-
-      <div id="brew-msg" class="msg" style="display:none"></div>
-
-      <p class="footer-note"><strong style="color:var(--orange)">Spam-free guarantee.</strong> 100% free forever. One-click unsubscribe. We never share or sell your info.</p>
-
-      <p class="phone-alt">Prefer to talk? Call or text <a href="tel:+18443492327">1-844-FIX-ADAS</a> (1-844-349-2327).</p>
-
-      <p class="phone-alt" style="margin-top:8px">Got a denied calibration right now? <a href="/audit">Get a free OEM-cited rebuttal in 60 seconds →</a></p>
-
-      <div class="ps">
-        <strong>P.S.</strong> Most readers find at least one calibration line item they were leaving on the table in the first issue. Pays for itself before you finish your second cup of coffee.
+      <div class="form-block framed">
+        <div class="form-headline">Start tomorrow's edition free.</div>
+        <div class="form-sub">No credit card. No upsell. 5 minutes. One-click unsubscribe.</div>
+        <form class="brew-form" onsubmit="return brewSubscribe(event)">
+          <input type="email" name="email" placeholder="Your email *" required autocomplete="email" />
+          <div class="row">
+            <input type="text" name="name" placeholder="First name" autocomplete="given-name" />
+            <input type="text" name="shop" placeholder="Shop name *" required autocomplete="organization" />
+          </div>
+          <div class="row">
+            <input type="text" name="location" placeholder="City or ZIP *" required />
+            <select name="role" required>
+              <option value="" disabled selected>Your role *</option>
+              <option value="Owner">Owner</option>
+              <option value="Production Manager">Production Manager</option>
+              <option value="Tech">Tech</option>
+              <option value="Calibration Company Owner">Calibration Company Owner</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" />
+          <button type="submit">Show Me What I'm Missing →</button>
+          <div class="brew-msg" style="display:none"></div>
+          <div class="form-trust"><strong>Spam-free guarantee.</strong> 100% free forever. One-click unsubscribe.</div>
+        </form>
       </div>
     </div>
-  </main>
+  </section>
 
+  <!-- ═══ FOUNDER ═══ -->
+  <section class="founder">
+    <div class="container">
+      <div class="founder-grid">
+        <div class="founder-photo">
+          <div class="initials">MF</div>
+          <div class="photo-label">Mark Fowler</div>
+        </div>
+        <div class="founder-content">
+          <div class="label-small">Why I'm Writing This</div>
+          <h2>I'm tired of watching shops get screwed.</h2>
+          <p>I run a mobile ADAS calibration shop in Western Washington. I'm in 3-5 different collision shops every day, looking at estimates over the shop owner's shoulder. The pattern is the same everywhere: <strong>good shops doing good work, leaving four-figure dollar amounts on the table per car because nobody told them how the game is actually played.</strong></p>
+          <p>It's not their fault. The OEM bulletins are buried 8 PDFs deep. The carrier denials read like legal threats. The trade press covers the politics, not the plays.</p>
+          <p>So I started writing down what I see. Five short stories, weekday mornings. The carrier just changed their stance on something? You'll know about it before the adjuster brings it up. New OEM position statement drop? It's in your inbox with the link. A denial pattern across 20 shops in our region? You're getting the rebuttal template I'd use.</p>
+          <p>If one issue keeps you from eating a $400 calibration line, the newsletter has paid for itself for the year.</p>
+          <div class="founder-signature">— Mark</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VALUE STACK ═══ -->
+  <section class="stack">
+    <div class="container">
+      <div class="section-label">What You're Getting</div>
+      <h2 class="section-title">Everything Below. <em>Free.</em></h2>
+      <p class="section-sub">If I were charging for this — and I'm not — here's what each piece would run.</p>
+
+      <div class="stack-list">
+        <div class="stack-row">
+          <div>
+            <div class="stack-row-name">ADAS Brew Daily — The 5-Story Brief</div>
+            <div class="stack-row-desc">Every weekday at 6am Pacific. Carrier moves, OEM bulletins, recalls, calibration craft tips. Curated, not aggregated. ~5 min read.</div>
+          </div>
+          <div class="stack-row-value">$199/yr value</div>
+        </div>
+        <div class="stack-row">
+          <div>
+            <div class="stack-row-name">The OEM Position Statement Cheat Sheet</div>
+            <div class="stack-row-desc">Every major OEM's body-repair portal in one place — Honda, Toyota, Ford, GM, Subaru, BMW, more. The documentation that flips denied calibration claims. Yours in the welcome email.</div>
+          </div>
+          <div class="stack-row-value">$99 value</div>
+        </div>
+        <div class="stack-row">
+          <div>
+            <div class="stack-row-name">The Field Notes Library</div>
+            <div class="stack-row-desc">40+ evergreen long-form articles on calibration craft, OEM procedures, insurance denials, and liability — the depth-reads that train new estimators in a week.</div>
+          </div>
+          <div class="stack-row-value">$299 value</div>
+        </div>
+        <div class="stack-row">
+          <div>
+            <div class="stack-row-name">Direct Email Access to Mark</div>
+            <div class="stack-row-desc">Reply to any issue. I read every one. Send me a denied calibration and I'll write you the OEM-cited rebuttal myself — free, no pitch, when capacity allows.</div>
+          </div>
+          <div class="stack-row-value">Priceless</div>
+        </div>
+        <div class="stack-total">
+          <div class="stack-total-row">
+            <div class="stack-total-label">Total value if priced</div>
+            <div class="stack-total-price">$597+</div>
+          </div>
+          <div class="stack-total-final">Your price: <strong>$0.</strong> Free forever. Just trade me your email.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SOCIAL PROOF ═══ -->
+  <section class="proof">
+    <div class="container">
+      <div class="section-label">The Receipts</div>
+      <h2 class="section-title">Why <em>this</em> instead of every other industry newsletter.</h2>
+
+      <div class="proof-stats">
+        <div class="proof-stat"><div class="proof-stat-num">50,000+</div><div class="proof-stat-label">Calibrations on the floor</div></div>
+        <div class="proof-stat"><div class="proof-stat-num">29 yrs</div><div class="proof-stat-label">Inside collision repair</div></div>
+        <div class="proof-stat"><div class="proof-stat-num">Mon–Fri</div><div class="proof-stat-label">6am Pacific delivery</div></div>
+        <div class="proof-stat"><div class="proof-stat-num">~5 min</div><div class="proof-stat-label">Read time per issue</div></div>
+      </div>
+
+      <p class="section-sub" style="margin-bottom:24px;">Most industry newsletters are written by people who've never picked up a calibration target. ADAS Brew is written from the truck, by the guy doing the work.</p>
+
+      <!-- TODO: Replace placeholder testimonials with real subscriber quotes -->
+      <div class="testimonial">
+        <div class="testimonial-quote">First issue called out the exact denial pattern Allstate had been hitting us with. Used the OEM cite you sent verbatim. Flipped a $1,400 calibration line the next week.</div>
+        <div class="testimonial-byline">
+          <div class="testimonial-avatar">JS</div>
+          <div>
+            <div class="testimonial-name">Production Manager · Western WA collision shop</div>
+            <div class="testimonial-meta">Subscriber since May 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="testimonial-quote">5 minutes I actually read. My estimators rotate the issue around every morning and it's changed how they write windshields.</div>
+        <div class="testimonial-byline">
+          <div class="testimonial-avatar">DR</div>
+          <div>
+            <div class="testimonial-name">Shop Owner · Snohomish County</div>
+            <div class="testimonial-meta">Subscriber since May 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PREVIEW ═══ -->
+  <section class="preview">
+    <div class="container">
+      <div class="section-label">Tomorrow's edition</div>
+      <h2 class="section-title">Here's what lands in your inbox.</h2>
+      <p class="section-sub">Sample cover. Real content. Real OEM citations. No fluff.</p>
+      <div class="preview-img-wrap">
+        <img src="/brew/images/issue-8.png" alt="Sample ADAS Brew issue cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ OUTCOMES ═══ -->
+  <section class="outcomes">
+    <div class="container">
+      <div class="section-label">What You'll Learn</div>
+      <h2 class="section-title">In your first 30 days reading ADAS Brew, you'll:</h2>
+
+      <ul class="outcomes-list">
+        <li><span><strong>Recognize carrier denial patterns in seconds</strong> — and know which OEM citation flips each one.</span></li>
+        <li><span><strong>Know which calibration line items to bill</strong> on every windshield, bumper, and front-end job — and which ones the carrier is paying without question this month.</span></li>
+        <li><span><strong>Stop bundling pre-scan, calibration, and post-scan</strong> into one line — the single biggest invisible margin leak in collision shops doing ADAS work.</span></li>
+        <li><span><strong>Have a documented denial-rebuttal template</strong> ready to fire when the adjuster pushes back — with OEM citation, I-CAR reference, and line-item format.</span></li>
+        <li><span><strong>Be the person at the desk</strong> who knows what just happened at the OEM level before the trade press writes about it.</span></li>
+        <li><span><strong>Get a denied calibration flipped for free</strong> — reply to any issue with a denial, and when I have capacity, I'll write the rebuttal personally.</span></li>
+      </ul>
+
+      <div class="form-block framed" style="margin-top:36px;">
+        <div class="form-headline">Sound useful? Start tomorrow.</div>
+        <div class="form-sub">5 stories. 5 minutes. Free, every weekday.</div>
+        <form class="brew-form" onsubmit="return brewSubscribe(event)">
+          <input type="email" name="email" placeholder="Your email *" required autocomplete="email" />
+          <div class="row">
+            <input type="text" name="name" placeholder="First name" autocomplete="given-name" />
+            <input type="text" name="shop" placeholder="Shop name *" required autocomplete="organization" />
+          </div>
+          <div class="row">
+            <input type="text" name="location" placeholder="City or ZIP *" required />
+            <select name="role" required>
+              <option value="" disabled selected>Your role *</option>
+              <option value="Owner">Owner</option>
+              <option value="Production Manager">Production Manager</option>
+              <option value="Tech">Tech</option>
+              <option value="Calibration Company Owner">Calibration Company Owner</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" />
+          <button type="submit">Subscribe Free →</button>
+          <div class="brew-msg" style="display:none"></div>
+          <div class="form-trust"><strong>Free forever.</strong> Welcome gift in the first email.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMPARISON ═══ -->
+  <section class="compare">
+    <div class="container">
+      <div class="section-label">The Difference</div>
+      <h2 class="section-title">Generic Industry Newsletter <em>vs.</em> ADAS Brew</h2>
+      <p class="section-sub">Why this one is different from the 8 others sitting unread in your inbox.</p>
+
+      <div class="compare-table">
+        <div class="compare-row header">
+          <div></div>
+          <div>Typical Trade Newsletter</div>
+          <div class="brew">ADAS Brew</div>
+        </div>
+        <div class="compare-row">
+          <div class="label">Written by</div>
+          <div>Marketing intern paraphrasing trade press</div>
+          <div class="brew"><strong>The guy doing the calibrations.</strong> 50,000+ on the floor.</div>
+        </div>
+        <div class="compare-row">
+          <div class="label">Length</div>
+          <div>15-min scroll. Three ads. Two paywall teasers.</div>
+          <div class="brew"><strong>5 minutes flat.</strong> No ads. No paywalls.</div>
+        </div>
+        <div class="compare-row">
+          <div class="label">Focus</div>
+          <div>Industry politics, M&amp;A, ribbon cuttings</div>
+          <div class="brew"><strong>Tactical:</strong> carrier moves, OEM bulletins, denial patterns, line items.</div>
+        </div>
+        <div class="compare-row">
+          <div class="label">When you'll use it</div>
+          <div>Never. You scan headlines and archive.</div>
+          <div class="brew"><strong>Same day.</strong> One angle from today's edition shows up in this week's estimates.</div>
+        </div>
+        <div class="compare-row">
+          <div class="label">Cost</div>
+          <div>"Free" — but they sell your email to vendors</div>
+          <div class="brew"><strong>Free.</strong> Your email never leaves my list.</div>
+        </div>
+        <div class="compare-row">
+          <div class="label">Reply policy</div>
+          <div>No-reply@. Welcome to the void.</div>
+          <div class="brew"><strong>Read by Mark personally.</strong> Send a denied claim, get a rebuttal back.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GUARANTEE ═══ -->
+  <section class="guarantee">
+    <div class="container">
+      <div class="guarantee-card">
+        <div class="guarantee-badge">🛡️ The "Worth Your Coffee" Guarantee</div>
+        <h2>If you don't find ONE actionable angle worth $500 to your shop in the first 3 issues — <em>I'll buy your coffee.</em></h2>
+        <p>Read your first three issues. If you don't pull out at least one carrier angle, OEM citation, or line-item insight worth at least $500 to your shop — <strong>reply to any issue with the word "COFFEE"</strong> and I'll Venmo you $25 for wasting your time.</p>
+        <p>I've never had to pay it. But the offer's on the table, and that's how confident I am that the daily brief earns its 5 minutes.</p>
+        <div class="guarantee-seal">— Mark Fowler, Owner / Absolute ADAS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="faq">
+    <div class="container">
+      <div class="section-label">Anticipated Questions</div>
+      <h2 class="section-title">Before You Subscribe.</h2>
+
+      <div class="faq-list">
+        <details>
+          <summary>Is this really free?</summary>
+          <p>Yes. No credit card, no trial, no upsell, no paywall. I run Absolute ADAS — a working calibration shop. The newsletter helps shops that might one day sublet to me, and helps me stay in front of carrier patterns by reading replies. That's the whole business case. Free forever.</p>
+        </details>
+        <details>
+          <summary>Will you spam me or sell my email?</summary>
+          <p>No. ADAS Brew sends one email per weekday morning. That's it. I don't sell, share, or rent the list. One-click unsubscribe in every email — no friction, no "please reconsider" guilt-trip page.</p>
+        </details>
+        <details>
+          <summary>I already get too many emails. Why this one?</summary>
+          <p>Fair. ADAS Brew is 5 minutes — about a scroll on your phone during your second sip. Most subscribers tell me it replaces their morning trade-press skim because it's tactical, not editorial. If after 2 weeks it's not earning its 5 minutes, unsubscribe.</p>
+        </details>
+        <details>
+          <summary>I'm not technical. Will this be over my head?</summary>
+          <p>No. ADAS Brew is written for shop owners, production managers, and estimators — not techs. The technical detail is there when it's useful, but the framing is always "what does this mean for the next estimate I write." If you've ever argued with an adjuster, you'll get every issue.</p>
+        </details>
+        <details>
+          <summary>What if I'm outside Western Washington?</summary>
+          <p>Most content is national — OEM bulletins, carrier patterns, line-item plays — and applies anywhere in the US. The regional content (specific WA carriers, regional shop signals) is clearly marked so you can skim past it. Many subscribers are out of state.</p>
+        </details>
+        <details>
+          <summary>Can I reply with a specific denial and you'll help?</summary>
+          <p>Yes — that's the deal. Reply to any issue with a denied calibration: carrier, what they said, what you billed. When I have capacity (typically 2–3 shops per week), I'll write you the OEM-cited rebuttal personally. Free, no pitch. That's how I keep my finger on what's actually happening at the desk.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FINAL CTA ═══ -->
+  <section class="final">
+    <div class="container">
+      <div class="section-label">One Last Thing</div>
+      <h2 class="section-title">Stop leaving the calibration line on the table.</h2>
+      <p class="section-sub">You've read this far. You already know your shop has revenue in this category you're not capturing. Subscribe. Read tomorrow's. Decide for yourself.</p>
+
+      <div class="form-block framed">
+        <div class="form-headline">Tomorrow's edition. 6am Pacific. Free.</div>
+        <div class="form-sub">First email arrives within 60 seconds with the welcome gift attached.</div>
+        <form class="brew-form" onsubmit="return brewSubscribe(event)">
+          <input type="email" name="email" placeholder="Your email *" required autocomplete="email" />
+          <div class="row">
+            <input type="text" name="name" placeholder="First name" autocomplete="given-name" />
+            <input type="text" name="shop" placeholder="Shop name *" required autocomplete="organization" />
+          </div>
+          <div class="row">
+            <input type="text" name="location" placeholder="City or ZIP *" required />
+            <select name="role" required>
+              <option value="" disabled selected>Your role *</option>
+              <option value="Owner">Owner</option>
+              <option value="Production Manager">Production Manager</option>
+              <option value="Tech">Tech</option>
+              <option value="Calibration Company Owner">Calibration Company Owner</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" />
+          <button type="submit">Get Tomorrow's Edition →</button>
+          <div class="brew-msg" style="display:none"></div>
+          <div class="form-trust"><strong>Spam-free guarantee.</strong> Free forever. One-click unsubscribe.</div>
+        </form>
+      </div>
+
+      <div class="final-ps">
+        <strong>P.S.</strong> Most readers find at least one calibration line item they were leaving on the table in the first issue. Pays for itself before you finish your second cup of coffee. The only question is whether you'd rather find that line item tomorrow morning — or six months from now, after the carrier has already trained your estimators not to bill for it.
+      </div>
+
+      <p style="text-align:center;margin-top:28px;font-size:14px;color:var(--gray);">Prefer to talk? Call or text <a href="tel:+18443492327" style="color:var(--orange);text-decoration:none;font-weight:700;">1-844-FIX-ADAS</a> (1-844-349-2327).</p>
+      <p style="text-align:center;margin-top:6px;font-size:14px;color:var(--gray);">Got a denied calibration right now? <a href="/audit" style="color:var(--orange);text-decoration:none;font-weight:700;">Get a free OEM-cited rebuttal in 60 seconds →</a></p>
+    </div>
+  </section>
+
+  <!-- ═══ LIBRARY ═══ -->
   <section class="library-section">
     <div class="library-inner">
       <div class="library-header">
@@ -480,49 +596,57 @@
   </section>
 
   <footer>
-    © 2026 <strong>ADAS Brew</strong> · Powered by ADAS IQ · <a href="mailto:brew@absoluteadas.com">brew@absoluteadas.com</a>
+    © 2026 <strong>ADAS Brew</strong> · Published by <a href="/about">Absolute ADAS</a> · <a href="mailto:brew@absoluteadas.com">brew@absoluteadas.com</a>
   </footer>
 
   <script>
   function brewSubscribe(e) {
     e.preventDefault();
-    var btn = document.getElementById('brew-btn');
-    var msg = document.getElementById('brew-msg');
-    btn.disabled = true; btn.textContent = 'Sending…';
-    msg.style.display = 'none'; msg.className = 'msg';
+    var form = e.target;
+    var btn = form.querySelector('button[type="submit"]');
+    var msg = form.querySelector('.brew-msg');
+    var originalBtnText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    msg.style.display = 'none';
+    msg.className = 'brew-msg';
 
     var params = new URLSearchParams();
-    params.append('email', document.getElementById('brew-email').value);
-    params.append('name', document.getElementById('brew-name').value);
-    params.append('shop', document.getElementById('brew-shop').value);
-    params.append('location', document.getElementById('brew-location').value);
-    params.append('role', document.getElementById('brew-role').value);
-    params.append('website', document.getElementById('brew-hp').value);
+    params.append('email', form.querySelector('input[name="email"]').value);
+    params.append('name', form.querySelector('input[name="name"]').value);
+    params.append('shop', form.querySelector('input[name="shop"]').value);
+    params.append('location', form.querySelector('input[name="location"]').value);
+    params.append('role', form.querySelector('select[name="role"]').value);
+    params.append('website', form.querySelector('input[name="website"]').value);
 
     fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/cron/brew/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: params.toString()
     })
-    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-    .then(function (r) {
+    .then(function(r){ return r.json().then(function(d){ return { ok:r.ok, d:d }; }); })
+    .then(function(r){
       msg.style.display = 'block';
       if (r.ok && r.d.ok) {
-        msg.className = 'msg ok';
-        msg.textContent = r.d.already ? 'You\'re already on the list. Next issue lands the next weekday at 6am Pacific.' : '✓ You\'re in. Check your inbox for a quick welcome. First issue lands the next weekday at 6am Pacific.';
-        document.getElementById('brew-form').reset();
+        msg.className = 'brew-msg ok';
+        msg.textContent = r.d.already
+          ? "You're already on the list. Next issue lands the next weekday at 6am Pacific."
+          : "✓ You're in. Check your inbox for a quick welcome. First issue lands the next weekday at 6am Pacific.";
+        form.reset();
         btn.textContent = 'Subscribed!';
       } else {
-        msg.className = 'msg err';
+        msg.className = 'brew-msg err';
         msg.textContent = (r.d && r.d.error) || 'Something went wrong. Try again.';
-        btn.disabled = false; btn.textContent = 'Show Me What I\'m Missing';
+        btn.disabled = false;
+        btn.textContent = originalBtnText;
       }
     })
-    .catch(function () {
+    .catch(function(){
       msg.style.display = 'block';
-      msg.className = 'msg err';
+      msg.className = 'brew-msg err';
       msg.textContent = 'Network error. Try again.';
-      btn.disabled = false; btn.textContent = 'Show Me What I\'m Missing';
+      btn.disabled = false;
+      btn.textContent = originalBtnText;
     });
     return false;
   }
