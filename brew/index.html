@@ -6,29 +6,28 @@
   <title>ADAS Brew — What adjusters know about your calibrations that you don't</title>
   <meta name="description" content="Inside info from a guy who reads carrier patterns across thousands of calibration jobs every month, in your inbox every weekday morning." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://absoluteadas.com/brew" />
+  <link rel="canonical" href="https://adas-iq.com/brew" />
 
   <meta property="og:title" content="ADAS Brew — What adjusters know about your calibrations that you don't" />
   <meta property="og:description" content="Inside info from a working calibration owner. Carrier denial patterns, OEM bulletins, and the documentation that gets paid. Free, every weekday." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://absoluteadas.com/brew" />
-  <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" />
-
-  <link rel="icon" href="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" />
+  <meta property="og:url" content="https://adas-iq.com/brew" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --orange: #CD4419;
+      --orange-light: #e8541f;
       --orange-dark: #b33a15;
       --dark: #0d0d0d;
       --dark-2: #151515;
+      --dark-3: #1e1e1e;
       --white: #ffffff;
       --off-white: #f0ece6;
-      --gray: #888;
+      --gray: #999;
       --light-gray: #ccc;
     }
     html { scroll-behavior: smooth; }
@@ -43,24 +42,62 @@
       display: flex;
       flex-direction: column;
     }
-    .topbar {
-      padding: 18px 24px;
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .site-nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--white);
+    }
+    .site-nav-badge {
+      width: 30px; height: 30px;
+      background: var(--orange);
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 13px;
+      color: #fff;
     }
-    .topbar a {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--white);
-      text-decoration: none;
+    .site-nav-text {
+      font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.04em;
+      font-size: 17px;
+      letter-spacing: -0.3px;
     }
-    .topbar img { height: 30px; }
+    .site-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .site-nav-links a {
+      color: rgba(255,255,255,0.78);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .site-nav-links a:hover { color: var(--orange); }
+    .site-nav-links a.active { color: var(--orange); }
+    @media (max-width: 560px) {
+      .site-nav { padding: 12px 18px; }
+      .site-nav-links { gap: 14px; }
+      .site-nav-links a { font-size: 13px; }
+    }
     main {
       flex: 1;
       display: flex;
@@ -73,6 +110,7 @@
       width: 100%;
     }
     .brand {
+      font-family: 'Inter', sans-serif;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.22em;
@@ -82,11 +120,12 @@
       text-align: center;
     }
     h1 {
+      font-family: 'Playfair Display', serif;
       font-size: clamp(34px, 5.6vw, 52px);
       font-weight: 900;
       line-height: 1.08;
       margin: 0 0 18px;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
       text-align: center;
     }
     h1 em { color: var(--orange); font-style: normal; }
@@ -135,26 +174,101 @@
       line-height: 1.55;
     }
     .credibility strong { color: var(--white); font-weight: 700; }
-    .social-proof {
+
+    .product-preview {
       max-width: 560px;
       margin: 0 auto 32px;
-      padding: 18px 22px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-      font-size: 15px;
-      color: var(--light-gray);
-      line-height: 1.55;
-      font-style: italic;
+      text-align: center;
     }
-    .social-proof .quote { display: block; margin-bottom: 8px; }
-    .social-proof .attr { display: block; font-style: normal; font-size: 13px; color: var(--gray); }
+    .product-preview-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .product-preview-img {
+      display: block;
+      max-width: 280px;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    .bonus-block {
+      max-width: 560px;
+      margin: 0 auto 24px;
+      padding: 22px 24px;
+      background: linear-gradient(135deg, rgba(205,68,25,0.14) 0%, rgba(205,68,25,0.06) 100%);
+      border: 1px solid rgba(205,68,25,0.35);
+      border-radius: 12px;
+      color: var(--off-white);
+    }
+    .bonus-tag {
+      display: inline-block;
+      font-family: 'Inter', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--orange);
+      background: rgba(205,68,25,0.12);
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .bonus-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .bonus-desc {
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--light-gray);
+    }
+    .bonus-desc em {
+      font-style: normal;
+      color: var(--orange);
+      font-weight: 600;
+    }
+
+    .urgency-line {
+      max-width: 560px;
+      margin: 0 auto 14px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--off-white);
+      letter-spacing: 0.01em;
+    }
+
+    .phone-alt {
+      max-width: 560px;
+      margin: 18px auto 0;
+      text-align: center;
+      font-size: 14px;
+      color: var(--gray);
+    }
+    .phone-alt a {
+      color: var(--orange);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .phone-alt a:hover { text-decoration: underline; }
     form {
       display: flex;
       flex-direction: column;
       gap: 12px;
       max-width: 560px;
       margin: 0 auto;
+    }
+    label {
+      display: none;
     }
     .row { display: flex; gap: 10px; }
     .row > * { flex: 1; }
@@ -194,7 +308,7 @@
       width: 100%;
       margin-top: 6px;
     }
-    button:hover { background: var(--orange-dark); }
+    button:hover { background: var(--orange-light); }
     button:disabled { opacity: 0.6; cursor: not-allowed; }
     .hp { position: absolute; left: -9999px; }
     .msg {
@@ -242,13 +356,18 @@
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <a href="https://absoluteadas.com">
-      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" />
-      <span>Absolute ADAS</span>
+  <header class="site-nav">
+    <a href="/" class="site-nav-logo">
+      <span class="site-nav-badge">IQ</span>
+      <span class="site-nav-text">ADAS IQ</span>
     </a>
-  </div>
-
+    <nav class="site-nav-links">
+      <a href="/audit">Free Audit Tool</a>
+      <a href="/brew" class="active">ADAS Brew</a>
+      <a href="/services">Calibration Sublet</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
   <main>
     <div class="card">
       <div class="brand">ADAS Brew · Free, Every Weekday Morning</div>
@@ -265,13 +384,21 @@
       </ul>
 
       <div class="credibility">
-        <strong>Mark Fowler.</strong> Owner of Absolute ADAS. 50,000+ calibrations on the floor. Built Evergreen Calibration to $350K/month before that.
+        <strong>Mark Fowler.</strong> Owner of Absolute ADAS. 50,000+ calibrations on the floor.
       </div>
 
-      <div class="social-proof">
-        <span class="quote">"I learned more about getting calibrations paid in three issues of ADAS Brew than in five years of body shop seminars."</span>
-        <span class="attr">— Production Manager, Phoenix AZ</span>
+      <div class="product-preview">
+        <div class="product-preview-label">Here's what lands in your inbox tomorrow morning:</div>
+        <img src="/brew/images/issue-8.png" alt="Sample ADAS Brew issue cover" class="product-preview-img" />
       </div>
+
+      <div class="bonus-block">
+        <div class="bonus-tag">FREE BONUS · WELCOME GIFT</div>
+        <div class="bonus-headline">The OEM Position Statement Cheat Sheet</div>
+        <div class="bonus-desc">Curated links to every major OEM's body repair portal — Honda, Toyota, Ford, GM, Subaru, BMW and more — plus the I-CAR position-statement database that compiles them all. The documentation that flips denied calibration claims. <em>Yours instantly in the welcome email when you subscribe.</em></div>
+      </div>
+
+      <div class="urgency-line">⏰ Next issue ships tomorrow at 6 AM Pacific. Subscribe to be on it.</div>
 
       <form id="brew-form" onsubmit="return brewSubscribe(event)">
         <input id="brew-email" type="email" name="email" placeholder="Your email *" required autocomplete="email" />
@@ -296,7 +423,11 @@
 
       <div id="brew-msg" class="msg" style="display:none"></div>
 
-      <p class="footer-note"><strong style="color:var(--orange)">100% free forever.</strong> No credit card. We never share your info. One-click unsubscribe.</p>
+      <p class="footer-note"><strong style="color:var(--orange)">Spam-free guarantee.</strong> 100% free forever. One-click unsubscribe. We never share or sell your info.</p>
+
+      <p class="phone-alt">Prefer to talk? Call or text <a href="tel:+18443492327">1-844-FIX-ADAS</a> (1-844-349-2327).</p>
+
+      <p class="phone-alt" style="margin-top:8px">Got a denied calibration right now? <a href="/audit">Get a free OEM-cited rebuttal in 60 seconds →</a></p>
 
       <div class="ps">
         <strong>P.S.</strong> Most readers find at least one calibration line item they were leaving on the table in the first issue. Pays for itself before you finish your second cup of coffee.
@@ -305,7 +436,7 @@
   </main>
 
   <footer>
-    © 2026 <strong>Absolute ADAS</strong> · ADAS Brew newsletter · <a href="mailto:brew@adas-iq.com">brew@adas-iq.com</a>
+    © 2026 <strong>ADAS Brew</strong> · Powered by ADAS IQ · <a href="mailto:brew@adas-iq.com">brew@adas-iq.com</a>
   </footer>
 
   <script>

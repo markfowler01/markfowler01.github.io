@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Mark Fowler — Founder, Absolute ADAS · Builder, ADAS IQ</title>
+  <meta name="description" content="Mark Fowler runs Absolute ADAS — mobile ADAS calibration in Western Washington with 50,000+ calibrations on the floor. He built ADAS IQ inside his own shop and publishes the daily ADAS Brew newsletter for body shops and calibration techs." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://adas-iq.com/about" />
+  <meta property="og:title" content="About Mark Fowler — Founder, Absolute ADAS" />
+  <meta property="og:description" content="The shop owner who built ADAS IQ. 50,000+ calibrations on the floor. Western Washington." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://adas-iq.com/about" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #CD4419; --orange-dark: #b33a15;
+      --dark: #0d0d0d; --dark-2: #151515;
+      --white: #ffffff; --off-white: #f0ece6;
+      --gray: #999; --light-gray: #ccc;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .site-nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--white);
+    }
+    .site-nav-badge {
+      width: 30px; height: 30px; background: var(--orange);
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-weight: 900; font-size: 13px; color: #fff;
+    }
+    .site-nav-text {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 17px; letter-spacing: -0.3px;
+    }
+    .site-nav-links { display: flex; align-items: center; gap: 22px; }
+    .site-nav-links a {
+      color: rgba(255,255,255,0.78);
+      font-weight: 600; font-size: 14px;
+      text-decoration: none; transition: color 0.15s;
+    }
+    .site-nav-links a:hover { color: var(--orange); }
+    .site-nav-links a.active { color: var(--orange); }
+    @media (max-width: 560px) {
+      .site-nav { padding: 12px 18px; }
+      .site-nav-links { gap: 14px; }
+      .site-nav-links a { font-size: 13px; }
+    }
+
+    main { max-width: 760px; margin: 0 auto; padding: 56px 24px 80px; }
+
+    .brand {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5.4vw, 52px);
+      font-weight: 900;
+      line-height: 1.08;
+      margin: 0 0 18px;
+      letter-spacing: -0.015em;
+    }
+    h1 em { color: var(--orange); font-style: normal; }
+
+    .hero-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 28px;
+      align-items: start;
+      margin: 0 0 40px;
+    }
+    @media (max-width: 640px) {
+      .hero-row { grid-template-columns: 1fr; gap: 18px; }
+      .photo-placeholder { max-width: 200px; margin: 0 auto; }
+    }
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--gray);
+    }
+    .photo-placeholder .initials {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 900;
+      color: var(--orange);
+      line-height: 1;
+    }
+    .photo-placeholder .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      font-size: 18px;
+      color: var(--off-white);
+      line-height: 1.55;
+      margin: 0 0 22px;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 800;
+      margin: 48px 0 14px;
+      letter-spacing: -0.01em;
+    }
+
+    p { color: var(--off-white); margin-bottom: 16px; line-height: 1.65; }
+    p strong { color: var(--white); }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0 32px;
+    }
+    @media (max-width: 540px) {
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    .stat {
+      background: var(--dark-2);
+      border-radius: 10px;
+      padding: 18px 16px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--orange);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--gray);
+      letter-spacing: 0.04em;
+    }
+
+    .product-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 32px 0 0;
+    }
+    @media (max-width: 720px) {
+      .product-row { grid-template-columns: 1fr; }
+    }
+    .product-card {
+      background: var(--dark-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 22px 22px 24px;
+      transition: border-color 0.15s, transform 0.1s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .product-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-2px);
+    }
+    .product-card-tag {
+      font-family: 'Inter', monospace;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .product-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+    .product-card-desc {
+      font-size: 14px;
+      color: var(--light-gray);
+      line-height: 1.55;
+    }
+    .product-card-cta {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+    }
+
+    .quote-block {
+      background: var(--dark-2);
+      border-left: 3px solid var(--orange);
+      border-radius: 8px;
+      padding: 22px 26px;
+      margin: 28px 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-style: italic;
+      color: var(--off-white);
+      line-height: 1.5;
+    }
+
+    footer {
+      max-width: 760px;
+      margin: 64px auto 0;
+      padding: 28px 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    footer a { color: var(--orange); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <a href="/" class="site-nav-logo">
+      <span class="site-nav-badge">AA</span>
+      <span class="site-nav-text">Absolute ADAS</span>
+    </a>
+    <nav class="site-nav-links">
+      <a href="/audit">Free Audit Tool</a>
+      <a href="/brew">ADAS Brew</a>
+      <a href="/about" class="active">About</a>
+      <a href="/">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="brand">About · The Founder</div>
+    <h1>Hi, I'm Mark Fowler.<br/><em>I run a calibration shop. I build the tools.</em></h1>
+
+    <div class="hero-row">
+      <div class="photo-placeholder">
+        <div class="initials">MF</div>
+        <div class="label">Mark Fowler</div>
+      </div>
+      <div>
+        <p class="lede">I own <strong>Absolute ADAS</strong> — a mobile ADAS calibration service in Western Washington. I've personally been part of <strong>50,000+ calibrations</strong> and read more denied insurance claims than I can count.</p>
+        <p>Everything on this site — the daily newsletter, the free audit tool, the software my shop runs on — came out of problems I hit on real jobs. Tools I needed and couldn't find anywhere, so I built them. Now I share them with other shops doing the same work.</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-number">50,000+</div>
+        <div class="stat-label">Calibrations on the floor</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">Mobile</div>
+        <div class="stat-label">Service across Western WA</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">Daily</div>
+        <div class="stat-label">Industry intel newsletter</div>
+      </div>
+    </div>
+
+    <h2>Why this exists</h2>
+    <p>Every body shop owner I work with is fighting the same battle: insurance carriers cutting calibration line items, denying procedures, forcing aftermarket parts. The shops winning are the ones with airtight documentation. The shops losing are the ones doing it by gut.</p>
+    <p>I built this stuff because the gap between those two is where shops die. The same OEM citations, the same scan reports, the same line-item discipline — repeatable. <strong>If a shop owner can grab a tool that flips a denial in 60 seconds, that's worth more than a year of conference talks.</strong></p>
+
+    <div class="quote-block">
+      "I don't write software for a living. I run a calibration shop. The tools you see here exist because they had to. If they help your shop get paid, they did their job."
+    </div>
+
+    <h2>What we offer</h2>
+    <p>Three things, all from the same shop. Use whichever helps your shop today.</p>
+
+    <div class="product-row">
+      <a href="/audit" class="product-card">
+        <div class="product-card-tag">Free Tool</div>
+        <div class="product-card-name">Calibration Denial Audit</div>
+        <div class="product-card-desc">Got a denied calibration? Paste the denial. Get an OEM-cited rebuttal in ~60 seconds. Free.</div>
+        <div class="product-card-cta">Try it →</div>
+      </a>
+      <a href="/brew" class="product-card">
+        <div class="product-card-tag">Free · Daily</div>
+        <div class="product-card-name">ADAS Brew Newsletter</div>
+        <div class="product-card-desc">5-minute weekday digest of OEM bulletins, recalls, insurance signals, and craft tips.</div>
+        <div class="product-card-cta">Subscribe →</div>
+      </a>
+      <a href="/#how" class="product-card">
+        <div class="product-card-tag">Software</div>
+        <div class="product-card-name">ADAS IQ</div>
+        <div class="product-card-desc">The platform we built to run our shop. Now licensed to other shops doing serious calibration volume.</div>
+        <div class="product-card-cta">See how it works →</div>
+      </a>
+    </div>
+
+    <h2>Talk to me directly</h2>
+    <p>If you have a denial you're stuck on, a calibration question, or a shop story you want to share — pick the path that works:</p>
+    <p>
+      📞 <strong>Call or text 1-844-FIX-ADAS</strong> (1-844-349-2327) — fastest path<br>
+      📩 <strong><a href="mailto:brew@adas-iq.com" style="color:var(--orange);text-decoration:none;font-weight:700">brew@adas-iq.com</a></strong> — I read every reply<br>
+      🛠 <strong><a href="/audit" style="color:var(--orange);text-decoration:none;font-weight:700">Free Audit Tool</a></strong> — best path if you have an active denial right now
+    </p>
+  </main>
+
+  <footer>
+    Built by Mark Fowler · <a href="/">Absolute ADAS</a> · <a href="tel:+18443492327">1-844-FIX-ADAS</a>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OEM ADAS Position Statement Cheat Sheet — ADAS Brew</title>
+  <meta name="description" content="Curated OEM ADAS calibration position statements and repair procedure portals — the documentation that flips denied calibration claims." />
+  <meta name="robots" content="noindex, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #CD4419;
+      --orange-light: #e8541f;
+      --orange-dark: #b33a15;
+      --dark: #0d0d0d;
+      --dark-2: #151515;
+      --dark-3: #1e1e1e;
+      --white: #ffffff;
+      --off-white: #f0ece6;
+      --gray: #999;
+      --light-gray: #ccc;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .site-nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--white);
+    }
+    .site-nav-badge {
+      width: 30px; height: 30px; background: var(--orange);
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-weight: 900; font-size: 13px; color: #fff;
+    }
+    .site-nav-text {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 17px; letter-spacing: -0.3px;
+    }
+    .site-nav-links { display: flex; align-items: center; gap: 22px; }
+    .site-nav-links a {
+      color: rgba(255,255,255,0.78);
+      font-weight: 600; font-size: 14px;
+      text-decoration: none; transition: color 0.15s;
+    }
+    .site-nav-links a:hover { color: var(--orange); }
+    .site-nav-links a.active { color: var(--orange); }
+    @media (max-width: 560px) {
+      .site-nav { padding: 12px 18px; }
+      .site-nav-links { gap: 14px; }
+      .site-nav-links a { font-size: 13px; }
+    }
+    .wrap { max-width: 800px; margin: 0 auto; padding: 56px 24px; }
+    .brand {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4.4vw, 42px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 0 0 12px;
+      letter-spacing: -0.015em;
+    }
+    h1 em { color: var(--orange); font-style: normal; }
+    .lede {
+      font-size: 17px;
+      color: var(--light-gray);
+      margin-bottom: 36px;
+      max-width: 640px;
+      line-height: 1.55;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 800;
+      margin: 44px 0 14px;
+      letter-spacing: -0.01em;
+      color: var(--white);
+    }
+    h2 .num {
+      display: inline-block;
+      font-family: 'Inter', monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: 0.18em;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+    p { margin-bottom: 14px; color: var(--off-white); }
+    p.dim { color: var(--gray); font-size: 14px; }
+
+    .marquee {
+      background: linear-gradient(135deg, rgba(205,68,25,0.15) 0%, rgba(205,68,25,0.05) 100%);
+      border: 1px solid rgba(205,68,25,0.4);
+      border-radius: 12px;
+      padding: 24px 26px;
+      margin: 28px 0;
+    }
+    .marquee .tag {
+      display: inline-block;
+      font-family: 'Inter', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--orange);
+      background: rgba(205,68,25,0.15);
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .marquee h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .marquee a {
+      color: var(--orange);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .marquee a:hover { text-decoration: underline; }
+
+    .source-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .source-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .source-list li:last-child { border-bottom: none; }
+    .source-meta { flex: 1; }
+    .source-name {
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .source-desc {
+      font-size: 14px;
+      color: var(--light-gray);
+      line-height: 1.45;
+    }
+    .source-link {
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .source-link a {
+      display: inline-block;
+      background: rgba(205,68,25,0.12);
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border: 1px solid rgba(205,68,25,0.4);
+      border-radius: 6px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .source-link a:hover {
+      background: rgba(205,68,25,0.22);
+    }
+    .free-badge, .paid-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      padding: 3px 7px;
+      border-radius: 3px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .free-badge { background: rgba(34,197,94,0.18); color: #4ade80; }
+    .paid-badge { background: rgba(156,163,175,0.18); color: var(--gray); }
+
+    .how-to {
+      background: var(--dark-2);
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin: 32px 0;
+    }
+    .how-to h2 { margin-top: 0; font-size: 22px; }
+    .how-to ol {
+      padding-left: 22px;
+      margin-bottom: 0;
+    }
+    .how-to ol li { padding: 8px 0; color: var(--off-white); }
+
+    .audit-cta {
+      background: var(--dark-2);
+      border-left: 3px solid var(--orange);
+      border-radius: 8px;
+      padding: 22px 24px;
+      margin: 32px 0;
+    }
+    .audit-cta strong { color: var(--orange); }
+    .audit-cta a {
+      color: var(--orange);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 64px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--gray);
+      font-size: 14px;
+      text-align: center;
+    }
+    footer a { color: var(--orange); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <a href="/" class="site-nav-logo">
+      <span class="site-nav-badge">IQ</span>
+      <span class="site-nav-text">ADAS IQ</span>
+    </a>
+    <nav class="site-nav-links">
+      <a href="/audit">Free Audit Tool</a>
+      <a href="/brew">ADAS Brew</a>
+      <a href="/services">Calibration Sublet</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+  <div class="wrap">
+    <div class="brand">ADAS Brew · Subscriber Cheat Sheet</div>
+    <h1>The OEM ADAS Position <em>Statement Cheat Sheet</em></h1>
+    <p class="lede">A curated list of manufacturer body-repair portals, ADAS position statements, and the single industry resource that compiles them all. This is the documentation that flips denied calibration claims.</p>
+
+    <div class="marquee">
+      <div class="tag">Start here · Free</div>
+      <h3>I-CAR Repairability Technical Support (RTS)</h3>
+      <p>The single best resource on this list. I-CAR's RTS team aggregates OEM position statements from every major manufacturer into one searchable database. If you only bookmark one link from this sheet, make it this one. Search by OEM, by repair topic, or by component.</p>
+      <p><a href="https://rts.i-car.com/" target="_blank" rel="noopener">rts.i-car.com →</a></p>
+      <p class="dim">Specifically for ADAS calibration position statements: <a href="https://rts.i-car.com/collision-repair-news/topic/adas.html" target="_blank" rel="noopener">rts.i-car.com/collision-repair-news/topic/adas.html</a></p>
+    </div>
+
+    <h2><span class="num">01</span>OEM Body Repair &amp; Position Statement Portals</h2>
+    <p class="dim">Direct links to each manufacturer's official body-repair information site. These are the source of truth — every adjuster who knows the trade knows these exist.</p>
+
+    <ul class="source-list">
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Honda Body Repair <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Position statements, body repair news, calibration procedures for Honda models. Updated regularly with the latest ADAS bulletins.</div>
+        </div>
+        <div class="source-link"><a href="https://www.hondabodyrepair.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Acura Body Repair <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Sister portal to Honda's. Position statements specific to Acura models and AcuraWatch ADAS systems.</div>
+        </div>
+        <div class="source-link"><a href="https://www.acurabodyrepair.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Toyota Collision Repair Information Bulletin <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Toyota's CRIB system — position statements, repair manuals, and Toyota Safety Sense calibration procedures.</div>
+        </div>
+        <div class="source-link"><a href="https://www.toyota.com/owners/parts-service/maintenance/collision" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Ford / Lincoln OEM1Stop <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Workshop manuals, position statements, and TSBs for Ford and Lincoln. Position statements specifically are free; full procedures require subscription.</div>
+        </div>
+        <div class="source-link"><a href="https://www.motorcraftservice.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">GM Collision Repair (Chevy/GMC/Cadillac/Buick) <span class="free-badge">FREE</span></div>
+          <div class="source-desc">GM's collision center hub. Position statements, ADAS calibration procedures, and Super Cruise / Safety Alert documentation.</div>
+        </div>
+        <div class="source-link"><a href="https://www.gmgenuineparts.com/collision-repair" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Subaru Tech Info <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Service info portal for EyeSight, Subaru's stereo-camera ADAS. EyeSight position statements available free; full procedures require subscription.</div>
+        </div>
+        <div class="source-link"><a href="https://techinfo.subaru.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Nissan TechInfo <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Service info for Nissan and Infiniti. ProPILOT Assist and Nissan Safety Shield position statements.</div>
+        </div>
+        <div class="source-link"><a href="https://www.nissan-techinfo.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Hyundai TechInfo <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Hyundai SmartSense ADAS calibration procedures and position statements.</div>
+        </div>
+        <div class="source-link"><a href="https://www.hyundaitechinfo.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Kia TechInfo <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Kia DriveWise ADAS resources, sister portal to Hyundai's.</div>
+        </div>
+        <div class="source-link"><a href="https://www.kiatechinfo.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Stellantis (Chrysler / Dodge / Jeep / Ram) — TechAuthority <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Service info portal for all Stellantis North American brands. Most position statements require a paid subscription, but topic indexes are searchable for free.</div>
+        </div>
+        <div class="source-link"><a href="https://www.techauthority.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Mazda Service &amp; Repair <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Mazda's i-ACTIVSENSE ADAS resources. Subscription-based but trial access available.</div>
+        </div>
+        <div class="source-link"><a href="https://www.mazdaserviceinfo.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Volkswagen erWin <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">VW's North American service info portal. Per-day, per-week, and full subscriptions available.</div>
+        </div>
+        <div class="source-link"><a href="https://erwin.vw.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Audi erWin <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Audi's sister portal to VW erWin. Audi pre sense / driver assistance calibration procedures.</div>
+        </div>
+        <div class="source-link"><a href="https://erwin.audi.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">BMW TIS <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">BMW's Technical Information System. Driving Assistant Professional / Active Driving Assistant calibration data.</div>
+        </div>
+        <div class="source-link"><a href="https://www.bmwtechinfo.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Mercedes-Benz WIS <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Mercedes Workshop Information System. Distronic / Drive Pilot calibration procedures.</div>
+        </div>
+        <div class="source-link"><a href="https://aftersales.mercedes-benz.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Volvo TIE <span class="paid-badge">PAID</span></div>
+          <div class="source-desc">Volvo Technical Information Exchange. IntelliSafe / Pilot Assist ADAS resources.</div>
+        </div>
+        <div class="source-link"><a href="https://www.volvotechinfo.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+    </ul>
+
+    <h2><span class="num">02</span>Industry Resources &amp; Compilations</h2>
+    <p class="dim">Non-OEM organizations that aggregate position statements, repair procedures, and industry guidance specifically for collision repair and ADAS calibration.</p>
+
+    <ul class="source-list">
+      <li>
+        <div class="source-meta">
+          <div class="source-name">SCRS — Society of Collision Repair Specialists <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Industry position papers, repair planning resources, and the influential SCRS Repairer Driven Education library.</div>
+        </div>
+        <div class="source-link"><a href="https://scrs.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">I-CAR Position Statements (Direct Link) <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Direct entry into the I-CAR RTS position statement database, searchable by OEM.</div>
+        </div>
+        <div class="source-link"><a href="https://rts.i-car.com/position-statements" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">ASA — Automotive Service Association <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Position statements and shop-side advocacy resources. Free industry news; member resources require ASA membership.</div>
+        </div>
+        <div class="source-link"><a href="https://asashop.org/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Repairer Driven News <span class="free-badge">FREE</span></div>
+          <div class="source-desc">SCRS's news wing. Excellent for current OEM position statement updates and ADAS calibration policy news.</div>
+        </div>
+        <div class="source-link"><a href="https://www.repairerdrivennews.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">CollisionWeek <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Daily collision-industry news with regular ADAS calibration and OEM position coverage.</div>
+        </div>
+        <div class="source-link"><a href="https://www.collisionweek.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">BodyShop Business <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Long-running trade pub with strong calibration and insurance-side coverage.</div>
+        </div>
+        <div class="source-link"><a href="https://www.bodyshopbusiness.com/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+    </ul>
+
+    <h2><span class="num">03</span>ADAS-Specific Tools &amp; References</h2>
+    <p class="dim">Specialized resources for the ADAS calibration trade.</p>
+
+    <ul class="source-list">
+      <li>
+        <div class="source-meta">
+          <div class="source-name">NHTSA Recalls Database <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Search active recalls by VIN, make, or model — frequently tied to ADAS components and recalibration requirements.</div>
+        </div>
+        <div class="source-link"><a href="https://www.nhtsa.gov/recalls" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Hunter ADASLink Coverage Lookup <span class="free-badge">FREE</span></div>
+          <div class="source-desc">If your shop uses Hunter ADAS targets, this is the vehicle-coverage lookup. Useful for confirming static / dynamic procedure type by VIN.</div>
+        </div>
+        <div class="source-link"><a href="https://www.hunter.com/adas/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Autel ADAS Coverage <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Autel MaxiSys ADAS vehicle and procedure coverage. Useful for confirming what scan tool / target combination is OEM-recognized.</div>
+        </div>
+        <div class="source-link"><a href="https://www.autel.com/adas" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+      <li>
+        <div class="source-meta">
+          <div class="source-name">Bosch ADAS Information <span class="free-badge">FREE</span></div>
+          <div class="source-desc">Bosch supplies many OEM camera and radar modules. Their ADAS resource hub has component-level documentation.</div>
+        </div>
+        <div class="source-link"><a href="https://www.boschaftermarket.com/us/en/our-business/diagnostic-equipment/adas/" target="_blank" rel="noopener">Open →</a></div>
+      </li>
+    </ul>
+
+    <div class="how-to">
+      <h2>How to use this when an adjuster denies a calibration line</h2>
+      <ol>
+        <li><strong>Pull the OEM position statement first.</strong> Before you even pick up the phone with the carrier, find the exact statement that says "this calibration is required when X is done."</li>
+        <li><strong>Cite it in writing.</strong> Insurance adjusters back off when you respond with a manufacturer page number, not a phone opinion. Attach the PDF or URL to your supplement.</li>
+        <li><strong>Save scan reports.</strong> Pre and post. Date-stamped. They are part of your paper trail.</li>
+        <li><strong>Line-item every step.</strong> Pre-scan. Calibration (with OEM citation). Post-scan. Never bundle into "labor included."</li>
+        <li><strong>Log the denial in writing.</strong> Note carrier name, adjuster, claim number, date. Patterns help you anticipate the next denial.</li>
+      </ol>
+    </div>
+
+    <div class="audit-cta">
+      <p><strong>Stuck on a specific denial right now?</strong> Email <a href="mailto:brew@adas-iq.com?subject=AUDIT">brew@adas-iq.com</a> with the carrier, the vehicle, and what they pushed back on. I'll write you the OEM-cited rebuttal — free, 24h turnaround, no pitch. Or call/text <a href="tel:+18443492327">1-844-FIX-ADAS</a>.</p>
+    </div>
+
+    <footer>
+      <p>Curated by Mark Fowler · Absolute ADAS · Western Washington<br>
+      Updated regularly. Spot a dead link or missing OEM? Reply to any ADAS Brew issue and I'll fix it.<br>
+      <a href="/brew">← Back to ADAS Brew</a></p>
+    </footer>
+  </div>
+</body>
+</html>

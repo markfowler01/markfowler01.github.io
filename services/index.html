@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile ADAS Calibration Sublet · Western Washington — Absolute ADAS</title>
+  <meta name="description" content="Body shop in Western Washington? Sublet your ADAS calibrations to Absolute ADAS. We come to you. OEM procedures, full documentation, line-itemed invoicing. Call 1-844-FIX-ADAS." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://adas-iq.com/services" />
+  <meta property="og:title" content="Mobile ADAS Calibration Sublet · Western Washington" />
+  <meta property="og:description" content="We come to your shop. OEM-procedure calibrations with documentation that gets paid. 1-844-FIX-ADAS." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://adas-iq.com/services" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #CD4419; --orange-dark: #b33a15;
+      --dark: #0d0d0d; --dark-2: #151515;
+      --white: #ffffff; --off-white: #f0ece6;
+      --gray: #999; --light-gray: #ccc;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    .site-nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .site-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
+    .site-nav-badge {
+      width: 30px; height: 30px; background: var(--orange);
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-weight: 900; font-size: 13px; color: #fff;
+    }
+    .site-nav-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
+    .site-nav-links { display: flex; align-items: center; gap: 22px; }
+    .site-nav-links a { color: rgba(255,255,255,0.78); font-weight: 600; font-size: 14px; text-decoration: none; transition: color 0.15s; }
+    .site-nav-links a:hover { color: var(--orange); }
+    .site-nav-links a.active { color: var(--orange); }
+    @media (max-width: 560px) {
+      .site-nav { padding: 12px 18px; }
+      .site-nav-links { gap: 14px; }
+      .site-nav-links a { font-size: 13px; }
+    }
+
+    main { max-width: 820px; margin: 0 auto; padding: 56px 24px 80px; }
+
+    .brand {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5.4vw, 50px);
+      font-weight: 900; line-height: 1.08;
+      margin: 0 0 18px; letter-spacing: -0.015em;
+    }
+    h1 em { color: var(--orange); font-style: normal; }
+    .lede {
+      font-size: 18px; color: var(--light-gray);
+      line-height: 1.55; margin: 0 0 32px;
+    }
+
+    .cta-row {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin: 0 0 40px;
+    }
+    .btn-primary {
+      background: var(--orange); color: #fff;
+      font-weight: 800; font-size: 16px;
+      padding: 16px 28px; border-radius: 10px;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--orange-dark); }
+    .btn-secondary {
+      background: transparent; color: var(--white);
+      font-weight: 700; font-size: 15px;
+      padding: 16px 26px; border-radius: 10px;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 800;
+      margin: 48px 0 14px; letter-spacing: -0.01em;
+    }
+    p { color: var(--off-white); margin-bottom: 16px; line-height: 1.65; }
+    p strong { color: var(--white); }
+
+    .what-we-do {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 24px 0 12px;
+    }
+    @media (max-width: 600px) { .what-we-do { grid-template-columns: 1fr; } }
+    .what-card {
+      background: var(--dark-2);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .what-card-name {
+      font-weight: 800; color: var(--white);
+      margin-bottom: 4px;
+    }
+    .what-card-desc {
+      font-size: 14px; color: var(--light-gray); line-height: 1.55;
+    }
+
+    .deliverables {
+      list-style: none; padding: 0; margin: 12px 0 0;
+    }
+    .deliverables li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 15px; color: var(--off-white);
+    }
+    .deliverables li:last-child { border-bottom: none; }
+    .deliverables li::before {
+      content: '✓ '; color: var(--orange); font-weight: 800;
+    }
+
+    .area-list {
+      background: var(--dark-2);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin: 18px 0;
+    }
+    .area-list-title {
+      font-size: 13px; font-weight: 800; letter-spacing: 0.04em;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .area-cities {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .area-cities span {
+      background: rgba(205,68,25,0.1);
+      border: 1px solid rgba(205,68,25,0.3);
+      color: var(--off-white);
+      font-size: 13px; font-weight: 600;
+      padding: 5px 11px; border-radius: 4px;
+    }
+
+    .contact-block {
+      background: linear-gradient(135deg, rgba(205,68,25,0.16) 0%, rgba(205,68,25,0.05) 100%);
+      border: 1px solid rgba(205,68,25,0.4);
+      border-radius: 14px;
+      padding: 28px 30px;
+      margin: 36px 0 0;
+    }
+    .contact-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 800;
+      margin: 0 0 8px;
+    }
+    .contact-block p { color: var(--off-white); margin-bottom: 18px; }
+    .contact-block a {
+      color: var(--orange); font-weight: 700; text-decoration: none;
+    }
+    .contact-paths {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    @media (max-width: 600px) { .contact-paths { grid-template-columns: 1fr; } }
+    .contact-tile {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 16px 18px;
+      text-decoration: none;
+      color: var(--white);
+      display: block;
+      transition: border-color 0.15s, transform 0.1s;
+    }
+    .contact-tile:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .contact-tile-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.18em;
+      color: var(--gray); text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .contact-tile-value {
+      font-weight: 800; color: var(--white);
+      font-size: 16px;
+    }
+
+    footer {
+      max-width: 820px; margin: 64px auto 0;
+      padding: 28px 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center; font-size: 13px; color: var(--gray);
+    }
+    footer a { color: var(--orange); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <a href="/" class="site-nav-logo">
+      <span class="site-nav-badge">AA</span>
+      <span class="site-nav-text">Absolute ADAS</span>
+    </a>
+    <nav class="site-nav-links">
+      <a href="/audit">Free Audit Tool</a>
+      <a href="/brew">ADAS Brew</a>
+      <a href="/services" class="active">Calibration Sublet</a>
+      <a href="/">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="brand">Mobile ADAS Calibration · Western Washington</div>
+    <h1>We come to your shop.<br/><em>OEM-procedure calibrations.<br/>Documentation that gets paid.</em></h1>
+    <p class="lede">If you're a body shop in Western Washington that's tired of waiting on the dealership, eating denied calibration line items, or unsure if your sublet provider is doing it to OEM spec — sublet to Absolute ADAS. We bring the targets, scan tools, and OEM citations to your bay.</p>
+
+    <div class="cta-row">
+      <a href="tel:+18443492327" class="btn-primary">📞 Call 1-844-FIX-ADAS →</a>
+      <a href="mailto:brew@adas-iq.com?subject=Sublet inquiry" class="btn-secondary">Email us</a>
+    </div>
+
+    <h2>What we calibrate</h2>
+    <p>Static, dynamic, or both — depending on the OEM procedure for the specific vehicle.</p>
+    <div class="what-we-do">
+      <div class="what-card">
+        <div class="what-card-name">Forward camera</div>
+        <div class="what-card-desc">Windshield-mounted ADAS cameras after R&I, replacement, or any procedure the OEM flags.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-name">Front &amp; rear radar</div>
+        <div class="what-card-desc">Adaptive cruise, AEB, blind-spot — bumper R&I or replacement triggers calibration.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-name">Surround-view cameras</div>
+        <div class="what-card-desc">360° / bird's-eye systems requiring static target setup.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-name">Steering angle sensor</div>
+        <div class="what-card-desc">After alignment, suspension work, or any steering disturbance.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-name">Pre &amp; post scans</div>
+        <div class="what-card-desc">Date-stamped, line-itemed, attached to the RO. Insurance-ready.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-name">OEM-cited documentation</div>
+        <div class="what-card-desc">Every calibration ships with the OEM procedure citation that flips denials.</div>
+      </div>
+    </div>
+
+    <h2>What you get on every job</h2>
+    <ul class="deliverables">
+      <li>OEM repair-procedure citation attached to your RO before the calibration starts</li>
+      <li>Pre-scan and post-scan reports, date- and time-stamped</li>
+      <li>Calibration report from a manufacturer-recognized scan tool</li>
+      <li>Line-itemed sublet invoice with the OEM procedure document referenced by name</li>
+      <li>Photos of the target setup with the VIN visible in frame</li>
+      <li>Same-day or next-day turnaround on most jobs</li>
+    </ul>
+
+    <h2>Service area</h2>
+    <p>We're mobile. We come to your bay. If your shop is in Western Washington, we likely cover you. Don't see your city? Call us — we add coverage based on demand.</p>
+    <div class="area-list">
+      <div class="area-list-title">📍 Active service area</div>
+      <div class="area-cities">
+        <span>Seattle</span>
+        <span>Bellevue</span>
+        <span>Tacoma</span>
+        <span>Everett</span>
+        <span>Kent</span>
+        <span>Auburn</span>
+        <span>Federal Way</span>
+        <span>Renton</span>
+        <span>Lynnwood</span>
+        <span>Kirkland</span>
+        <span>Redmond</span>
+        <span>Issaquah</span>
+        <span>Marysville</span>
+        <span>Bothell</span>
+        <span>Lakewood</span>
+        <span>Puyallup</span>
+        <span>Bremerton</span>
+        <span>Olympia</span>
+      </div>
+    </div>
+
+    <h2>Why shops sublet to us</h2>
+    <p><strong>We document so the calibration gets paid.</strong> A lot of calibration providers do solid work but skip the paperwork that lets your shop bill it as a separate, OEM-supported line item. That's the difference between a $400 line that flows through and a $400 line that gets bundled into "labor included" and disappears.</p>
+    <p><strong>We stand behind the OEM procedure.</strong> If an adjuster pushes back on something we did, we'll write the rebuttal with you. Our work is documented to the OEM standard so there's something concrete to point at.</p>
+    <p><strong>We don't compete with you.</strong> We don't do collision repair, paint, or mechanical work. We're calibration only. Your customer is your customer.</p>
+
+    <div class="contact-block">
+      <h3>Let's set up a sublet for your shop</h3>
+      <p>Tell us your shop name, city, and the kind of calibration volume you handle. We'll quote rates and turnaround.</p>
+      <div class="contact-paths">
+        <a href="tel:+18443492327" class="contact-tile">
+          <div class="contact-tile-label">📞 Call or text</div>
+          <div class="contact-tile-value">1-844-FIX-ADAS</div>
+        </a>
+        <a href="mailto:brew@adas-iq.com?subject=Sublet inquiry from%20[your shop]" class="contact-tile">
+          <div class="contact-tile-label">📩 Email</div>
+          <div class="contact-tile-value">brew@adas-iq.com</div>
+        </a>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 48px;">Not in our service area?</h2>
+    <p>Subscribe to <a href="/brew" style="color:var(--orange);font-weight:700;text-decoration:none">ADAS Brew</a> — our daily newsletter covering insurance denials, OEM bulletins, and calibration craft tips. Free. Or use the <a href="/audit" style="color:var(--orange);font-weight:700;text-decoration:none">Free Audit Tool</a> to get an OEM-cited rebuttal for any denied calibration line, anywhere in the country.</p>
+  </main>
+
+  <footer>
+    Absolute ADAS · Mobile ADAS calibration · Western Washington · <a href="tel:+18443492327">1-844-FIX-ADAS</a> · <a href="mailto:brew@adas-iq.com">brew@adas-iq.com</a>
+  </footer>
+</body>
+</html>
