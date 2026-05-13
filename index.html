@@ -810,7 +810,7 @@
     <li><a onclick="navigate('services');aoCloseNav()" href="#services" data-page="services">Services</a></li>
     <li><a href="/audit" style="color:var(--orange) !important;font-weight:700 !important;">Free Audit</a></li>
     <li><a href="/brew">ADAS Brew</a></li>
-    <li><a onclick="navigate('blog');aoCloseNav()" href="#blog" data-page="blog">Blog</a></li>
+    <li><a onclick="navigate('blog');aoCloseNav()" href="#blog" data-page="blog">Field Notes</a></li>
     <li><a onclick="navigate('swag');aoCloseNav()" href="#swag" data-page="swag">Swag</a></li>
     <li><a onclick="navigate('careers');aoCloseNav()" href="#careers" data-page="careers">Careers</a></li>
     <li><a onclick="navigate('contact');aoCloseNav()" href="#contact" data-page="contact" class="ao-nav-cta">Book a Calibration</a></li>
@@ -1549,9 +1549,10 @@
 
   <section class="ao-section">
     <div class="ao-container">
-      <div class="ao-label">The ADAS Blog</div>
-      <h2 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Industry Insights.<br><span style="color:var(--orange);">No Fluff.</span></h2>
-      <p class="ao-body" style="max-width:540px;">ADAS calibration news, OEM updates, shop tips, and everything Western Washington collision shops need to stay ahead.</p>
+      <div class="ao-label">ADAS Brew · Field Notes</div>
+      <h2 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">13 Plays Your Competition<br><span style="color:var(--orange);">Doesn't Want You to Read.</span></h2>
+      <p class="ao-body" style="max-width:620px;">The same calibration intel I share with the shops I sublet for in Western Washington. OEM angles, denial rebuttals, line items most shops miss. Free. No email required to read.</p>
+      <p class="ao-body" style="max-width:620px;margin-top:14px;font-size:.95rem;color:rgba(255,255,255,.55);">For the time-sensitive stuff — the carrier behavior shift this week, the recall that just dropped — that's in the <a href="/brew" style="color:var(--orange);font-weight:700;text-decoration:none;">daily Brew</a>. 5 stories, 5 minutes, every weekday at 6am Pacific.</p>
 
       <div class="blog-grid">
 
@@ -2546,11 +2547,20 @@
   function openArticle(id) {
     var a = articles[id];
     if (!a) return;
+    var brewCta =
+      '<div style="margin-top:48px;padding:32px 28px;background:linear-gradient(135deg,#1a1208 0%,#0f0a05 100%);border:1px solid rgba(205,68,25,.4);border-radius:14px;">' +
+        '<div style="font-family:monospace;font-size:.7rem;font-weight:700;letter-spacing:.18em;color:var(--orange);text-transform:uppercase;margin-bottom:10px;">🎁 Free for Field Notes Readers</div>' +
+        '<h3 style="font-size:1.5rem;font-weight:900;line-height:1.2;margin:0 0 12px;color:#fff !important;">Want the daily 5-story brief in your inbox? <span style="color:var(--orange);">Free.</span></h3>' +
+        '<p style="font-size:.98rem;color:rgba(255,255,255,.78);line-height:1.65;margin:0 0 18px;">Mon–Fri at 6am Pacific. The exact carrier intel, OEM bulletins, and denial-rebuttal angles I use to keep my shop\'s calibration line items paid. ~5 min read. No fluff.</p>' +
+        '<p style="font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.6;margin:0 0 22px;"><strong style="color:#fff;">Plus a free welcome gift:</strong> the OEM Position Statement Cheat Sheet — every major manufacturer\'s body-repair portal in one place. The doc that flips denied calibration claims.</p>' +
+        '<a href="/brew" style="display:inline-block;background:var(--orange);color:#fff;font-size:1rem;font-weight:800;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:-.01em;">Get the Daily Brew →</a>' +
+        '<div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:14px;">Free forever. Unsubscribe in one click. No upsell.</div>' +
+      '</div>';
     document.getElementById('blog-article-content').innerHTML =
       '<div class="blog-article-cat">' + a.cat + '</div>' +
       '<div class="blog-article-title">' + a.title + '</div>' +
-      '<div class="blog-article-meta">' + a.date + ' &nbsp;·&nbsp; Absolute ADAS</div>' +
-      '<div class="blog-article-content">' + a.content + '</div>';
+      '<div class="blog-article-meta">' + a.date + ' &nbsp;·&nbsp; ADAS Brew · Field Notes</div>' +
+      '<div class="blog-article-content">' + a.content + brewCta + '</div>';
     document.getElementById('blog-overlay').style.display = 'block';
     document.body.style.overflow = 'hidden';
   }
@@ -3612,8 +3622,8 @@ function aaBrewSubscribe(e){
         <ul>
           <li><a onclick="navigate('about')">About Us</a></li>
           <li><a href="/audit" style="color:var(--orange);">Free Calibration Audit</a></li>
-          <li><a href="/brew">ADAS Brew Newsletter</a></li>
-          <li><a onclick="navigate('blog')">Blog</a></li>
+          <li><a href="/brew">ADAS Brew Daily</a></li>
+          <li><a onclick="navigate('blog')">Field Notes (Articles)</a></li>
           <li><a onclick="navigate('contact')">Contact</a></li>
           <li><a onclick="navigate('swag')">Swag Store</a></li>
           <li><a onclick="navigate('acquire')" style="color:var(--orange);">Want to sell your ADAS business?</a></li>
