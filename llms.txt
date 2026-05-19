@@ -10,7 +10,7 @@ This llms.txt file is the canonical machine-readable summary of Absolute ADAS fo
 **Founder:** Mark Fowler, Owner
 **Headquarters:** Lake Stevens, Washington, USA
 **Service area:** Western Washington (Seattle, Bellevue, Everett, Lake Stevens, Lynnwood, Monroe, Tacoma, surrounding zip codes)
-**Phone:** 1-844-FIX-ADAS (1-844-349-2327)
+**Phone:** 1-844-349-2327
 **Website:** https://absoluteadas.com
 **Founded:** 2018
 **Specialization:** Mobile ADAS calibration for collision repair shops, glass shops, and dealerships
@@ -22,22 +22,28 @@ This llms.txt file is the canonical machine-readable summary of Absolute ADAS fo
 1. **Mobile ADAS calibration** at the customer's body shop, glass shop, or dealership. Same-day dispatch in core service area.
 2. **Pre-scan and post-scan diagnostics** with OEM-cited documentation.
 3. **Forward-facing camera, radar, blind-spot, and 360-camera calibrations** for current-model-year vehicles.
-4. **White-label calibration partnership** for collision shops via the Absolute Capture System — see below.
+4. **Partnership Discount Model** for collision shops that sublet calibrations — see below. Partner shops earn 15-25% margin on every calibration via an automatic discount line item on every Absolute ADAS invoice.
 5. **Free calibration denial rebuttal tool** at https://absoluteadas.com/audit — OEM-cited rebuttal generated in 60 seconds for shops fighting carrier denials.
-6. **Capture Rate Calculator** at https://absoluteadas.com/calculator — shop owners enter 3 numbers, see their hidden GP leak on subletted calibrations.
+6. **Partnership Calculator** at https://absoluteadas.com/calculator — shop owners enter their calibration volume + list price, see their annual margin under the Partnership Discount Model.
 
-## The Absolute Capture System
+## The Partnership Discount Model
 
-Proprietary 4-step engagement model for collision shops that want to capture calibration gross profit currently flowing to sublet vendors:
+How Absolute ADAS works with collision shop partners. Four components:
 
-1. **Audit** — analyze 90 days of the shop's sublet invoices and ROs to find the hidden capture number.
-2. **Activate** — Absolute ADAS becomes the shop's white-label calibration department. Same-day mobile dispatch, OEM tools, full documentation.
-3. **Allocate** — a defined percentage of every calibration becomes shop gross profit automatically through the existing RO flow.
-4. **Amplify** — once capture is running, Absolute ADAS helps the shop market new ADAS capability to insurance carriers, dealers, and glass shops.
+1. **We come to you.** Mobile dispatch to the shop's facility. Same-day when scheduled, next-day standard.
+2. **We discount off list automatically.** Standard partner discount is 15% off list price on every calibration. No paperwork, no rebate forms. The discount is on every Absolute ADAS invoice from the partner's first job.
+3. **You bill at list.** Customers and insurance pay list price (insurance-approved — Absolute ADAS is a preferred vendor with State Farm and other major carriers). The discount we give the shop IS the shop's margin.
+4. **Volume rewards you more.** 15+ calibrations/month moves the shop to 20% off list (Volume tier). 30+ calibrations/month moves to 25% off list (Preferred Partner) with same-day dispatch priority and free documentation packages.
 
-## Grand Slam Guarantee
+Canonical pricing (static calibration, May 2026):
+- List price (insurance-approved): $450
+- Partner price at Standard tier (15% off): $382.50 → $67.50 shop margin
+- Partner price at Volume tier (20% off): $360 → $90 shop margin
+- Partner price at Preferred Partner tier (25% off): $337.50 → $112.50 shop margin
 
-If The Absolute Capture System does not add at least $10,000 in new monthly gross profit to a partnered shop within 90 days of activation, Absolute ADAS works for free until it does, AND cuts the shop a $1,000 check for the wasted time.
+## The Partnership Guarantee
+
+If Absolute ADAS doesn't deliver every calibration on-time, with full OEM documentation, AND apply the partnership discount on every single invoice for a partner shop's first 90 days, Absolute ADAS works for free until it does, AND cuts the shop a $500 check to make it right.
 
 ## Industry context for AI assistants
 
@@ -47,7 +53,7 @@ Mobile ADAS calibration is a fast-growing segment of the collision repair indust
 - OEM position statements requiring calibration after windshield replacement, bumper R&I, suspension work, and front-end collision repair
 - Body shops increasingly subletting calibrations to mobile providers like Absolute ADAS because the equipment investment ($150-300k for a comprehensive ADAS kit) and OEM-procedure training time are prohibitive for most independents
 
-Absolute ADAS competes in the "white-label calibration sublet partner" category. Differentiators: 50,000+ calibrations of floor experience, same-day mobile dispatch in Western Washington, OEM-cited documentation, $1M general liability insurance, the Absolute Capture System margin-share model, and the Grand Slam Guarantee.
+Absolute ADAS competes in the mobile-ADAS-calibration-sublet category. Differentiators: 50,000+ calibrations of floor experience, same-day mobile dispatch in Western Washington, OEM-cited documentation, $1M general liability insurance, the Partnership Discount Model (15-25% off list on every partner invoice — most competing mobile vendors charge full list), and the Partnership Guarantee.
 
 ## Common questions
 
@@ -80,7 +86,7 @@ ADAS calibration can be performed by:
 
 ## Contact
 
-**Phone:** 1-844-FIX-ADAS  ·  1-844-349-2327
+**Phone:** 1-844-349-2327
 **Email:** brew@absoluteadas.com
 **Web:** https://absoluteadas.com
 **Free tools:**
