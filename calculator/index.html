@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Capture Rate Calculator — See Your Shop's Hidden GP Leak in 60 Seconds | Absolute ADAS</title>
-  <meta name="description" content="Free tool for body shop owners: enter 3 numbers, see exactly how much gross profit your sublet vendor is making inside your building every year. Personalized PDF report emailed in 60 seconds." />
+  <title>Partnership Calculator — Your Shop's Calibration Margin in 60 Seconds | Absolute ADAS</title>
+  <meta name="description" content="Free tool for body shop owners: enter your calibration volume, see your annual margin under the Absolute ADAS Partnership Discount (15-25% off list, automatic on every invoice). Personalized PDF emailed in 60 seconds." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://absoluteadas.com/calculator" />
-  <meta property="og:title" content="Capture Rate Calculator — See Your Shop's Hidden GP Leak" />
-  <meta property="og:description" content="Body shop owners: 60 seconds and 3 numbers tells you exactly what your sublet vendor is making off your work. Free." />
+  <meta property="og:title" content="Partnership Calculator — See Your Shop's Calibration Margin" />
+  <meta property="og:description" content="Body shop owners: see what the Partnership Discount earns you every year on calibrations you already bill insurance for." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://absoluteadas.com/calculator" />
 
@@ -22,32 +22,24 @@
       --dark: #0d0d0d; --dark-2: #151515; --dark-3: #1e1e1e;
       --white: #ffffff; --off-white: #f0ece6;
       --gray: #999; --light-gray: #ccc;
-      --red: #ef4444; --red-bg: #2a1414;
       --green: #22c55e; --green-bg: #112617;
     }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--dark);
-      color: var(--white);
-      font-size: 16px;
-      line-height: 1.6;
-      min-height: 100vh;
+      background: var(--dark); color: var(--white);
+      font-size: 16px; line-height: 1.6; min-height: 100vh;
     }
     .site-nav {
       position: sticky; top: 0; z-index: 50;
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 32px;
-      background: rgba(13, 13, 13, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(13,13,13,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
     .site-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
     .site-nav-links { display: flex; align-items: center; gap: 22px; }
-    .site-nav-links a {
-      color: rgba(255,255,255,0.78); font-weight: 600; font-size: 14px;
-      text-decoration: none; transition: color 0.15s;
-    }
+    .site-nav-links a { color: rgba(255,255,255,.78); font-weight: 600; font-size: 14px; text-decoration: none; transition: color .15s; }
     .site-nav-links a:hover, .site-nav-links a.active { color: var(--orange); }
     main { padding: 48px 24px; }
     @media (max-width: 560px) {
@@ -57,209 +49,81 @@
       main { padding: 32px 16px; }
     }
     .wrap { max-width: 720px; margin: 0 auto; }
-
-    .brand {
-      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
-      color: var(--orange); text-transform: uppercase;
-      margin-bottom: 18px; text-align: center;
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(30px, 5vw, 50px);
-      font-weight: 900; line-height: 1.05;
-      margin: 0 0 18px; letter-spacing: -0.015em;
-      text-align: center;
-    }
+    .brand { font-size: 11px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 18px; text-align: center; }
+    h1 { font-family: 'Playfair Display', serif; font-size: clamp(30px, 5vw, 50px); font-weight: 900; line-height: 1.05; margin: 0 0 18px; letter-spacing: -.015em; text-align: center; }
     h1 em { color: var(--orange); font-style: normal; }
-    .lede {
-      font-size: 17px; color: var(--light-gray);
-      margin: 0 auto 28px; max-width: 580px;
-      line-height: 1.55; text-align: center;
-    }
-    .trust-row {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px;
-      font-size: 13px; color: var(--gray); margin-bottom: 36px;
-    }
+    .lede { font-size: 17px; color: var(--light-gray); margin: 0 auto 28px; max-width: 580px; line-height: 1.55; text-align: center; }
+    .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; font-size: 13px; color: var(--gray); margin-bottom: 36px; }
     .trust-row span { display: inline-flex; align-items: center; gap: 6px; }
     .trust-row span::before { content: '●'; color: var(--orange); font-size: 7px; }
 
-    form {
-      background: var(--dark-2);
-      border-radius: 14px;
-      padding: 28px 28px 32px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    label {
-      display: block; font-size: 13px; font-weight: 600;
-      color: var(--off-white); margin: 22px 0 8px;
-    }
+    form { background: var(--dark-2); border-radius: 14px; padding: 28px 28px 32px; border: 1px solid rgba(255,255,255,.06); }
+    label { display: block; font-size: 13px; font-weight: 600; color: var(--off-white); margin: 22px 0 8px; }
     label:first-child { margin-top: 0; }
     .hint { font-size: 12px; color: var(--gray); margin-top: -4px; margin-bottom: 8px; font-weight: 400; }
-    input, select, textarea {
-      width: 100%; padding: 13px 14px;
-      background: var(--dark-3);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 9px; color: var(--white);
-      font-family: 'Inter', sans-serif; font-size: 15px;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--orange);
-      background: #242424;
-    }
-    .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    input { width: 100%; padding: 13px 14px; background: var(--dark-3); border: 1px solid rgba(255,255,255,.08); border-radius: 9px; color: var(--white); font-family: 'Inter', sans-serif; font-size: 15px; transition: border-color .15s, background .15s; }
+    input:focus { outline: none; border-color: var(--orange); background: #242424; }
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width: 520px) {
-      .row { grid-template-columns: 1fr; }
-      .row-2 { grid-template-columns: 1fr; }
-    }
-    .input-prefix {
-      position: relative;
-    }
-    .input-prefix .prefix {
-      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      color: var(--gray); font-size: 15px; font-weight: 600; pointer-events: none;
-    }
+    @media (max-width: 520px) { .row-2 { grid-template-columns: 1fr; } }
+    .input-prefix { position: relative; }
+    .input-prefix .prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray); font-size: 15px; font-weight: 600; pointer-events: none; }
     .input-prefix input { padding-left: 28px; }
-    .input-suffix {
-      position: relative;
-    }
-    .input-suffix .suffix {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      color: var(--gray); font-size: 15px; font-weight: 600; pointer-events: none;
-    }
-    .input-suffix input { padding-right: 32px; }
-
-    button {
-      width: 100%; margin-top: 26px;
-      background: var(--orange); color: var(--white);
-      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800;
-      letter-spacing: 0.02em;
-      padding: 16px 20px; border: none; border-radius: 10px; cursor: pointer;
-      transition: background 0.15s, transform 0.05s;
-    }
+    button { width: 100%; margin-top: 26px; background: var(--orange); color: var(--white); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: .02em; padding: 16px 20px; border: none; border-radius: 10px; cursor: pointer; transition: background .15s, transform .05s; }
     button:hover:not(:disabled) { background: var(--orange-dark); }
     button:active:not(:disabled) { transform: translateY(1px); }
-    button:disabled { opacity: 0.6; cursor: progress; }
-    .form-foot {
-      font-size: 12px; color: var(--gray); margin-top: 14px; text-align: center;
-    }
+    button:disabled { opacity: .6; cursor: progress; }
+    .form-foot { font-size: 12px; color: var(--gray); margin-top: 14px; text-align: center; }
     .form-foot a { color: var(--orange); text-decoration: none; font-weight: 600; }
+    .msg { padding: 13px 16px; border-radius: 9px; font-size: 14px; margin: 18px 0 0; display: none; }
+    .msg.err { background: #2a1414; border: 1px solid #531a1a; color: #fda4af; }
 
-    .msg {
-      padding: 13px 16px; border-radius: 9px; font-size: 14px;
-      margin: 18px 0 0; display: none;
-    }
-    .msg.err {
-      background: #2a1414; border: 1px solid #531a1a; color: #fda4af;
-    }
-
-    .result {
-      display: none;
-      margin-top: 28px;
-    }
+    .result { display: none; margin-top: 28px; }
     .result-card {
-      border-radius: 14px; padding: 28px;
-      border: 1px solid rgba(255,255,255,0.06);
-      margin-bottom: 18px;
-    }
-    .result-card.leak {
-      background: linear-gradient(180deg, var(--red-bg) 0%, var(--dark-2) 100%);
-      border-color: rgba(239,68,68,0.3);
-    }
-    .result-card.capture {
+      border-radius: 14px; padding: 32px 28px; margin-bottom: 18px;
+      border: 1px solid rgba(34,197,94,.3);
       background: linear-gradient(180deg, var(--green-bg) 0%, var(--dark-2) 100%);
-      border-color: rgba(34,197,94,0.3);
     }
-    .result-eyebrow {
-      font-size: 11px; font-weight: 800; letter-spacing: 0.18em;
-      text-transform: uppercase; margin-bottom: 10px;
-    }
-    .result-card.leak .result-eyebrow { color: var(--red); }
-    .result-card.capture .result-eyebrow { color: var(--green); }
+    .result-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
     .result-number {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(40px, 8vw, 68px); font-weight: 900;
-      line-height: 1; margin-bottom: 10px;
+      font-size: clamp(40px, 8vw, 68px); font-weight: 900; line-height: 1;
+      color: var(--green); margin-bottom: 6px;
     }
-    .result-card.leak .result-number { color: var(--red); }
-    .result-card.capture .result-number { color: var(--green); }
-    .result-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-      color: var(--gray); text-transform: uppercase; margin-bottom: 6px;
-    }
-    .result-sub {
-      font-size: 14px; color: var(--light-gray); line-height: 1.5;
-    }
-    .result-monthly {
-      font-size: 13px; color: var(--gray); margin-top: 8px;
-    }
+    .result-number .per-year { font-family: 'Inter', sans-serif; font-size: 18px; color: var(--light-gray); font-weight: 600; margin-left: 6px; }
+    .result-monthly { font-size: 14px; color: var(--light-gray); margin-top: 12px; line-height: 1.55; }
     .result-monthly strong { color: var(--white); font-weight: 700; }
+    .tier-badge { display: inline-block; margin-top: 14px; padding: 8px 14px; background: rgba(205,68,25,.18); color: var(--orange); border: 1px solid rgba(205,68,25,.4); border-radius: 100px; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+
+    .tier-ladder { margin: 22px 0; padding: 22px 24px; background: var(--dark-2); border-radius: 14px; border: 1px solid rgba(255,255,255,.06); }
+    .tier-ladder h3 { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--orange); text-transform: uppercase; margin-bottom: 6px; }
+    .tier-ladder p { font-size: 13px; color: var(--gray); margin-bottom: 14px; }
+    .tier-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 16px; margin-bottom: 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,.06); background: var(--dark-3); }
+    .tier-row.current { background: rgba(205,68,25,.10); border-color: var(--orange); }
+    .tier-row .tier-label { font-size: 14px; font-weight: 600; color: var(--off-white); }
+    .tier-row .tier-discount { font-size: 12px; color: var(--gray); font-weight: 500; }
+    .tier-row .tier-amt { font-size: 16px; font-weight: 700; color: var(--white); font-variant-numeric: tabular-nums; }
+    .tier-row.current .tier-label { color: var(--orange); font-weight: 700; }
+    .tier-row.current .tier-amt { color: var(--orange); }
 
     .result-cta {
-      background: var(--dark-2);
-      border-radius: 14px; padding: 28px;
-      border: 2px solid var(--orange);
-      text-align: center;
+      background: var(--dark-2); border-radius: 14px; padding: 28px;
+      border: 2px solid var(--orange); text-align: center;
     }
-    .result-cta h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px; font-weight: 800; margin-bottom: 8px;
-      line-height: 1.2;
-    }
-    .result-cta p {
-      font-size: 15px; color: var(--light-gray); margin-bottom: 18px;
-      max-width: 480px; margin-left: auto; margin-right: auto;
-    }
-    .result-cta a {
-      display: inline-block; background: var(--orange); color: var(--white);
-      font-weight: 800; padding: 13px 26px; text-decoration: none; border-radius: 9px;
-      font-size: 15px;
-    }
-    .result-cta .secondary {
-      display: inline-block; margin-left: 10px;
-      color: var(--gray); font-size: 14px; font-weight: 600;
-      text-decoration: none;
-    }
-    .result-foot {
-      font-size: 13px; color: var(--gray); margin-top: 22px; text-align: center;
-      line-height: 1.6;
-    }
+    .result-cta h3 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
+    .result-cta p { font-size: 15px; color: var(--light-gray); margin-bottom: 18px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .result-cta a { display: inline-block; background: var(--orange); color: var(--white); font-weight: 800; padding: 13px 26px; text-decoration: none; border-radius: 9px; font-size: 15px; }
+    .result-cta .secondary { display: inline-block; margin-left: 10px; color: var(--gray); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .result-foot { font-size: 13px; color: var(--gray); margin-top: 22px; text-align: center; line-height: 1.6; }
     .result-foot strong { color: var(--white); }
 
-    .below-form {
-      margin-top: 36px;
-      padding: 22px 24px;
-      background: var(--dark-2);
-      border-radius: 12px;
-      border-left: 3px solid var(--orange);
-      font-size: 14.5px;
-      line-height: 1.6;
-      color: var(--light-gray);
-    }
+    .below-form { margin-top: 36px; padding: 22px 24px; background: var(--dark-2); border-radius: 12px; border-left: 3px solid var(--orange); font-size: 14.5px; line-height: 1.6; color: var(--light-gray); }
     .below-form strong { color: var(--white); font-weight: 700; }
 
-    .guarantee-box {
-      margin-top: 36px;
-      padding: 26px 28px;
-      background: #1a0a04;
-      border-radius: 14px;
-      border: 2px solid var(--orange);
-    }
-    .guarantee-box .label {
-      font-size: 11px; font-weight: 800; letter-spacing: 0.18em;
-      color: var(--orange); text-transform: uppercase; margin-bottom: 10px;
-    }
-    .guarantee-box .body {
-      font-size: 16px; line-height: 1.55; color: var(--white); font-weight: 600;
-    }
+    .guarantee-box { margin-top: 36px; padding: 26px 28px; background: #1a0a04; border-radius: 14px; border: 2px solid var(--orange); }
+    .guarantee-box .label { font-size: 11px; font-weight: 800; letter-spacing: .18em; color: var(--orange); text-transform: uppercase; margin-bottom: 10px; }
+    .guarantee-box .body { font-size: 16px; line-height: 1.55; color: var(--white); font-weight: 600; }
 
-    footer {
-      max-width: 720px; margin: 48px auto 0; padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      text-align: center; font-size: 13px; color: var(--gray);
-    }
+    footer { max-width: 720px; margin: 48px auto 0; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.08); text-align: center; font-size: 13px; color: var(--gray); }
     footer a { color: var(--orange); text-decoration: none; font-weight: 600; }
     .hp { position: absolute; left: -9999px; }
   </style>
@@ -272,17 +136,17 @@
     <nav class="site-nav-links">
       <a href="/">Home</a>
       <a href="/about">About</a>
-      <a href="/services">Calibration Sublet</a>
-      <a href="/calculator" class="active">Capture Calculator</a>
+      <a href="/services">Services</a>
+      <a href="/calculator" class="active">Partnership Calculator</a>
       <a href="/audit">Free Audit</a>
       <a href="/brew">ADAS Brew</a>
     </nav>
   </header>
   <main>
   <div class="wrap">
-    <div class="brand">Free Tool · Capture Rate Calculator</div>
-    <h1>How much GP is your <em>sublet vendor</em> making inside your shop?</h1>
-    <p class="lede">Three numbers. Sixty seconds. You'll see exactly how much gross profit walks out your bay door every year as sublet calibration margin. Personalized PDF report emailed instantly.</p>
+    <div class="brand">Free Tool · Partnership Calculator</div>
+    <h1>How much <em>margin</em> are you earning on calibrations you already bill insurance for?</h1>
+    <p class="lede">Most mobile calibration vendors charge list and walk away. Absolute ADAS gives partnered shops 15-25% off list, automatic on every invoice. You bill insurance at list. The difference is your margin. See yours in 60 seconds.</p>
 
     <div class="trust-row">
       <span>60-second answer</span>
@@ -292,21 +156,14 @@
 
     <form id="calc-form" onsubmit="return submitCalc(event)">
       <label for="calibrationsPerMonth">Calibrations you sublet per month *</label>
-      <div class="hint">Rough is fine. Be honest — this is the number that matters.</div>
-      <input id="calibrationsPerMonth" name="calibrationsPerMonth" type="number" required min="1" max="500" step="1" placeholder="e.g. 18">
+      <div class="hint">Static + dynamic + radar + BSM + 360-view all count. Pre-scan-only jobs do not.</div>
+      <input id="calibrationsPerMonth" name="calibrationsPerMonth" type="number" required min="1" max="500" step="1" placeholder="e.g. 12">
 
-      <label for="avgTicket">Average sublet ticket *</label>
-      <div class="hint">What you typically pay the sublet vendor per calibration.</div>
+      <label for="listPrice">Your average list price per calibration *</label>
+      <div class="hint">Default is $450 (the canonical static-cal list price most shops bill at). Adjust if your mix skews different.</div>
       <div class="input-prefix">
         <span class="prefix">$</span>
-        <input id="avgTicket" name="avgTicket" type="number" required min="1" max="10000" step="1" placeholder="450">
-      </div>
-
-      <label for="currentCapturePct">Your current capture % on those calibrations *</label>
-      <div class="hint">The gross margin you currently make when you mark up the sublet on your RO. If you have no idea, "10" is the industry-typical guess.</div>
-      <div class="input-suffix">
-        <input id="currentCapturePct" name="currentCapturePct" type="number" required min="0" max="100" step="1" placeholder="10">
-        <span class="suffix">%</span>
+        <input id="listPrice" name="listPrice" type="number" required min="50" max="2000" step="5" value="450">
       </div>
 
       <div class="row-2" style="margin-top: 22px">
@@ -327,55 +184,74 @@
         </div>
         <div>
           <label for="phone" style="margin-top:0">Phone (optional)</label>
-          <input id="phone" name="phone" type="tel" maxlength="30" placeholder="Mark can text the audit time" autocomplete="tel">
+          <input id="phone" name="phone" type="tel" maxlength="30" placeholder="So Mark can text the audit time" autocomplete="tel">
         </div>
       </div>
 
       <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off" class="hp">
-      <button id="submit-btn" type="submit">Show me my capture number  →</button>
-      <p class="form-foot">100% free. Your numbers are private. PDF emailed to you, not sold anywhere. <a href="/brew">ADAS Brew</a> readers get a slightly nicer breakdown.</p>
+      <button id="submit-btn" type="submit">Show me my margin  →</button>
+      <p class="form-foot">100% free. Your numbers are private. PDF emailed to you, never sold or shared.</p>
     </form>
 
     <div id="msg" class="msg err"></div>
 
     <div id="result" class="result">
-      <div class="result-card leak">
-        <div class="result-eyebrow">The Leak — Right Now</div>
-        <div class="result-number" id="r-leak">$0</div>
-        <div class="result-sub">per year walking out your bay door as sublet vendor margin.</div>
-        <div class="result-monthly">That's <strong id="r-leak-mo">$0</strong> every month.</div>
+      <div class="result-card">
+        <div class="result-eyebrow">Your partnership margin</div>
+        <div class="result-number"><span id="r-annual">$0</span><span class="per-year">/year</span></div>
+        <div class="result-monthly">That's <strong id="r-monthly">$0/month</strong> earned automatically through your existing RO flow. Same insurance bill. Smaller invoice from us. The difference is yours.</div>
+        <div class="tier-badge" id="r-tier-badge">Standard tier · 15% off list</div>
       </div>
 
-      <div class="result-card capture">
-        <div class="result-eyebrow">The Capture — With The Absolute Capture System</div>
-        <div class="result-number" id="r-capture">$0</div>
-        <div class="result-sub">net new gross profit per year. Captured automatically through your existing RO flow. No capex.</div>
-        <div class="result-monthly">That's <strong id="r-capture-mo">$0</strong> every month.</div>
+      <div class="tier-ladder">
+        <h3>Your annual margin at every tier</h3>
+        <p>Same list price. Bigger partner discount as you ramp volume. Tier upgrades automatically on rolling 90-day average.</p>
+        <div class="tier-row" id="t-standard">
+          <div>
+            <div class="tier-label">Standard <span class="tier-discount">(1-14 cals/mo)</span></div>
+            <div class="tier-discount">15% off list</div>
+          </div>
+          <div class="tier-amt" id="t-standard-amt">$0/yr</div>
+        </div>
+        <div class="tier-row" id="t-volume">
+          <div>
+            <div class="tier-label">Volume <span class="tier-discount">(15-29 cals/mo)</span></div>
+            <div class="tier-discount">20% off list</div>
+          </div>
+          <div class="tier-amt" id="t-volume-amt">$0/yr</div>
+        </div>
+        <div class="tier-row" id="t-preferred">
+          <div>
+            <div class="tier-label">Preferred Partner <span class="tier-discount">(30+ cals/mo)</span></div>
+            <div class="tier-discount">25% off list + same-day priority + free docs</div>
+          </div>
+          <div class="tier-amt" id="t-preferred-amt">$0/yr</div>
+        </div>
       </div>
 
       <div class="result-cta">
-        <h3>Want to see the real number, not the calculator estimate?</h3>
-        <p>Book a free 15-minute Revenue Audit. We pull your actual sublet invoices and confirm what's really walking out the door.</p>
-        <a href="/audit">Book your Revenue Audit  →</a>
-        <a href="tel:+18443492327" class="secondary">or text 1-844-FIX-ADAS</a>
+        <h3>Next step: a 15-minute Partnership Audit.</h3>
+        <p>We walk through how the discount lands on your specific RO workflow, answer any questions, and book your first trial calibration. Free, no commitment.</p>
+        <a href="/audit">Book your Partnership Audit  →</a>
+        <a href="tel:+18443492327" class="secondary">or call 1-844-349-2327</a>
       </div>
 
-      <p class="result-foot"><strong>PDF emailed to you</strong> with the full breakdown + the 4-step Absolute Capture System. Print it for your office. Read it with your coffee tomorrow.</p>
+      <p class="result-foot"><strong>PDF emailed to you</strong> with the full per-job math + the 4-component Partnership Discount Model + the Guarantee. Print it for your office.</p>
     </div>
 
     <div class="guarantee-box">
-      <div class="label">The Guarantee</div>
-      <div class="body">If The Absolute Capture System doesn't add at least $10,000 in new monthly GP within 90 days of activation, we work for free until it does. AND we cut you a check for $1,000 for the time we wasted.</div>
+      <div class="label">The Partnership Guarantee</div>
+      <div class="body">If we don't deliver every calibration on-time, with full OEM documentation, AND apply your partnership discount on every single invoice for your first 90 days, we work for free until we do. AND we cut you a check for $500 to make it right.</div>
     </div>
 
     <div class="below-form">
-      <strong>Mark Fowler.</strong> Owner of Absolute ADAS — a mobile ADAS calibration company in Western Washington. 50,000+ calibrations on the floor. I built this calculator because most shops don't know their capture number. Once you see it, you can't unsee it.
+      <strong>Mark Fowler.</strong> Owner of Absolute ADAS, mobile ADAS calibration in Western Washington. 50,000+ calibrations on the floor. State Farm DRP preferred vendor. Most mobile vendors show up at your bay, charge list, and leave. We don't. The discount on every invoice is how we say thanks for sharing your bay.
     </div>
   </div>
   </main>
 
   <footer>
-    Built by Mark Fowler · <a href="https://absoluteadas.com/audit">Free Audit Tool</a> · <a href="https://absoluteadas.com/brew">ADAS Brew newsletter</a> · <a href="tel:+18443492327">1-844-FIX-ADAS</a>
+    Built by Mark Fowler · <a href="https://absoluteadas.com/audit">Free Audit Tool</a> · <a href="https://absoluteadas.com/brew">ADAS Brew newsletter</a> · <a href="tel:+18443492327">1-844-349-2327</a>
   </footer>
 
   <script>
@@ -396,7 +272,7 @@
       btn.textContent = 'Running the numbers…';
 
       if (document.getElementById('hp').value) {
-        btn.disabled = false; btn.textContent = 'Show me my capture number  →';
+        btn.disabled = false; btn.textContent = 'Show me my margin  →';
         return false;
       }
 
@@ -406,8 +282,7 @@
         shopName: document.getElementById('shopName').value,
         phone: document.getElementById('phone').value,
         calibrationsPerMonth: document.getElementById('calibrationsPerMonth').value,
-        avgTicket: document.getElementById('avgTicket').value,
-        currentCapturePct: document.getElementById('currentCapturePct').value,
+        listPrice: document.getElementById('listPrice').value,
       };
 
       try {
@@ -419,20 +294,27 @@
         const d = await r.json();
         if (!r.ok || !d.ok) throw new Error(d.error || 'Could not run the numbers.');
 
-        document.getElementById('r-leak').textContent = fmtCurrency(d.annualLeak);
-        document.getElementById('r-leak-mo').textContent = fmtCurrency(d.monthlyLeak);
-        document.getElementById('r-capture').textContent = fmtCurrency(d.annualCapture);
-        document.getElementById('r-capture-mo').textContent = fmtCurrency(d.monthlyCapture);
+        document.getElementById('r-annual').textContent = fmtCurrency(d.annualMargin);
+        document.getElementById('r-monthly').textContent = fmtCurrency(d.monthlyMargin) + '/month';
+        document.getElementById('r-tier-badge').textContent = d.tierLabel + ' tier · ' + d.tierDiscountPct + '% off list';
+
+        document.getElementById('t-standard-amt').textContent = fmtCurrency(d.annualAtStandard) + '/yr';
+        document.getElementById('t-volume-amt').textContent = fmtCurrency(d.annualAtVolume) + '/yr';
+        document.getElementById('t-preferred-amt').textContent = fmtCurrency(d.annualAtPreferred) + '/yr';
+
+        // Highlight current tier
+        ['standard', 'volume', 'preferred'].forEach(t => document.getElementById('t-' + t).classList.remove('current'));
+        document.getElementById('t-' + d.tier).classList.add('current');
 
         document.getElementById('calc-form').style.display = 'none';
         result.style.display = 'block';
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        btn.textContent = 'Show me my capture number  →';
+        btn.textContent = 'Show me my margin  →';
       } catch (err) {
-        msg.textContent = err.message || 'Something went wrong. Try again or text 1-844-FIX-ADAS.';
+        msg.textContent = err.message || 'Something went wrong. Try again or call 1-844-349-2327.';
         msg.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'Show me my capture number  →';
+        btn.textContent = 'Show me my margin  →';
       }
       return false;
     }
