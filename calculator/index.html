@@ -115,8 +115,12 @@
     }
     .result-cta h3 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
     .result-cta p { font-size: 15px; color: var(--light-gray); margin-bottom: 18px; max-width: 480px; margin-left: auto; margin-right: auto; }
-    .result-cta a { display: inline-block; background: var(--orange); color: var(--white); font-weight: 800; padding: 13px 26px; text-decoration: none; border-radius: 9px; font-size: 15px; }
-    .result-cta .secondary { display: inline-block; margin-left: 10px; color: var(--gray); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .result-cta a { color: var(--orange); font-weight: 700; text-decoration: none; }
+    .result-cta a:hover { text-decoration: underline; }
+    .calc-booking-embed { background: #fff; border-radius: 12px; overflow: hidden; min-height: 780px; box-shadow: 0 8px 32px rgba(0,0,0,.35); margin: 0 auto 16px; }
+    .calc-booking-embed iframe { border: none; width: 100%; }
+    .calc-or-call { font-size: 14px; color: var(--gray); margin-top: 14px; }
+    .calc-or-call a { color: var(--orange); font-weight: 700; }
     .result-foot { font-size: 13px; color: var(--gray); margin-top: 22px; text-align: center; line-height: 1.6; }
     .result-foot strong { color: var(--white); }
 
@@ -251,9 +255,10 @@
 
       <div class="result-cta">
         <h3>Next step: a 15-minute Partnership Audit.</h3>
-        <p>We walk through how the discount lands on your specific RO workflow, answer any questions, and book your first trial calibration. Free, no commitment.</p>
-        <a href="https://absoluteadas.zohobookings.com/#/4778305000000369018" target="_blank" rel="noopener">Book your Partnership Audit  →</a>
-        <a href="tel:+18443492327" class="secondary">or call 1-844-349-2327</a>
+        <p>We walk through how the discount lands on your specific RO workflow, answer any questions, and book your first trial calibration. Free, no commitment. Grab a slot below:</p>
+        <div id="calc-booking-embed" class="calc-booking-embed"></div>
+        <noscript><a href="https://absoluteadas.zohobookings.com/#/4778305000000369018" target="_blank" rel="noopener">Book your Partnership Audit  →</a></noscript>
+        <p class="calc-or-call">Prefer to call? <a href="tel:+18443492327">1-844-349-2327</a> — Mark picks up.</p>
       </div>
 
       <p class="result-foot"><strong>PDF emailed to you</strong> with the full per-job math + the 4-component Partnership Discount Model + the Guarantee. Print it for your office.</p>
@@ -361,5 +366,30 @@
       }
       return false;
     }
+  </script>
+  <script src="https://bookings.nimbuspop.com/assets/embed.js"></script>
+  <script>
+    // Lazy-init Zoho Bookings only when the result panel appears (post-submit)
+    // so first paint isn't blocked by the booking widget.
+    (function() {
+      var inited = false;
+      function initBooking() {
+        if (inited || typeof Bookings === 'undefined') return;
+        var target = document.getElementById('calc-booking-embed');
+        if (!target) return;
+        inited = true;
+        Bookings.inlineEmbed({
+          url: 'https://absoluteadas.zohobookings.com/portal-embed#/4778305000000369018',
+          parent: '#calc-booking-embed',
+          height: '780px'
+        });
+      }
+      var obs = new MutationObserver(function() {
+        var result = document.getElementById('result');
+        if (result && result.style.display === 'block') initBooking();
+      });
+      var result = document.getElementById('result');
+      if (result) obs.observe(result, { attributes: true, attributeFilter: ['style'] });
+    })();
   </script>
 </body></html>
