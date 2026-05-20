@@ -23,7 +23,7 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--white); font-size: 16px; line-height: 1.55; min-height: 100vh; }
 
-    /* Minimal header — logo + secret menu only, no nav */
+    /* Minimal header: logo + secret menu only, no nav */
     .pa-header { position: sticky; top: 0; z-index: 50; padding: 14px 24px; background: rgba(13,13,13,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .pa-logo-wrap { position: relative; display: inline-block; }
     .pa-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); cursor: pointer; user-select: none; }
@@ -159,7 +159,7 @@
     <div class="promise">
       <h3>The Audit Promise</h3>
       <ul>
-        <li>You email me your last 30-90 days of sublet calibration invoices (PDF or photos — whatever's easiest)</li>
+        <li>You email me your last 30-90 days of sublet calibration invoices (PDF or photos, whatever's easiest)</li>
         <li>I read them before our call and confirm the math on your real shop volume</li>
         <li>15-min phone call: I walk you through what the 15-25% partner discount would mean per cal + per month + per year for your shop</li>
         <li>If it fits, we schedule a free trial calibration at your facility so you see the workflow + the invoice line item</li>
@@ -169,9 +169,9 @@
 
     <h2>The math we'll walk through</h2>
     <div class="math">
-      <div class="math-row"><span class="label">Static cal — what your shop bills insurance (list)</span><span class="value">$450.00</span></div>
+      <div class="math-row"><span class="label">Static cal (what your shop bills insurance at list)</span><span class="value">$450.00</span></div>
       <div class="math-row"><span class="label">What you pay Absolute ADAS (15% partner discount)</span><span class="value">$382.50</span></div>
-      <div class="math-row total"><span class="label">Your margin per cal — automatic</span><span class="value">$67.50</span></div>
+      <div class="math-row total"><span class="label">Your margin per cal (automatic, every invoice)</span><span class="value">$67.50</span></div>
     </div>
 
     <div class="tier-ladder">
@@ -186,7 +186,7 @@
       <div class="body">If we don't deliver every calibration on-time, with full OEM documentation, AND apply your partnership discount on every single invoice for your first 90 days, we work for free until we do. AND we cut you a check for $500 to make it right.</div>
     </div>
 
-    <h2>Or fill this in — I'll reach out</h2>
+    <h2>Or fill this in. I'll reach out.</h2>
     <div class="form-card">
       <form id="audit-form" onsubmit="return submitAudit(event)">
         <label for="name">Your name *</label>
@@ -198,7 +198,7 @@
         <label for="email">Email *</label>
         <input id="email" name="email" type="email" required maxlength="180" autocomplete="email">
 
-        <label for="phone">Phone (optional — fastest path)</label>
+        <label for="phone">Phone (optional, fastest path)</label>
         <input id="phone" name="phone" type="tel" maxlength="30" autocomplete="tel">
 
         <label for="notes">Anything you want me to know before we talk? (optional)</label>
@@ -213,7 +213,7 @@
 
     <div class="pa-fast-path">
       <div class="pa-or"><span>OR</span></div>
-      <p class="pa-fast-lead">Already know you want to talk? Grab a slot on Mark's calendar — no form needed:</p>
+      <p class="pa-fast-lead">Already know you want to talk? Grab a slot on Mark's calendar. No form needed.</p>
       <div id="pa-booking-embed" class="pa-booking-embed"></div>
       <noscript><a class="pa-book-btn" href="https://absoluteadas.zohobookings.com/#/4778305000000369018" target="_blank" rel="noopener">📅 Book a 15-min slot on Mark's calendar  →</a></noscript>
     </div>
@@ -232,7 +232,7 @@
 
     <div id="ok-msg" class="ok-msg">
       <strong style="color:var(--white);font-size:17px;">Got it. Mark will reply same-day.</strong><br>
-      Either to your email or your phone if you left one. If you prefer, you can also just call <a href="tel:+18443492327" style="color:var(--green);font-weight:700;">1-844-349-2327</a> — Mark picks up.
+      Either to your email or your phone if you left one. If you prefer, you can also just call <a href="tel:+18443492327" style="color:var(--green);font-weight:700;">1-844-349-2327</a>. Mark picks up.
     </div>
 
     <div class="signature">
@@ -243,7 +243,7 @@
   <script>
     const API_BASE = 'https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api';
 
-    // Secret menu — 5 rapid logo clicks reveals all landing pages
+    // Secret menu: 5 rapid logo clicks reveals all landing pages
     var _paClicks = 0, _paTimer = null;
     function paLogoClick(e) {
       e.preventDefault();
