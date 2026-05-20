@@ -121,6 +121,12 @@
     .result-cta p { font-size: 15px; color: var(--light-gray); margin-bottom: 18px; max-width: 480px; margin-left: auto; margin-right: auto; }
     .result-cta a { color: var(--orange); font-weight: 700; text-decoration: none; }
     .result-cta a:hover { text-decoration: underline; }
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 22px; }
+    .cta-btn { display: inline-block; padding: 14px 26px; border-radius: 10px; font-weight: 800; font-size: 15px; text-decoration: none; transition: transform .05s, background .15s, color .15s; }
+    .cta-btn.primary { background: var(--orange); color: var(--white) !important; }
+    .cta-btn.primary:hover { background: #b73a16; text-decoration: none; }
+    .cta-or { display: flex; align-items: center; gap: 14px; color: var(--gray); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 16px; }
+    .cta-or::before, .cta-or::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.12); }
     .calc-booking-embed { background: #fff; border-radius: 12px; overflow: hidden; height: 880px; box-shadow: 0 8px 32px rgba(0,0,0,.35); margin: 0 auto 16px; width: 100%; max-width: 900px; }
     .calc-booking-embed iframe { border: none; width: 100% !important; height: 100% !important; display: block; }
     @media (min-width: 768px) {
@@ -168,14 +174,6 @@
         <a href="/" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;">🏠 Home</a>
       </div>
     </div>
-    <nav class="site-nav-links">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/services">Services</a>
-      <a href="/calculator" class="active">Partnership Calculator</a>
-      <a href="/audit">Free Audit</a>
-      <a href="/brew">ADAS Brew</a>
-    </nav>
   </header>
   <main>
   <div class="wrap">
@@ -267,10 +265,14 @@
 
       <div class="result-cta">
         <h3>Next step: a 15-minute Partnership Audit.</h3>
-        <p>We walk through how the discount lands on your specific RO workflow, answer any questions, and book your first trial calibration. Free, no commitment. Grab a slot below:</p>
+        <p>We walk through how the discount lands on your specific RO workflow, answer any questions, and book your first trial calibration. Free, no commitment.</p>
+        <div class="cta-actions">
+          <a class="cta-btn primary" href="tel:+18443492327">📞 Call Mark</a>
+          <a class="cta-btn primary" href="mailto:mf@absoluteadas.com?subject=Partnership%20Audit%20%E2%80%94%20I%20want%20to%20talk&body=Hey%20Mark%2C%0A%0AJust%20ran%20the%20calculator.%20I%27d%20like%20to%20talk%20about%20the%20Partnership%20Audit.%0A%0AShop%3A%0APhone%3A%0ABest%20time%20to%20reach%20me%3A%0A%0AThanks.">✉️ Email Mark</a>
+        </div>
+        <div class="cta-or"><span>OR — if you're ready to book a slot right now</span></div>
         <div id="calc-booking-embed" class="calc-booking-embed"></div>
         <noscript><a href="https://absoluteadas.zohobookings.com/#/4778305000000369018" target="_blank" rel="noopener">Book your Partnership Audit  →</a></noscript>
-        <p class="calc-or-call">Prefer to call? <a href="tel:+18443492327">1-844-349-2327</a> — Mark picks up.</p>
       </div>
 
       <p class="result-foot"><strong>PDF emailed to you</strong> with the full per-job math + the 4-component Partnership Discount Model + the Guarantee. Print it for your office.</p>
