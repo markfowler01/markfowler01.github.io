@@ -81,6 +81,12 @@
     .form-card button { width: 100%; margin-top: 18px; background: var(--orange); color: var(--white); font-weight: 800; font-size: 15px; padding: 15px; border: none; border-radius: 10px; cursor: pointer; }
     .form-card button:hover { background: var(--orange-dark); }
     .form-foot { font-size: 12px; color: var(--gray); margin-top: 10px; text-align: center; }
+    .pa-fast-path { margin: 26px 0 8px; text-align: center; }
+    .pa-or { display: flex; align-items: center; gap: 14px; color: var(--gray); font-size: 12px; font-weight: 700; letter-spacing: .18em; margin: 4px 0 18px; }
+    .pa-or::before, .pa-or::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.12); }
+    .pa-fast-lead { font-size: 14px; color: var(--off-white); margin: 0 0 12px; }
+    .pa-book-btn { display: inline-block; padding: 13px 22px; background: transparent; color: var(--orange); border: 2px solid var(--orange); border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; transition: background .15s, color .15s; }
+    .pa-book-btn:hover { background: var(--orange); color: var(--white); }
     .ok-msg { display: none; padding: 20px; background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.4); color: var(--green); border-radius: 10px; font-size: 15px; line-height: 1.5; text-align: center; margin: 22px 0; }
     .err-msg { display: none; padding: 14px 18px; background: rgba(220,38,38,.1); border: 1px solid rgba(220,38,38,.4); color: #fda4af; border-radius: 9px; font-size: 14px; margin: 14px 0 0; }
     .hp { position: absolute; left: -9999px; }
@@ -191,6 +197,12 @@
         <p class="form-foot">Goes straight to Mark. No team, no funnel, no SDR. Mark replies same-day.</p>
       </form>
       <div id="err-msg" class="err-msg"></div>
+    </div>
+
+    <div class="pa-fast-path">
+      <div class="pa-or"><span>OR</span></div>
+      <p class="pa-fast-lead">Already know you want to talk? Skip the form and grab a slot:</p>
+      <a class="pa-book-btn" href="https://absoluteadas.zohobookings.com/#/4778305000000369018" target="_blank" rel="noopener">📅 Book a 15-min slot on Mark's calendar  →</a>
     </div>
 
     <div id="ok-msg" class="ok-msg">
