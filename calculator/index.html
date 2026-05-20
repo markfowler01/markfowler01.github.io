@@ -69,6 +69,10 @@
     .input-prefix .prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray); font-size: 15px; font-weight: 600; pointer-events: none; }
     .input-prefix input { padding-left: 28px; }
     button { width: 100%; margin-top: 26px; background: var(--orange); color: var(--white); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: .02em; padding: 16px 20px; border: none; border-radius: 10px; cursor: pointer; transition: background .15s, transform .05s; }
+    .loading-bar { display: none; width: 100%; height: 4px; margin-top: 10px; background: rgba(205,68,25,.15); border-radius: 4px; overflow: hidden; position: relative; }
+    .loading-bar.show { display: block; }
+    .loading-bar::after { content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 40%; background: var(--orange); border-radius: 4px; animation: lb 1.1s ease-in-out infinite; }
+    @keyframes lb { 0% { left: -40%; } 100% { left: 100%; } }
     button:hover:not(:disabled) { background: var(--orange-dark); }
     button:active:not(:disabled) { transform: translateY(1px); }
     button:disabled { opacity: .6; cursor: progress; }
@@ -205,6 +209,7 @@
 
       <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off" class="hp">
       <button id="submit-btn" type="submit">Show me my margin  →</button>
+      <div id="loading-bar" class="loading-bar" aria-hidden="true"></div>
       <p class="form-foot">100% free. Your numbers are private. PDF emailed to you, never sold or shared.</p>
     </form>
 
@@ -301,9 +306,11 @@
       const btn = document.getElementById('submit-btn');
       const msg = document.getElementById('msg');
       const result = document.getElementById('result');
+      const bar = document.getElementById('loading-bar');
       msg.style.display = 'none';
       btn.disabled = true;
       btn.textContent = 'Running the numbers…';
+      bar.classList.add('show');
 
       if (document.getElementById('hp').value) {
         btn.disabled = false; btn.textContent = 'Show me my margin  →';
@@ -340,11 +347,13 @@
         ['standard', 'volume', 'preferred'].forEach(t => document.getElementById('t-' + t).classList.remove('current'));
         document.getElementById('t-' + d.tier).classList.add('current');
 
+        bar.classList.remove('show');
         document.getElementById('calc-form').style.display = 'none';
         result.style.display = 'block';
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
         btn.textContent = 'Show me my margin  →';
       } catch (err) {
+        bar.classList.remove('show');
         msg.textContent = err.message || 'Something went wrong. Try again or call 1-844-349-2327.';
         msg.style.display = 'block';
         btn.disabled = false;
