@@ -322,7 +322,7 @@
       try {
         const r = await fetch(`${API_BASE}/api/capture-calc/generate`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
           body: JSON.stringify(payload),
         });
         const d = await r.json();
