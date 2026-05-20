@@ -49,6 +49,10 @@
       main { padding: 32px 16px; }
     }
     .wrap { max-width: 720px; margin: 0 auto; }
+    @media (min-width: 768px) {
+      /* When the result panel is visible, widen the column to give the booking embed room */
+      body.has-result .wrap { max-width: 900px; }
+    }
     .brand { font-size: 11px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 18px; text-align: center; }
     h1 { font-family: 'Playfair Display', serif; font-size: clamp(30px, 5vw, 50px); font-weight: 900; line-height: 1.05; margin: 0 0 18px; letter-spacing: -.015em; text-align: center; }
     h1 em { color: var(--orange); font-style: normal; }
@@ -117,8 +121,16 @@
     .result-cta p { font-size: 15px; color: var(--light-gray); margin-bottom: 18px; max-width: 480px; margin-left: auto; margin-right: auto; }
     .result-cta a { color: var(--orange); font-weight: 700; text-decoration: none; }
     .result-cta a:hover { text-decoration: underline; }
-    .calc-booking-embed { background: #fff; border-radius: 12px; overflow: hidden; min-height: 780px; box-shadow: 0 8px 32px rgba(0,0,0,.35); margin: 0 auto 16px; }
-    .calc-booking-embed iframe { border: none; width: 100%; }
+    .calc-booking-embed { background: #fff; border-radius: 12px; overflow: hidden; height: 880px; box-shadow: 0 8px 32px rgba(0,0,0,.35); margin: 0 auto 16px; width: 100%; max-width: 900px; }
+    .calc-booking-embed iframe { border: none; width: 100% !important; height: 100% !important; display: block; }
+    @media (min-width: 768px) {
+      .calc-booking-embed { height: 720px; }
+      /* Break the embed out of the .wrap 720px column so it gets real desktop space */
+      .result-cta { max-width: 900px; margin-left: auto; margin-right: auto; }
+    }
+    @media (max-width: 480px) {
+      .calc-booking-embed { height: 920px; }
+    }
     .calc-or-call { font-size: 14px; color: var(--gray); margin-top: 14px; }
     .calc-or-call a { color: var(--orange); font-weight: 700; }
     .result-foot { font-size: 13px; color: var(--gray); margin-top: 22px; text-align: center; line-height: 1.6; }
@@ -355,6 +367,7 @@
         bar.classList.remove('show');
         document.getElementById('calc-form').style.display = 'none';
         result.style.display = 'block';
+        document.body.classList.add('has-result');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
         btn.textContent = 'Show me my margin  →';
       } catch (err) {
