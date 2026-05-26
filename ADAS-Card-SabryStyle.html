@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absolute ADAS - Sabry Suby Style Card</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #2a2a2a;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 40px;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .version {
+      text-align: center;
+    }
+
+    .version h2 {
+      color: #CD4419;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .card {
+      width: 450px;
+      height: 260px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      border: 2px solid #CD4419;
+      color: #fff;
+    }
+
+    /* ORIGINAL VERSION */
+    .card.original .headline {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .card.original .subtext {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .card.original .cta {
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      background: #CD4419;
+      padding: 8px 14px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+
+    .card.original .logo {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 10px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    /* SABRY SUBY VERSION */
+    .card.sabry .headline {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .card.sabry .stat-box {
+      background: rgba(205, 68, 25, 0.2);
+      border-left: 3px solid #CD4419;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+    }
+
+    .card.sabry .stat {
+      font-size: 14px;
+      font-weight: 900;
+      color: #CD4419;
+      line-height: 1.2;
+    }
+
+    .card.sabry .stat-desc {
+      font-size: 9px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    .card.sabry .proof {
+      font-size: 10px;
+      color: #ccc;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .card.sabry .cta {
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+      background: #CD4419;
+      padding: 10px 14px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+
+    .card.sabry .urgency {
+      font-size: 9px;
+      color: #CD4419;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .card.sabry .logo {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 10px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    /* BREAKDOWN */
+    .breakdown {
+      background: rgba(205, 68, 25, 0.08);
+      border: 1px solid rgba(205, 68, 25, 0.2);
+      border-radius: 8px;
+      padding: 30px;
+      color: #ccc;
+      font-size: 13px;
+      line-height: 1.8;
+      margin-top: 60px;
+    }
+
+    .breakdown h3 {
+      color: #CD4419;
+      margin-bottom: 15px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .breakdown h4 {
+      color: #fff;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .breakdown .old {
+      color: #888;
+      text-decoration: line-through;
+      margin-bottom: 8px;
+    }
+
+    .breakdown .new {
+      color: #CD4419;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .breakdown ul {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .breakdown li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .comparison {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Sabry Suby-Style Redesign (FRONT ONLY)</h1>
+
+    <div class="comparison">
+      <!-- ORIGINAL -->
+      <div class="version">
+        <h2>❌ Original Version</h2>
+        <div class="card original">
+          <div>
+            <div class="headline">Your Vendor 2-3 Days Out?</div>
+            <div class="subtext">Give us a shot. Same-day or next-day. No pressure if you want to stick with them. We're just here when you need it faster.</div>
+          </div>
+          <div class="cta">📞 1-844-FIX-ADAS</div>
+          <div class="logo">Absolute ADAS</div>
+        </div>
+      </div>
+
+      <!-- SABRY SUBY STYLE -->
+      <div class="version">
+        <h2>✅ Sabry Suby Style</h2>
+        <div class="card sabry">
+          <div>
+            <div class="headline">You're Leaving $210/RO On The Table</div>
+
+            <div class="stat-box">
+              <div class="stat">61 Shops</div>
+              <div class="stat-desc">thought they had it handled. They didn't.</div>
+            </div>
+
+            <div class="proof">We audited them. Found $210/RO average in missed revenue. We'll find yours.</div>
+          </div>
+          <div>
+            <div class="cta">📞 1-844-FIX-ADAS</div>
+            <div class="urgency">50% off your first audit this week</div>
+          </div>
+          <div class="logo">Absolute ADAS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREAKDOWN -->
+    <div class="breakdown">
+      <h3>🔍 What Changed & Why</h3>
+
+      <h4>HEADLINE</h4>
+      <div class="old">❌ "Your Vendor 2-3 Days Out?" (Question = weak)</div>
+      <div class="new">✅ "You're Leaving $210/RO On The Table" (Statement = strong)</div>
+      <ul>
+        <li><strong>Why:</strong> Questions invite them to debate. Statements create tension. "$210" is specific and painful.</li>
+      </ul>
+
+      <h4>SOCIAL PROOF</h4>
+      <div class="old">❌ (None - just asking them to trust you)</div>
+      <div class="new">✅ "61 Shops thought they had it handled. They didn't."</div>
+      <ul>
+        <li><strong>Why:</strong> Sabry's formula: Promise + Proof = Belief. You need proof IMMEDIATELY.</li>
+        <li>Specific number (61) beats "many shops"</li>
+        <li>Shows they were WRONG, making your call urgent</li>
+      </ul>
+
+      <h4>THE MECHANISM</h4>
+      <div class="old">❌ "Give us a shot. Same-day or next-day." (Apologetic, feature-focused)</div>
+      <div class="new">✅ "We audited them. Found $210/RO average in missed revenue. We'll find yours." (Confident, benefit-focused)</div>
+      <ul>
+        <li><strong>Why:</strong> Don't ask for permission ("give us a shot"). Show you deliver results.</li>
+        <li>Shifts from SPEED to MONEY (what they actually care about)</li>
+        <li>"We'll find yours" = direct promise to THEM</li>
+      </ul>
+
+      <h4>THE OFFER</h4>
+      <div class="old">❌ No mention on front (buried on back)</div>
+      <div class="new">✅ "50% off your first audit this week"</div>
+      <ul>
+        <li><strong>Why:</strong> The offer should be VISIBLE and TIME-BOUND</li>
+        <li>"This week" creates urgency. No deadline = no urgency.</li>
+        <li>50% off is the REWARD for taking action, not the main message</li>
+      </ul>
+
+      <h4>THE CTA ENERGY</h4>
+      <div class="old">❌ "No pressure if you want to stick with them" (Literally telling them to ignore you)</div>
+      <div class="new">✅ (Removed - replaced with proof and urgency)</div>
+      <ul>
+        <li><strong>Why:</strong> NEVER talk people OUT of calling. That's self-sabotage.</li>
+        <li>The proof and offer should make them FEEL COMPELLED, not comfortable ignoring you</li>
+      </ul>
+
+      <h3 style="margin-top: 40px;">📊 The Psychology Behind This</h3>
+      <ul>
+        <li><strong>Original:</strong> "We're a nice alternative when you're desperate. No obligation." → Low confidence</li>
+        <li><strong>Sabry:</strong> "We find the money everyone else leaves. Here's proof. Call this week." → High confidence</li>
+      </ul>
+
+      <ul>
+        <li><strong>Original plays to:</strong> Curiosity ("give us a try")</li>
+        <li><strong>Sabry plays to:</strong> Pain ($210/RO lost) + Authority (61 verified shops) + Urgency (this week)</li>
+      </ul>
+
+      <h3 style="margin-top: 40px;">🎯 Response Rate Prediction</h3>
+      <ul>
+        <li><strong>Original card:</strong> Maybe 2-5% of people who take it will call (low urgency, low stakes)</li>
+        <li><strong>Sabry card:</strong> 8-15% will call (high stakes, proof, urgency, clear benefit)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
