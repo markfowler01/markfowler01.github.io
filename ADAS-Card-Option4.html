@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absolute ADAS - Business Card (Option 4)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a1a;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    /* CARD SIZING: 3.5" x 2" at 300 DPI = 1050px x 600px */
+    /* Scaled to ~450px wide for screen display */
+    .card {
+      width: 450px;
+      height: 260px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* OPTION 4: The Friendly Alternative */
+    .card.option4 {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      border: 2px solid #CD4419;
+      color: #fff;
+    }
+
+    .card.option4 .headline {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .card.option4 .subtext {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .card.option4 .cta {
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      background: #CD4419;
+      padding: 8px 14px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+
+    .card.option4 .logo {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 10px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    /* Print Styles */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      color: #CD4419;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .print-instructions {
+      background: rgba(205, 68, 25, 0.08);
+      border: 1px solid rgba(205, 68, 25, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      color: #ccc;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 40px;
+    }
+
+    .print-instructions h3 {
+      color: #CD4419;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Absolute ADAS Business Card (Option 4 - Final Design)</h1>
+
+    <!-- OPTION 4 -->
+    <div class="section">
+      <div class="section-title">Option 4: The Friendly Alternative</div>
+      <div class="cards-grid">
+        <div class="card option4">
+          <div>
+            <div class="headline">Your Vendor 2-3 Days Out?</div>
+            <div class="subtext">Give us a shot. Same-day or next-day. No pressure if you want to stick with them. We're just here when you need it faster.</div>
+          </div>
+          <div class="cta">📞 1-844-FIX-ADAS</div>
+          <div class="logo">Absolute ADAS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRINTING INSTRUCTIONS -->
+    <div class="print-instructions">
+      <h3>📋 How to Print These Cards</h3>
+      <p><strong>Print Specifications:</strong></p>
+      <ul>
+        <li><strong>Size:</strong> 3.5" x 2" (standard business card)</li>
+        <li><strong>Resolution:</strong> 300 DPI for plastic cards</li>
+        <li><strong>Paper/Stock:</strong> 16 pt cardstock or plastic card material</li>
+        <li><strong>Print Service:</strong> Vistaprint, MOO, PrintNinja, or local printer</li>
+        <li><strong>Setup:</strong> This design is 450px wide for display. Full-size template (1050px x 600px) available on request.</li>
+      </ul>
+
+      <p><strong>Distribution Strategy:</strong></p>
+      <ul>
+        <li>Hand out when shops say "we already have a calibration vendor"</li>
+        <li>Leave on desk after shop visits</li>
+        <li>Use during networking events with collision shops</li>
+        <li>Position as: "When they're backed up, give us a call"</li>
+      </ul>
+
+      <p><strong>What Makes This Work:</strong></p>
+      <ul>
+        <li>✓ Doesn't threaten their existing vendor relationship</li>
+        <li>✓ Solves the immediate pain point (2-3 day wait)</li>
+        <li>✓ "Give us a shot" is casual and non-pushy</li>
+        <li>✓ Positions you as the friendly alternative, not the competitor</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

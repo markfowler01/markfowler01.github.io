@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absolute ADAS - Print-Ready Business Card</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #2a2a2a;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 40px;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .print-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    /* CARD SIZING: 3.5" x 2" at 300 DPI = 1050px x 600px */
+    /* Scaled to ~450px wide for screen display */
+    .card {
+      width: 450px;
+      height: 260px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      border: 2px solid #CD4419;
+      color: #fff;
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    /* FRONT */
+    .card.front .headline {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .card.front .subtext {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .card.front .cta {
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      background: #CD4419;
+      padding: 8px 14px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+
+    .card.front .logo {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 10px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    /* BACK */
+    .card.back {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+    }
+
+    .card.back .promo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card.back .promo-text {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .card.back .promo-offer {
+      font-size: 22px;
+      font-weight: 900;
+      color: #CD4419;
+      line-height: 1.1;
+    }
+
+    .card.back .info {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .card.back .contact-item {
+      font-size: 9px;
+      color: #ccc;
+      margin-bottom: 5px;
+      line-height: 1.4;
+    }
+
+    .card.back .contact-item strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .card.back .divider {
+      height: 1px;
+      background: rgba(205, 68, 25, 0.3);
+      margin: 12px 0;
+    }
+
+    .card.back .services {
+      font-size: 8px;
+      color: #999;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .card.back .footer {
+      font-size: 8px;
+      color: #666;
+      text-align: center;
+    }
+
+    /* Download Instructions */
+    .instructions {
+      background: rgba(205, 68, 25, 0.08);
+      border: 1px solid rgba(205, 68, 25, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      color: #ccc;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 40px;
+    }
+
+    .instructions h3 {
+      color: #CD4419;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .instructions strong {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .print-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Absolute ADAS Business Card - Print Ready</h1>
+
+    <div class="print-layout">
+      <!-- FRONT -->
+      <div>
+        <div class="card-label">Front of Card</div>
+        <div class="card front">
+          <div>
+            <div class="headline">Your Vendor 2-3 Days Out?</div>
+            <div class="subtext">Give us a shot. Same-day or next-day. No pressure if you want to stick with them. We're just here when you need it faster.</div>
+          </div>
+          <div class="cta">📞 1-844-FIX-ADAS</div>
+          <div class="logo">Absolute ADAS</div>
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div>
+        <div class="card-label">Back of Card</div>
+        <div class="card back">
+          <div class="promo">
+            <div class="promo-text">First Time?</div>
+            <div class="promo-offer">50% Off Your First Calibration</div>
+          </div>
+
+          <div class="info">
+            <div class="contact-item"><strong>1-844-FIX-ADAS</strong></div>
+            <div class="contact-item">absoluteadas.com</div>
+            <div class="divider"></div>
+            <div class="services">ADAS Calibration • Key Programming • Diagnostics</div>
+            <div class="contact-item">Western Washington</div>
+          </div>
+
+          <div class="footer">Absolute ADAS • Driving safety forward, one calibration at a time.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRINT INSTRUCTIONS -->
+    <div class="instructions">
+      <h3>📋 How to Print & Order</h3>
+
+      <ol>
+        <li><strong>Download the print files:</strong> Full-resolution template (1050px × 600px @ 300 DPI) ready for upload</li>
+        <li><strong>Choose your printer:</strong>
+          <ul style="margin: 8px 0 0 20px; list-style: none;">
+            <li>✓ GotPrint: $8.50 for 500 cards (most reliable budget option)</li>
+            <li>✓ BIZAY: $6.49 for 500 cards (cheapest)</li>
+            <li>✓ PrintDirtCheap: $170-200 for 500 plastic cards (if upgrading later)</li>
+          </ul>
+        </li>
+        <li><strong>Specifications:</strong>
+          <ul style="margin: 8px 0 0 20px; list-style: none;">
+            <li>• Size: 3.5" × 2" (standard business card)</li>
+            <li>• Resolution: 300 DPI minimum</li>
+            <li>• Stock: 14pt cardstock (standard) or 16pt (premium)</li>
+            <li>• Finish: Matte or glossy (glossy is more durable)</li>
+            <li>• Sides: Full color front & back</li>
+          </ul>
+        </li>
+        <li><strong>Upload:</strong> Use their online uploader, set quantity to 500-1000</li>
+        <li><strong>Review & Order:</strong> Check proofs for color accuracy, then submit</li>
+        <li><strong>Turnaround:</strong> 5-10 business days standard (expedited options available)</li>
+      </ol>
+
+      <h3 style="margin-top: 20px;">📊 Distribution Strategy</h3>
+      <ol>
+        <li><strong>When to hand out:</strong> When shops say "we already have a calibration vendor"</li>
+        <li><strong>Pitch:</strong> "When they're 2-3 days out and you need it done today, give us a call. 50% off your first calibration."</li>
+        <li><strong>Follow-up:</strong> Note which shops take cards, track who calls</li>
+        <li><strong>A/B test:</strong> After 500, order another batch and tweak offer if needed</li>
+      </ol>
+
+      <h3 style="margin-top: 20px;">💡 Pro Tips</h3>
+      <ul style="margin-left: 20px;">
+        <li><strong>Start with 500:</strong> Test the offer before committing to 1000+</li>
+        <li><strong>Glossy finish:</strong> More professional and durable than matte</li>
+        <li><strong>Track responses:</strong> Ask callers "How did you hear about us?" to measure ROI</li>
+        <li><strong>50% off offer:</strong> Expires after first use (or set an expiration date)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
