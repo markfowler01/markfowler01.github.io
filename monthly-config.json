@@ -1,0 +1,21 @@
+{
+  "currentMonth": "June",
+  "currentYear": 2026,
+  "nextMonth": "July",
+  "nextYear": 2026,
+  "spotsTotal": 3,
+  "spotsBooked": 0,
+  "spotsAvailable": 3,
+  "status": "OPEN",
+  "lastUpdated": "2026-06-01",
+  "history": [
+    {
+      "month": "June",
+      "year": 2026,
+      "spotsTotal": 3,
+      "spotsBooked": 0,
+      "spotsAvailable": 3,
+      "updatedOn": "2026-06-01"
+    }
+  ]
+}
