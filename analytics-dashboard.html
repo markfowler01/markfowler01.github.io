@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absolute ADAS - Conversion Analytics Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .metric-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 0.85rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .metric-value {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #CD4419;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    .metric-detail {
+      font-size: 0.9rem;
+      color: #777;
+    }
+    .chart-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .chart-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #CD4419;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    td {
+      padding: 16px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+    tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-active {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+    .status-testing {
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+    }
+    .control-panel {
+      background: rgba(205, 68, 25, 0.1);
+      border: 1px solid rgba(205, 68, 25, 0.25);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    button {
+      background: #CD4419;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+    button:hover {
+      background: #b8390f;
+      transform: translateY(-2px);
+    }
+    .refresh-note {
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 16px;
+    }
+    .cta-performance {
+      margin-top: 24px;
+    }
+    .cta-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+    .cta-label {
+      min-width: 200px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .cta-bar-fill {
+      flex: 1;
+      height: 24px;
+      background: rgba(205, 68, 25, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .cta-bar-inner {
+      height: 100%;
+      background: #CD4419;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .footer {
+      text-align: center;
+      color: #666;
+      font-size: 0.85rem;
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Conversion Analytics Dashboard</h1>
+    <p class="subtitle">Real-time tracking of Absolute ADAS website performance</p>
+
+    <div class="control-panel">
+      <h3 style="margin-bottom: 16px; color: #fff;">Dashboard Controls</h3>
+      <button onclick="refreshData()">🔄 Refresh Data</button>
+      <button onclick="exportData()" style="margin-left: 12px;">📥 Export CSV</button>
+      <button onclick="clearData()" style="margin-left: 12px; background: #666;">🗑️ Clear All</button>
+      <p class="refresh-note">Data is stored locally in your browser. Refresh to see live updates from localStorage.</p>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Total Page Views</div>
+        <div class="metric-value" id="total-views">0</div>
+        <div class="metric-detail">Users who visited this month</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total CTA Clicks</div>
+        <div class="metric-value" id="total-clicks">0</div>
+        <div class="metric-detail">Across all buttons</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Conversion Rate</div>
+        <div class="metric-value" id="conv-rate">0%</div>
+        <div class="metric-detail">Clicks / Views</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Top Performer</div>
+        <div class="metric-value" id="top-cta">—</div>
+        <div class="metric-detail">Best-converting button</div>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">🎯 CTA Button Performance</div>
+      <div class="cta-performance" id="cta-performance">
+        <p style="color: #888;">Loading data...</p>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">📈 Event Log</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Event Type</th>
+            <th>Button / Page</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody id="event-log">
+          <tr>
+            <td colspan="4" style="text-align: center; color: #888;">No events yet. Click a button on the site to start tracking.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">🧪 A/B Test Status</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Test Variant</th>
+            <th>Status</th>
+            <th>Expected Lift</th>
+            <th>Started</th>
+          </tr>
+        </thead>
+        <tbody id="ab-tests">
+          <tr>
+            <td>Competitors Angle (Current)</td>
+            <td><span class="status-badge status-active">ACTIVE</span></td>
+            <td>Baseline</td>
+            <td>2026-05-26</td>
+          </tr>
+          <tr>
+            <td>Revenue Loss Angle</td>
+            <td><span class="status-badge status-testing">READY TO TEST</span></td>
+            <td>+10-15%</td>
+            <td>Not started</td>
+          </tr>
+          <tr>
+            <td>Liability + Revenue Angle</td>
+            <td><span class="status-badge status-testing">READY TO TEST</span></td>
+            <td>+15-20%</td>
+            <td>Not started</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>🔒 All data is stored locally in your browser and not shared with third parties.</p>
+      <p style="margin-top: 8px;">Last updated: <span id="last-update">Never</span></p>
+    </div>
+  </div>
+
+  <script>
+    function refreshData() {
+      const conversions = JSON.parse(localStorage.getItem('ao_conversions') || '[]');
+      const pageViews = JSON.parse(localStorage.getItem('ao_pageviews') || '[]');
+
+      // Update metrics
+      const totalViews = pageViews.length;
+      const totalClicks = conversions.length;
+      const convRate = totalViews > 0 ? ((totalClicks / totalViews) * 100).toFixed(2) : 0;
+
+      document.getElementById('total-views').textContent = totalViews;
+      document.getElementById('total-clicks').textContent = totalClicks;
+      document.getElementById('conv-rate').textContent = convRate + '%';
+
+      // Find top performer
+      const buttonPerformance = {};
+      conversions.forEach(c => {
+        if (!buttonPerformance[c.buttonId]) {
+          buttonPerformance[c.buttonId] = 0;
+        }
+        buttonPerformance[c.buttonId]++;
+      });
+
+      const topCta = Object.keys(buttonPerformance).length > 0
+        ? Object.entries(buttonPerformance).sort((a, b) => b[1] - a[1])[0][0]
+        : '—';
+      document.getElementById('top-cta').textContent = topCta;
+
+      // CTA Performance Bar Chart
+      const ctaPerformanceHtml = Object.entries(buttonPerformance)
+        .sort((a, b) => b[1] - a[1])
+        .map(([button, count]) => {
+          const percentage = totalClicks > 0 ? (count / totalClicks) * 100 : 0;
+          return `
+            <div class="cta-bar">
+              <div class="cta-label">${button}</div>
+              <div class="cta-bar-fill">
+                <div class="cta-bar-inner" style="width: ${percentage}%">${count}</div>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+
+      document.getElementById('cta-performance').innerHTML = ctaPerformanceHtml || '<p style="color: #888;">No CTA clicks yet.</p>';
+
+      // Event Log
+      const eventLogHtml = conversions.slice(-10).reverse().map(c => `
+        <tr>
+          <td>${new Date(c.timestamp).toLocaleString()}</td>
+          <td>${c.eventName}</td>
+          <td>${c.buttonId}</td>
+          <td>1</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('event-log').innerHTML = eventLogHtml || '<tr><td colspan="4" style="text-align: center; color: #888;">No events yet.</td></tr>';
+
+      // Update last refresh time
+      document.getElementById('last-update').textContent = new Date().toLocaleString();
+    }
+
+    function exportData() {
+      const conversions = JSON.parse(localStorage.getItem('ao_conversions') || '[]');
+      const pageViews = JSON.parse(localStorage.getItem('ao_pageviews') || '[]');
+
+      let csv = 'Type,Timestamp,Event,Button,Page\n';
+
+      conversions.forEach(c => {
+        csv += `Conversion,${c.timestamp},${c.eventName},${c.buttonId},${c.page}\n`;
+      });
+
+      pageViews.forEach(p => {
+        csv += `PageView,${p.timestamp},${p.eventName},,${p.page}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `adas-analytics-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    }
+
+    function clearData() {
+      if (confirm('Are you sure? This will delete all tracked data.')) {
+        localStorage.removeItem('ao_conversions');
+        localStorage.removeItem('ao_pageviews');
+        refreshData();
+        alert('Data cleared.');
+      }
+    }
+
+    // Initial load
+    refreshData();
+
+    // Auto-refresh every 10 seconds
+    setInterval(refreshData, 10000);
+  </script>
+</body>
+</html>

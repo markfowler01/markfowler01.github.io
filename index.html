@@ -51,6 +51,54 @@
   <!-- Zoho PageSense Analytics -->
   <script src="https://cdn.pagesense.io/js/902004833/768f341dc61e4bddadd74c9c19b5f8ee.js" defer></script>
 
+  <!-- Conversion Tracking -->
+  <script>
+    // Track CTA clicks for A/B testing and conversion monitoring
+    window.trackEvent = function(eventName, buttonId) {
+      const event = {
+        timestamp: new Date().toISOString(),
+        eventName: eventName,
+        buttonId: buttonId,
+        page: window.location.pathname,
+        userAgent: navigator.userAgent
+      };
+
+      // Send to Google Analytics if available
+      if (window.gtag) {
+        gtag('event', eventName, {
+          'button_id': buttonId,
+          'page': window.location.pathname
+        });
+      }
+
+      // Log to localStorage for local analytics
+      let conversions = JSON.parse(localStorage.getItem('ao_conversions') || '[]');
+      conversions.push(event);
+      localStorage.setItem('ao_conversions', JSON.stringify(conversions.slice(-100))); // Keep last 100
+
+      // Log to console for debugging
+      console.log('📊 Conversion tracked:', event);
+
+      // Send beacon to tracking endpoint (optional - requires backend)
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/track', JSON.stringify(event));
+      }
+    };
+
+    // Track page view on load
+    window.addEventListener('load', function() {
+      const pageEvent = {
+        timestamp: new Date().toISOString(),
+        eventName: 'page_view',
+        page: window.location.pathname,
+        referrer: document.referrer
+      };
+      let pageViews = JSON.parse(localStorage.getItem('ao_pageviews') || '[]');
+      pageViews.push(pageEvent);
+      localStorage.setItem('ao_pageviews', JSON.stringify(pageViews.slice(-100)));
+    });
+  </script>
+
   <!-- LocalBusiness Schema -->
   <script type="application/ld+json">
   {
@@ -870,7 +918,7 @@
           <div style="font-size:3.2rem;font-weight:900;color:var(--orange);margin-bottom:8px;letter-spacing:-.03em;">3</div>
           <p style="font-size:1rem;color:#fff;font-weight:700;margin-bottom:20px;">Available (Then Closed Until May 1st)</p>
           <p style="font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:24px;">We audit one shop per week to ensure quality. Once spots are full, the next batch doesn't open until May 1st.</p>
-          <a onclick="navigate('contact')" style="display:inline-block;background:var(--orange);color:#1a1a1a;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:900;text-decoration:none;letter-spacing:-.02em;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1.08)'">Book Your Spot Now →</a>
+          <a onclick="trackEvent('cta_click', 'urgency_cta'); navigate('contact')">Book Your Spot Now →</a>
         </div>
       </div>
     </div>

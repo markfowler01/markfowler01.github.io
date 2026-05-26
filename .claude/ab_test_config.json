@@ -1,0 +1,42 @@
+{
+  "tests": [
+    {
+      "id": "headline_variant_a",
+      "name": "Competitors Angle (Current)",
+      "headline": "Local Collision Shops Are Quietly Adding $1,400/Month From The Same Number of Cars. Your Shop Isn't.",
+      "subheadline": "Western Washington collision shops doing 75+ cars/month are leaving an average of $153,000 per year on the table in missed ADAS calibrations.",
+      "status": "active",
+      "created": "2026-05-26",
+      "expectedLift": "baseline"
+    },
+    {
+      "id": "headline_variant_b",
+      "name": "Revenue Loss Angle",
+      "headline": "Your Shop Is Losing $153,000 Per Year. Most Don't Even Know It.",
+      "subheadline": "Collision shops doing 75+ cars/month are missing $8,000–$15,000 every month in ADAS calibration revenue. We'll show you exactly where it's going.",
+      "status": "ready",
+      "created": "2026-05-26",
+      "expectedLift": "+10-15%"
+    },
+    {
+      "id": "headline_variant_c",
+      "name": "Liability + Revenue Angle",
+      "headline": "You're Probably Calibrating ADAS On Vehicles You're Not Charging For. That's Costing You $1,400+/Month AND Creating Liability.",
+      "subheadline": "61 shops thought they were handling ADAS correctly. They were missing $210 per RO in revenue—and exposing themselves to liability. Here's what we found in 90 days of audits.",
+      "status": "ready",
+      "created": "2026-05-26",
+      "expectedLift": "+15-20%"
+    }
+  ],
+  "tracking": {
+    "localStorage": "ao_ab_test_results",
+    "googleAnalytics": true,
+    "trackingFields": ["variant_id", "cta_clicks", "form_submissions", "time_on_page"]
+  },
+  "results": {
+    "hypothesis": "Aggressive competitor-focused headline will outperform revenue-focused headline",
+    "duration": "2 weeks",
+    "requiredSampleSize": 200,
+    "statisticalSignificance": 0.95
+  }
+}
