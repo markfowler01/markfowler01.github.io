@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMS Consent - Absolute ADAS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #1a1a1a;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    input[type="tel"],
+    input[type="email"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    input[type="tel"]:focus,
+    input[type="email"]:focus,
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #CD4419;
+      box-shadow: 0 0 0 3px rgba(205, 68, 25, 0.1);
+    }
+
+    .consent-box {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+
+    .consent-box h3 {
+      color: #1a1a1a;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    .consent-items {
+      list-style: none;
+    }
+
+    .consent-items li {
+      margin-bottom: 12px;
+      padding-left: 25px;
+      position: relative;
+      color: #555;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .consent-items li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #CD4419;
+      font-weight: bold;
+    }
+
+    .checkbox-group {
+      margin: 20px 0;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 0;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 12px;
+      margin-top: 4px;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+
+    .checkbox-group span {
+      color: #555;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    button {
+      background: #CD4419;
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #a83810;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .success-message {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .error-message {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .legal-text {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .timestamp {
+      color: #999;
+      font-size: 0.8rem;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📱 Get SMS Updates</h1>
+    <p class="subtitle">Stay informed about your ADAS calibration appointment</p>
+
+    <div class="success-message" id="successMessage">
+      ✓ Thank you! You've opted in to receive SMS updates from Absolute ADAS.
+    </div>
+
+    <div class="error-message" id="errorMessage"></div>
+
+    <form id="smsConsentForm">
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Shop Name *</label>
+        <input type="text" id="name" name="name" required placeholder="Your collision shop name">
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required placeholder="your@email.com">
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+      </div>
+
+      <!-- What SMS will contain -->
+      <div class="consent-box">
+        <h3>📲 What You'll Receive</h3>
+        <ul class="consent-items">
+          <li>Appointment confirmation (date, time, location)</li>
+          <li>Appointment reminders (24 hours before)</li>
+          <li>Status updates (when we're on the way, when done)</li>
+          <li>Service follow-up (results, recommendations)</li>
+          <li>Occasional service announcements</li>
+        </ul>
+      </div>
+
+      <!-- Consent Checkboxes -->
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="consent" name="consent" required>
+          <span>I consent to receive SMS messages about my ADAS calibration appointment and service updates from Absolute ADAS. I understand message and data rates may apply.</span>
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="tcpa" name="tcpa" required>
+          <span>I acknowledge this consent complies with the Telephone Consumer Protection Act (TCPA) and I have authority to provide this phone number.</span>
+        </label>
+      </div>
+
+      <button type="submit" id="submitBtn">✓ I Consent to SMS Updates</button>
+    </form>
+
+    <!-- Legal text -->
+    <div class="legal-text">
+      <strong>Privacy & Compliance:</strong> Your phone number will be used solely for appointment-related SMS communications. You can opt out at any time by texting STOP. Absolute ADAS takes your privacy seriously. We comply with TCPA regulations and will not share your information. For questions, call 1-844-349-2327.
+    </div>
+
+    <div class="timestamp" id="timestamp"></div>
+  </div>
+
+  <script>
+    // Set current timestamp
+    document.getElementById('timestamp').textContent =
+      'Consent collected: ' + new Date().toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZoneName: 'short'
+      });
+
+    // Form submission
+    document.getElementById('smsConsentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        consentGiven: true,
+        consentDate: new Date().toISOString(),
+        consentUrl: window.location.href,
+        userAgent: navigator.userAgent
+      };
+
+      // Store in localStorage (for proof of consent)
+      const consentRecord = {
+        ...formData,
+        id: 'consent_' + Date.now(),
+        ipAddress: 'collected' // In production, capture real IP
+      };
+
+      let consentRecords = JSON.parse(localStorage.getItem('smsConsentRecords') || '[]');
+      consentRecords.push(consentRecord);
+      localStorage.setItem('smsConsentRecords', JSON.stringify(consentRecords));
+
+      // In production, send to your backend:
+      console.log('SMS Consent submitted:', formData);
+
+      // Show success message
+      document.getElementById('smsConsentForm').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+
+      // Log for compliance
+      console.log('CONSENT RECORDED:', {
+        timestamp: new Date().toISOString(),
+        phone: formData.phone,
+        email: formData.email,
+        shop: formData.name,
+        consentUrl: window.location.href,
+        userAgent: navigator.userAgent
+      });
+    });
+  </script>
+</body>
+</html>
