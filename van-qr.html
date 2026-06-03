@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absolute ADAS | Mobile ADAS Calibration | Western Washington</title>
+  <meta name="description" content="Mobile ADAS calibration for collision shops in Western Washington. Same day. Fully documented. Free Revenue Snapshot shows exactly what your shop is leaving on the table.">
+  <meta name="robots" content="noindex">
+
+  <!-- ANALYTICS SNIPPET HERE -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange:       #CD4419;
+      --orange-dark:  #a8360f;
+      --black:        #1A1A1A;
+      --black-deep:   #111111;
+      --gray-light:   #F5F5F5;
+      --gray-mid:     #E0E0E0;
+      --text-muted:   #555555;
+      --white:        #ffffff;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   Helvetica, Arial, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: var(--black);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .top-bar-logo {
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-text {
+      color: var(--orange);
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+    }
+    .logo-text span { color: var(--white); }
+
+    .top-bar-phone {
+      color: var(--orange);
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-decoration: none;
+      white-space: nowrap;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .top-bar-phone:active { color: var(--orange-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--black);
+      color: var(--white);
+      padding: 32px 20px 36px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.55rem, 6vw, 2.4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .hero h1 .accent { color: var(--orange); }
+
+    .hero .subhead {
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 460px;
+      margin: 0 auto 26px;
+      line-height: 1.55;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--orange);
+      color: var(--white);
+      text-decoration: none;
+      font-size: clamp(1.05rem, 4vw, 1.25rem);
+      font-weight: 900;
+      padding: 18px 24px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 62px;
+      text-align: center;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+    }
+    .btn-primary:active { background: var(--orange-dark); }
+
+    .micro-trust {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* ── WHY CALL ── */
+    .proof-section {
+      background: var(--white);
+      padding: 36px 20px;
+    }
+
+    .proof-inner {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 18px;
+    }
+
+    .proof-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .proof-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .proof-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .proof-item p {
+      font-size: 0.97rem;
+      color: var(--black);
+      line-height: 1.5;
+    }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--gray-mid); }
+
+    /* ── OFFER BLOCK ── */
+    .offer-block {
+      background: var(--gray-light);
+      border-top: 4px solid var(--orange);
+      padding: 36px 20px;
+      text-align: center;
+    }
+
+    .offer-inner { max-width: 520px; margin: 0 auto; }
+
+    .offer-block h2 {
+      font-size: clamp(1.3rem, 5vw, 1.8rem);
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .offer-block p {
+      font-size: 0.95rem;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+      color: var(--orange);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 15px 28px;
+      border-radius: 6px;
+      border: 2px solid var(--orange);
+      min-height: 52px;
+      width: 100%;
+      max-width: 380px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-secondary:active { background: var(--orange); color: var(--white); }
+
+    /* ── FORM ── */
+    .form-section {
+      background: var(--black);
+      color: var(--white);
+      padding: 40px 20px;
+    }
+
+    .form-inner {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .form-section h2 {
+      font-size: clamp(1.3rem, 5vw, 1.75rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .form-subhead {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 26px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 6px;
+    }
+
+    .label-optional {
+      font-weight: 400;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.07);
+      color: var(--white);
+      font-size: 1rem;
+      font-family: inherit;
+      min-height: 50px;
+      transition: border-color 0.15s, background 0.15s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder { color: rgba(255,255,255,0.28); }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--orange);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      padding: 18px 24px;
+      cursor: pointer;
+      min-height: 58px;
+      margin-top: 8px;
+      font-family: inherit;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+    }
+    .btn-submit:active { background: var(--orange-dark); }
+
+    .privacy-note {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .form-success {
+      display: none;
+      background: rgba(205,68,25,0.15);
+      border: 1px solid var(--orange);
+      border-radius: 6px;
+      padding: 24px 20px;
+      text-align: center;
+      color: var(--white);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* ── GUARANTEE ── */
+    .guarantee {
+      background: var(--orange);
+      color: var(--white);
+      padding: 20px 20px;
+      text-align: center;
+    }
+    .guarantee p {
+      font-size: 0.93rem;
+      font-weight: 700;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black-deep);
+      color: rgba(255,255,255,0.45);
+      padding: 28px 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+    footer .footer-tagline {
+      color: rgba(255,255,255,0.65);
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    footer a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+    footer a:active { text-decoration: underline; }
+    footer .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 18px;
+      margin-bottom: 8px;
+    }
+    footer .copyright {
+      margin-top: 14px;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.7rem;
+    }
+
+    /* ── DESKTOP SCALE ── */
+    @media (min-width: 600px) {
+      .hero          { padding: 52px 40px 56px; }
+      .proof-section { padding: 52px 40px; }
+      .offer-block   { padding: 52px 40px; }
+      .form-section  { padding: 56px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ 1. TOP BAR ══ -->
+  <header class="top-bar">
+    <!-- LOGO HERE: replace the span below with:
+         <img src="logo.png" alt="Absolute ADAS" height="36" style="display:block;">
+         Use your transparent PNG logo file. -->
+    <div class="top-bar-logo">
+      <span class="logo-text">ABSOLUTE <span>ADAS</span></span>
+    </div>
+    <a href="tel:18443492327" class="top-bar-phone" aria-label="Call Absolute ADAS">1-844-FIX-ADAS</a>
+  </header>
+
+  <!-- ══ 2. HERO ══ -->
+  <section class="hero">
+    <h1>We Come to Your Shop.<br><span class="accent">Same Day. Fully Documented.</span></h1>
+    <p class="subhead">Find out exactly how much your shop is leaving on the table. Free 15-minute Revenue Snapshot, no pitch attached.</p>
+    <a href="tel:18443492327" class="btn-primary" aria-label="Call Now 1-844-FIX-ADAS">
+      📞&nbsp; Call Now: 1-844-FIX-ADAS
+    </a>
+    <p class="micro-trust">State Farm Preferred Vendor &nbsp;&middot;&nbsp; 50,000+ calibrations &nbsp;&middot;&nbsp; OEM-level equipment</p>
+  </section>
+
+  <!-- ══ 3. WHY CALL ══ -->
+  <section class="proof-section" aria-label="Why shops call us">
+    <div class="proof-inner">
+      <p class="section-label">Why shops call us</p>
+      <ul class="proof-list">
+        <li class="proof-item">
+          <span class="proof-icon" aria-hidden="true">🚐</span>
+          <p>Same-day or next-day. We come to your lot. Your cars never leave.</p>
+        </li>
+        <li class="proof-item">
+          <span class="proof-icon" aria-hidden="true">📋</span>
+          <p>Full OEM documentation on every job. Your liability protection, locked in.</p>
+        </li>
+        <li class="proof-item">
+          <span class="proof-icon" aria-hidden="true">💰</span>
+          <p>Revenue stays in your shop. Key programming, modules, and diagnostics billed through you, not the dealer.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider" role="separator"></div>
+
+  <!-- ══ 4. FREE OFFER BLOCK ══ -->
+  <section class="offer-block" aria-label="Free Revenue Snapshot offer">
+    <div class="offer-inner">
+      <p class="section-label">Free. No pitch. No obligation.</p>
+      <h2>Your Free ADAS Revenue Snapshot</h2>
+      <p>We audit 30 days of your repair orders and hand you the exact dollar amount your shop is missing in uncalibrated or underbilled ADAS work. 15 minutes. $649 value. Yours free. Limited to a few shops per month.</p>
+      <a href="#form" class="btn-secondary">Get My Free Snapshot</a>
+    </div>
+  </section>
+
+  <!-- ══ 5. SHORT CAPTURE FORM ══
+       FORM WIRING: Replace action="REPLACE_WITH_ZOHO_FORM_OR_WEBHOOK" with your
+       Zoho CRM webform URL or a Zoho Flow webhook URL.
+       Hidden UTM fields are populated by the JS below and pass lead source data
+       through to your CRM. Map utm_source, utm_medium, utm_campaign, utm_content,
+       and lead_source to the corresponding fields in your Zoho webform or Flow.
+       When the action is a real endpoint, the success state is handled by your
+       redirect or by the JS submit handler below (remove the preventDefault if
+       you want a full page redirect on submit). -->
+  <section class="form-section" id="form" aria-label="Request your free snapshot">
+    <div class="form-inner">
+      <h2>Leave Your Number.</h2>
+      <p class="form-subhead">We call you within one business day. One call. That is it.</p>
+
+      <form id="snapshotForm" action="REPLACE_WITH_ZOHO_FORM_OR_WEBHOOK" method="POST" novalidate>
+
+        <!-- Hidden UTM fields, populated by JS -->
+        <input type="hidden" name="utm_source"   id="f_utm_source">
+        <input type="hidden" name="utm_medium"   id="f_utm_medium">
+        <input type="hidden" name="utm_campaign" id="f_utm_campaign">
+        <input type="hidden" name="utm_content"  id="f_utm_content">
+        <input type="hidden" name="lead_source"  value="Van QR Code">
+
+        <div class="form-group">
+          <label for="f_phone">Your Phone Number <span style="color:var(--orange);">*</span></label>
+          <input
+            type="tel"
+            id="f_phone"
+            name="phone"
+            placeholder="(253) 555-0100"
+            required
+            autocomplete="tel"
+            inputmode="tel"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="f_name">
+            Your Name <span class="label-optional">(optional)</span>
+          </label>
+          <input
+            type="text"
+            id="f_name"
+            name="name"
+            placeholder="First name is fine"
+            autocomplete="given-name"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="f_shop">
+            Shop Name <span class="label-optional">(optional)</span>
+          </label>
+          <input
+            type="text"
+            id="f_shop"
+            name="shop_name"
+            placeholder="Your collision shop"
+            autocomplete="organization"
+          >
+        </div>
+
+        <button type="submit" class="btn-submit">Send It. I'll Take the Call.</button>
+        <p class="privacy-note">We will not spam you. One call, that is it. Reply STOP to any SMS to opt out.</p>
+      </form>
+
+      <div class="form-success" id="formSuccess" role="status" aria-live="polite">
+        Got it. We will call you within one business day.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 6. GUARANTEE ══ -->
+  <div class="guarantee">
+    <p>Every calibration we recommend, insurance pays for. If they don't, you owe us nothing. Period.</p>
+  </div>
+
+  <!-- ══ 7. FOOTER ══ -->
+  <footer>
+    <p class="footer-tagline">Driving safety forward, one calibration at a time.</p>
+    <div class="footer-links">
+      <a href="tel:18443492327">1-844-FIX-ADAS</a>
+      <a href="mailto:info@absoluteadas.com">info@absoluteadas.com</a>
+    </div>
+    <p>Based in Lake Stevens, WA. Mobile service Tacoma to Bellingham.</p>
+    <p class="copyright">&copy; 2026 Absolute ADAS. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // 1. Capture UTM params from URL and populate hidden form fields
+    (function () {
+      var p = new URLSearchParams(window.location.search);
+      ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function (k) {
+        var el = document.getElementById('f_' + k);
+        if (el && p.get(k)) el.value = p.get(k);
+      });
+      // Default source to van_qr if no utm_source present
+      var src = document.getElementById('f_utm_source');
+      if (src && !src.value) src.value = 'van_qr';
+    })();
+
+    // 2. Form submit handler
+    // If action is still the placeholder, prevent default and show success state for testing.
+    // Once you wire a real endpoint, delete the preventDefault block and let the POST go.
+    document.getElementById('snapshotForm').addEventListener('submit', function (e) {
+      var phone = document.getElementById('f_phone').value.trim();
+      if (!phone) {
+        e.preventDefault();
+        document.getElementById('f_phone').focus();
+        return;
+      }
+      var action = this.getAttribute('action') || '';
+      if (action === 'REPLACE_WITH_ZOHO_FORM_OR_WEBHOOK' || action === '') {
+        e.preventDefault();
+        this.style.display = 'none';
+        var success = document.getElementById('formSuccess');
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      // Real endpoint: let the POST fire normally.
+    });
+  </script>
+
+</body>
+</html>
