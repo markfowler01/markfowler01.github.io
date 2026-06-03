@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absolute ADAS QR Code Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .container {
+      background: #242424;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+    .url-label {
+      font-size: 0.72rem;
+      color: #CD4419;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .url-display {
+      background: rgba(205,68,25,0.1);
+      border: 1px solid rgba(205,68,25,0.25);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: #CD4419;
+      font-family: monospace;
+      word-break: break-all;
+      margin-bottom: 32px;
+    }
+    .qr-wrapper {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      display: inline-block;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    canvas {
+      display: block;
+      border-radius: 8px;
+    }
+    .btn-download {
+      display: inline-block;
+      background: #CD4419;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 16px 36px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+      transition: background 0.15s;
+      margin-bottom: 12px;
+      width: 100%;
+      max-width: 320px;
+    }
+    .btn-download:hover { background: #a8360f; }
+    .btn-download-white {
+      display: inline-block;
+      background: transparent;
+      color: #CD4419;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: 2px solid #CD4419;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+      transition: background 0.15s, color 0.15s;
+      width: 100%;
+      max-width: 320px;
+    }
+    .btn-download-white:hover { background: #CD4419; color: #fff; }
+    .hint {
+      color: #555;
+      font-size: 0.75rem;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .status {
+      color: #888;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      min-height: 20px;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Absolute ADAS QR Code</h1>
+    <p class="subtitle">Van QR Code with logo. High error correction so logo overlay scans cleanly.</p>
+
+    <p class="url-label">Points to</p>
+    <div class="url-display">https://absoluteadas.com/van-qr.html?utm_source=van_qr</div>
+
+    <p class="status" id="status">Generating QR code...</p>
+
+    <div class="qr-wrapper">
+      <canvas id="qrCanvas"></canvas>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-download" onclick="downloadQR('black')">⬇ Download PNG (Dark on White)</button>
+      <button class="btn-download-white" onclick="downloadQR('white')">⬇ Download PNG (White on Dark)</button>
+    </div>
+
+    <p class="hint">
+      Print at 2" x 2" minimum for easy scanning.<br>
+      For van wrap: use 4" x 4" or larger at 300 DPI.
+    </p>
+  </div>
+
+  <script>
+    const QR_URL = 'https://absoluteadas.com/van-qr.html?utm_source=van_qr';
+    const LOGO_URL = 'https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png';
+    const QR_SIZE = 500;
+
+    var finalCanvas = null;
+
+    function generateQR() {
+      var canvas = document.getElementById('qrCanvas');
+
+      QRCode.toCanvas(canvas, QR_URL, {
+        width: QR_SIZE,
+        margin: 2,
+        errorCorrectionLevel: 'H', // High = 30% can be obscured (needed for logo)
+        color: {
+          dark:  '#1A1A1A',
+          light: '#FFFFFF'
+        }
+      }, function(err) {
+        if (err) {
+          document.getElementById('status').textContent = 'Error: ' + err;
+          return;
+        }
+        overlayLogo(canvas);
+      });
+    }
+
+    function overlayLogo(canvas) {
+      var ctx = canvas.getContext('2d');
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+
+      img.onload = function() {
+        var logoSize  = Math.round(QR_SIZE * 0.22);   // 22% of QR size
+        var pad       = Math.round(logoSize * 0.18);   // white padding around logo
+        var totalSize = logoSize + pad * 2;
+        var cx        = (QR_SIZE - totalSize) / 2;
+        var cy        = (QR_SIZE - totalSize) / 2;
+
+        // White rounded-rect background behind logo
+        var r = Math.round(totalSize * 0.2);
+        ctx.fillStyle = '#FFFFFF';
+        roundRect(ctx, cx, cy, totalSize, totalSize, r);
+        ctx.fill();
+
+        // Draw logo centered inside the white box
+        ctx.drawImage(img, cx + pad, cy + pad, logoSize, logoSize);
+
+        finalCanvas = canvas;
+        document.getElementById('status').textContent = 'Ready to download.';
+      };
+
+      img.onerror = function() {
+        // If logo fails to load (CORS), still show QR without logo
+        finalCanvas = canvas;
+        document.getElementById('status').textContent = 'QR ready (logo blocked by CORS in preview. Will work when hosted).';
+      };
+
+      img.src = LOGO_URL;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function downloadQR(style) {
+      if (!finalCanvas) {
+        alert('QR code is still generating. Try again in a moment.');
+        return;
+      }
+
+      if (style === 'white') {
+        // Invert: white dots on dark background
+        var offscreen = document.createElement('canvas');
+        offscreen.width  = QR_SIZE;
+        offscreen.height = QR_SIZE;
+        var octx = offscreen.getContext('2d');
+
+        // Dark background
+        octx.fillStyle = '#1A1A1A';
+        octx.fillRect(0, 0, QR_SIZE, QR_SIZE);
+
+        // Draw original QR (dark on white) with difference blend
+        octx.globalCompositeOperation = 'difference';
+        octx.drawImage(finalCanvas, 0, 0);
+        octx.globalCompositeOperation = 'source-over';
+
+        // Re-draw logo on top (not inverted)
+        var img2 = new Image();
+        img2.crossOrigin = 'anonymous';
+        img2.onload = function() {
+          var logoSize  = Math.round(QR_SIZE * 0.22);
+          var pad       = Math.round(logoSize * 0.18);
+          var totalSize = logoSize + pad * 2;
+          var cx        = (QR_SIZE - totalSize) / 2;
+          var cy        = (QR_SIZE - totalSize) / 2;
+          var r         = Math.round(totalSize * 0.2);
+
+          octx.fillStyle = '#1A1A1A';
+          roundRect(octx, cx, cy, totalSize, totalSize, r);
+          octx.fill();
+          octx.drawImage(img2, cx + pad, cy + pad, logoSize, logoSize);
+
+          triggerDownload(offscreen, 'absolute-adas-qr-white.png');
+        };
+        img2.onerror = function() { triggerDownload(offscreen, 'absolute-adas-qr-white.png'); };
+        img2.src = LOGO_URL;
+      } else {
+        triggerDownload(finalCanvas, 'absolute-adas-qr.png');
+      }
+    }
+
+    function triggerDownload(canvas, filename) {
+      var link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Kick it off
+    generateQR();
+  </script>
+</body>
+</html>
