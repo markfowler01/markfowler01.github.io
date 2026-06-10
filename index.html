@@ -244,7 +244,7 @@
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    #ao-nav *, #page-home *, #page-about *, #page-services *, #page-blog *, #page-contact *, #page-lander *, #page-statefarm *, #page-acquire *, #ao-footer * { color: inherit; }
+    #ao-nav *, #page-home *, #page-about *, #page-services *, #page-blog *, #page-contact *, #page-lander *, #page-statefarm *, #page-allstate *, #page-acquire *, #ao-footer * { color: inherit; }
     #ao-nav h1,#ao-nav h2,#ao-nav h3,#ao-nav h4,#ao-nav h5,#ao-nav h6,
     #page-home h1,#page-home h2,#page-home h3,#page-home h4,#page-home h5,#page-home h6,
     #page-about h1,#page-about h2,#page-about h3,#page-about h4,#page-about h5,#page-about h6,
@@ -253,6 +253,7 @@
     #page-contact h1,#page-contact h2,#page-contact h3,#page-contact h4,#page-contact h5,#page-contact h6,
     #page-lander h1,#page-lander h2,#page-lander h3,#page-lander h4,#page-lander h5,#page-lander h6,
     #page-statefarm h1,#page-statefarm h2,#page-statefarm h3,#page-statefarm h4,#page-statefarm h5,#page-statefarm h6,
+    #page-allstate h1,#page-allstate h2,#page-allstate h3,#page-allstate h4,#page-allstate h5,#page-allstate h6,
     #ao-footer h1,#ao-footer h2,#ao-footer h3,#ao-footer h4,#ao-footer h5,#ao-footer h6 { color: #fff !important; }
     :root {
       --orange: #CD4419;
@@ -616,6 +617,11 @@
     .sf-why-item h4 { color: #fff; font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; }
     .sf-why-item p { color: var(--gray); font-size: .88rem; line-height: 1.7; }
     .sf-final { padding: 72px 24px; text-align: center; background: var(--black); }
+    /* ── Allstate landing page ── */
+    .al-topbar { background: #0033A0; padding: 14px 24px; text-align: center; }
+    .al-topbar p { color: #fff; font-size: .85rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .al-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(0,51,160,.14); border: 2px solid rgba(0,51,160,.5); border-radius: 100px; padding: 10px 28px; margin-bottom: 32px; }
+    .al-badge span { font-size: .8rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #6699ff; }
     .sf-final h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; letter-spacing: -.02em; margin-bottom: 16px; }
     .sf-final p { color: var(--light-gray); margin-bottom: 32px; }
     .sf-back { text-align: center; padding: 24px; }
@@ -857,6 +863,7 @@
       <div style="padding:8px 14px 4px;margin-top:6px;font-size:10px;font-weight:800;letter-spacing:.15em;color:#999;text-transform:uppercase">In-page Ad Landings</div>
       <a onclick="navigate('lander');document.getElementById('ao-secret-menu').style.display='none'" href="#lander" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">📣 Ad Landing Page</a>
       <a onclick="navigate('statefarm');document.getElementById('ao-secret-menu').style.display='none'" href="#statefarm" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">🏠 State Farm Booking</a>
+      <a onclick="navigate('allstate');document.getElementById('ao-secret-menu').style.display='none'" href="#allstate" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">🛡️ Allstate Booking</a>
       <a onclick="navigate('enthusiast');document.getElementById('ao-secret-menu').style.display='none'" href="#enthusiast" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">🚗 Car Enthusiast Page</a>
       <a href="/van-qr.html" style="display:block;padding:10px 14px;color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;border-radius:6px;" onmouseover="this.style.background='rgba(205,68,25,.2)'" onmouseout="this.style.background='transparent'">🚐 Van QR Landing Page</a>
     </div>
@@ -894,6 +901,7 @@
     <p class="ao-hero-note">⏱️ 15 minutes | 💰 Zero cost | ✋ Zero obligation | 📊 You control the results</p>
     <div style="display:inline-flex;align-items:center;gap:10px;margin-top:24px;flex-wrap:wrap;justify-content:center;">
       <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">⭐ State Farm Preferred Vendor</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,51,160,.12);border:1px solid rgba(102,153,255,.35);color:#6699ff;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">🛡️ Allstate Certified Vendor</span>
       <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.35);color:var(--orange);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">🔢 50,000+ Calibrations Completed</span>
       <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">🔧 OEM-Level Equipment</span>
       <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">📋 Full Documentation Every Job</span>
@@ -945,7 +953,7 @@
       <span style="width:1px;height:16px;background:rgba(255,255,255,.1);"></span>
       <span style="font-size:.85rem;font-weight:700;color:#ccc;">GEICO</span>
       <span style="width:1px;height:16px;background:rgba(255,255,255,.1);"></span>
-      <span style="font-size:.85rem;font-weight:700;color:#ccc;">Allstate</span>
+      <span style="font-size:.85rem;font-weight:700;color:#ccc;white-space:nowrap;">🛡️ Allstate <span style="color:#6699ff;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-left:4px;background:rgba(0,51,160,.15);border:1px solid rgba(102,153,255,.3);padding:2px 7px;border-radius:20px;">Certified</span></span>
       <span style="width:1px;height:16px;background:rgba(255,255,255,.1);"></span>
       <span style="font-size:.85rem;font-weight:700;color:#ccc;">+ All Major Carriers</span>
     </div>
@@ -1351,6 +1359,7 @@
 
       <div style="display:inline-flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.6);margin-top:28px;">
         <span>✅ State Farm Preferred Vendor (20+ years)</span>
+        <span>✅ Allstate Certified Vendor</span>
         <span>✅ Full OEM documentation every job</span>
         <span>✅ 5-star reviews from 50+ collision shops</span>
       </div>
@@ -1912,6 +1921,7 @@
   <!-- Trust bar -->
   <div class="sf-trust-bar">
     <div class="sf-trust-item">✅ State Farm Preferred Vendor</div>
+    <div class="sf-trust-item">🛡️ Allstate Certified Vendor</div>
     <div class="sf-trust-item">🚗 We Come to You</div>
     <div class="sf-trust-item">⚡ Same-Day Available</div>
     <div class="sf-trust-item">📋 OEM-Level Documentation</div>
@@ -1979,6 +1989,98 @@
   </div>
 
 </div><!-- /page-statefarm -->
+
+
+<!-- ═══ ALLSTATE LANDING PAGE ═══ -->
+<div class="ao-page" id="page-allstate">
+
+  <!-- Blue Allstate top bar -->
+  <div class="al-topbar">
+    <p>🛡️ Allstate Certified Vendor · Absolute ADAS | Western Washington</p>
+  </div>
+
+  <!-- HERO -->
+  <div class="sf-hero-section">
+    <div class="al-badge"><span>✓ Allstate Certified Vendor</span></div>
+    <h2 class="sf-hero-h1">Your Safety Systems Were<br>Knocked Out of Calibration.<br>We Fix It. We Come to You.</h2>
+    <p class="sf-hero-sub">Allstate recognizes us as a certified ADAS calibration vendor. After a windshield replacement or collision repair, your ADAS sensors must be recalibrated — or your safety features won't work. We're certified, mobile, and available same-day across Western Washington.</p>
+    <div class="sf-cta-row">
+      <a href="#al-book" onclick="document.getElementById('al-inline-container').scrollIntoView({behavior:'smooth'})" class="sf-btn-primary">📅 Book Your Calibration Now →</a>
+      <a href="tel:4258701495" class="sf-btn-call">📞 (425) 870-1495</a>
+    </div>
+  </div>
+
+  <!-- Trust bar -->
+  <div class="sf-trust-bar">
+    <div class="sf-trust-item">🛡️ Allstate Certified Vendor</div>
+    <div class="sf-trust-item">✅ State Farm Preferred Vendor</div>
+    <div class="sf-trust-item">🚗 We Come to You</div>
+    <div class="sf-trust-item">⚡ Same-Day Available</div>
+    <div class="sf-trust-item">📋 OEM-Level Documentation</div>
+    <div class="sf-trust-item">📍 All of Western Washington</div>
+  </div>
+
+  <!-- Urgency bar -->
+  <div class="sf-urgency">
+    <p>⚠️ Don't drive on uncalibrated ADAS systems — your automatic braking and lane assist may not work correctly until this is fixed.</p>
+  </div>
+
+  <!-- BOOKING -->
+  <div class="sf-booking-wrap" id="al-book">
+    <h2>Pick a Time. We'll Come to You.</h2>
+    <p class="sub">Takes less than 2 minutes to book. We show up with everything — no prep needed from you.</p>
+    <div class="sf-booking-box">
+      <div id="al-inline-container"><p style="color:#888;text-align:center;padding:48px 24px;font-size:.95rem;">Loading booking calendar…</p></div>
+    </div>
+
+    <div class="sf-divider">or call to book in 5 minutes</div>
+
+    <div class="sf-call-box">
+      <h3>Prefer to Talk to a Real Person?</h3>
+      <p>Call us now and we'll get you scheduled before you hang up.</p>
+      <a href="tel:4258701495" class="sf-call-btn">📞 (425) 870-1495</a>
+    </div>
+  </div>
+
+  <!-- WHY THIS MATTERS -->
+  <div class="sf-why">
+    <div class="sf-why-inner">
+      <h2>Why ADAS Calibration Can't Wait</h2>
+      <div class="sf-why-grid">
+        <div class="sf-why-item">
+          <div class="sf-icon">📡</div>
+          <h4>Your Sensors Are Off — Even If the Car Drives Fine</h4>
+          <p>A windshield replacement or front-end impact shifts your cameras and radar by millimeters. That's enough to make automatic braking, lane keep, and blind spot monitoring unreliable.</p>
+        </div>
+        <div class="sf-why-item">
+          <div class="sf-icon">🛑</div>
+          <h4>Uncalibrated ADAS = Safety Features You Can't Trust</h4>
+          <p>Emergency braking, adaptive cruise, pedestrian detection — all of these depend on properly calibrated sensors. If they're off, they either fail to activate or activate at the wrong time.</p>
+        </div>
+        <div class="sf-why-item">
+          <div class="sf-icon">✅</div>
+          <h4>We Do It Right. On Your Schedule. At Your Location.</h4>
+          <p>Our Allstate-certified technician comes to you with OEM-level equipment, completes the calibration to manufacturer spec, and hands you full documentation — usually in under an hour.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="sf-final">
+    <h2>Don't Leave Your Safety<br>to Chance.</h2>
+    <p>Book your calibration now — same-day availability across Western Washington.</p>
+    <div class="sf-cta-row">
+      <a href="#al-book" onclick="document.getElementById('al-inline-container').scrollIntoView({behavior:'smooth'})" class="sf-btn-primary">📅 Book Now →</a>
+      <a href="tel:4258701495" class="sf-btn-call">📞 (425) 870-1495</a>
+    </div>
+  </div>
+
+  <div class="sf-back">
+    <a onclick="navigate('home')" href="#home">← Back to Absolute ADAS main site</a>
+  </div>
+
+</div><!-- /page-allstate -->
 
 
 <!-- ═══════════════════════════════════════ -->
@@ -2537,6 +2639,7 @@ function navigate(page) {
     blog: 'Blog | Absolute ADAS -ADAS Industry Insights',
     contact: 'Book a Calibration | Absolute ADAS -Western Washington',
     statefarm: 'Book Your ADAS Calibration | Absolute ADAS -State Farm Preferred Vendor',
+    allstate: 'Book Your ADAS Calibration | Absolute ADAS -Allstate Certified Vendor',
     acquire: 'Sell Your ADAS Business | Absolute ADAS Acquisitions',
     enthusiast: 'ADAS Calibration for Car Owners | Absolute ADAS -Western Washington',
     swag: 'Swag Store | Absolute ADAS -Official Gear & Apparel',
@@ -2545,7 +2648,7 @@ function navigate(page) {
   document.title = titles[page] || titles.home;
 
   // Hide nav + footer on landing pages for clean Sabri Suby style
-  var isLandingPage = (page === 'lander' || page === 'statefarm');
+  var isLandingPage = (page === 'lander' || page === 'statefarm' || page === 'allstate');
   var nav = document.getElementById('ao-nav');
   var footer = document.getElementById('ao-footer');
   if (nav) nav.style.display = isLandingPage ? 'none' : '';
@@ -2569,6 +2672,24 @@ function navigate(page) {
       document.head.appendChild(s);
     }
   }
+  // Load Zoho booking widget for Allstate page
+  if (page === 'allstate') {
+    var alContainer = document.getElementById('al-inline-container');
+    if (alContainer && !alContainer.dataset.loaded) {
+      alContainer.dataset.loaded = 'true';
+      alContainer.innerHTML = '';
+      var s2 = document.createElement('script');
+      s2.src = 'https://bookings.nimbuspop.com/assets/embed.js';
+      s2.onload = function() {
+        Bookings.inlineEmbed({
+          url: 'https://absoluteadas.zohobookings.com/portal-embed#/4778305000000369018',
+          parent: '#al-inline-container',
+          height: '800px'
+        });
+      };
+      document.head.appendChild(s2);
+    }
+  }
 }
 
 function aoSubmitContact(e) {
@@ -2587,7 +2708,7 @@ function aoSubmitContact(e) {
 
 (function(){
   var hash = window.location.hash.replace('#','') || 'home';
-  var valid = ['home','contact','lander','statefarm','acquire','enthusiast','swag','careers'];
+  var valid = ['home','contact','lander','statefarm','allstate','acquire','enthusiast','swag','careers'];
   navigate(valid.includes(hash) ? hash : 'home');
 })();
 </script>
