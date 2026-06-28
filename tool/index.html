@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADAS Calibration Estimator | Absolute ADAS</title>
+  <meta name="description" content="Free tool: select vehicle make and collision area to estimate which ADAS calibrations will be required. Built for body shops and insurance adjusters.">
+  <link rel="canonical" href="https://absoluteadas.com/tool">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #CD4419;
+      --orange-dark: #b33a15;
+      --dark: #0d0d0d;
+      --dark-2: #141414;
+      --dark-3: #1e1e1e;
+      --dark-4: #252525;
+      --border: #2e2e2e;
+      --border-light: #3a3a3a;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --text-dim: #555;
+      --yellow: #f59e0b;
+      --orange-mid: #f97316;
+      --red: #dc2626;
+      --green: #22c55e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: #0a0a0a;
+      border-bottom: 2px solid var(--orange);
+      padding: 0 24px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .header-logo img {
+      height: 32px;
+    }
+
+    .header-wordmark {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .header-wordmark span { color: var(--orange); }
+
+    .header-phone {
+      background: var(--orange);
+      color: #fff;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .header-phone:hover { background: var(--orange-dark); }
+
+    /* ─── HERO STRIP ─── */
+    .hero {
+      background: linear-gradient(135deg, #130a06 0%, #1a0e09 50%, #0d0d0d 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 24px 28px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 span { color: var(--orange); }
+
+    .hero p {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ─── MAIN LAYOUT ─── */
+    .tool-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    /* ─── STEP CARD ─── */
+    .step-card {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .step-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--dark-3);
+    }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      background: var(--orange);
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-head h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .step-head p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .step-body {
+      padding: 18px 20px;
+    }
+
+    /* ─── MAKE GRID ─── */
+    .make-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .make-btn {
+      background: var(--dark-4);
+      border: 1.5px solid var(--border-light);
+      color: var(--text);
+      padding: 7px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.12s, background 0.12s, color 0.12s;
+    }
+
+    .make-btn:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .make-btn.selected {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    /* ─── DIAGRAM + RESULTS ROW ─── */
+    .diagram-results-row {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .diagram-results-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── CAR DIAGRAM ─── */
+    .diagram-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dir-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    #carSvg {
+      width: 100%;
+      max-width: 230px;
+      cursor: default;
+      display: block;
+    }
+
+    .zone-base {
+      fill: #1e2e3e;
+      fill-opacity: 0.7;
+      stroke: #334455;
+      stroke-width: 0.8;
+      cursor: pointer;
+      transition: fill 0.15s, stroke 0.15s;
+    }
+
+    .zone-base:hover {
+      stroke: #8aa8cc;
+      stroke-width: 1.2;
+    }
+
+    .zone-light  { fill: #d97706; fill-opacity: 0.75; stroke: #f59e0b; }
+    .zone-medium { fill: #ea580c; fill-opacity: 0.80; stroke: #f97316; }
+    .zone-structural { fill: #b91c1c; fill-opacity: 0.85; stroke: #ef4444; }
+
+    .zone-label-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 6.5px;
+      fill: rgba(255,255,255,0.65);
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .zone-label-text.dark-zone {
+      fill: rgba(255,255,255,0.9);
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      justify-content: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    /* Zone badges (selected summary) */
+    .zone-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-height: 0;
+    }
+
+    .zone-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px 3px 5px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid;
+      cursor: pointer;
+    }
+
+    .zone-chip.light { background: #2a1e00; border-color: #d97706; color: #fbbf24; }
+    .zone-chip.medium { background: #2a1200; border-color: #ea580c; color: #fb923c; }
+    .zone-chip.structural { background: #2a0000; border-color: #b91c1c; color: #f87171; }
+
+    .zone-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .zone-chip.light .zone-chip-dot { background: #f59e0b; }
+    .zone-chip.medium .zone-chip-dot { background: #f97316; }
+    .zone-chip.structural .zone-chip-dot { background: #ef4444; }
+
+    .chip-x {
+      color: #666;
+      font-size: 12px;
+      line-height: 1;
+      margin-left: 1px;
+    }
+
+    .chip-x:hover { color: #dc2626; }
+
+    /* ─── RESULTS ─── */
+    .results-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      color: var(--text-dim);
+      text-align: center;
+      gap: 10px;
+    }
+
+    .empty-icon {
+      font-size: 40px;
+      opacity: 0.4;
+    }
+
+    .empty-state p { font-size: 14px; }
+    .empty-state small { font-size: 12px; color: #444; }
+
+    /* Calibration groups */
+    .cal-group {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .cal-group-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .cal-group.required .cal-group-head { background: rgba(185,28,28,0.25); color: #f87171; border-bottom: 1px solid rgba(185,28,28,0.3); }
+    .cal-group.likely .cal-group-head { background: rgba(234,88,12,0.2); color: #fb923c; border-bottom: 1px solid rgba(234,88,12,0.25); }
+    .cal-group.possible .cal-group-head { background: rgba(217,119,6,0.15); color: #fbbf24; border-bottom: 1px solid rgba(217,119,6,0.2); }
+
+    .cal-group-head-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cal-group.required .cal-group-head-dot { background: #ef4444; }
+    .cal-group.likely .cal-group-head-dot { background: #f97316; }
+    .cal-group.possible .cal-group-head-dot { background: #f59e0b; }
+
+    .cal-list {
+      list-style: none;
+      background: var(--dark-3);
+    }
+
+    .cal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .cal-item:last-child { border-bottom: none; }
+
+    .cal-check {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+
+    .cal-group.required .cal-check { background: rgba(185,28,28,0.35); color: #f87171; }
+    .cal-group.likely .cal-check { background: rgba(234,88,12,0.3); color: #fb923c; }
+    .cal-group.possible .cal-check { background: rgba(217,119,6,0.25); color: #fbbf24; }
+
+    .cal-name { color: var(--text); }
+    .cal-source { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
+
+    /* Disclaimer + CTA */
+    .disclaimer {
+      background: #111a22;
+      border: 1px solid #1e3348;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #5a7a99;
+      line-height: 1.6;
+    }
+
+    .disclaimer strong { color: #7a9dbf; }
+
+    .cta-card {
+      background: linear-gradient(135deg, #1a0c06, #211008);
+      border: 1.5px solid var(--orange);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .cta-card h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .cta-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-btn:hover { background: var(--orange-dark); }
+
+    .cta-sub {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #555;
+    }
+
+    /* Reset button */
+    .reset-btn {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: var(--text-dim);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    .reset-btn:hover { border-color: #dc2626; color: #dc2626; }
+
+    /* Damage cycle instruction */
+    .cycle-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Subaru note */
+    .make-note {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #151c10;
+      border: 1px solid #2a3820;
+      border-radius: 7px;
+      font-size: 12px;
+      color: #7aaa5a;
+      display: none;
+    }
+
+    .make-note.visible { display: block; }
+
+    /* footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #444;
+    }
+
+    footer a { color: #666; text-decoration: none; }
+    footer a:hover { color: var(--orange); }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a href="https://absoluteadas.com" class="header-logo">
+    <img src="../logo.png" alt="Absolute ADAS" onerror="this.style.display='none'">
+    <span class="header-wordmark">Absolute <span>ADAS</span></span>
+  </a>
+  <a href="tel:18449432327" class="header-phone">1-844-FIX-ADAS</a>
+</header>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <h1>ADAS Calibration <span>Estimator</span></h1>
+  <p>Select a vehicle make and click the damaged panel(s) to see which ADAS calibrations are likely required. Built for body shops and adjusters.</p>
+</div>
+
+<!-- ─── TOOL ─── -->
+<div class="tool-wrap">
+
+  <!-- Step 1: Make -->
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-num">1</div>
+      <div>
+        <h2>Select Vehicle Make</h2>
+        <p>Determines which ADAS systems are present on the vehicle</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="make-grid" id="makeGrid"></div>
+      <div class="make-note" id="makeNote"></div>
+    </div>
+  </div>
+
+  <!-- Step 2: Diagram -->
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-num">2</div>
+      <div>
+        <h2>Click Damaged Area(s)</h2>
+        <p>Click a zone to cycle: Light → Medium → Structural → Clear</p>
+      </div>
+      <button class="reset-btn" onclick="resetAll()">Clear All</button>
+    </div>
+    <div class="step-body">
+      <div class="diagram-results-row">
+
+        <!-- Car diagram -->
+        <div class="diagram-col">
+          <span class="dir-label">↑ FRONT</span>
+
+          <svg id="carSvg" viewBox="0 0 200 510" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- ── Car body outline (decorative, non-click) ── -->
+            <!-- Outer silhouette -->
+            <path d="M62,28 Q70,18 100,15 Q130,18 138,28 L148,60 Q158,72 160,88
+                     L162,155 L168,175 L168,345 L162,365 L160,385 Q158,400 148,412
+                     L138,436 Q130,448 100,452 Q70,448 62,436 L52,412
+                     Q42,400 40,385 L38,365 L32,345 L32,175 L38,155 L40,88
+                     Q42,72 52,60 Z"
+                  fill="#111820" stroke="#2a3a4a" stroke-width="1.5"/>
+
+            <!-- Hood area (shading) -->
+            <path d="M68,42 Q100,32 132,42 L142,80 Q128,88 100,90 Q72,88 58,80 Z"
+                  fill="#18242e" stroke="none"/>
+
+            <!-- Windshield inner shape -->
+            <path d="M72,93 Q100,84 128,93 L134,158 Q100,165 66,158 Z"
+                  fill="#0d1820" stroke="#1e3040" stroke-width="0.8"/>
+
+            <!-- Roof -->
+            <rect x="54" y="163" width="92" height="148" rx="4"
+                  fill="#15202a" stroke="#1e3040" stroke-width="0.8"/>
+
+            <!-- Rear windshield -->
+            <path d="M72,315 Q100,308 128,315 L134,374 Q100,381 66,374 Z"
+                  fill="#0d1820" stroke="#1e3040" stroke-width="0.8"/>
+
+            <!-- Trunk -->
+            <path d="M68,380 Q100,373 132,380 L142,412 Q128,424 100,428 Q72,424 58,412 Z"
+                  fill="#18242e" stroke="none"/>
+
+            <!-- Left mirror protrusion -->
+            <rect x="28" y="145" width="16" height="32" rx="3"
+                  fill="#131e28" stroke="#2a3a4a" stroke-width="0.8"/>
+
+            <!-- Right mirror protrusion -->
+            <rect x="156" y="145" width="16" height="32" rx="3"
+                  fill="#131e28" stroke="#2a3a4a" stroke-width="0.8"/>
+
+            <!-- Wheel arches (decorative) -->
+            <ellipse cx="48" cy="210" rx="13" ry="16" fill="#0a1218" stroke="#2a3a4a" stroke-width="0.8"/>
+            <ellipse cx="152" cy="210" rx="13" ry="16" fill="#0a1218" stroke="#2a3a4a" stroke-width="0.8"/>
+            <ellipse cx="48" cy="330" rx="13" ry="16" fill="#0a1218" stroke="#2a3a4a" stroke-width="0.8"/>
+            <ellipse cx="152" cy="330" rx="13" ry="16" fill="#0a1218" stroke="#2a3a4a" stroke-width="0.8"/>
+
+            <!-- Headlights -->
+            <path d="M67,35 Q76,28 92,26 L92,42 Q76,44 68,50 Z" fill="#1e2e10" stroke="#3a5a20" stroke-width="0.5"/>
+            <path d="M133,35 Q124,28 108,26 L108,42 Q124,44 132,50 Z" fill="#1e2e10" stroke="#3a5a20" stroke-width="0.5"/>
+
+            <!-- Taillights -->
+            <path d="M67,437 Q76,445 92,448 L92,432 Q76,430 68,422 Z" fill="#2e0808" stroke="#5a1010" stroke-width="0.5"/>
+            <path d="M133,437 Q124,445 108,448 L108,432 Q124,430 132,422 Z" fill="#2e0808" stroke="#5a1010" stroke-width="0.5"/>
+
+            <!-- ── CLICKABLE ZONES ── -->
+
+            <!-- Front Bumper -->
+            <rect id="zone-front_bumper" data-zone="front_bumper"
+                  x="58" y="16" width="84" height="42" rx="4"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="100" y="37" data-zone="front_bumper">FRONT BUMPER</text>
+            <text class="zone-label-text" x="100" y="46" data-zone="front_bumper" style="fill:rgba(255,255,255,0.4);font-size:5.5px">RADAR / SENSORS</text>
+
+            <!-- Windshield / Front Camera -->
+            <rect id="zone-windshield" data-zone="windshield"
+                  x="62" y="82" width="76" height="80" rx="3"
+                  class="zone-base" opacity="0.75"/>
+            <text class="zone-label-text" x="100" y="117" data-zone="windshield">WINDSHIELD</text>
+            <text class="zone-label-text" x="100" y="126" data-zone="windshield" style="fill:rgba(255,255,255,0.4);font-size:5.5px">FRONT CAMERA</text>
+
+            <!-- Left Front Quarter -->
+            <path id="zone-left_front" data-zone="left_front"
+                  d="M32,58 L60,58 L58,160 L32,160 Z"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="46" y="100" data-zone="left_front" style="font-size:6px">L FRT</text>
+            <text class="zone-label-text" x="46" y="110" data-zone="left_front" style="font-size:5.5px;fill:rgba(255,255,255,0.4)">QTR</text>
+
+            <!-- Right Front Quarter -->
+            <path id="zone-right_front" data-zone="right_front"
+                  d="M140,58 L168,58 L168,160 L142,160 Z"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="154" y="100" data-zone="right_front" style="font-size:6px">R FRT</text>
+            <text class="zone-label-text" x="154" y="110" data-zone="right_front" style="font-size:5.5px;fill:rgba(255,255,255,0.4)">QTR</text>
+
+            <!-- Left Side / Mirror / Door -->
+            <path id="zone-left_side" data-zone="left_side"
+                  d="M32,165 L54,165 L54,310 L32,310 Z"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="43" y="225" data-zone="left_side" style="font-size:6px">LEFT</text>
+            <text class="zone-label-text" x="43" y="235" data-zone="left_side" style="font-size:5.5px;fill:rgba(255,255,255,0.4)">BSM</text>
+
+            <!-- Right Side / Mirror / Door -->
+            <path id="zone-right_side" data-zone="right_side"
+                  d="M146,165 L168,165 L168,310 L146,310 Z"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="157" y="225" data-zone="right_side" style="font-size:6px">RIGHT</text>
+            <text class="zone-label-text" x="157" y="235" data-zone="right_side" style="font-size:5.5px;fill:rgba(255,255,255,0.4)">BSM</text>
+
+            <!-- Rear Left Quarter -->
+            <path id="zone-rear_left" data-zone="rear_left"
+                  d="M32,315 L60,315 L58,420 L32,420 Z"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="46" y="358" data-zone="rear_left" style="font-size:6px">RL</text>
+            <text class="zone-label-text" x="46" y="368" data-zone="rear_left" style="font-size:5.5px;fill:rgba(255,255,255,0.4)">QTR</text>
+
+            <!-- Rear Right Quarter -->
+            <path id="zone-rear_right" data-zone="rear_right"
+                  d="M140,315 L168,315 L168,420 L142,420 Z"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="154" y="358" data-zone="rear_right" style="font-size:6px">RR</text>
+            <text class="zone-label-text" x="154" y="368" data-zone="rear_right" style="font-size:5.5px;fill:rgba(255,255,255,0.4)">QTR</text>
+
+            <!-- Rear Bumper -->
+            <rect id="zone-rear_bumper" data-zone="rear_bumper"
+                  x="58" y="430" width="84" height="42" rx="4"
+                  class="zone-base" opacity="0.7"/>
+            <text class="zone-label-text" x="100" y="449" data-zone="rear_bumper">REAR BUMPER</text>
+            <text class="zone-label-text" x="100" y="459" data-zone="rear_bumper" style="fill:rgba(255,255,255,0.4);font-size:5.5px">CAMERA / RADAR</text>
+
+          </svg>
+
+          <span class="dir-label">↓ REAR</span>
+
+          <!-- Legend -->
+          <div class="legend">
+            <div class="legend-item">
+              <div class="legend-swatch" style="background:#1e2e3e;border:1px solid #334455;"></div>
+              <span>None</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background:#d97706;"></div>
+              <span>Light</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background:#ea580c;"></div>
+              <span>Medium</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background:#b91c1c;"></div>
+              <span>Structural</span>
+            </div>
+          </div>
+
+          <!-- Active zone chips -->
+          <div class="zone-chips" id="zoneChips"></div>
+
+        </div>
+
+        <!-- Results -->
+        <div class="results-col" id="resultsCol">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🎯</div>
+            <p>Click any damaged area on the vehicle diagram</p>
+            <small>Results update instantly as you select zones</small>
+          </div>
+          <div id="calResults" style="display:none;"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-card">
+    <h3>Need an Exact Quote?</h3>
+    <p>This tool provides estimates based on damage location and typical OEM requirements.<br>Actual calibration needs are confirmed via pre-scan diagnostics.</p>
+    <a href="tel:18449432327" class="cta-btn">Call 1-844-FIX-ADAS</a>
+    <div class="cta-sub">Same Day · Done Right · Most insurers covered</div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Absolute ADAS &nbsp;·&nbsp;
+  <a href="https://absoluteadas.com">absoluteadas.com</a> &nbsp;·&nbsp;
+  <a href="https://absoluteadas.com/pricing">Partner Pricing</a> &nbsp;·&nbsp;
+  <a href="tel:18449432327">1-844-FIX-ADAS</a>
+  <br><br>
+  <small>Estimates are based on typical OEM ADAS system locations and industry calibration requirements. Actual requirements determined by diagnostic pre-scan.</small>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA: Vehicle Makes + ADAS Systems
+// ═══════════════════════════════════════════════════════
+const MAKES = [
+  { id: 'acura',      label: 'Acura',         sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'audi',       label: 'Audi',          sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround'],note: null },
+  { id: 'bmw',        label: 'BMW',           sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround','parking'], note: null },
+  { id: 'buick',      label: 'Buick',         sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'cadillac',   label: 'Cadillac',      sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround'], note: null },
+  { id: 'chevrolet',  label: 'Chevrolet',     sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'chrysler',   label: 'Chrysler',      sys: ['fwd_cam','fwd_radar','rear_cam','bsm','parking'],               note: null },
+  { id: 'dodge',      label: 'Dodge',         sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'ford',       label: 'Ford',          sys: ['fwd_cam','fwd_radar','rear_radar','rear_cam','bsm'],            note: null },
+  { id: 'genesis',    label: 'Genesis',       sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround'], note: null },
+  { id: 'gmc',        label: 'GMC',           sys: ['fwd_cam','fwd_radar','rear_cam','bsm','surround'],              note: null },
+  { id: 'honda',      label: 'Honda',         sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'hyundai',    label: 'Hyundai',       sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'infiniti',   label: 'Infiniti',      sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround'], note: null },
+  { id: 'jeep',       label: 'Jeep',          sys: ['fwd_cam','fwd_radar','rear_cam','bsm','parking'],               note: null },
+  { id: 'kia',        label: 'Kia',           sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'lexus',      label: 'Lexus',         sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround'], note: null },
+  { id: 'lincoln',    label: 'Lincoln',       sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','parking'], note: null },
+  { id: 'mazda',      label: 'Mazda',         sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'mercedes',   label: 'Mercedes-Benz', sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','surround','parking'], note: null },
+  { id: 'nissan',     label: 'Nissan',        sys: ['fwd_cam','fwd_radar','rear_cam','bsm','surround'],              note: null },
+  { id: 'ram',        label: 'Ram',           sys: ['fwd_cam','fwd_radar','rear_cam','bsm','parking','surround'],    note: null },
+  { id: 'rivian',     label: 'Rivian',        sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','side_cam'],     note: null },
+  { id: 'subaru',     label: 'Subaru',        sys: ['stereo_cam','rear_cam','bsm'],
+    note: '⚠ Subaru EyeSight is a stereo camera system (no front radar). Any windshield replacement or impact requires EyeSight static calibration — OEM requires an authorized calibration center.' },
+  { id: 'tesla',      label: 'Tesla',         sys: ['fwd_cam','side_cam','rear_cam','ultrasonic'],
+    note: '⚠ Tesla uses a camera-only ADAS suite (no traditional radar on newer models). Calibrations typically require Tesla Service Center or authorized third-party tools.' },
+  { id: 'toyota',     label: 'Toyota',        sys: ['fwd_cam','fwd_radar','rear_cam','bsm'],                         note: null },
+  { id: 'volkswagen', label: 'Volkswagen',    sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm'],          note: null },
+  { id: 'volvo',      label: 'Volvo',         sys: ['fwd_cam','fwd_radar','corner_radar','rear_cam','bsm','lidar'],
+    note: '⚠ Volvo uses LiDAR in addition to camera/radar on newer models. Some calibrations require Volvo dealer-level tooling.' },
+];
+
+// ═══════════════════════════════════════════════════════
+// DATA: Zone Rules
+// Each zone: sensors it contains, then rules per damage level
+// Calibrations are filtered by which systems the selected make has
+// ═══════════════════════════════════════════════════════
+const ZONES = {
+  windshield: {
+    label: 'Windshield / Front Camera',
+    abbr: 'Windshield',
+    sensors: ['fwd_cam', 'stereo_cam', 'fwd_cam_any'],
+    rules: {
+      light: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null, note: 'Required by all major insurers' },
+        ],
+        likely: [
+          { name: 'Front Camera Static Calibration', sys: ['fwd_cam','stereo_cam'], note: 'OEM spec: required after any windshield work' },
+        ],
+        possible: [
+          { name: 'Rain/Light Sensor Recalibration', sys: ['fwd_cam','stereo_cam'], note: 'If sensor cluster is disturbed' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Front Camera Static Calibration', sys: ['fwd_cam','stereo_cam'], note: 'Glass replacement or displacement' },
+        ],
+        likely: [
+          { name: 'Front Camera Dynamic Calibration', sys: ['fwd_cam','stereo_cam'], note: 'Road-based cal to verify steering/lane logic' },
+        ],
+        possible: [
+          { name: 'Rain/Light Sensor Recalibration', sys: ['fwd_cam','stereo_cam'], note: '' },
+          { name: 'Auto High-Beam Calibration', sys: ['fwd_cam'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Front Camera Static Calibration', sys: ['fwd_cam','stereo_cam'], note: 'Mandatory after A-pillar or header damage' },
+          { name: 'Front Camera Dynamic Calibration', sys: ['fwd_cam','stereo_cam'], note: '' },
+        ],
+        likely: [
+          { name: 'Lane Keeping Assist Verification', sys: ['fwd_cam','stereo_cam'], note: '' },
+          { name: 'Forward Collision Warning Verification', sys: ['fwd_cam','fwd_radar'], note: '' },
+          { name: 'AEB System Functional Test', sys: ['fwd_cam','fwd_radar'], note: '' },
+        ],
+        possible: [
+          { name: 'HUD / Display Module Recalibration', sys: ['fwd_cam'], note: 'If heads-up display is equipped' },
+          { name: 'Camera Module Replacement + Calibration', sys: ['fwd_cam','stereo_cam'], note: 'If housing is cracked or sensor damaged' },
+        ]
+      }
+    }
+  },
+
+  front_bumper: {
+    label: 'Front Bumper / Radar',
+    abbr: 'Front Bumper',
+    sensors: ['fwd_radar', 'parking'],
+    rules: {
+      light: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+        ],
+        likely: [],
+        possible: [
+          { name: 'Front Radar Alignment Check', sys: ['fwd_radar'], note: 'Verify aim after minor impact' },
+          { name: 'Parking Sensor Functional Check', sys: ['parking'], note: '' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Front Radar Calibration', sys: ['fwd_radar'], note: 'Bumper displacement affects radar aim angle' },
+        ],
+        likely: [
+          { name: 'Adaptive Cruise Control Calibration', sys: ['fwd_radar'], note: '' },
+          { name: 'AEB Calibration', sys: ['fwd_radar'], note: '' },
+        ],
+        possible: [
+          { name: 'Forward Collision Warning Calibration', sys: ['fwd_radar'], note: '' },
+          { name: 'Front Parking Sensor Calibration', sys: ['parking'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Front Radar Calibration', sys: ['fwd_radar'], note: 'Crash bar / condenser damage displaces radar mount' },
+          { name: 'Adaptive Cruise Control Calibration', sys: ['fwd_radar'], note: '' },
+          { name: 'AEB Calibration', sys: ['fwd_radar'], note: '' },
+        ],
+        likely: [
+          { name: 'Forward Collision Warning Calibration', sys: ['fwd_radar'], note: '' },
+          { name: 'Front Parking Sensor Calibration', sys: ['parking'], note: '' },
+        ],
+        possible: [
+          { name: 'Radar Module Replacement + Calibration', sys: ['fwd_radar'], note: 'If bracket or module is damaged' },
+          { name: 'Front Camera Static Calibration', sys: ['fwd_cam','stereo_cam'], note: 'Hood/frame shift can displace camera aim' },
+        ]
+      }
+    }
+  },
+
+  left_front: {
+    label: 'Left Front Quarter Panel',
+    abbr: 'L Frt Quarter',
+    sensors: ['corner_radar', 'bsm'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Left Front Corner Radar Check', sys: ['corner_radar'], note: '' },
+        ]
+      },
+      medium: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [
+          { name: 'Left Front Corner Radar Calibration', sys: ['corner_radar'], note: '' },
+          { name: 'Left Blind Spot Monitor Calibration', sys: ['bsm'], note: 'BSM module often in fender behind fascia' },
+        ],
+        possible: [
+          { name: 'Left Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Left Front Corner Radar Calibration', sys: ['corner_radar'], note: 'Frame rail damage displaces sensor mount' },
+          { name: 'Left Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+        ],
+        likely: [
+          { name: 'Left Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+          { name: 'Front Camera Static Calibration', sys: ['fwd_cam','stereo_cam'], note: 'Frame damage can shift windshield/camera plane' },
+        ],
+        possible: [
+          { name: 'Corner Sensor Module Replacement + Calibration', sys: ['corner_radar'], note: '' },
+        ]
+      }
+    }
+  },
+
+  right_front: {
+    label: 'Right Front Quarter Panel',
+    abbr: 'R Frt Quarter',
+    sensors: ['corner_radar', 'bsm'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Right Front Corner Radar Check', sys: ['corner_radar'], note: '' },
+        ]
+      },
+      medium: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [
+          { name: 'Right Front Corner Radar Calibration', sys: ['corner_radar'], note: '' },
+          { name: 'Right Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+        ],
+        possible: [
+          { name: 'Right Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Right Front Corner Radar Calibration', sys: ['corner_radar'], note: 'Frame rail damage displaces sensor mount' },
+          { name: 'Right Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+        ],
+        likely: [
+          { name: 'Right Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+          { name: 'Front Camera Static Calibration', sys: ['fwd_cam','stereo_cam'], note: 'Frame damage can shift windshield/camera plane' },
+        ],
+        possible: [
+          { name: 'Corner Sensor Module Replacement + Calibration', sys: ['corner_radar'], note: '' },
+        ]
+      }
+    }
+  },
+
+  left_side: {
+    label: 'Left Side / Mirror / Door',
+    abbr: 'Left Side',
+    sensors: ['bsm', 'side_cam', 'surround'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Left Blind Spot Monitor Check', sys: ['bsm'], note: 'Mirror housing BSM module may be impacted' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Left Blind Spot Monitor Calibration', sys: ['bsm'], note: 'BSM in mirror housing — direct impact requires recal' },
+        ],
+        likely: [
+          { name: 'Left Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+        ],
+        possible: [
+          { name: 'Left Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Left Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+          { name: 'Left Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+        ],
+        likely: [
+          { name: 'Left Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+          { name: 'Surround View Camera Recalibration', sys: ['surround'], note: '' },
+        ],
+        possible: [
+          { name: 'BSM Module Replacement + Calibration', sys: ['bsm'], note: 'If mirror housing is destroyed' },
+        ]
+      }
+    }
+  },
+
+  right_side: {
+    label: 'Right Side / Mirror / Door',
+    abbr: 'Right Side',
+    sensors: ['bsm', 'side_cam', 'surround'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Right Blind Spot Monitor Check', sys: ['bsm'], note: '' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Right Blind Spot Monitor Calibration', sys: ['bsm'], note: 'BSM in mirror housing — direct impact requires recal' },
+        ],
+        likely: [
+          { name: 'Right Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+        ],
+        possible: [
+          { name: 'Right Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Right Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+          { name: 'Right Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+        ],
+        likely: [
+          { name: 'Right Lane Change Assist Calibration', sys: ['bsm'], note: '' },
+          { name: 'Surround View Camera Recalibration', sys: ['surround'], note: '' },
+        ],
+        possible: [
+          { name: 'BSM Module Replacement + Calibration', sys: ['bsm'], note: 'If mirror housing is destroyed' },
+        ]
+      }
+    }
+  },
+
+  rear_left: {
+    label: 'Rear Left Quarter Panel',
+    abbr: 'RL Quarter',
+    sensors: ['bsm', 'corner_radar', 'side_cam'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Left Rear Sensor Alignment Check', sys: ['corner_radar','bsm'], note: '' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Left Blind Spot Monitor Calibration', sys: ['bsm'], note: 'Rear quarter BSM radar often in bumper or C-pillar' },
+        ],
+        likely: [
+          { name: 'Left Rear Corner Radar Calibration', sys: ['corner_radar'], note: '' },
+          { name: 'Left Cross-Traffic Alert Calibration', sys: ['corner_radar','bsm'], note: '' },
+        ],
+        possible: [
+          { name: 'Left Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Left Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+          { name: 'Left Rear Corner Radar Calibration', sys: ['corner_radar'], note: 'Frame/quarter damage displaces mount' },
+          { name: 'Left Cross-Traffic Alert Calibration', sys: ['corner_radar','bsm'], note: '' },
+        ],
+        likely: [
+          { name: 'Left Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+          { name: 'Surround View Camera Recalibration', sys: ['surround'], note: '' },
+        ],
+        possible: [
+          { name: 'Rear Sensor Module Replacement + Calibration', sys: ['corner_radar'], note: '' },
+        ]
+      }
+    }
+  },
+
+  rear_right: {
+    label: 'Rear Right Quarter Panel',
+    abbr: 'RR Quarter',
+    sensors: ['bsm', 'corner_radar', 'side_cam'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Right Rear Sensor Alignment Check', sys: ['corner_radar','bsm'], note: '' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Right Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+        ],
+        likely: [
+          { name: 'Right Rear Corner Radar Calibration', sys: ['corner_radar'], note: '' },
+          { name: 'Right Cross-Traffic Alert Calibration', sys: ['corner_radar','bsm'], note: '' },
+        ],
+        possible: [
+          { name: 'Right Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Right Blind Spot Monitor Calibration', sys: ['bsm'], note: '' },
+          { name: 'Right Rear Corner Radar Calibration', sys: ['corner_radar'], note: '' },
+          { name: 'Right Cross-Traffic Alert Calibration', sys: ['corner_radar','bsm'], note: '' },
+        ],
+        likely: [
+          { name: 'Right Side Camera Calibration', sys: ['side_cam','surround'], note: '' },
+          { name: 'Surround View Camera Recalibration', sys: ['surround'], note: '' },
+        ],
+        possible: [
+          { name: 'Rear Sensor Module Replacement + Calibration', sys: ['corner_radar'], note: '' },
+        ]
+      }
+    }
+  },
+
+  rear_bumper: {
+    label: 'Rear Bumper / Camera / Sensors',
+    abbr: 'Rear Bumper',
+    sensors: ['rear_cam', 'rear_radar', 'corner_radar', 'parking', 'ultrasonic'],
+    rules: {
+      light: {
+        required: [{ name: 'Pre/Post Scan', sys: null }],
+        likely: [],
+        possible: [
+          { name: 'Rear Camera Alignment Check', sys: ['rear_cam'], note: '' },
+          { name: 'Rear Parking Sensor Check', sys: ['parking','ultrasonic'], note: '' },
+        ]
+      },
+      medium: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Rear Camera Calibration', sys: ['rear_cam'], note: 'Bumper deflection tilts camera aim angle' },
+        ],
+        likely: [
+          { name: 'Rear Radar Calibration', sys: ['rear_radar'], note: '' },
+          { name: 'Rear Cross-Traffic Alert Calibration', sys: ['corner_radar','rear_radar'], note: '' },
+        ],
+        possible: [
+          { name: 'Rear Parking Sensor Calibration', sys: ['parking','ultrasonic'], note: '' },
+          { name: 'Surround View Rear Camera Calibration', sys: ['surround'], note: '' },
+        ]
+      },
+      structural: {
+        required: [
+          { name: 'Pre/Post Scan', sys: null },
+          { name: 'Rear Camera Calibration', sys: ['rear_cam'], note: '' },
+          { name: 'Rear Radar Calibration', sys: ['rear_radar'], note: '' },
+          { name: 'Rear Cross-Traffic Alert Calibration', sys: ['corner_radar','rear_radar'], note: '' },
+        ],
+        likely: [
+          { name: 'Rear Parking Sensor Calibration', sys: ['parking','ultrasonic'], note: '' },
+          { name: 'Surround View Rear Camera Calibration', sys: ['surround'], note: '' },
+          { name: 'Blind Spot Monitor Calibration (Both Sides)', sys: ['bsm'], note: 'Rear impact can shift rear BSM modules' },
+        ],
+        possible: [
+          { name: 'Full Rear Sensor Suite Replacement + Calibration', sys: ['rear_cam','rear_radar'], note: '' },
+        ]
+      }
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const LEVELS = ['none', 'light', 'medium', 'structural'];
+const LEVEL_COLORS = { none: null, light: 'zone-light', medium: 'zone-medium', structural: 'zone-structural' };
+const LEVEL_CHIP_CLASS = { light: 'light', medium: 'medium', structural: 'structural' };
+
+let selectedMake = null;
+let zoneState = {}; // zoneId -> level index (0-3)
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function init() {
+  renderMakeGrid();
+  attachZoneHandlers();
+  render();
+}
+
+// ─── MAKE GRID ───────────────────────────────────────
+function renderMakeGrid() {
+  const grid = document.getElementById('makeGrid');
+  grid.innerHTML = MAKES.map(m =>
+    `<button class="make-btn${selectedMake === m.id ? ' selected' : ''}"
+             onclick="selectMake('${m.id}')">${m.label}</button>`
+  ).join('');
+}
+
+function selectMake(id) {
+  selectedMake = selectedMake === id ? null : id;
+  const make = MAKES.find(m => m.id === id);
+  const noteEl = document.getElementById('makeNote');
+  if (make && make.note && selectedMake === id) {
+    noteEl.textContent = make.note;
+    noteEl.classList.add('visible');
+  } else {
+    noteEl.classList.remove('visible');
+  }
+  renderMakeGrid();
+  render();
+}
+
+// ─── ZONE CLICK ──────────────────────────────────────
+function attachZoneHandlers() {
+  document.getElementById('carSvg').addEventListener('click', e => {
+    const zoneId = e.target.dataset.zone || e.target.closest('[data-zone]')?.dataset.zone;
+    if (!zoneId) return;
+    cycleZone(zoneId);
+  });
+}
+
+function cycleZone(zoneId) {
+  const current = zoneState[zoneId] || 0;
+  const next = (current + 1) % 4; // 0→1→2→3→0
+  if (next === 0) {
+    delete zoneState[zoneId];
+  } else {
+    zoneState[zoneId] = next;
+  }
+  render();
+}
+
+function clearZone(zoneId) {
+  delete zoneState[zoneId];
+  render();
+}
+
+function resetAll() {
+  zoneState = {};
+  render();
+}
+
+// ─── RENDER ZONES ON SVG ─────────────────────────────
+function renderZones() {
+  Object.keys(ZONES).forEach(zoneId => {
+    const el = document.getElementById(`zone-${zoneId}`);
+    if (!el) return;
+    const levelIdx = zoneState[zoneId] || 0;
+    const level = LEVELS[levelIdx];
+
+    // Remove all level classes
+    el.classList.remove('zone-light', 'zone-medium', 'zone-structural');
+
+    if (level !== 'none') {
+      el.classList.add(LEVEL_COLORS[level]);
+    }
+  });
+}
+
+// ─── RENDER ZONE CHIPS ───────────────────────────────
+function renderChips() {
+  const container = document.getElementById('zoneChips');
+  const activeZones = Object.entries(zoneState).filter(([,v]) => v > 0);
+
+  if (activeZones.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = activeZones.map(([zoneId, levelIdx]) => {
+    const level = LEVELS[levelIdx];
+    const zone = ZONES[zoneId];
+    return `<div class="zone-chip ${LEVEL_CHIP_CLASS[level]}">
+      <div class="zone-chip-dot"></div>
+      <span>${zone.abbr}</span>
+      <span class="chip-x" onclick="clearZone('${zoneId}')">✕</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── COMPUTE CALIBRATIONS ────────────────────────────
+function computeCalibrations() {
+  const makeSystems = selectedMake ? (MAKES.find(m => m.id === selectedMake)?.sys || []) : null;
+  const activeZones = Object.entries(zoneState).filter(([,v]) => v > 0);
+
+  if (activeZones.length === 0) return null;
+
+  const seen = { required: new Set(), likely: new Set(), possible: new Set() };
+  const results = { required: [], likely: [], possible: [] };
+
+  activeZones.forEach(([zoneId, levelIdx]) => {
+    const level = LEVELS[levelIdx];
+    const zone = ZONES[zoneId];
+    const rules = zone.rules[level];
+
+    ['required', 'likely', 'possible'].forEach(tier => {
+      rules[tier].forEach(item => {
+        // Filter by make systems (if make selected and item has sys requirement)
+        if (makeSystems && item.sys !== null) {
+          // Check if make has at least one of the required systems
+          const hasSystem = item.sys.some(s => makeSystems.includes(s));
+          if (!hasSystem) return;
+        }
+        // Deduplicate
+        if (!seen[tier].has(item.name)) {
+          // Demote from possible→likely or likely→required if also appears at higher tier
+          // (handled by checking tiers top-down)
+          if (tier === 'possible' && (seen.required.has(item.name) || seen.likely.has(item.name))) return;
+          if (tier === 'likely' && seen.required.has(item.name)) return;
+
+          seen[tier].add(item.name);
+          results[tier].push(item);
+        }
+      });
+    });
+  });
+
+  return results;
+}
+
+// ─── RENDER RESULTS ──────────────────────────────────
+function renderResults() {
+  const empty = document.getElementById('emptyState');
+  const calResults = document.getElementById('calResults');
+  const activeZones = Object.entries(zoneState).filter(([,v]) => v > 0);
+
+  if (activeZones.length === 0) {
+    empty.style.display = 'flex';
+    calResults.style.display = 'none';
+    return;
+  }
+
+  const cals = computeCalibrations();
+  empty.style.display = 'none';
+  calResults.style.display = 'flex';
+  calResults.style.flexDirection = 'column';
+  calResults.style.gap = '12px';
+
+  const totalCount = cals.required.length + cals.likely.length + cals.possible.length;
+
+  const groups = [
+    { key: 'required', label: 'Required', icon: '●', items: cals.required },
+    { key: 'likely', label: 'Likely Needed', icon: '◐', items: cals.likely },
+    { key: 'possible', label: 'Possible / Verify', icon: '○', items: cals.possible },
+  ];
+
+  calResults.innerHTML = groups.filter(g => g.items.length > 0).map(g => `
+    <div class="cal-group ${g.key}">
+      <div class="cal-group-head">
+        <div class="cal-group-head-dot"></div>
+        ${g.label}
+        <span style="margin-left:auto;opacity:0.7;font-size:10px">${g.items.length} calibration${g.items.length !== 1 ? 's' : ''}</span>
+      </div>
+      <ul class="cal-list">
+        ${g.items.map(item => `
+          <li class="cal-item">
+            <div class="cal-check">✓</div>
+            <div>
+              <div class="cal-name">${item.name}</div>
+              ${item.note ? `<div class="cal-source">${item.note}</div>` : ''}
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+  `).join('');
+
+  // Add summary + disclaimer at bottom
+  calResults.innerHTML += `
+    <div class="disclaimer">
+      <strong>How to read this estimate:</strong> <em>Required</em> = OEM procedure mandates calibration after this damage.
+      <em>Likely</em> = damage severity/location strongly suggests it. <em>Possible</em> = recommend verifying during pre-scan.
+      ${!selectedMake ? '<br><strong>Tip:</strong> Select a vehicle make above for more accurate system-specific results.' : ''}
+      <br><br>Actual calibration requirements are confirmed via OEM-level pre-scan diagnostic. This estimate does not replace a shop inspection.
+    </div>
+  `;
+}
+
+// ─── MASTER RENDER ───────────────────────────────────
+function render() {
+  renderZones();
+  renderChips();
+  renderResults();
+}
+
+// ─── START ───────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
