@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Body Shop Partner Pricing — Absolute ADAS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --orange: #CD4419; --dark: #0d0d0d; --mid: #444; --gray: #777; --border: #e4e4e4; }
+
+    body { font-family: 'Inter', sans-serif; background: #fff; color: var(--dark); font-size: 12.5px; line-height: 1.5; }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: var(--dark);
+      color: #fff;
+      padding: 14px 0.5in;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .top-bar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .top-bar-brand span { color: var(--orange); }
+    .top-bar-right { text-align: right; }
+    .top-bar-phone { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; color: var(--orange); }
+    .top-bar-web { font-size: 10px; color: #999; margin-top: 2px; letter-spacing: 0.04em; }
+
+    /* ── ORANGE STRIPE ── */
+    .orange-stripe {
+      background: var(--orange);
+      padding: 7px 0.5in;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+    .stripe-badge {
+      font-size: 9px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stripe-divider { width: 1px; height: 14px; background: rgba(255,255,255,.35); flex-shrink: 0; }
+
+    /* ── BODY ── */
+    .body { padding: 18px 0.5in 14px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── HERO LINE ── */
+    .hero-line { text-align: center; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+    .hero-line h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .hero-line h1 span { color: var(--orange); }
+    .hero-line p { font-size: 11.5px; color: var(--gray); margin-top: 5px; line-height: 1.5; }
+
+    /* ── SECTION LABEL ── */
+    .slabel {
+      font-size: 8.5px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 5px;
+    }
+
+    /* ── TWO COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    /* ── LOSS LEADER ── */
+    .loss-box {
+      background: #fff8ec;
+      border: 1.5px solid #f59e0b;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .loss-box .lh { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 900; margin-bottom: 3px; }
+    .loss-box .ls { font-size: 10.5px; color: var(--mid); line-height: 1.55; margin-bottom: 10px; }
+    .scan-row { display: flex; gap: 8px; }
+    .scan-pill { flex: 1; background: #fff; border: 1px solid #f59e0b; border-radius: 6px; padding: 8px 10px; text-align: center; }
+    .scan-pill .sn { font-size: 8px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: #b45309; margin-bottom: 3px; }
+    .scan-pill .sp { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: var(--dark); line-height: 1; }
+    .scan-pill .snt { font-size: 8.5px; color: var(--gray); margin-top: 2px; }
+
+    /* ── PRICE TABLE ── */
+    table.pt {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    table.pt thead th {
+      background: var(--dark);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    table.pt thead th:last-child { text-align: right; }
+    table.pt tbody td {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      vertical-align: middle;
+    }
+    table.pt tbody tr:last-child td { border-bottom: none; }
+    .td-n { font-weight: 700; color: var(--dark); }
+    .td-d { font-size: 9.5px; color: var(--gray); }
+    .td-list { font-weight: 900; text-align: right; }
+    .td-p { color: #166534; font-weight: 800; text-align: right; font-size: 11px; }
+
+    /* ── TIER TABLE ── */
+    table.tt {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    table.tt thead th {
+      background: var(--orange);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    table.tt tbody td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+    }
+    table.tt tbody tr.best td { background: #fff5f0; }
+    table.tt tbody tr:last-child td { border-bottom: none; }
+    .tt-name { font-weight: 800; }
+    .tt-vol { font-size: 10.5px; color: var(--gray); }
+    .tt-disc { color: var(--orange); font-weight: 900; }
+    .tt-margin { color: #166534; font-weight: 800; }
+    .tt-badge { font-size: 7.5px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(205,68,25,.12); border: 1px solid rgba(205,68,25,.3); color: var(--orange); padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .checklist li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; color: var(--mid); }
+    .checklist li::before { content: '✓'; color: #166534; font-weight: 900; flex-shrink: 0; }
+
+    /* ── PANEL ── */
+    .panel { background: #f7f7f7; border-radius: 8px; padding: 12px 14px; }
+    .panel-title { font-weight: 800; font-size: 12px; margin-bottom: 8px; color: var(--dark); }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      background: #fff9f5;
+      border: 1px solid rgba(205,68,25,.25);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 10px;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+    .disclaimer strong { color: var(--dark); }
+
+    /* ── BOTTOM BAR ── */
+    .bottom-bar {
+      background: var(--dark);
+      color: #fff;
+      padding: 10px 0.5in;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+    .bottom-left { font-size: 10px; color: #888; line-height: 1.7; }
+    .bottom-left strong { color: #fff; }
+    .bottom-cta { text-align: right; }
+    .bottom-phone { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; color: var(--orange); line-height: 1; }
+    .bottom-tag { font-size: 8.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #666; margin-top: 3px; }
+
+    /* ── PRINT ── */
+    @media print {
+      @page { size: letter; margin: 0; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .print-btn { display: none; }
+    }
+    @media screen {
+      body { background: #c8c8c8; padding: 32px; }
+      .page { background: #fff; box-shadow: 0 6px 48px rgba(0,0,0,.28); }
+      .print-btn { display: block; text-align: center; margin: 0 auto 24px; width: 8.5in; max-width: 100%; }
+      .print-btn button { background: var(--orange); color: #fff; border: none; border-radius: 8px; padding: 11px 32px; font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; }
+      .print-btn button:hover { background: #b33a15; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="print-btn"><button onclick="window.print()">🖨️ Print This Page</button></div>
+
+<div class="page">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:42px;width:auto;display:block;" />
+      <div>
+        <div class="top-bar-brand">Absolute <span>ADAS</span></div>
+        <div style="font-size:9.5px;color:#888;margin-top:2px;letter-spacing:0.08em;text-transform:uppercase;">Mobile ADAS Calibration · Western Washington</div>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <div class="top-bar-phone">1-844-FIX-ADAS</div>
+      <div class="top-bar-web">absoluteadas.com</div>
+    </div>
+  </div>
+
+  <!-- CARRIER STRIPE -->
+  <div class="orange-stripe">
+    <span class="stripe-badge">⭐ State Farm Preferred Vendor</span>
+    <div class="stripe-divider"></div>
+    <span class="stripe-badge">🛡️ Allstate Preferred Vendor</span>
+    <div class="stripe-divider"></div>
+    <span class="stripe-badge">🏅 USAA Preferred Vendor</span>
+    <div class="stripe-divider"></div>
+    <span class="stripe-badge">✅ GEICO Preferred Vendor</span>
+  </div>
+
+  <div class="body">
+
+    <!-- HERO -->
+    <div class="hero-line">
+      <h1>Your Margin. On <span>Every Single Job.</span></h1>
+      <p>We price so your shop makes money — on calibrations, on scans, on everything. The more you use us, the more you keep.</p>
+    </div>
+
+    <!-- LOSS LEADER + HOW IT WORKS -->
+    <div class="two-col">
+      <div class="loss-box">
+        <div class="slabel">⭐ Pre/Post Scans — Your Margin Starts Here</div>
+        <div class="lh">You Keep the Spread.</div>
+        <div class="ls">We charge you the State Farm approved rate. Bill your carrier at their approved rate — for non-SF carriers or customer pay, the spread is yours every time.</div>
+        <div class="scan-row">
+          <div class="scan-pill">
+            <div class="sn">Pre-Scan</div>
+            <div class="sp">$47.50</div>
+            <div class="snt">SF approved rate</div>
+          </div>
+          <div class="scan-pill">
+            <div class="sn">Post-Scan</div>
+            <div class="sp">$47.50</div>
+            <div class="snt">SF approved rate</div>
+          </div>
+          <div class="scan-pill">
+            <div class="sn">Bundle</div>
+            <div class="sp">$85</div>
+            <div class="snt">Both scans</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="slabel">How It Works</div>
+        <div class="panel-title">Simple. Automatic. Every Job.</div>
+        <ul class="checklist">
+          <li>You bill your carrier at the list rate below</li>
+          <li>You pay us 15–25% less than list</li>
+          <li>The gap is your automatic margin</li>
+          <li>We handle all OEM documentation</li>
+          <li>We know every carrier pricing model — Level 1 through 3C, dynamic, static, targeted, non-targeted</li>
+          <li>Calibration gets paid. No fight, no denial.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CALIBRATION PRICING -->
+    <div class="two-col">
+
+      <!-- STATIC -->
+      <div>
+        <div class="slabel">Static Calibrations</div>
+        <table class="pt">
+          <thead>
+            <tr>
+              <th>Procedure</th>
+              <th style="text-align:right;">List</th>
+              <th style="text-align:right;">Partner (15%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="td-n">Front Camera <span style="font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Windshield R&amp;I — most OEMs</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Radar <span style="font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Bumper R&amp;R — all major OEMs</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Blind Spot Monitor <span style="font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Rear / quarter panel work</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Lane Departure / LKA</div><div class="td-d">Most late-model vehicles</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">360° Surround View</div><div class="td-d">Hyundai, Kia, Toyota, BMW</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Night Vision Calibration</div><div class="td-d">BMW, Mercedes, Audi, Cadillac</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Thermal Imaging Calibration</div><div class="td-d">Select luxury &amp; commercial vehicles</div></td>
+              <td class="td-list">$450</td>
+              <td class="td-p">$382.50</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Steering Angle Sensor</div><div class="td-d">After alignment / suspension</div></td>
+              <td class="td-list">$185</td>
+              <td class="td-p">$157.25</td>
+            </tr>
+            <tr>
+              <td><div class="td-n">Seat Weight Sensor</div><div class="td-d">After seat R&amp;R / airbag work</div></td>
+              <td class="td-list">$185</td>
+              <td class="td-p">$157.25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DYNAMIC + ADD-ONS -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <div class="slabel">Dynamic Calibrations</div>
+          <table class="pt">
+            <thead>
+              <tr>
+                <th>Procedure</th>
+                <th style="text-align:right;">List</th>
+                <th style="text-align:right;">Partner (15%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="td-n">Front Camera (Dynamic)</div><div class="td-d">Road-drive — Honda, Mazda, Toyota</div></td>
+                <td class="td-list">$375</td>
+                <td class="td-p">$318.75</td>
+              </tr>
+              <tr>
+                <td><div class="td-n">Radar (Dynamic)</div><div class="td-d">Drive-cycle per OEM procedure</div></td>
+                <td class="td-list">$375</td>
+                <td class="td-p">$318.75</td>
+              </tr>
+              <tr>
+                <td><div class="td-n">Static + Dynamic Combo</div><div class="td-d">Subaru, European &amp; luxury OEMs</div></td>
+                <td class="td-list">$650</td>
+                <td class="td-p">$552.50</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <div class="slabel">Post-Collision Safety Inspection</div>
+            <table class="pt">
+              <thead>
+                <tr><th>Service</th><th style="text-align:right;">Rate</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><div class="td-n">Level 1 — Standard Inspection</div><div class="td-d">30-min labor · 3 levels available · call for complex vehicles</div></td><td class="td-list">$99</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="slabel">Add-Ons</div>
+            <table class="pt">
+              <thead>
+                <tr><th>Service</th><th style="text-align:right;">Rate</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="td-n">Module Programming</td><td class="td-list">from $250</td></tr>
+                <tr><td class="td-n">Diagnostic Time</td><td class="td-list">$200/hr</td></tr>
+                <tr><td class="td-n">Mobile Trip — Puget Sound Metro</td><td class="td-list" style="color:#166534;font-weight:900;">FREE</td></tr>
+                <tr><td class="td-n">Extended Area (25–50 mi)</td><td class="td-list">$50</td></tr>
+                <tr><td class="td-n">After-Hours / Weekend</td><td class="td-list">$100</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VOLUME TIERS -->
+    <div>
+      <div class="slabel">Volume Discount Tiers — Upgrade Automatically</div>
+      <table class="tt">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Monthly Volume</th>
+            <th>Discount</th>
+            <th>Margin / $450 Job</th>
+            <th>Sample Annual Margin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tt-name">Standard</td>
+            <td class="tt-vol">1–14 jobs/month</td>
+            <td class="tt-disc">15% off</td>
+            <td class="tt-margin">$67.50/job</td>
+            <td class="tt-margin">~$8,100/yr</td>
+          </tr>
+          <tr>
+            <td class="tt-name">Volume</td>
+            <td class="tt-vol">15–29 jobs/month</td>
+            <td class="tt-disc">20% off</td>
+            <td class="tt-margin">$90.00/job</td>
+            <td class="tt-margin">~$21,600/yr</td>
+          </tr>
+          <tr class="best">
+            <td class="tt-name">Preferred Partner <span class="tt-badge">Top Tier</span></td>
+            <td class="tt-vol">30+ jobs/month</td>
+            <td class="tt-disc">25% off</td>
+            <td class="tt-margin">$112.50/job</td>
+            <td class="tt-margin">~$47,250/yr</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- INCLUDED + DISCLAIMER -->
+    <div class="two-col" style="align-items:start;">
+      <div class="panel">
+        <div class="slabel">Every Job Includes</div>
+        <ul class="checklist">
+          <li>OEM position statement citation</li>
+          <li>Pre &amp; post calibration scans</li>
+          <li>Calibration certificate with tech signature</li>
+          <li>Insurance-grade documentation package</li>
+          <li>Mobile service — we come to your bay</li>
+          <li>Same-day availability</li>
+          <li>No trip fees, no shop supply fees, no hidden charges</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="panel">
+          <div class="slabel">Never Charged</div>
+          <ul class="checklist">
+            <li>Trip fees within Puget Sound metro</li>
+            <li>Shop supply or admin fees</li>
+            <li>Hidden per-system surcharges</li>
+            <li>"Attempt" fees if we can't complete</li>
+          </ul>
+        </div>
+        <div class="disclaimer">
+          <strong>Pricing Disclaimer:</strong> All prices shown are standard estimates based on common procedures and are subject to change. ADAS calibration is complex — final pricing may vary based on vehicle make, model, system configuration, and OEM procedure requirements. Call <strong>1-844-FIX-ADAS</strong> for a firm quote before scheduling.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      <strong>Mark Fowler · Absolute ADAS</strong><br>
+      50,000+ calibrations completed · $1M liability insurance<br>
+      State Farm · Allstate · USAA · GEICO Preferred Vendor
+    </div>
+    <div class="bottom-cta">
+      <div class="bottom-phone">1-844-FIX-ADAS</div>
+      <div class="bottom-tag">Same Day. Done Right.</div>
+      <div style="font-size:10px;color:#aaa;font-style:italic;margin-top:4px;">In a bind? Let us know, we're here to help.</div>
+      <div style="font-size:9px;color:#666;margin-top:3px;">absoluteadas.com/pricing</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calibration Pricing — Absolute ADAS | Western Washington</title>
-  <meta name="description" content="Transparent calibration pricing from Absolute ADAS — State Farm & Allstate Preferred Vendor. List prices, partner discounts, and volume tiers. Mobile. Same-day. Western Washington." />
+  <meta name="description" content="Transparent ADAS calibration pricing. State Farm, Allstate, USAA & GEICO Preferred Vendor. Customer pay, insurance, and body shop partner rates. Mobile. Same-day. Western Washington." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://absoluteadas.com/pricing" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,45 +25,105 @@
     /* NAV */
     .site-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(13,13,13,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .site-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
-    .site-nav-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
     .site-nav-links { display: flex; align-items: center; gap: 22px; }
     .site-nav-links a { color: rgba(255,255,255,0.78); font-weight: 600; font-size: 14px; text-decoration: none; transition: color 0.15s; }
     .site-nav-links a:hover { color: var(--orange); }
     .site-nav-links a.active { color: var(--orange); }
-    @media (max-width: 640px) { .site-nav { padding: 12px 18px; } .site-nav-links { gap: 14px; } .site-nav-links a { font-size: 13px; } }
+    @media (max-width: 640px) { .site-nav { padding: 12px 18px; } .site-nav-links { gap: 12px; } .site-nav-links a { font-size: 12px; } }
 
     /* HERO */
-    .hero { text-align: center; padding: 72px 24px 56px; background: radial-gradient(ellipse at 50% 0%, rgba(205,68,25,.13) 0%, transparent 65%); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .hero { text-align: center; padding: 64px 24px 48px; background: radial-gradient(ellipse at 50% 0%, rgba(205,68,25,.13) 0%, transparent 65%); border-bottom: 1px solid rgba(255,255,255,.06); }
     .hero-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.22em; color: var(--orange); text-transform: uppercase; margin-bottom: 16px; }
-    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5.5vw, 54px); font-weight: 900; line-height: 1.07; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(30px, 5.5vw, 52px); font-weight: 900; line-height: 1.07; letter-spacing: -0.02em; margin-bottom: 20px; }
     .hero h1 em { color: var(--orange); font-style: normal; }
-    .hero-sub { font-size: 18px; color: var(--light-gray); line-height: 1.6; max-width: 620px; margin: 0 auto 32px; }
-    .badge-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
-    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); color: #fff; font-size: .76rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 7px 14px; border-radius: 100px; }
-    .hero-note { font-size: .9rem; color: var(--gray); line-height: 1.7; max-width: 560px; margin: 0 auto; }
-    .hero-note strong { color: var(--off-white); }
+    .hero-sub { font-size: 17px; color: var(--light-gray); line-height: 1.6; max-width: 600px; margin: 0 auto 28px; }
 
-    /* HOW IT WORKS BAND */
-    .how-band { background: var(--dark-2); border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); padding: 28px 24px; }
-    .how-band-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    .how-step { flex: 1; min-width: 200px; max-width: 260px; text-align: center; padding: 0 12px; }
-    .how-num { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: #fff; font-size: .85rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
-    .how-step p { font-size: .88rem; color: var(--light-gray); line-height: 1.55; }
-    .how-step strong { color: var(--white); }
+    .carrier-badges { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+    .carrier-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); color: #fff; font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 7px 14px; border-radius: 100px; white-space: nowrap; }
+    .carrier-badge.sf { border-color: rgba(204,0,0,.4); background: rgba(204,0,0,.1); }
+    .carrier-badge.al { border-color: rgba(0,51,160,.5); background: rgba(0,51,160,.12); }
+    .carrier-badge.usaa { border-color: rgba(0,85,160,.4); background: rgba(0,85,160,.1); }
+    .carrier-badge.geico { border-color: rgba(0,140,60,.4); background: rgba(0,140,60,.1); }
 
-    /* SECTION */
+    .audience-tabs { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .audience-tab { display: inline-flex; align-items: center; gap: 7px; padding: 11px 22px; border-radius: 8px; font-weight: 700; font-size: .9rem; text-decoration: none; border: 1.5px solid rgba(255,255,255,.15); color: var(--off-white); transition: border-color .15s, background .15s; }
+    .audience-tab:hover { border-color: var(--orange); background: rgba(205,68,25,.1); color: #fff; }
+
+    /* WHY PRICES VARY */
+    .why-band { background: var(--dark-2); border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); padding: 28px 24px; }
+    .why-band-inner { max-width: 960px; margin: 0 auto; display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+    .why-label { font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--gray); min-width: 140px; padding-top: 2px; }
+    .why-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .why-pill { background: var(--dark-3); border: 1px solid rgba(255,255,255,.07); border-radius: 100px; padding: 6px 14px; font-size: .82rem; color: var(--light-gray); font-weight: 600; }
+    .why-pill strong { color: var(--white); }
+
+    /* SECTION WRAPPER */
     .section { max-width: 1060px; margin: 0 auto; padding: 64px 24px; }
     .section-label { font-size: 11px; font-weight: 800; letter-spacing: 0.22em; color: var(--orange); text-transform: uppercase; margin-bottom: 10px; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 38px); font-weight: 900; line-height: 1.1; letter-spacing: -0.015em; margin-bottom: 12px; }
     .section-title em { color: var(--orange); font-style: normal; }
-    .section-sub { font-size: 16px; color: var(--light-gray); line-height: 1.6; max-width: 620px; margin-bottom: 40px; }
-    .divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 64px 0 0; }
+    .section-sub { font-size: 16px; color: var(--light-gray); line-height: 1.6; max-width: 620px; margin-bottom: 36px; }
+
+    /* AUDIENCE SECTION HEADERS */
+    .audience-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .audience-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .audience-icon.consumer { background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.2); }
+    .audience-icon.insurance { background: rgba(129,140,248,.12); border: 1px solid rgba(129,140,248,.2); }
+    .audience-icon.shop { background: rgba(205,68,25,.12); border: 1px solid rgba(205,68,25,.2); }
+
+    /* CONSUMER PAY CARDS */
+    .consumer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+    @media (max-width: 640px) { .consumer-grid { grid-template-columns: 1fr; } }
+    .consumer-card { background: var(--dark-2); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 24px; text-align: center; }
+    .consumer-card.featured { border-color: rgba(205,68,25,.35); background: linear-gradient(135deg, rgba(205,68,25,.08) 0%, var(--dark-2) 100%); }
+    .consumer-card-icon { font-size: 28px; margin-bottom: 12px; }
+    .consumer-card-name { font-weight: 800; font-size: 1rem; color: var(--white); margin-bottom: 6px; }
+    .consumer-card-desc { font-size: .82rem; color: var(--gray); line-height: 1.5; margin-bottom: 16px; }
+    .consumer-price { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .consumer-price-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gray); margin-top: 4px; }
+    .consumer-note { font-size: .78rem; color: var(--green); font-weight: 700; margin-top: 8px; }
+
+    /* SCAN LOSS LEADER */
+    .loss-leader { background: linear-gradient(135deg, rgba(245,158,11,.1) 0%, rgba(245,158,11,.04) 100%); border: 1px solid rgba(245,158,11,.3); border-radius: 16px; padding: 28px 32px; margin-bottom: 28px; }
+    .loss-leader-tag { font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #f59e0b; margin-bottom: 10px; }
+    .loss-leader h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; }
+    .loss-leader p { font-size: .9rem; color: var(--light-gray); line-height: 1.6; max-width: 580px; margin-bottom: 20px; }
+    .loss-leader-prices { display: flex; gap: 12px; flex-wrap: wrap; }
+    .loss-price-pill { background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.25); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 140px; }
+    .loss-price-pill .lp-name { font-size: .78rem; font-weight: 800; color: #f59e0b; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .loss-price-pill .lp-price { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .loss-price-pill .lp-note { font-size: .72rem; color: var(--gray); margin-top: 4px; }
+
+    /* INSURANCE BILLING FLOW */
+    .billing-flow { display: flex; align-items: flex-start; gap: 0; margin: 24px 0 32px; flex-wrap: wrap; }
+    .flow-step { flex: 1; min-width: 160px; text-align: center; padding: 0 16px; position: relative; }
+    .flow-step::after { content: '→'; position: absolute; right: -10px; top: 28px; font-size: 1.2rem; color: var(--orange); font-weight: 700; }
+    .flow-step:last-child::after { display: none; }
+    .flow-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(205,68,25,.12); border: 1px solid rgba(205,68,25,.3); display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 12px; }
+    .flow-title { font-weight: 800; font-size: .9rem; color: var(--white); margin-bottom: 4px; }
+    .flow-desc { font-size: .78rem; color: var(--gray); line-height: 1.5; }
+
+    .carrier-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 28px 0; }
+    @media (max-width: 500px) { .carrier-grid { grid-template-columns: 1fr; } }
+    .carrier-card { background: var(--dark-2); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 14px; }
+    .carrier-card.sf-card { border-color: rgba(204,0,0,.25); }
+    .carrier-card.al-card { border-color: rgba(0,51,160,.3); }
+    .carrier-card.usaa-card { border-color: rgba(0,85,160,.25); }
+    .carrier-card.geico-card { border-color: rgba(0,140,60,.25); }
+    .carrier-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .carrier-dot.sf { background: #CC0000; }
+    .carrier-dot.al { background: #0033A0; }
+    .carrier-dot.usaa { background: #0055A0; }
+    .carrier-dot.geico { background: #008C3C; }
+    .carrier-card-name { font-weight: 800; font-size: .95rem; color: var(--white); }
+    .carrier-card-status { font-size: .78rem; color: var(--green); font-weight: 700; margin-top: 2px; }
+    .carrier-card-note { font-size: .75rem; color: var(--gray); margin-top: 2px; }
 
     /* PRICE GRID */
     .price-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
     .price-card { background: var(--dark-2); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 24px 26px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; }
     .price-card:hover { border-color: rgba(205,68,25,.4); }
-    .price-card.featured { border-color: rgba(205,68,25,.4); background: linear-gradient(135deg, rgba(205,68,25,.1) 0%, var(--dark-2) 100%); }
+    .price-card.featured { border-color: rgba(205,68,25,.4); background: linear-gradient(135deg, rgba(205,68,25,.08) 0%, var(--dark-2) 100%); }
     .card-name { font-size: 1rem; font-weight: 800; color: var(--white); }
     .card-desc { font-size: .85rem; color: var(--gray); line-height: 1.5; }
     .card-examples { font-size: .78rem; color: var(--orange); font-weight: 600; }
@@ -72,7 +132,7 @@
     .card-list-label { font-size: .72rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; }
     .card-partner { font-size: .82rem; color: var(--green); font-weight: 700; margin-top: 2px; }
 
-    /* FULL-WIDTH PRICE ROW (for lower-price items) */
+    /* PRICE ROW LIST */
     .price-list { display: flex; flex-direction: column; gap: 1px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.07); }
     .price-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: var(--dark-2); gap: 16px; transition: background .12s; }
     .price-row:hover { background: var(--dark-3); }
@@ -90,12 +150,23 @@
     .tier-table th { background: var(--dark-3); font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--gray); padding: 14px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,.07); }
     .tier-table td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,.05); font-size: .92rem; background: var(--dark-2); }
     .tier-table tr:last-child td { border-bottom: none; }
-    .tier-table tr.active td { background: linear-gradient(90deg, rgba(205,68,25,.1) 0%, var(--dark-2) 100%); }
+    .tier-table tr.top-tier td { background: linear-gradient(90deg, rgba(205,68,25,.1) 0%, var(--dark-2) 100%); }
     .tier-name { font-weight: 800; color: var(--white); font-size: 1rem; }
     .tier-vol { color: var(--light-gray); }
     .tier-discount { color: var(--orange); font-weight: 800; font-size: 1.05rem; }
     .tier-margin { color: var(--green); font-weight: 700; }
     .tier-badge { display: inline-block; font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; background: rgba(205,68,25,.2); border: 1px solid rgba(205,68,25,.4); color: var(--orange); padding: 3px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.07); }
+    .faq-item { background: var(--dark-2); border-bottom: 1px solid rgba(255,255,255,.05); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; color: var(--white); font-family: 'Inter', sans-serif; font-size: .95rem; font-weight: 700; padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .faq-q:hover { color: var(--orange); }
+    .faq-q .faq-chevron { font-size: .85rem; color: var(--orange); transition: transform .2s; flex-shrink: 0; }
+    .faq-q.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a { display: none; padding: 0 24px 20px; font-size: .9rem; color: var(--light-gray); line-height: 1.7; }
+    .faq-a.open { display: block; }
 
     /* GUARANTEE */
     .guarantee { background: linear-gradient(135deg, rgba(205,68,25,.14) 0%, rgba(205,68,25,.04) 100%); border: 1px solid rgba(205,68,25,.4); border-radius: 16px; padding: 36px; text-align: center; }
@@ -104,6 +175,15 @@
     .guarantee-items { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 4px; }
     .guarantee-item { font-size: .82rem; font-weight: 700; color: var(--off-white); display: flex; align-items: center; gap: 6px; }
 
+    /* WHAT'S INCLUDED */
+    .included-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 560px) { .included-grid { grid-template-columns: 1fr; } }
+    .included-card { background: var(--dark-2); border: 1px solid rgba(255,255,255,.07); border-radius: 12px; padding: 18px 20px; }
+    .included-card-title { font-weight: 800; font-size: .9rem; color: var(--white); margin-bottom: 10px; }
+    .included-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .included-list li { font-size: .84rem; color: var(--light-gray); display: flex; align-items: flex-start; gap: 8px; }
+    .included-list li::before { content: '✓'; color: var(--green); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+
     /* CTA */
     .cta-block { text-align: center; padding: 72px 24px; background: var(--dark-2); border-top: 1px solid rgba(255,255,255,.06); }
     .cta-block h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4.5vw, 44px); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
@@ -111,27 +191,31 @@
     .cta-block p { color: var(--light-gray); font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 32px; }
     .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--orange); color: #fff; font-weight: 900; font-size: 1.05rem; padding: 18px 40px; border-radius: 8px; text-decoration: none; letter-spacing: -.01em; transition: background .15s, transform .12s; }
     .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
-    .btn-call { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--white); font-weight: 700; font-size: .95rem; padding: 18px 32px; border-radius: 8px; text-decoration: none; border: 1.5px solid rgba(255,255,255,.2); transition: border-color .15s; margin-left: 12px; }
-    .btn-call:hover { border-color: #fff; }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--white); font-weight: 700; font-size: .95rem; padding: 18px 32px; border-radius: 8px; text-decoration: none; border: 1.5px solid rgba(255,255,255,.2); transition: border-color .15s; margin-left: 12px; }
+    .btn-secondary:hover { border-color: #fff; }
     .cta-note { margin-top: 20px; font-size: .85rem; color: var(--gray); }
+    @media (max-width: 640px) { .btn-secondary { margin-left: 0; margin-top: 12px; display: flex; width: fit-content; margin: 12px auto 0; } }
 
     /* FOOTER */
     footer { text-align: center; padding: 28px 24px; border-top: 1px solid rgba(255,255,255,.07); font-size: .82rem; color: var(--gray); }
     footer a { color: var(--orange); text-decoration: none; font-weight: 600; }
 
     @media (max-width: 640px) {
-      .btn-call { margin-left: 0; margin-top: 12px; }
       .price-row { flex-direction: column; align-items: flex-start; }
       .price-row-right { text-align: left; }
+      .billing-flow { gap: 20px; }
+      .flow-step::after { display: none; }
     }
+
+    .section-divider { border: none; border-top: 1px solid rgba(255,255,255,.06); }
+    .dark-section { background: var(--dark-2); border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); }
   </style>
 </head>
 <body>
 
 <header class="site-nav">
   <a href="/" class="site-nav-logo">
-    <img src="/logo.png" alt="Absolute ADAS" style="height:36px;width:auto;display:block;" />
-    <span class="site-nav-text">ABSOLUTE ADAS</span>
+    <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:36px;width:auto;display:block;" />
   </a>
   <nav class="site-nav-links">
     <a href="/">Home</a>
@@ -146,262 +230,478 @@
 <section class="hero">
   <p class="hero-eyebrow">Mobile ADAS Calibration · Western Washington</p>
   <h1>Transparent Pricing.<br><em>No Surprises. Ever.</em></h1>
-  <p class="hero-sub">List price is what your shop bills insurance. Partner price is what you pay us. The difference is your margin — on every single job.</p>
-  <div class="badge-row">
-    <span class="badge">⭐ State Farm Preferred Vendor</span>
-    <span class="badge">🛡️ Allstate Preferred Vendor</span>
-    <span class="badge">📋 OEM Docs Every Job</span>
-    <span class="badge">🚐 We Come to Your Shop</span>
+  <p class="hero-sub">We work with every major carrier. We know every pricing model. Here's exactly what things cost — whoever you are.</p>
+
+  <div class="carrier-badges" style="margin-bottom:28px;">
+    <span class="carrier-badge sf">⭐ State Farm Preferred</span>
+    <span class="carrier-badge al">🛡️ Allstate Preferred</span>
+    <span class="carrier-badge usaa">🏅 USAA Preferred</span>
+    <span class="carrier-badge geico">✅ GEICO Preferred</span>
   </div>
-  <p class="hero-note"><strong>List prices are insurance-approved.</strong> Every price below is what State Farm, Allstate, and all major carriers recognize as the standard rate. You bill at list. You pay us less. The gap is yours.</p>
+
+  <div class="audience-tabs">
+    <a href="#consumer" class="audience-tab">💳 Paying Out of Pocket</a>
+    <a href="#insurance" class="audience-tab">📋 Going Through Insurance</a>
+    <a href="#shops" class="audience-tab">🏪 I'm a Body Shop</a>
+  </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<div class="how-band">
-  <div class="how-band-inner">
-    <div class="how-step">
-      <div class="how-num">1</div>
-      <p><strong>You bill the shop or insurance</strong> at the list price below — the same rate carriers already approve.</p>
-    </div>
-    <div class="how-step">
-      <div class="how-num">2</div>
-      <p><strong>You pay Absolute ADAS</strong> the partner price (15–25% off list, based on volume). That's it.</p>
-    </div>
-    <div class="how-step">
-      <div class="how-num">3</div>
-      <p><strong>Your margin shows up automatically</strong> on every invoice. No paperwork. No waiting. No chasing.</p>
+<!-- WHY PRICES VARY -->
+<div class="why-band">
+  <div class="why-band-inner">
+    <div class="why-label">Why prices vary</div>
+    <div class="why-pills">
+      <span class="why-pill"><strong>Static vs. dynamic</strong> — different procedures, different time</span>
+      <span class="why-pill"><strong>Make &amp; model</strong> — some OEMs require specialized targets</span>
+      <span class="why-pill"><strong>Number of systems</strong> — multiple calibrations on one visit</span>
+      <span class="why-pill"><strong>Who's paying</strong> — consumer pay, insurance, and partner rates differ</span>
     </div>
   </div>
 </div>
 
-<!-- STATIC CALIBRATIONS -->
-<div class="section" style="padding-bottom: 0;">
-  <p class="section-label">Static Calibrations</p>
-  <h2 class="section-title">In-Bay. Targets Set. <em>Done Right.</em></h2>
-  <p class="section-sub">Static calibrations are performed in your bay. We bring the targets, the scan tools, and the OEM documentation. You do nothing except give us a flat floor.</p>
-
-  <div class="price-grid">
-    <div class="price-card featured">
-      <div class="card-name">Front Camera (Static)</div>
-      <div class="card-desc">Forward-facing camera calibration with target setup. Most common windshield R&I.</div>
-      <div class="card-examples">Toyota, Honda, Subaru, Nissan</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$450</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
-    </div>
-
-    <div class="price-card featured">
-      <div class="card-name">Radar (Static)</div>
-      <div class="card-desc">Front radar alignment for ACC and AEB. Required after most bumper R&R.</div>
-      <div class="card-examples">Most OEMs after bumper R&R</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$450</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
-    </div>
-
-    <div class="price-card">
-      <div class="card-name">360° Surround View</div>
-      <div class="card-desc">Multi-camera calibration with full target mat setup. Highest-revenue single procedure.</div>
-      <div class="card-examples">Hyundai, Kia, Toyota, BMW</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$650</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $552.50 (15% off)</div>
-    </div>
-
-    <div class="price-card">
-      <div class="card-name">Blind Spot Monitor</div>
-      <div class="card-desc">Rear and side radar calibration. Required after rear bumper or quarter panel work.</div>
-      <div class="card-examples">All major OEMs</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$375</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $318.75 (15% off)</div>
-    </div>
-
-    <div class="price-card">
-      <div class="card-name">Lane Departure / LKA</div>
-      <div class="card-desc">Lane keep assist camera calibration. Often triggered alongside front camera.</div>
-      <div class="card-examples">Most late-model vehicles</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$375</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $318.75 (15% off)</div>
-    </div>
-
-    <div class="price-card">
-      <div class="card-name">Steering Angle Sensor</div>
-      <div class="card-desc">SAS reset and alignment verification. Required after any alignment or suspension work.</div>
-      <div class="card-examples">All OEMs after alignment</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$175</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $148.75 (15% off)</div>
+<!-- DISCLAIMER BANNER -->
+<div style="background:rgba(205,68,25,.06);border-top:1px solid rgba(205,68,25,.18);border-bottom:1px solid rgba(205,68,25,.18);padding:16px 24px;">
+  <div style="max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;gap:14px;">
+    <span style="font-size:18px;flex-shrink:0;line-height:1.4;">⚠️</span>
+    <div>
+      <p style="font-size:.82rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Pricing Disclaimer</p>
+      <p style="font-size:.84rem;color:var(--light-gray);line-height:1.65;">Prices shown are standard estimates and are <strong style="color:var(--white);">subject to change</strong>. ADAS calibration is highly complex — final pricing depends on vehicle make, model, year, system configuration, and the specific OEM procedure required. Some vehicles require multiple procedures, proprietary software, or extended diagnostic time that affects cost. <strong style="color:var(--white);">Call us before your appointment and we'll give you a firm quote in 60 seconds.</strong></p>
     </div>
   </div>
 </div>
 
-<!-- DYNAMIC CALIBRATIONS -->
-<div class="section" style="padding-bottom: 0; padding-top: 48px;">
-  <p class="section-label">Dynamic Calibrations</p>
-  <h2 class="section-title">Road-Drive Procedures. <em>OEM Spec.</em></h2>
-  <p class="section-sub">Some OEMs require a calibration road drive at specified speeds and conditions. We handle the drive, document it, and hand you the cert.</p>
+<!-- ======== SECTION A: CONSUMER / OUT OF POCKET ======== -->
+<div id="consumer" style="scroll-margin-top:70px;">
+  <div class="section" style="padding-bottom:48px;">
+    <div class="audience-header">
+      <div class="audience-icon consumer">💳</div>
+      <div>
+        <p class="section-label">Out of Pocket</p>
+      </div>
+    </div>
+    <h2 class="section-title">Paying Yourself?<br><em>Flat Rates. No Guessing.</em></h2>
+    <p class="section-sub">No insurance. No body shop. Just you and us. These are our straight customer-pay prices — what you'll pay, full stop.</p>
 
-  <div class="price-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
-    <div class="price-card">
-      <div class="card-name">Front Camera (Dynamic)</div>
-      <div class="card-desc">Road-drive calibration at OEM-specified speed and conditions.</div>
-      <div class="card-examples">Honda, Mazda, some Toyota</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$375</span>
-        <span class="card-list-label">List / Insurance Rate</span>
+    <div class="consumer-grid">
+      <div class="consumer-card">
+        <div class="consumer-card-icon">🚗</div>
+        <div class="consumer-card-name">Dynamic Calibration</div>
+        <div class="consumer-card-desc">Road-drive procedure. Camera calibrates while the vehicle is moving. No targets needed.</div>
+        <div class="consumer-price">$200</div>
+        <div class="consumer-price-label">Flat rate</div>
       </div>
-      <div class="card-partner">✓ Partner price from $318.75 (15% off)</div>
+      <div class="consumer-card">
+        <div class="consumer-card-icon">🎯</div>
+        <div class="consumer-card-name">Static Calibration</div>
+        <div class="consumer-card-desc">Target setup in your bay or parking lot. One calibration. OEM procedure, documented.</div>
+        <div class="consumer-price">$350</div>
+        <div class="consumer-price-label">Flat rate</div>
+      </div>
+      <div class="consumer-card featured">
+        <div class="consumer-card-icon">🔧</div>
+        <div class="consumer-card-name">Multiple Systems</div>
+        <div class="consumer-card-desc">Car needs more than one calibration? Camera, radar, blind spot — all in one visit.</div>
+        <div class="consumer-price">$700</div>
+        <div class="consumer-price-label">All-in max · any number of systems</div>
+        <div class="consumer-note">✓ Never pay more than $700 out of pocket</div>
+      </div>
     </div>
-    <div class="price-card">
-      <div class="card-name">Radar (Dynamic)</div>
-      <div class="card-desc">Drive-cycle radar verification per OEM procedure.</div>
-      <div class="card-examples">Various OEMs</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$375</span>
-        <span class="card-list-label">List / Insurance Rate</span>
+
+    <div style="background:var(--dark-2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:24px 28px;">
+      <div style="font-size:.82rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">Pre-Scan &amp; Post-Scan</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;">
+          <div style="font-weight:800;color:var(--white);margin-bottom:4px;">Pre-Scan</div>
+          <div style="font-size:.82rem;color:var(--gray);margin-bottom:8px;">Full DTC scan before repair — required by most OEMs</div>
+          <div style="font-size:1.3rem;font-weight:900;color:var(--white);">$47.50</div>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <div style="font-weight:800;color:var(--white);margin-bottom:4px;">Post-Scan</div>
+          <div style="font-size:.82rem;color:var(--gray);margin-bottom:8px;">Closes the repair loop — required by insurance</div>
+          <div style="font-size:1.3rem;font-weight:900;color:var(--white);">$47.50</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:rgba(205,68,25,.07);border:1px solid rgba(205,68,25,.2);border-radius:10px;padding:14px;">
+          <div style="font-weight:800;color:var(--white);margin-bottom:4px;">Pre + Post Bundle <span style="font-size:.65rem;background:rgba(205,68,25,.2);border:1px solid rgba(205,68,25,.35);color:var(--orange);padding:2px 7px;border-radius:4px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-left:4px;">Best Value</span></div>
+          <div style="font-size:.82rem;color:var(--gray);margin-bottom:8px;">Both scans, one invoice, insurance-grade file</div>
+          <div style="font-size:1.3rem;font-weight:900;color:var(--white);">$85</div>
+        </div>
       </div>
-      <div class="card-partner">✓ Partner price from $318.75 (15% off)</div>
     </div>
-    <div class="price-card featured">
-      <div class="card-name">Static + Dynamic Combo</div>
-      <div class="card-desc">Both procedures in one visit when OEM requires it. Common on European makes.</div>
-      <div class="card-examples">European vehicles, some luxury OEMs</div>
-      <div class="card-price-row">
-        <span class="card-list-price">$650</span>
-        <span class="card-list-label">List / Insurance Rate</span>
-      </div>
-      <div class="card-partner">✓ Partner price from $552.50 (15% off)</div>
+
+    <div style="margin-top:20px;padding:16px 20px;background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.15);border-radius:10px;font-size:.85rem;color:var(--light-gray);line-height:1.6;">
+      <strong style="color:#4ade80;">No hidden fees.</strong> No trip charge in the Puget Sound metro. No shop supply fees. No documentation fees. What you see is what you pay.
     </div>
   </div>
 </div>
 
-<!-- DIAGNOSTICS + ADD-ONS -->
-<div class="section" style="padding-top: 48px;">
-  <p class="section-label">Diagnostics, Programming & Add-Ons</p>
-  <h2 class="section-title">Everything Else <em>On the RO.</em></h2>
+<hr class="section-divider">
 
-  <div class="price-list">
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">Pre-Scan</div>
-        <div class="price-row-desc">Full vehicle scan with DTC report before repair. Required by most OEMs.</div>
-      </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$95</div>
-        <div class="price-row-partner">Partner from $80.75</div>
+<!-- ======== SECTION B: INSURANCE ======== -->
+<div id="insurance" style="scroll-margin-top:70px;">
+  <div class="section" style="padding-bottom:48px;">
+    <div class="audience-header">
+      <div class="audience-icon insurance">📋</div>
+      <div>
+        <p class="section-label">Going Through Insurance</p>
       </div>
     </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">Post-Scan</div>
-        <div class="price-row-desc">Full vehicle scan after repair completion. Closes the loop for insurance.</div>
+    <h2 class="section-title">If You Have Insurance,<br><em>You're Covered.</em></h2>
+    <p class="section-sub">We're a Preferred Vendor with every major carrier. We know every pricing model — Level 1 through Level 3C, dynamic, static, targeted, non-targeted. Your calibration will get approved and paid.</p>
+
+    <div class="carrier-grid">
+      <div class="carrier-card sf-card">
+        <div class="carrier-dot sf"></div>
+        <div>
+          <div class="carrier-card-name">State Farm</div>
+          <div class="carrier-card-status">✓ Preferred Vendor · 20+ Years</div>
+          <div class="carrier-card-note">All ADAS calibration levels billed at approved rates</div>
+        </div>
       </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$95</div>
-        <div class="price-row-partner">Partner from $80.75</div>
+      <div class="carrier-card al-card">
+        <div class="carrier-dot al"></div>
+        <div>
+          <div class="carrier-card-name">Allstate</div>
+          <div class="carrier-card-status">✓ Preferred Vendor</div>
+          <div class="carrier-card-note">All calibration levels billed at approved rates</div>
+        </div>
       </div>
-    </div>
-    <div class="price-row" style="background: rgba(205,68,25,.06);">
-      <div class="price-row-info">
-        <div class="price-row-name">Pre + Post Bundle <span style="font-size:.72rem;font-weight:800;color:var(--orange);background:rgba(205,68,25,.15);border:1px solid rgba(205,68,25,.3);padding:2px 8px;border-radius:4px;margin-left:6px;">Best Value</span></div>
-        <div class="price-row-desc">Both scans bundled. Insurance-grade documentation. Recommended on every repair.</div>
+      <div class="carrier-card usaa-card">
+        <div class="carrier-dot usaa"></div>
+        <div>
+          <div class="carrier-card-name">USAA</div>
+          <div class="carrier-card-status">✓ Preferred Vendor</div>
+          <div class="carrier-card-note">Military members covered, full documentation included</div>
+        </div>
       </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$175</div>
-        <div class="price-row-partner">Partner from $148.75</div>
-      </div>
-    </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">Module Programming</div>
-        <div class="price-row-desc">OEM software flash for replaced modules. Billed per OEM procedure rate.</div>
-      </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$225</div>
-        <div class="price-row-partner">Partner from $191.25</div>
-      </div>
-    </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">Diagnostic Time</div>
-        <div class="price-row-desc">Advanced electronics troubleshooting. Billed per hour.</div>
-      </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$150/hr</div>
-        <div class="price-row-partner">Partner from $127.50/hr</div>
+      <div class="carrier-card geico-card">
+        <div class="carrier-dot geico"></div>
+        <div>
+          <div class="carrier-card-name">GEICO</div>
+          <div class="carrier-card-status">✓ Preferred Vendor</div>
+          <div class="carrier-card-note">All calibration procedures billed at approved rates</div>
+        </div>
       </div>
     </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">🚐 Mobile Trip Fee — Puget Sound Metro</div>
-        <div class="price-row-desc">Lake Stevens, Everett, Seattle, Bellevue, Kirkland + surrounding area</div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;margin-bottom:20px;">How Your Insurance Calibration Works</h3>
+    <div class="billing-flow">
+      <div class="flow-step">
+        <div class="flow-icon">🔧</div>
+        <div class="flow-title">We Do the Work</div>
+        <div class="flow-desc">Your body shop calls us in. We calibrate, document, and close out the job with full OEM paperwork.</div>
       </div>
-      <div class="price-row-right">
-        <div class="price-row-free">Included</div>
+      <div class="flow-step">
+        <div class="flow-icon">📄</div>
+        <div class="flow-title">Shop Bills Your Carrier</div>
+        <div class="flow-desc">Your body shop submits the calibration line item to your insurer at the carrier-approved rate.</div>
       </div>
-    </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">Mobile Trip Fee — Extended Area (25–50 mi)</div>
-        <div class="price-row-desc">Tacoma, Lynnwood, Bremerton, Olympia and surrounding</div>
+      <div class="flow-step">
+        <div class="flow-icon">✅</div>
+        <div class="flow-title">Carrier Pays</div>
+        <div class="flow-desc">Because we're a Preferred Vendor, the line item gets approved. No fight, no denial, no back and forth.</div>
       </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$50</div>
-        <div class="price-row-partner">Partner from $42.50</div>
-      </div>
-    </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">After-Hours / Weekend</div>
-        <div class="price-row-desc">Same-day urgency or weekend booking. By request.</div>
-      </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$100</div>
-        <div class="price-row-partner">Partner from $85</div>
+      <div class="flow-step">
+        <div class="flow-icon">💰</div>
+        <div class="flow-title">You Owe Nothing</div>
+        <div class="flow-desc">The calibration is covered. You don't write a check to us. Your body shop handles everything.</div>
       </div>
     </div>
-    <div class="price-row">
-      <div class="price-row-info">
-        <div class="price-row-name">Documentation Package</div>
-        <div class="price-row-desc">OEM position statement + pre/post scan + calibration cert. Insurance-grade file.</div>
+
+    <div style="background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.15);border-radius:12px;padding:20px 24px;font-size:.9rem;color:var(--light-gray);line-height:1.7;">
+      <strong style="color:#4ade80;">The only thing you need to do:</strong> tell your body shop you want Absolute ADAS for the calibration. We handle everything from there. <a href="tel:+18443492327" style="color:var(--orange);font-weight:700;text-decoration:none;">1-844-FIX-ADAS</a> if you want to call us directly.
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ======== SECTION C: BODY SHOP PARTNERS ======== -->
+<div id="shops" style="scroll-margin-top:70px;">
+  <div class="section" style="padding-bottom:0;">
+    <div class="audience-header">
+      <div class="audience-icon shop">🏪</div>
+      <div>
+        <p class="section-label">Body Shop Partners</p>
       </div>
-      <div class="price-row-right">
-        <div class="price-row-list">$50</div>
-        <div class="price-row-partner">Partner from $42.50</div>
+    </div>
+    <h2 class="section-title">Your Margin. <em>On Every Single Job.</em></h2>
+    <p class="section-sub">We price so your shop makes money — on calibrations, on scans, on everything. The more you use us, the more you keep.</p>
+
+    <!-- LOSS LEADER: SCANS -->
+    <div class="loss-leader">
+      <div class="loss-leader-tag">⭐ The Loss Leader — Pre/Post Scans</div>
+      <h3>You Make Money on Every Scan.</h3>
+      <p>We charge you the State Farm approved rate for pre-scans and post-scans. Bill your carrier at their rate. For State Farm jobs, it's a wash — but for GEICO, Allstate, USAA, or customer pay? The spread is yours. Every time.</p>
+      <div class="loss-leader-prices">
+        <div class="loss-price-pill">
+          <div class="lp-name">Pre-Scan</div>
+          <div class="lp-price">$47.50</div>
+          <div class="lp-note">State Farm approved rate</div>
+        </div>
+        <div class="loss-price-pill">
+          <div class="lp-name">Post-Scan</div>
+          <div class="lp-price">$47.50</div>
+          <div class="lp-note">State Farm approved rate</div>
+        </div>
+        <div class="loss-price-pill">
+          <div class="lp-name">Bundle</div>
+          <div class="lp-price">$85</div>
+          <div class="lp-note">Best value per RO</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:14px 16px;display:flex;align-items:center;">
+          <div style="font-size:.85rem;color:var(--light-gray);line-height:1.6;">
+            <strong style="color:#f59e0b;">Bill any carrier.</strong> Keep the spread. Scans don't count toward your calibration volume tier — but they add up fast.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW BILLING WORKS FOR SHOPS -->
+    <div class="why-band" style="margin:0 -24px 36px;padding:24px;">
+      <div class="why-band-inner">
+        <div class="why-label">How it works</div>
+        <div class="why-pills">
+          <span class="why-pill"><strong>You bill insurance</strong> at list price</span>
+          <span class="why-pill"><strong>You pay us</strong> 15–25% less than list</span>
+          <span class="why-pill"><strong>The gap is your margin</strong> — every invoice, automatic</span>
+          <span class="why-pill"><strong>We handle</strong> all OEM documentation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATIC CALIBRATIONS -->
+  <div class="section" style="padding-top:0;padding-bottom:0;">
+    <p class="section-label">Static Calibrations</p>
+    <h2 class="section-title">In-Bay. Targets Set. <em>Done Right.</em></h2>
+    <p class="section-sub">We bring the targets, the scan tools, and the OEM documentation. You give us a flat floor. That's the whole deal.</p>
+    <div class="price-grid">
+      <div class="price-card featured">
+        <div class="card-name">Front Camera (Static) <span style="font-size:.6rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.18);border:1px solid rgba(205,68,25,.35);color:var(--orange);padding:2px 7px;border-radius:4px;margin-left:4px;vertical-align:middle;">Most Common</span></div>
+        <div class="card-desc">Forward-facing camera calibration with target setup. Most common windshield R&amp;I procedure.</div>
+        <div class="card-examples">Toyota, Honda, Subaru, Nissan</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card featured">
+        <div class="card-name">Radar (Static) <span style="font-size:.6rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.18);border:1px solid rgba(205,68,25,.35);color:var(--orange);padding:2px 7px;border-radius:4px;margin-left:4px;vertical-align:middle;">Most Common</span></div>
+        <div class="card-desc">Front radar alignment for ACC and AEB. Required after most bumper R&amp;R.</div>
+        <div class="card-examples">Most OEMs after bumper R&amp;R</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">360° Surround View</div>
+        <div class="card-desc">Multi-camera calibration with full target mat setup.</div>
+        <div class="card-examples">Hyundai, Kia, Toyota, BMW</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Blind Spot Monitor <span style="font-size:.6rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.18);border:1px solid rgba(205,68,25,.35);color:var(--orange);padding:2px 7px;border-radius:4px;margin-left:4px;vertical-align:middle;">Most Common</span></div>
+        <div class="card-desc">Rear and side radar calibration. Required after rear bumper or quarter panel work.</div>
+        <div class="card-examples">All major OEMs</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Lane Departure / LKA</div>
+        <div class="card-desc">Lane keep assist camera calibration. Often triggered alongside front camera.</div>
+        <div class="card-examples">Most late-model vehicles</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Night Vision Calibration</div>
+        <div class="card-desc">Infrared night vision camera calibration. Required after front-end or grille work on equipped vehicles.</div>
+        <div class="card-examples">Select BMW, Mercedes, Audi, Cadillac</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Thermal Imaging Calibration</div>
+        <div class="card-desc">Thermal camera calibration for pedestrian and object detection systems.</div>
+        <div class="card-examples">Select luxury &amp; commercial vehicles</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$450</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $382.50 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Steering Angle Sensor</div>
+        <div class="card-desc">SAS reset and alignment verification. Required after any alignment or suspension work.</div>
+        <div class="card-examples">All OEMs after alignment</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$185</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $157.25 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Seat Weight Sensor</div>
+        <div class="card-desc">Seat occupancy sensor calibration. Required after seat R&amp;R or airbag system work.</div>
+        <div class="card-examples">All major OEMs</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$185</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $157.25 (15% off)</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:.78rem;color:var(--gray);line-height:1.6;margin-top:16px;padding:0 4px;">* Prices shown are standard estimates for common procedures. Complex vehicles, uncommon system configurations, or procedures requiring proprietary OEM software may affect final pricing. <a href="tel:+18443492327" style="color:var(--orange);text-decoration:none;font-weight:700;">Call for a firm quote.</a></p>
+
+  <!-- DYNAMIC CALIBRATIONS -->
+  <div class="section" style="padding-bottom:0;padding-top:48px;">
+    <p class="section-label">Dynamic Calibrations</p>
+    <h2 class="section-title">Road-Drive Procedures. <em>OEM Spec.</em></h2>
+    <p class="section-sub">Some OEMs require a calibration road drive at specified speeds and conditions. We handle the drive, document it, and hand you the cert.</p>
+    <div class="price-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+      <div class="price-card">
+        <div class="card-name">Front Camera (Dynamic)</div>
+        <div class="card-desc">Road-drive calibration at OEM-specified speed and conditions.</div>
+        <div class="card-examples">Honda, Mazda, some Toyota</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$375</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $318.75 (15% off)</div>
+      </div>
+      <div class="price-card">
+        <div class="card-name">Radar (Dynamic)</div>
+        <div class="card-desc">Drive-cycle radar verification per OEM procedure.</div>
+        <div class="card-examples">Various OEMs</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$375</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $318.75 (15% off)</div>
+      </div>
+      <div class="price-card featured">
+        <div class="card-name">Static + Dynamic Combo</div>
+        <div class="card-desc">Both procedures in one visit when OEM requires it.</div>
+        <div class="card-examples">Subaru, European vehicles, some luxury OEMs</div>
+        <div class="card-price-row">
+          <span class="card-list-price">$650</span>
+          <span class="card-list-label">List / Insurance Rate</span>
+        </div>
+        <div class="card-partner">✓ Partner price from $552.50 (15% off)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST-COLLISION SAFETY INSPECTION -->
+  <div class="section" style="padding-top:48px;padding-bottom:0;">
+    <p class="section-label">Post-Collision Safety Inspection</p>
+    <h2 class="section-title">After the Repair. <em>Before It Drives.</em></h2>
+    <p class="section-sub">A structured safety inspection of all ADAS and electronic safety systems after collision repair. Three levels based on vehicle complexity and findings.</p>
+    <div class="price-list">
+      <div class="price-row">
+        <div class="price-row-info">
+          <div class="price-row-name">Level 1 — Standard Inspection</div>
+          <div class="price-row-desc">30-minute labor inspection of primary safety systems. Visual verification, basic scan, documentation. Additional levels available for complex vehicles — call for details.</div>
+        </div>
+        <div class="price-row-right">
+          <div class="price-row-list">$99</div>
+          <div class="price-row-partner">Partner from $84.15</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGNOSTICS + ADD-ONS -->
+  <div class="section" style="padding-top:48px;">
+    <p class="section-label">Diagnostics &amp; Add-Ons</p>
+    <h2 class="section-title">Everything Else <em>On the RO.</em></h2>
+    <div class="price-list">
+      <div class="price-row">
+        <div class="price-row-info">
+          <div class="price-row-name">Module Programming</div>
+          <div class="price-row-desc">OEM software flash for replaced modules. Billed per OEM procedure rate.</div>
+        </div>
+        <div class="price-row-right">
+          <div class="price-row-list">from $250</div>
+          <div class="price-row-partner">Partner from $212.50</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-info">
+          <div class="price-row-name">Diagnostic Time</div>
+          <div class="price-row-desc">Advanced electronics troubleshooting, billed per hour.</div>
+        </div>
+        <div class="price-row-right">
+          <div class="price-row-list">$200/hr</div>
+          <div class="price-row-partner">Partner from $170/hr</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-info">
+          <div class="price-row-name">🚐 Mobile Trip Fee — Puget Sound Metro</div>
+          <div class="price-row-desc">Lake Stevens, Everett, Seattle, Bellevue, Kirkland + surrounding</div>
+        </div>
+        <div class="price-row-right">
+          <div class="price-row-free">Included</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-info">
+          <div class="price-row-name">Mobile Trip Fee — Extended (25–50 mi)</div>
+          <div class="price-row-desc">Tacoma, Lynnwood, Bremerton, Olympia and surrounding</div>
+        </div>
+        <div class="price-row-right">
+          <div class="price-row-list">$50</div>
+          <div class="price-row-partner">Partner from $42.50</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-info">
+          <div class="price-row-name">After-Hours / Weekend</div>
+          <div class="price-row-desc">Same-day urgency or weekend booking. By request.</div>
+        </div>
+        <div class="price-row-right">
+          <div class="price-row-list">$100</div>
+          <div class="price-row-partner">Partner from $85</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- VOLUME TIERS -->
-<div style="background: var(--dark-2); border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); padding: 64px 24px;">
-  <div class="section" style="padding: 0;">
+<div class="dark-section" style="padding:64px 24px;">
+  <div class="section" style="padding:0;">
     <p class="section-label">Volume Tiers</p>
     <h2 class="section-title">More Volume. <em>Bigger Margin.</em></h2>
-    <p class="section-sub">The more calibrations your shop runs with us, the more you keep on each one. Tiers upgrade automatically — no paperwork, no asking.</p>
+    <p class="section-sub">The more your shop runs with us, the more you keep on each job. Tiers upgrade automatically — no paperwork, no asking.</p>
 
-    <div style="overflow-x: auto;">
+    <div style="overflow-x:auto;">
       <table class="tier-table">
         <thead>
           <tr>
             <th>Tier</th>
             <th>Monthly Volume</th>
             <th>Your Discount</th>
-            <th>Your Margin per $450 Job</th>
+            <th>Margin per $450 Job</th>
             <th>Sample Annual Margin</th>
           </tr>
         </thead>
@@ -411,21 +711,21 @@
             <td class="tier-vol">1–14 calibrations/month</td>
             <td class="tier-discount">15% off list</td>
             <td class="tier-margin">$67.50 per job</td>
-            <td class="tier-margin">$8,100 / year</td>
+            <td class="tier-margin">~$8,100 / year</td>
           </tr>
           <tr>
             <td><span class="tier-name">Volume</span></td>
             <td class="tier-vol">15–29 calibrations/month</td>
             <td class="tier-discount">20% off list</td>
             <td class="tier-margin">$90.00 per job</td>
-            <td class="tier-margin">$21,600 / year</td>
+            <td class="tier-margin">~$21,600 / year</td>
           </tr>
-          <tr class="active">
-            <td><span class="tier-name">Preferred Partner<span class="tier-badge">Top Tier</span></span></td>
+          <tr class="top-tier">
+            <td><span class="tier-name">Preferred Partner <span class="tier-badge">Top Tier</span></span></td>
             <td class="tier-vol">30+ calibrations/month</td>
             <td class="tier-discount">25% off list</td>
             <td class="tier-margin">$112.50 per job</td>
-            <td class="tier-margin">$47,250 / year</td>
+            <td class="tier-margin">~$47,250 / year</td>
           </tr>
         </tbody>
       </table>
@@ -434,16 +734,16 @@
     <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:24px;">
       <div style="flex:1;min-width:260px;background:var(--dark);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px 22px;">
         <p style="font-size:.82rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">How Tiers Work</p>
-        <ul style="list-style:none;font-size:.88rem;color:var(--light-gray);line-height:2;">
+        <ul style="list-style:none;font-size:.88rem;color:var(--light-gray);line-height:2.1;">
           <li>✓ Volume tracked on rolling 90-day average</li>
           <li>✓ Tier upgrades apply automatically next quarter</li>
           <li>✓ All calibration types count toward volume</li>
-          <li>✓ Pre/post-only jobs do not count toward tier</li>
+          <li>✓ Scans do not count toward tier volume</li>
         </ul>
       </div>
       <div style="flex:1;min-width:260px;background:var(--dark);border:1px solid rgba(205,68,25,.3);border-radius:12px;padding:20px 22px;">
         <p style="font-size:.82rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Preferred Partner Perks</p>
-        <ul style="list-style:none;font-size:.88rem;color:var(--light-gray);line-height:2;">
+        <ul style="list-style:none;font-size:.88rem;color:var(--light-gray);line-height:2.1;">
           <li>⭐ 25% off every invoice — automatically</li>
           <li>⭐ Same-day dispatch priority</li>
           <li>⭐ Free Documentation Package every job</li>
@@ -454,19 +754,97 @@
   </div>
 </div>
 
+<!-- WHAT'S INCLUDED + NO HIDDEN FEES -->
+<div class="section" style="padding-bottom:48px;">
+  <p class="section-label">What's Included</p>
+  <h2 class="section-title">Everything You Need. <em>Nothing You Don't.</em></h2>
+  <p class="section-sub">Every job comes with the documentation your insurance adjuster needs. No upsells, no surprises.</p>
+
+  <div class="included-grid">
+    <div class="included-card">
+      <div class="included-card-title">Every Calibration Includes</div>
+      <ul class="included-list">
+        <li>OEM position statement citation</li>
+        <li>Pre-calibration vehicle scan</li>
+        <li>Post-calibration verification scan</li>
+        <li>Calibration certificate with tech signature</li>
+        <li>Insurance-grade documentation package</li>
+        <li>Mobile service to your bay</li>
+      </ul>
+    </div>
+    <div class="included-card">
+      <div class="included-card-title">Never Charged</div>
+      <ul class="included-list">
+        <li>Trip fees within Puget Sound metro</li>
+        <li>Shop supply fees</li>
+        <li>Documentation or admin fees</li>
+        <li>Calibration "attempt" fees if we can't complete</li>
+        <li>Hidden per-system surcharges</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <!-- GUARANTEE -->
+<div class="dark-section" style="padding:64px 24px;">
+  <div class="section" style="padding:0;">
+    <div class="guarantee">
+      <p style="font-size:.82rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;">Our Guarantee</p>
+      <h3>Every Calibration We Recommend,<br>Insurance Pays For.</h3>
+      <p>If we say a calibration is required and insurance won't cover it, <strong style="color:#fff;">you owe us nothing.</strong> We don't recommend work unless it's OEM-required, insurance-billable, and documented to spec. That's not marketing — it's how we operate on every single job.</p>
+      <div class="guarantee-items">
+        <span class="guarantee-item">✅ OEM citation on every job</span>
+        <span class="guarantee-item">✅ State Farm Preferred Vendor</span>
+        <span class="guarantee-item">✅ Allstate Preferred Vendor</span>
+        <span class="guarantee-item">✅ USAA Preferred Vendor</span>
+        <span class="guarantee-item">✅ GEICO Preferred Vendor</span>
+        <span class="guarantee-item">✅ 50,000+ calibrations completed</span>
+        <span class="guarantee-item">✅ $1M liability insurance</span>
+        <span class="guarantee-item">✅ Zero missed appointments — ever</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
 <div class="section">
-  <div class="guarantee">
-    <p style="font-size:.82rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;">Our Guarantee</p>
-    <h3>Every Calibration We Recommend,<br>Insurance Pays For.</h3>
-    <p>If we tell you a calibration is required and insurance won't cover it, <strong style="color:#fff;">you owe us nothing.</strong> We don't recommend work unless it's OEM-required, insurance-billable, and documented. That's not a promise — it's how we've run the business for 29 years.</p>
-    <div class="guarantee-items">
-      <span class="guarantee-item">✅ OEM procedure citation on every job</span>
-      <span class="guarantee-item">✅ Pre-scan + post-scan included</span>
-      <span class="guarantee-item">✅ $1M liability insurance</span>
-      <span class="guarantee-item">✅ State Farm & Allstate Preferred Vendor</span>
-      <span class="guarantee-item">✅ 50,000+ calibrations completed</span>
-      <span class="guarantee-item">✅ Zero missed appointments — ever</span>
+  <p class="section-label">Questions</p>
+  <h2 class="section-title">Common Questions. <em>Straight Answers.</em></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Why does my insurance paperwork show a different dollar amount?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">Each carrier has their own approved rate schedule based on calibration type, vehicle make, and the number of systems on the job. The number on your insurance paperwork is what your carrier agreed to pay — and as a Preferred Vendor with State Farm, Allstate, USAA, and GEICO, we're already priced within their system. You don't need to worry about the specific rate — it gets paid.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I pay Absolute ADAS directly?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">If you're going through insurance: no. Your body shop handles the calibration line item and bills your carrier. You don't write a check to us. If you're paying out of pocket, you pay us directly at our flat customer-pay rates.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What if my car needs more than one calibration?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">If you're paying out of pocket: $700 is the most you'll ever pay, no matter how many systems need calibration. If you're going through insurance: each calibration is billed separately at the carrier-approved rate — more calibrations means more covered procedures, not more out-of-pocket cost for you.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How do I know the price before the job starts?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">Call us at 1-844-FIX-ADAS before the appointment. Tell us the make, model, year, and what work was done on the car. We'll give you a firm price on the spot — no surprises when we arrive.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        I'm a body shop — how do I get set up as a partner?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">Call 1-844-FIX-ADAS or email us. We confirm your service area, set up your account, and have pricing locked in within the day. Your first job gets you started at Standard tier (15% off). Volume tracking is automatic from there.</div>
     </div>
   </div>
 </div>
@@ -474,17 +852,30 @@
 <!-- CTA -->
 <div class="cta-block">
   <h2>Ready to Put This<br><em>On Your Next RO?</em></h2>
-  <p>Call us to set up your shop's sublet account. We'll confirm your service area, lock in your partner pricing, and have a tech at your bay — usually within 24 hours.</p>
+  <p>Call us to get set up. We'll confirm your service area, lock in your partner pricing, and have a tech at your bay — usually within 24 hours.</p>
   <div>
     <a href="tel:+18443492327" class="btn-primary">📞 Call 1-844-FIX-ADAS →</a>
-    <a href="mailto:mf@absoluteadas.com" class="btn-call">Email Us</a>
+    <a href="/services" class="btn-secondary">Learn How Sublet Works</a>
   </div>
-  <p class="cta-note">Or use the <a href="/audit" style="color:var(--orange);font-weight:700;text-decoration:none;">Free Audit Tool</a> to see exactly how much your shop is leaving on the table today.</p>
+  <p class="cta-note">In a bind? Let us know, we're here to help.</p>
+  <p class="cta-note" style="margin-top:8px;">State Farm · Allstate · USAA · GEICO Preferred Vendor · 50,000+ Calibrations Completed</p>
 </div>
 
 <footer>
-  Pricing by Mark Fowler · <a href="/">Absolute ADAS</a> · <a href="tel:+18443492327">1-844-FIX-ADAS</a> · <a href="/services">Sublet Services</a> · List prices are insurance-approved with State Farm, Allstate, and all major carriers. Updated May 2026.
+  Pricing by Mark Fowler · <a href="/">Absolute ADAS</a> · <a href="tel:+18443492327">1-844-FIX-ADAS</a> · <a href="/services">Sublet Services</a> · State Farm, Allstate, USAA &amp; GEICO Preferred Vendor. Updated June 2026.
 </footer>
 
+<script>
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-a.open').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.faq-q.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) {
+      answer.classList.add('open');
+      btn.classList.add('open');
+    }
+  }
+</script>
 </body>
 </html>
