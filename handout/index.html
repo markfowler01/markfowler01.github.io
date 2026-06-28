@@ -11,7 +11,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --orange: #CD4419; --dark: #0d0d0d; --mid: #444; --gray: #777; --border: #e4e4e4; }
 
-    body { font-family: 'Inter', sans-serif; background: #fff; color: var(--dark); font-size: 11px; line-height: 1.45; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: var(--dark); font-size: 11.5px; line-height: 1.45; }
 
     .page {
       width: 8.5in;
@@ -27,21 +27,21 @@
     .top-bar {
       background: var(--dark);
       color: #fff;
-      padding: 10px 0.45in;
+      padding: 10px 0.5in;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
     }
-    .top-bar-brand { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; letter-spacing: -0.02em; }
+    .top-bar-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; letter-spacing: -0.02em; }
     .top-bar-brand span { color: var(--orange); }
-    .top-bar-phone { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; color: var(--orange); }
-    .top-bar-web { font-size: 9px; color: #999; margin-top: 1px; letter-spacing: 0.04em; text-align: right; }
+    .top-bar-phone { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; color: var(--orange); }
+    .top-bar-web { font-size: 10px; color: #999; margin-top: 2px; letter-spacing: 0.04em; text-align: right; }
 
     /* CARRIER STRIPE */
     .orange-stripe {
       background: var(--orange);
-      padding: 5px 0.45in;
+      padding: 5px 0.5in;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,79 +49,80 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .stripe-badge { font-size: 8.5px; font-weight: 800; color: #fff; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
-    .stripe-divider { width: 1px; height: 12px; background: rgba(255,255,255,.35); flex-shrink: 0; }
+    .stripe-badge { font-size: 9px; font-weight: 800; color: #fff; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+    .stripe-divider { width: 1px; height: 14px; background: rgba(255,255,255,.35); flex-shrink: 0; }
 
     /* BODY */
-    .body { padding: 10px 0.45in 8px; flex: 1; display: flex; flex-direction: column; }
+    .body { padding: 9px 0.5in 7px; flex: 1; display: flex; flex-direction: column; gap: 7px; }
 
     /* SECTION LABEL */
-    .slabel { font-size: 7.5px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 4px; }
+    .slabel { font-size: 9px; font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 4px; }
 
-    /* 3-COL MAIN LAYOUT */
-    .main-cols { display: grid; grid-template-columns: 1.05fr 1.6fr 1.05fr; gap: 11px; align-items: start; flex: 1; }
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     /* LOSS LEADER */
-    .loss-box { background: #fff8ec; border: 1.5px solid #f59e0b; border-radius: 6px; padding: 9px 10px; }
-    .loss-box .lh { font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 900; margin-bottom: 2px; }
-    .loss-box .ls { font-size: 9px; color: var(--mid); line-height: 1.5; margin-bottom: 7px; }
-    .scan-row { display: flex; gap: 5px; }
-    .scan-pill { flex: 1; background: #fff; border: 1px solid #f59e0b; border-radius: 5px; padding: 5px 5px; text-align: center; }
-    .scan-pill .sn { font-size: 7px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; color: #b45309; margin-bottom: 2px; }
-    .scan-pill .sp { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 900; color: var(--dark); line-height: 1; }
-    .scan-pill .snt { font-size: 7px; color: var(--gray); margin-top: 1px; }
+    .loss-box { background: #fff8ec; border: 1.5px solid #f59e0b; border-radius: 8px; padding: 9px 12px; }
+    .loss-box .lh { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .loss-box .ls { font-size: 11px; color: var(--mid); line-height: 1.5; margin-bottom: 6px; }
+    .scan-row { display: flex; gap: 7px; }
+    .scan-pill { flex: 1; background: #fff; border: 1px solid #f59e0b; border-radius: 6px; padding: 6px 8px; text-align: center; }
+    .scan-pill .sn { font-size: 8px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; color: #b45309; margin-bottom: 3px; }
+    .scan-pill .sp { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: var(--dark); line-height: 1; }
+    .scan-pill .snt { font-size: 8.5px; color: var(--gray); margin-top: 2px; }
 
     /* PRICE TABLE */
-    table.pt { width: 100%; border-collapse: collapse; font-size: 10px; border-radius: 6px; overflow: hidden; }
+    table.pt { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: 8px; overflow: hidden; }
     table.pt thead th {
-      background: var(--dark); color: #fff; font-size: 7px; font-weight: 800; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 5px 7px; text-align: left;
+      background: var(--dark); color: #fff; font-size: 8px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 6px 10px; text-align: left;
     }
     table.pt thead th:last-child { text-align: right; }
-    table.pt tbody td { padding: 4px 7px; border-bottom: 1px solid var(--border); background: #fafafa; vertical-align: middle; }
+    table.pt tbody td { padding: 5px 10px; border-bottom: 1px solid var(--border); background: #fafafa; vertical-align: middle; }
     table.pt tbody tr:last-child td { border-bottom: none; }
-    .td-n { font-weight: 700; color: var(--dark); line-height: 1.3; }
-    .td-d { font-size: 8px; color: var(--gray); }
+    .td-n { font-weight: 700; color: var(--dark); }
+    .td-d { font-size: 10px; color: var(--gray); }
     .td-list { font-weight: 900; text-align: right; white-space: nowrap; }
-    .td-p { color: #166534; font-weight: 800; text-align: right; font-size: 9.5px; white-space: nowrap; }
+    .td-p { color: #166534; font-weight: 800; text-align: right; font-size: 11px; white-space: nowrap; }
 
     /* TIER TABLE */
-    table.tt { width: 100%; border-collapse: collapse; font-size: 10px; border-radius: 6px; overflow: hidden; }
+    table.tt { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: 8px; overflow: hidden; }
     table.tt thead th {
-      background: var(--orange); color: #fff; font-size: 7px; font-weight: 800; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 5px 7px; text-align: left;
+      background: var(--orange); color: #fff; font-size: 8px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 6px 10px; text-align: left;
     }
-    table.tt tbody td { padding: 5px 7px; border-bottom: 1px solid var(--border); background: #fafafa; }
+    table.tt tbody td { padding: 5px 10px; border-bottom: 1px solid var(--border); background: #fafafa; }
     table.tt tbody tr.best td { background: #fff5f0; }
     table.tt tbody tr:last-child td { border-bottom: none; }
     .tt-name { font-weight: 800; }
-    .tt-vol { font-size: 8.5px; color: var(--gray); }
+    .tt-vol { font-size: 10.5px; color: var(--gray); }
     .tt-disc { color: var(--orange); font-weight: 900; }
     .tt-margin { color: #166534; font-weight: 800; }
-    .tt-badge { font-size: 6.5px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(205,68,25,.12); border: 1px solid rgba(205,68,25,.3); color: var(--orange); padding: 1px 4px; border-radius: 3px; margin-left: 3px; }
+    .tt-badge { font-size: 7.5px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(205,68,25,.12); border: 1px solid rgba(205,68,25,.3); color: var(--orange); padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
 
     /* CHECKLIST */
     .checklist { list-style: none; display: flex; flex-direction: column; gap: 3px; }
-    .checklist li { display: flex; align-items: flex-start; gap: 6px; font-size: 9.5px; color: var(--mid); }
+    .checklist li { display: flex; align-items: flex-start; gap: 7px; font-size: 11.5px; color: var(--mid); }
     .checklist li::before { content: '✓'; color: #166534; font-weight: 900; flex-shrink: 0; }
 
     /* PANEL */
-    .panel { background: #f7f7f7; border-radius: 6px; padding: 8px 10px; }
+    .panel { background: #f7f7f7; border-radius: 8px; padding: 9px 12px; }
+    .panel-title { font-weight: 800; font-size: 13px; margin-bottom: 7px; color: var(--dark); }
 
     /* DISCLAIMER */
-    .disclaimer { background: #fff9f5; border: 1px solid rgba(205,68,25,.25); border-radius: 5px; padding: 7px 9px; font-size: 8.5px; color: var(--mid); line-height: 1.55; }
+    .disclaimer { background: #fff9f5; border: 1px solid rgba(205,68,25,.25); border-radius: 6px; padding: 7px 12px; font-size: 10.5px; color: var(--mid); line-height: 1.55; }
     .disclaimer strong { color: var(--dark); }
 
     /* BOTTOM BAR */
     .bottom-bar {
-      background: var(--dark); color: #fff; padding: 8px 0.45in;
+      background: var(--dark); color: #fff; padding: 8px 0.5in;
       display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
     }
-    .bottom-left { font-size: 9px; color: #888; line-height: 1.65; }
+    .bottom-left { font-size: 10px; color: #888; line-height: 1.7; }
     .bottom-left strong { color: #fff; }
     .bottom-cta { text-align: right; }
-    .bottom-phone { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 900; color: var(--orange); line-height: 1; }
-    .bottom-tag { font-size: 7.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #666; margin-top: 2px; }
+    .bottom-phone { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; color: var(--orange); line-height: 1; }
+    .bottom-tag { font-size: 8.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #666; margin-top: 3px; }
 
     /* PRINT */
     @media print {
@@ -146,11 +147,11 @@
 
   <!-- TOP BAR -->
   <div class="top-bar">
-    <div style="display:flex;align-items:center;gap:11px;">
-      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:36px;width:auto;display:block;" />
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="https://images.squarespace-cdn.com/content/v1/682beb3cab58930b42e509fb/e03450c2-ecd4-49b1-8ecb-080cfd27a870/LOGO+TRANSPERRENT+.png" alt="Absolute ADAS" style="height:42px;width:auto;display:block;" />
       <div>
         <div class="top-bar-brand">Absolute <span>ADAS</span></div>
-        <div style="font-size:8px;color:#888;margin-top:1px;letter-spacing:0.08em;text-transform:uppercase;">Mobile ADAS Calibration · Western Washington</div>
+        <div style="font-size:9.5px;color:#888;margin-top:2px;letter-spacing:0.08em;text-transform:uppercase;">Mobile ADAS Calibration · Western Washington</div>
       </div>
     </div>
     <div>
@@ -171,76 +172,45 @@
   </div>
 
   <div class="body">
-    <div class="main-cols">
 
-      <!-- LEFT: Scans + Tiers + Includes -->
-      <div style="display:flex;flex-direction:column;gap:9px;">
-
-        <div class="loss-box">
-          <div class="slabel">⭐ Pre / Post Scans</div>
-          <div class="lh">You Keep the Spread.</div>
-          <div class="ls">We charge you the State Farm approved rate. Bill your carrier at their approved rate — the spread is yours on every non-SF job.</div>
-          <div class="scan-row">
-            <div class="scan-pill">
-              <div class="sn">Pre-Scan</div>
-              <div class="sp">$47.50</div>
-              <div class="snt">SF rate</div>
-            </div>
-            <div class="scan-pill">
-              <div class="sn">Post-Scan</div>
-              <div class="sp">$47.50</div>
-              <div class="snt">SF rate</div>
-            </div>
-            <div class="scan-pill">
-              <div class="sn">Bundle</div>
-              <div class="sp">$85</div>
-              <div class="snt">Both scans</div>
-            </div>
+    <!-- ROW 1: Loss Leader + How It Works -->
+    <div class="two-col">
+      <div class="loss-box">
+        <div class="slabel">⭐ Pre / Post Scans — Your Margin Starts Here</div>
+        <div class="lh">You Keep the Spread.</div>
+        <div class="ls">We charge you the State Farm approved rate. Bill your carrier at their approved rate — for non-SF carriers or customer pay, the spread is yours every time.</div>
+        <div class="scan-row">
+          <div class="scan-pill">
+            <div class="sn">Pre-Scan</div>
+            <div class="sp">$47.50</div>
+            <div class="snt">SF approved rate</div>
+          </div>
+          <div class="scan-pill">
+            <div class="sn">Post-Scan</div>
+            <div class="sp">$47.50</div>
+            <div class="snt">SF approved rate</div>
+          </div>
+          <div class="scan-pill">
+            <div class="sn">Bundle</div>
+            <div class="sp">$85</div>
+            <div class="snt">Both scans</div>
           </div>
         </div>
-
-        <div>
-          <div class="slabel">Volume Discount Tiers</div>
-          <table class="tt">
-            <thead>
-              <tr><th>Tier</th><th>Discount</th><th>Margin / Job</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><div class="tt-name">Standard</div><div class="tt-vol">1–14 jobs/mo</div></td>
-                <td class="tt-disc">15% off</td>
-                <td class="tt-margin">$67.50</td>
-              </tr>
-              <tr>
-                <td><div class="tt-name">Volume</div><div class="tt-vol">15–29 jobs/mo</div></td>
-                <td class="tt-disc">20% off</td>
-                <td class="tt-margin">$90.00</td>
-              </tr>
-              <tr class="best">
-                <td><div class="tt-name">Preferred <span class="tt-badge">Top</span></div><div class="tt-vol">30+ jobs/mo</div></td>
-                <td class="tt-disc">25% off</td>
-                <td class="tt-margin">$112.50</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="panel">
-          <div class="slabel">Every Job Includes</div>
-          <ul class="checklist">
-            <li>OEM position statement citation</li>
-            <li>Pre &amp; post calibration scans</li>
-            <li>Calibration certificate with tech signature</li>
-            <li>Insurance-grade documentation package</li>
-            <li>Mobile service — we come to your bay</li>
-            <li>Same-day availability</li>
-            <li>No trip fees, no hidden charges</li>
-          </ul>
-        </div>
-
       </div>
+      <div class="panel">
+        <div class="slabel">How It Works</div>
+        <div class="panel-title">Simple. Automatic. Every Job.</div>
+        <ul class="checklist">
+          <li>You bill your carrier at the list rate below</li>
+          <li>You pay us 15–25% less than list</li>
+          <li>The gap is your automatic margin</li>
+          <li>We handle all OEM documentation — calibration gets paid. No fight, no denial.</li>
+        </ul>
+      </div>
+    </div>
 
-      <!-- MIDDLE: Static Calibrations -->
+    <!-- ROW 2: Static + Dynamic/Add-Ons -->
+    <div class="two-col">
       <div>
         <div class="slabel">Static Calibrations</div>
         <table class="pt">
@@ -253,17 +223,17 @@
           </thead>
           <tbody>
             <tr>
-              <td><div class="td-n">Front Camera <span style="font-size:6.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 4px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Windshield R&amp;I — most OEMs</div></td>
+              <td><div class="td-n">Front Camera <span style="font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Windshield R&amp;I — most OEMs</div></td>
               <td class="td-list">$450</td>
               <td class="td-p">$382.50</td>
             </tr>
             <tr>
-              <td><div class="td-n">Radar <span style="font-size:6.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 4px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Bumper R&amp;R — all major OEMs</div></td>
+              <td><div class="td-n">Radar <span style="font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Bumper R&amp;R — all major OEMs</div></td>
               <td class="td-list">$450</td>
               <td class="td-p">$382.50</td>
             </tr>
             <tr>
-              <td><div class="td-n">Blind Spot Monitor <span style="font-size:6.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 4px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Rear / quarter panel work</div></td>
+              <td><div class="td-n">Blind Spot Monitor <span style="font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(205,68,25,.12);border:1px solid rgba(205,68,25,.3);color:#CD4419;padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;">Most Common</span></div><div class="td-d">Rear / quarter panel work</div></td>
               <td class="td-list">$450</td>
               <td class="td-p">$382.50</td>
             </tr>
@@ -274,16 +244,6 @@
             </tr>
             <tr>
               <td><div class="td-n">360° Surround View</div><div class="td-d">Hyundai, Kia, Toyota, BMW</div></td>
-              <td class="td-list">$450</td>
-              <td class="td-p">$382.50</td>
-            </tr>
-            <tr>
-              <td><div class="td-n">Night Vision Calibration</div><div class="td-d">BMW, Mercedes, Audi, Cadillac</div></td>
-              <td class="td-list">$450</td>
-              <td class="td-p">$382.50</td>
-            </tr>
-            <tr>
-              <td><div class="td-n">Thermal Imaging Calibration</div><div class="td-d">Select luxury &amp; commercial vehicles</div></td>
               <td class="td-list">$450</td>
               <td class="td-p">$382.50</td>
             </tr>
@@ -301,9 +261,7 @@
         </table>
       </div>
 
-      <!-- RIGHT: Dynamic + Inspection + Add-ons + Disclaimer -->
-      <div style="display:flex;flex-direction:column;gap:9px;">
-
+      <div style="display:flex;flex-direction:column;gap:7px;">
         <div>
           <div class="slabel">Dynamic Calibrations</div>
           <table class="pt">
@@ -341,23 +299,68 @@
               <tr><th>Service</th><th style="text-align:right;">Rate</th></tr>
             </thead>
             <tbody>
-              <tr><td><div class="td-n">Post-Collision Safety Inspection</div><div class="td-d">Level 1 — 30 min labor · 3 levels available</div></td><td class="td-list">$99</td></tr>
+              <tr><td><div class="td-n">Post-Collision Safety Inspection</div><div class="td-d">Level 1 · 30-min labor · 3 levels available</div></td><td class="td-list">$99</td></tr>
               <tr><td class="td-n">Module Programming</td><td class="td-list">from $250</td></tr>
               <tr><td class="td-n">Diagnostic Time</td><td class="td-list">$200/hr</td></tr>
-              <tr><td class="td-n">Mobile — Puget Sound Metro</td><td class="td-list" style="color:#166534;font-weight:900;">FREE</td></tr>
-              <tr><td class="td-n">Extended Area (25–50 mi)</td><td class="td-list">$50</td></tr>
-              <tr><td class="td-n">After-Hours / Weekend</td><td class="td-list">$100</td></tr>
+              <tr><td class="td-n">Mobile Trip — Puget Sound Metro</td><td class="td-list" style="color:#166534;font-weight:900;">FREE</td></tr>
             </tbody>
           </table>
         </div>
-
-        <div class="disclaimer">
-          <strong>Pricing Disclaimer:</strong> All prices are standard estimates and subject to change. Final pricing may vary based on vehicle make, model, system configuration, and OEM procedure requirements. Call <strong>1-844-FIX-ADAS</strong> for a firm quote before scheduling.
-        </div>
-
       </div>
-
     </div>
+
+    <!-- ROW 3: Volume Tiers -->
+    <div>
+      <div class="slabel">Volume Discount Tiers — Upgrade Automatically</div>
+      <table class="tt">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Discount</th>
+            <th>Margin / $450 Job</th>
+            <th>Sample Annual Margin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="tt-name">Standard</div><div class="tt-vol">1–14 jobs/month</div></td>
+            <td class="tt-disc">15% off</td>
+            <td class="tt-margin">$67.50/job</td>
+            <td class="tt-margin">~$8,100/yr</td>
+          </tr>
+          <tr>
+            <td><div class="tt-name">Volume</div><div class="tt-vol">15–29 jobs/month</div></td>
+            <td class="tt-disc">20% off</td>
+            <td class="tt-margin">$90.00/job</td>
+            <td class="tt-margin">~$21,600/yr</td>
+          </tr>
+          <tr class="best">
+            <td><div class="tt-name">Preferred Partner <span class="tt-badge">Top Tier</span></div><div class="tt-vol">30+ jobs/month</div></td>
+            <td class="tt-disc">25% off</td>
+            <td class="tt-margin">$112.50/job</td>
+            <td class="tt-margin">~$47,250/yr</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ROW 4: Every Job Includes + Disclaimer -->
+    <div class="two-col" style="align-items:start;">
+      <div class="panel">
+        <div class="slabel">Every Job Includes</div>
+        <ul class="checklist">
+          <li>OEM position statement citation</li>
+          <li>Calibration certificate with tech signature</li>
+          <li>Insurance-grade documentation package</li>
+          <li>Mobile service — we come to your bay</li>
+          <li>Same-day availability · No hidden fees</li>
+        </ul>
+      </div>
+      <div class="disclaimer">
+        <strong>Pricing Disclaimer:</strong> All prices shown are standard estimates based on common procedures and are subject to change. ADAS calibration is complex — final pricing may vary based on vehicle make, model, system configuration, and OEM procedure requirements. Call <strong>1-844-FIX-ADAS</strong> for a firm quote before scheduling.
+      </div>
+    </div>
+
   </div>
 
   <!-- BOTTOM BAR -->
@@ -370,8 +373,8 @@
     <div class="bottom-cta">
       <div class="bottom-phone">1-844-FIX-ADAS</div>
       <div class="bottom-tag">Same Day. Done Right.</div>
-      <div style="font-size:9px;color:#aaa;font-style:italic;margin-top:3px;">In a bind? Let us know, we're here to help.</div>
-      <div style="font-size:8px;color:#666;margin-top:2px;">absoluteadas.com/pricing</div>
+      <div style="font-size:10px;color:#aaa;font-style:italic;margin-top:4px;">In a bind? Let us know, we're here to help.</div>
+      <div style="font-size:9px;color:#666;margin-top:3px;">absoluteadas.com/pricing</div>
     </div>
   </div>
 
