@@ -469,7 +469,7 @@
       };
 
       try {
-        const r = await fetch('/server/adasiq-api/api/audit-tool/generate', {
+        const r = await fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/audit-tool/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
