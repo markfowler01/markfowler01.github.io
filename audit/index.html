@@ -455,24 +455,26 @@
         return false;
       }
 
-      const payload = {
-        shopName: document.getElementById('shopName').value,
-        email: document.getElementById('email').value,
-        year: document.getElementById('year').value,
-        make: document.getElementById('make').value,
-        model: document.getElementById('model').value,
-        carrier: document.getElementById('carrier').value,
-        deniedItem: document.getElementById('deniedItem').value,
-        deniedAmount: document.getElementById('deniedAmount').value,
-        denialLanguage: document.getElementById('denialLanguage').value,
-        subscribe: document.getElementById('subscribe').checked,
-      };
+      // Sent as x-www-form-urlencoded (a CORS "simple request") so the browser
+      // skips the preflight OPTIONS — the Catalyst gateway answers OPTIONS
+      // without CORS headers, which blocks JSON POSTs. Mirrors the Brew form.
+      const params = new URLSearchParams();
+      params.append('shopName', document.getElementById('shopName').value);
+      params.append('email', document.getElementById('email').value);
+      params.append('year', document.getElementById('year').value);
+      params.append('make', document.getElementById('make').value);
+      params.append('model', document.getElementById('model').value);
+      params.append('carrier', document.getElementById('carrier').value);
+      params.append('deniedItem', document.getElementById('deniedItem').value);
+      params.append('deniedAmount', document.getElementById('deniedAmount').value);
+      params.append('denialLanguage', document.getElementById('denialLanguage').value);
+      params.append('subscribe', document.getElementById('subscribe').checked ? 'true' : 'false');
 
       try {
         const r = await fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/audit-tool/generate', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString(),
         });
         const d = await r.json();
         if (!r.ok || !d.ok) throw new Error(d.error || 'Generation failed.');
