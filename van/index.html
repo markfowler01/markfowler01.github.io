@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From the Van — subscribe</title>
+<meta name="description" content="A weekly note from Mark Fowler at Absolute ADAS. One real ADAS field case per week, no fluff.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f3f0;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+main{max-width:520px;margin:0 auto;padding:32px 20px 60px}
+.brand{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.18em;color:#CD4419;text-transform:uppercase;margin-bottom:10px}
+h1{font-size:28px;line-height:1.15;margin:0 0 14px;font-weight:800}
+.lede{font-size:16px;color:#374151;margin:0 0 8px}
+.benefit{font-size:14px;color:#6b7280;margin:0 0 24px}
+form{background:#fff;padding:24px 22px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-top:4px solid #CD4419}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin:14px 0 6px}
+label:first-of-type{margin-top:0}
+input,textarea{width:100%;padding:12px 14px;font-size:16px;border:1.5px solid #e5e7eb;border-radius:9px;background:#fff;color:#1a1a1a;font-family:inherit}
+input:focus,textarea:focus{outline:none;border-color:#CD4419}
+textarea{min-height:64px;resize:vertical;line-height:1.5}
+button{display:block;width:100%;background:#CD4419;color:#fff;font-size:16px;font-weight:800;padding:14px 22px;border-radius:10px;border:none;cursor:pointer;margin-top:20px;font-family:inherit;transition:background .15s}
+button:hover{background:#b53a15}
+button:disabled{opacity:.55;cursor:not-allowed}
+.optional{font-weight:400;color:#9ca3af}
+.hp{position:absolute;left:-9999px}
+.msg{padding:12px 14px;border-radius:9px;font-size:14px;margin-top:16px}
+.ok{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.err{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5}
+.foot{margin-top:22px;font-size:12px;color:#6b7280;line-height:1.5;text-align:center}
+.foot a{color:#CD4419;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">Absolute ADAS · Newsletter</div>
+  <h1>From the Van</h1>
+  <p class="lede">One real ADAS field case a week. What we saw, what the trap was, what to do about it.</p>
+  <p class="benefit">Written by Mark Fowler. 50,000+ calibrations on the floor. No pitch, no fluff. Tuesday mornings.</p>
+
+  <form id="f" onsubmit="return s(event)">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required placeholder="you@yourshop.com" autocomplete="email" inputmode="email">
+
+    <label for="name">Name <span class="optional">(optional)</span></label>
+    <input id="name" name="name" type="text" placeholder="First + last" autocomplete="name">
+
+    <label for="shop">Shop name <span class="optional">(optional)</span></label>
+    <input id="shop" name="shop" type="text" placeholder="Your collision or glass shop" autocomplete="organization">
+
+    <label for="phone">Phone <span class="optional">(optional)</span></label>
+    <input id="phone" name="phone" type="tel" placeholder="425-xxx-xxxx" autocomplete="tel">
+
+    <label for="notes">Notes <span class="optional">(optional — for Mark's reference)</span></label>
+    <textarea id="notes" name="notes" placeholder="Met at shop 7/6, talked about Lyriq calibrations"></textarea>
+
+    <input class="hp" name="website" tabindex="-1" autocomplete="off">
+    <button id="b" type="submit">Subscribe</button>
+  </form>
+
+  <div id="m"></div>
+
+  <p class="foot">
+    Unsubscribe anytime. No spam.<br>
+    <a href="https://absoluteadas.com/">absoluteadas.com</a> · Lake Stevens, WA
+  </p>
+</main>
+
+<script>
+const API = 'https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/capture-calc/from-the-van/subscribe';
+async function s(e) {
+  e.preventDefault();
+  const btn = document.getElementById('b');
+  const msg = document.getElementById('m');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing…';
+  msg.innerHTML = '';
+  const payload = {
+    email: document.getElementById('email').value,
+    name:  document.getElementById('name').value,
+    shop:  document.getElementById('shop').value,
+    phone: document.getElementById('phone').value,
+    notes: document.getElementById('notes').value,
+    website: document.getElementById('website') ? document.getElementById('website').value : '',
+    source: 'van-form',
+  };
+  try {
+    const r = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+      body: JSON.stringify(payload),
+    });
+    const d = await r.json();
+    if (r.ok && d.ok) {
+      msg.innerHTML = '<div class="msg ok">' + (d.duplicate ? '✓ You\'re already on the list.' : '✓ You\'re in. First issue lands Tuesday morning.') + '</div>';
+      document.getElementById('f').reset();
+      btn.textContent = 'Subscribed';
+    } else {
+      msg.innerHTML = '<div class="msg err">' + (d.error || 'Something went wrong. Try again.') + '</div>';
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }
+  } catch (err) {
+    msg.innerHTML = '<div class="msg err">Network error. Try again.</div>';
+    btn.disabled = false;
+    btn.textContent = 'Subscribe';
+  }
+  return false;
+}
+</script>
+</body>
+</html>
