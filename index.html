@@ -2073,8 +2073,9 @@
   <div class="sf-booking-wrap" id="sf-book">
     <h2>Claim Your Spot. We Come to You.</h2>
     <p class="sub">Takes 2 minutes. We show up with everything — no prep, no tow, no dealership wait.</p>
-    <div class="sf-booking-box">
-      <div id="sf-inline-container"><p style="color:#888;text-align:center;padding:48px 24px;font-size:.95rem;">Loading booking calendar…</p></div>
+    <div class="sf-booking-box" style="text-align:center;padding:36px 24px;">
+      <a href="#contact" onclick="navigate('contact');setTimeout(function(){ if (typeof aaTab==='function') aaTab('cal'); var f=document.getElementById('aa-book'); if (f) f.scrollIntoView({behavior:'smooth'}); },80);return false;" style="display:inline-block;background:var(--orange);color:#fff;padding:18px 44px;border-radius:12px;font-size:1.15rem;font-weight:800;text-decoration:none;letter-spacing:-.01em;">Book my calibration →</a>
+      <p style="color:#aaa;font-size:.9rem;margin:16px 0 0;">Pick your day, before or after lunch. It lands on our dispatch board the moment you send it — Kat confirms by text.</p>
     </div>
 
     <div class="sf-divider">or call to book in 5 minutes</div>
@@ -2167,8 +2168,9 @@
   <div class="sf-booking-wrap" id="al-book">
     <h2>Pick a Time. We'll Come to You.</h2>
     <p class="sub">Takes less than 2 minutes to book. We show up with everything — no prep needed from you.</p>
-    <div class="sf-booking-box">
-      <div id="al-inline-container"><p style="color:#888;text-align:center;padding:48px 24px;font-size:.95rem;">Loading booking calendar…</p></div>
+    <div class="sf-booking-box" style="text-align:center;padding:36px 24px;">
+      <a href="#contact" onclick="navigate('contact');setTimeout(function(){ if (typeof aaTab==='function') aaTab('cal'); var f=document.getElementById('aa-book'); if (f) f.scrollIntoView({behavior:'smooth'}); },80);return false;" style="display:inline-block;background:var(--orange);color:#fff;padding:18px 44px;border-radius:12px;font-size:1.15rem;font-weight:800;text-decoration:none;letter-spacing:-.01em;">Book my calibration →</a>
+      <p style="color:#aaa;font-size:.9rem;margin:16px 0 0;">Pick your day, before or after lunch. It lands on our dispatch board the moment you send it — Kat confirms by text.</p>
     </div>
 
     <div class="sf-divider">or call to book in 5 minutes</div>
@@ -2792,42 +2794,7 @@ function navigate(page) {
   if (nav) nav.style.display = isLandingPage ? 'none' : '';
   if (footer) footer.style.display = isLandingPage ? 'none' : '';
 
-  // Load Zoho booking widget when navigating to State Farm page
-  if (page === 'statefarm') {
-    var container = document.getElementById('sf-inline-container');
-    if (container && !container.dataset.loaded) {
-      container.dataset.loaded = 'true';
-      container.innerHTML = '';
-      var s = document.createElement('script');
-      s.src = 'https://bookings.nimbuspop.com/assets/embed.js';
-      s.onload = function() {
-        Bookings.inlineEmbed({
-          url: 'https://absoluteadas.zohobookings.com/portal-embed#/4778305000000369018',
-          parent: '#sf-inline-container',
-          height: '800px'
-        });
-      };
-      document.head.appendChild(s);
-    }
-  }
-  // Load Zoho booking widget for Allstate page
-  if (page === 'allstate') {
-    var alContainer = document.getElementById('al-inline-container');
-    if (alContainer && !alContainer.dataset.loaded) {
-      alContainer.dataset.loaded = 'true';
-      alContainer.innerHTML = '';
-      var s2 = document.createElement('script');
-      s2.src = 'https://bookings.nimbuspop.com/assets/embed.js';
-      s2.onload = function() {
-        Bookings.inlineEmbed({
-          url: 'https://absoluteadas.zohobookings.com/portal-embed#/4778305000000369018',
-          parent: '#al-inline-container',
-          height: '800px'
-        });
-      };
-      document.head.appendChild(s2);
-    }
-  }
+  // (Zoho Bookings embeds removed 2026-09-07 — landers now jump to the native booking form on #contact)
 }
 
 function aoSubmitContact(e) {
