@@ -1523,6 +1523,8 @@
       #aa-apply .msg.err { display:block; background:rgba(153,27,27,.25); border:1px solid #dc2626; color:#fecaca; }
       #aa-apply .fine { margin-top:14px; font-size:.8rem; color:#777; }
       #aa-apply .hp { position:absolute; left:-9999px; }
+      #aa-apply input[type=file] { padding:10px 12px; color:#ccc; font-size:.85rem; }
+      #aa-apply input[type=file]::file-selector-button { background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.15); border-radius:6px; padding:6px 12px; margin-right:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:.8rem; cursor:pointer; }
     </style>
     <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px 24px;">
       <form id="aa-apply" onsubmit="return aaApply(event)" novalidate>
@@ -1552,6 +1554,10 @@
         <input id="aa-source" name="source" type="text" placeholder="Indeed, a friend, saw the van…">
         <label for="aa-msg">Anything else? <small>(optional)</small></label>
         <textarea id="aa-msg" name="message" placeholder="Questions, what you're looking for, best time to call…"></textarea>
+        <div class="row">
+          <div><label for="aa-photo">A photo of you <small>(optional)</small></label><input id="aa-photo" name="photo" type="file" accept="image/*"></div>
+          <div><label for="aa-resume">Resume <small>(PDF, Word, or a photo of it — optional)</small></label><input id="aa-resume" name="resume" type="file" accept=".pdf,.doc,.docx,image/*"></div>
+        </div>
         <input class="hp" name="website" tabindex="-1" autocomplete="off">
         <button id="aa-btn" type="submit">Send my info →</button>
         <div id="aa-msg-box" class="msg"></div>
@@ -1569,11 +1575,16 @@
         if (!name) { m.className = 'msg err'; m.textContent = 'Please add your name.'; return false; }
         if (!phone && !email) { m.className = 'msg err'; m.textContent = 'Add a phone number or an email so we can reach you.'; return false; }
         b.disabled = true; b.textContent = 'Sending…';
-        var p = new URLSearchParams();
+        var photo = f.photo.files[0], resume = f.resume.files[0];
+        if ((photo && photo.size > 12*1024*1024) || (resume && resume.size > 12*1024*1024)) { m.className = 'msg err'; m.textContent = 'Files need to be under 12 MB each.'; b.disabled = false; b.textContent = 'Send my info →'; return false; }
+        // multipart/form-data so the photo + resume ride along; the browser
+        // sets the Content-Type (with boundary) itself — no custom headers,
+        // so the Catalyst gateway sees a simple request (no preflight).
+        var p = new FormData();
         ['name','city','phone','email','role','experience','certs','availability','source','message','website'].forEach(function (k) { p.append(k, f[k].value); });
-        fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/public/recruit/apply', {
-          method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: p.toString()
-        })
+        if (photo) p.append('photo', photo);
+        if (resume) p.append('resume', resume);
+        fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/public/recruit/apply', { method: 'POST', body: p })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
         .then(function (r) {
           if (r.ok && r.d.ok) { m.className = 'msg ok'; m.textContent = '✓ Got it. Mark reads these himself — expect a call or text, usually the same day.'; f.reset(); b.textContent = 'Sent!'; }
