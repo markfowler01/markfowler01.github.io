@@ -1614,8 +1614,8 @@
 
   <section class="ao-section">
     <div class="ao-container">
-      <div class="ao-label">Claim Your Free Revenue Snapshot</div>
-      <h2 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Let's Find Your Number.<br><span style="color:var(--orange);">No Pitch. No Obligation.</span></h2>
+      <div class="ao-label">Book a Calibration · Free Revenue Snapshot</div>
+      <h2 class="ao-h1" style="font-size:clamp(2.4rem,5vw,4.5rem);">Get On The Schedule.<br><span style="color:var(--orange);">Same Day. Done Right.</span></h2>
       <p class="ao-body" style="max-width:600px;margin-top:16px;">Schedule your free <strong style="color:#fff;">ADAS Revenue Snapshot</strong> below -we'll audit 30 days of your ROs and show you exactly what your shop is leaving on the table. Already a partner? Book your next calibration here too.</p>
 
       <div style="display:inline-flex;flex-wrap:wrap;gap:12px;margin:20px 0 0;">
@@ -1624,146 +1624,162 @@
         <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(205,68,25,.1);border:1px solid rgba(205,68,25,.25);color:#ccc;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:100px;">🔒 Limited to 8 shops/month</span>
       </div>
 
-      <!-- ZOHO BOOKINGS CALENDAR -->
-      <div style="margin-top:48px;margin-bottom:56px;background:var(--dark2);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;">
-        <div style="padding:28px 32px 0;">
-          <div class="ao-label" style="margin-bottom:4px;">Step 1 -Schedule Your Revenue Snapshot</div>
-          <h3 class="ao-h3" style="margin-bottom:0;">Pick a Date &amp; Time</h3>
-          <p class="ao-body" style="font-size:.9rem;margin-top:6px;margin-bottom:0;">15-minute sessions available across Western Washington. We come to you, or we connect by phone -your call.</p>
-        </div>
-        <script src="https://bookings.nimbuspop.com/assets/embed.js"></script>
-        <div id="inline-container"></div>
-        <script>
-          window.addEventListener('load', function() {
-            if (typeof Bookings !== 'undefined') {
-              Bookings.inlineEmbed({
-                url: "https://absoluteadas.zohobookings.com/portal-embed#/4778305000000369018",
-                parent: "#inline-container",
-                height: "900px"
-              });
-            }
-          });
-        </script>
-      </div>
-
-      <div style="margin-bottom:24px;">
-        <div class="ao-label" style="margin-bottom:4px;">Or -Step 2 if you prefer</div>
-        <h3 class="ao-h3">Send Us a Message</h3>
-        <p class="ao-body" style="font-size:.9rem;margin-top:6px;">Prefer we reach out to you? Drop your info below and mention the Revenue Snapshot -we'll contact you within one business day.</p>
-      </div>
+      <p class="ao-body" style="max-width:640px;margin:20px 0 40px;">Two things you can do here. <strong style="color:#fff;">Book a calibration</strong> and it lands on our schedule the moment you hit send — Kat confirms by text. Or claim your free <strong style="color:#fff;">ADAS Revenue Snapshot</strong> and Mark will reach out to set up 15 minutes.</p>
 
       <div class="ao-contact-grid">
-        <!-- FORM -->
-        <div class="ao-contact-form">
+        <!-- FORM (native, 2026-09-07 — posts to the Absolute ADAS app) -->
+        <div class="ao-contact-form" id="aa-book">
           <style>
-            /* Override Zoho CRM form styles to match dark theme */
-            #crmWebToEntityForm_contact.zcwf_lblRight { background-color: transparent !important; color: #fff !important; padding: 0 !important; max-width: 100% !important; }
-            #crmWebToEntityForm_contact .zcwf_title { color: #fff !important; font-family: 'Inter', sans-serif !important; font-size: 1.4rem !important; font-weight: 800 !important; padding: 0 0 24px !important; }
-            #crmWebToEntityForm_contact .zcwf_col_lab label { color: #ccc !important; font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 600 !important; }
-            #crmWebToEntityForm_contact .zcwf_col_fld input[type=text],
-            #crmWebToEntityForm_contact .zcwf_col_fld input[type=email],
-            #crmWebToEntityForm_contact .zcwf_col_fld textarea,
-            #crmWebToEntityForm_contact .zcwf_col_fld select { width: 100% !important; background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.12) !important; border-radius: 8px !important; padding: 12px 14px !important; color: #fff !important; font-family: 'Inter', sans-serif !important; font-size: .95rem !important; float: none !important; }
-            #crmWebToEntityForm_contact .zcwf_col_fld input[type=text]:focus,
-            #crmWebToEntityForm_contact .zcwf_col_fld input[type=email]:focus,
-            #crmWebToEntityForm_contact .zcwf_col_fld textarea:focus { border-color: #CD4419 !important; outline: none !important; }
-            #crmWebToEntityForm_contact .zcwf_col_lab { width: 100% !important; float: none !important; margin-bottom: 6px !important; }
-            #crmWebToEntityForm_contact .zcwf_col_fld { width: 100% !important; float: none !important; padding: 0 !important; }
-            #crmWebToEntityForm_contact .zcwf_row { margin: 0 0 18px !important; }
-            #crmWebToEntityForm_contact .formsubmit.zcwf_button { background: #CD4419 !important; color: #fff !important; border: none !important; border-radius: 8px !important; padding: 14px 32px !important; font-size: 1rem !important; font-weight: 800 !important; font-family: 'Inter', sans-serif !important; cursor: pointer !important; width: 100% !important; max-width: 100% !important; transition: background .2s !important; }
-            #crmWebToEntityForm_contact .formsubmit.zcwf_button:hover { background: #b33a15 !important; }
-            #crmWebToEntityForm_contact .zcwf_button[name=reset] { display: none !important; }
-            #crmWebToEntityForm_contact .zcwf_col_fld p { color: #888 !important; font-size: .8rem !important; }
-            #crmWebToEntityForm_contact .zcwf_file { width: 100% !important; float: none !important; color: #ccc !important; }
-            #wf_splash_contact { background: #CD4419 !important; border: none !important; color: #fff !important; border-radius: 12px !important; box-shadow: 0 4px 32px rgba(205,68,25,.55) !important; font-size: 1.05rem !important; font-weight: 600 !important; padding: 20px 28px !important; }
+            #aa-book .tabs { display:flex; gap:8px; margin-bottom:24px; }
+            #aa-book .tab { flex:1; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#ccc; border-radius:10px; padding:12px 10px; font-weight:800; font-size:.9rem; cursor:pointer; text-align:center; font-family:'Inter',sans-serif; }
+            #aa-book .tab.on { background:#CD4419; border-color:#CD4419; color:#fff; }
+            #aa-book label { display:block; font-size:.8rem; font-weight:700; color:#ccc; margin:14px 0 6px; letter-spacing:.04em; text-transform:uppercase; }
+            #aa-book label small { font-weight:500; text-transform:none; letter-spacing:0; color:#777; }
+            #aa-book input, #aa-book select, #aa-book textarea { width:100%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px 14px; color:#fff; font-family:'Inter',sans-serif; font-size:.95rem; }
+            #aa-book input:focus, #aa-book select:focus, #aa-book textarea:focus { border-color:#CD4419; outline:none; }
+            #aa-book select option { color:#1a1a1a; }
+            #aa-book input[type=file] { padding:10px 12px; color:#ccc; font-size:.85rem; }
+            #aa-book input[type=file]::file-selector-button { background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.15); border-radius:6px; padding:6px 12px; margin-right:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:.8rem; cursor:pointer; }
+            #aa-book input[type=date] { color-scheme:dark; }
+            #aa-book textarea { resize:vertical; min-height:80px; }
+            #aa-book .row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+            #aa-book .row3 { display:grid; grid-template-columns:1fr 1.2fr 1.2fr; gap:14px; }
+            @media (max-width:520px) { #aa-book .row, #aa-book .row3 { grid-template-columns:1fr; } }
+            #aa-book .win { display:flex; gap:8px; }
+            #aa-book .win label { flex:1; margin:0; cursor:pointer; text-transform:none; letter-spacing:0; font-size:.9rem; font-weight:700; color:#ccc; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px; text-align:center; }
+            #aa-book .win input { display:none; }
+            #aa-book .win input:checked + span { color:#fff; }
+            #aa-book .win label:has(input:checked) { background:rgba(205,68,25,.25); border-color:#CD4419; color:#fff; }
+            #aa-book button.go { display:block; width:100%; background:#CD4419; color:#fff; border:none; border-radius:8px; padding:15px 32px; font-size:1rem; font-weight:800; font-family:'Inter',sans-serif; cursor:pointer; margin-top:24px; transition:background .2s; }
+            #aa-book button.go:hover { background:#b33a15; }
+            #aa-book button.go:disabled { opacity:.6; cursor:not-allowed; }
+            #aa-book .msg { display:none; margin-top:16px; padding:14px; border-radius:10px; font-size:.95rem; line-height:1.5; }
+            #aa-book .msg.ok { display:block; background:rgba(22,101,52,.25); border:1px solid #16a34a; color:#bbf7d0; }
+            #aa-book .msg.err { display:block; background:rgba(153,27,27,.25); border:1px solid #dc2626; color:#fecaca; }
+            #aa-book .fine { margin-top:14px; font-size:.8rem; color:#777; }
+            #aa-book .hp { position:absolute; left:-9999px; }
+            #aa-book form[hidden] { display:none; }
           </style>
-          <div id='crmWebToEntityForm_contact' class='zcwf_lblRight crmWebToEntityForm' style='background-color:transparent;color:#fff;max-width:100%;'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <META HTTP-EQUIV='content-type' CONTENT='text/html;charset=UTF-8'>
-            <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js'></script>
-            <div class='wf_customMessageBox' id='wf_splash_contact' style='display:none'>
-              <div class='wf_customCircle'><div class='wf_customCheckMark'></div></div>
-              <span id='wf_splash_info_contact'></span>
-            </div>
-            <form id='webform6783709000004587001' name='WebToLeads6783709000004587001' accept-charset='UTF-8'>
-              <input type='text' style='display:none;' name='xnQsjsdp' value='146ace8784d853107f3e56df78b76d64f63bfe1f8fba123df5b8bd887b1c1c22'/>
-              <input type='hidden' name='zc_gad' id='zc_gad' value=''/>
-              <input type='text' style='display:none;' name='xmIwtLD' value='a63c3fa4634eeced5d851bf9c2d772b2c3269a53193190bb6dd9484ef12378ba5d34646ef2984e18307ca41c61c18ab6'/>
-              <input type='text' style='display:none;' name='actionType' value='TGVhZHM='/>
-              <input type='text' style='display:none;' name='returnURL' value='null'/>
-              <div class='zcwf_title'>Book a Calibration</div>
-              <div class='zcwf_row'>
-                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='First_Name'>First Name</label></div>
-                <div class='zcwf_col_fld'><input type='text' id='First_Name' aria-label='First Name' name='First Name' maxlength='40'/><div class='zcwf_col_help'></div></div>
-              </div>
-              <div class='zcwf_row'>
-                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='Last_Name'>Last Name <span style='color:#CD4419;'>*</span></label></div>
-                <div class='zcwf_col_fld'><input type='text' id='Last_Name' aria-required='true' aria-label='Last Name' name='Last Name' maxlength='80'/><div class='zcwf_col_help'></div></div>
-              </div>
-              <div class='zcwf_row'>
-                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='Company'>Shop Name</label></div>
-                <div class='zcwf_col_fld'><input type='text' id='Company' aria-label='Company' name='Company' maxlength='200'/><div class='zcwf_col_help'></div></div>
-              </div>
-              <div class='zcwf_row'>
-                <div class='zcwf_col_lab' style='font-size:12px;font-family:Arial;'><label for='Email'>Email <span style='color:#CD4419;'>*</span></label></div>
-                <div class='zcwf_col_fld'><input type='text' ftype='email' autocomplete='false' id='Email' aria-required='true' aria-label='Email' name='Email' maxlength='100'/><div class='zcwf_col_help'></div></div>
-              </div>
-              <div class='zcwf_row'>
-                <div class='zcwf_col_lab' id='imageUploadField' style='font-size:12px;font-family:Arial;'>Upload CCC Estimate (optional)</div>
-                <div class='zcwf_col_fld'>
-                  <div class='cBoth'><input type='file' class='zcwf_file' name='theFile' aria-multiselectable='true' aria-labelledby='imageUploadField' id='theFile6783709000004587001' multiple /></div>
-                  <p style='color:#888;font-size:11px;padding-left:3px;'>PDF or image. Max 20MB.</p>
-                </div>
-              </div>
-              <input type='text' style='display:none;' name='aG9uZXlwb3Q' value=''/>
-              <div class='zcwf_row'>
-                <div class='zcwf_col_lab'></div>
-                <div class='zcwf_col_fld'>
-                  <input type='submit' id='formsubmit_contact' role='button' class='formsubmit zcwf_button' value='Book a Calibration →' aria-label='Submit' title='Submit'>
-                  <input type='reset' class='zcwf_button' name='reset' value='Reset'>
-                </div>
-              </div>
-              <script>
-                function validateEmail6783709000004587001(){var form=document.forms['WebToLeads6783709000004587001'];var emailFld=form.querySelectorAll('[ftype=email]');for(var i=0;i<emailFld.length;i++){var emailVal=emailFld[i].value;if((emailVal.replace(/^\s+|\s+$/g,'')).length!=0){var atpos=emailVal.indexOf('@');var dotpos=emailVal.lastIndexOf('.');if(atpos<1||dotpos<atpos+2||dotpos+2>=emailVal.length){alert('Please enter a valid email address.');emailFld[i].focus();return false;}}}return true;}
-                function validateFileUpload6783709000004587001(){var uploadedFiles=document.getElementById('theFile6783709000004587001');var totalFileSize=0;if(uploadedFiles.files.length>3){alert('You can upload a maximum of three files at a time.');return false;}if('files'in uploadedFiles){if(uploadedFiles.files.length!=0){for(var i=0;i<uploadedFiles.files.length;i++){var file=uploadedFiles.files[i];if('size'in file){totalFileSize=totalFileSize+file.size;}}if(totalFileSize>20971520){alert('Total file(s) size should not exceed 20MB.');return false;}}}return true;}
-                function checkMandatory6783709000004587001(){var mndFileds=new Array('Last Name','Email');var fldLangVal=new Array('Last\x20Name','Email');for(var i=0;i<mndFileds.length;i++){var fieldObj=document.forms['WebToLeads6783709000004587001'][mndFileds[i]];if(fieldObj){if(((fieldObj.value).replace(/^\s+|\s+$/g,'')).length==0){alert(fldLangVal[i]+' cannot be empty.');fieldObj.focus();return false;}}}if(!validateFileUpload6783709000004587001()){return false;}if(!validateEmail6783709000004587001()){return false;}return true;}
-                $(document).ready(function(){
-                  $('#webform6783709000004587001').submit(function(e){
-                    e.preventDefault();
-                    if(checkMandatory6783709000004587001()){
-                      var formData=new FormData(this);
-                      $.ajax({
-                        url:'https://crm.zoho.com/crm/WebToLeadForm',
-                        type:'POST',
-                        data:formData,
-                        cache:false,
-                        contentType:false,
-                        processData:false,
-                        success:function(data){
-                          var info=document.getElementById('wf_splash_info_contact');
-                          info.innerText=data.actionvalue||"We'll be in touch within 20 minutes.";
-                          var splash=document.getElementById('wf_splash_contact');
-                          splash.style.display='flex';
-                          document.getElementById('webform6783709000004587001').reset();
-                          document.getElementById('formsubmit_contact').removeAttribute('disabled');
-                          setTimeout(function(){splash.style.display='none';},6000);
-                        },
-                        error:function(){
-                          var info=document.getElementById('wf_splash_info_contact');
-                          info.innerText="We'll be in touch within 20 minutes.";
-                          var splash=document.getElementById('wf_splash_contact');
-                          splash.style.display='flex';
-                          document.getElementById('webform6783709000004587001').reset();
-                          setTimeout(function(){splash.style.display='none';},6000);
-                        }
-                      });
-                    }
-                  });
-                });
-              </script>
-              <script id='wf_anal' src='https://crm.zohopublic.com/crm/WebFormAnalyticsServeServlet?rid=0b0f4193e48faade1922d74e5da9d031af29103bb322668f2144c905bf85b5ebac33ac05ac2d670a524e13bd3a8c90fdgida416890b73a27b4cd98118beda02a5530bac7c7fed707151335a445174a03595gidedbc79d8f7533fc5620730e33cfb32b3e536c4fd358438eb9beeab91596aed89gidc9e6d7a10802028edced3938d58c2a2054f6d1ab4a9361e5b3e09b3ebcce960b&tw=b9a2dd263ea5f647b04de547a1d35caf36731ae8d64ea6625502495b6c63f785'></script>
-            </form>
+          <div class="tabs">
+            <button type="button" class="tab on" id="aa-tab-cal" onclick="aaTab('cal')">🚐 Book a calibration</button>
+            <button type="button" class="tab" id="aa-tab-snap" onclick="aaTab('snap')">📊 Free Revenue Snapshot</button>
           </div>
+
+          <form id="aa-cal" onsubmit="return aaBook(event)" novalidate>
+            <div class="row">
+              <div><label for="cal-shop">Shop name</label><input id="cal-shop" name="shop" type="text" autocomplete="organization" placeholder="Your collision shop"></div>
+              <div><label for="cal-contact">Your name</label><input id="cal-contact" name="contact" type="text" autocomplete="name" placeholder="Who should we text?"></div>
+            </div>
+            <div class="row">
+              <div><label for="cal-phone">Phone</label><input id="cal-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="425-555-0100"></div>
+              <div><label for="cal-email">Email</label><input id="cal-email" name="email" type="email" autocomplete="email" placeholder="you@shop.com"></div>
+            </div>
+            <div class="row3">
+              <div><label for="cal-year">Year</label><input id="cal-year" name="year" type="text" inputmode="numeric" placeholder="2022"></div>
+              <div><label for="cal-make">Make</label><input id="cal-make" name="make" type="text" placeholder="Toyota"></div>
+              <div><label for="cal-model">Model</label><input id="cal-model" name="model" type="text" placeholder="RAV4"></div>
+            </div>
+            <div class="row">
+              <div><label for="cal-vin">VIN <small>(optional)</small></label><input id="cal-vin" name="vin" type="text" placeholder="17 characters" style="font-family:monospace"></div>
+              <div><label for="cal-ro">RO number <small>(optional)</small></label><input id="cal-ro" name="ro" type="text" placeholder="24626"></div>
+            </div>
+            <label for="cal-date">What day do you need us?</label>
+            <input id="cal-date" name="date" type="date">
+            <label>Before or after lunch?</label>
+            <div class="win">
+              <label><input type="radio" name="window" value="am"><span>☀️ Before lunch</span></label>
+              <label><input type="radio" name="window" value="pm"><span>🌤 After lunch</span></label>
+              <label><input type="radio" name="window" value="any" checked><span>Either</span></label>
+            </div>
+            <label for="cal-needs">What does it need? <small>(optional — "front radar + camera", "not sure, windshield was replaced"…)</small></label>
+            <input id="cal-needs" name="needs" type="text" placeholder="Front radar, around-view camera…">
+            <label for="cal-photo">Photo of the estimate <small>(optional — we'll scrub it for calibrations)</small></label>
+            <input id="cal-photo" name="photo" type="file" accept="image/*,.pdf">
+            <label for="cal-notes">Anything else? <small>(optional)</small></label>
+            <textarea id="cal-notes" name="notes" placeholder="Gate code, keys in the office, insurance company…"></textarea>
+            <input class="hp" name="website" tabindex="-1" autocomplete="off">
+            <button type="submit" class="go" id="cal-btn">Put me on the schedule →</button>
+            <div id="cal-msg" class="msg"></div>
+            <p class="fine">Lands on our dispatch board the moment you send it. Kat confirms by text — usually within the hour.</p>
+          </form>
+
+          <form id="aa-snap" onsubmit="return aaSnap(event)" novalidate hidden>
+            <div class="row">
+              <div><label for="sn-shop">Shop name</label><input id="sn-shop" name="shop" type="text" autocomplete="organization" placeholder="Your collision shop"></div>
+              <div><label for="sn-contact">Your name</label><input id="sn-contact" name="contact" type="text" autocomplete="name"></div>
+            </div>
+            <div class="row">
+              <div><label for="sn-phone">Phone</label><input id="sn-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="425-555-0100"></div>
+              <div><label for="sn-email">Email</label><input id="sn-email" name="email" type="email" autocomplete="email" placeholder="you@shop.com"></div>
+            </div>
+            <div class="row">
+              <div><label for="sn-cars">Cars per month <small>(roughly)</small></label><input id="sn-cars" name="cars" type="text" inputmode="numeric" placeholder="75"></div>
+              <div><label for="sn-best">Best time to reach you</label><input id="sn-best" name="best_time" type="text" placeholder="Mornings, after 3pm…"></div>
+            </div>
+            <label for="sn-notes">Anything else? <small>(optional)</small></label>
+            <textarea id="sn-notes" name="notes" placeholder="Which insurers you see most, what you're running into…"></textarea>
+            <input class="hp" name="website" tabindex="-1" autocomplete="off">
+            <button type="submit" class="go" id="sn-btn">Claim my free Snapshot →</button>
+            <div id="sn-msg" class="msg"></div>
+            <p class="fine">Mark reaches out personally to set up 15 minutes. Have 30 days of ROs handy.</p>
+          </form>
+
+          <script>
+            var AA_API = 'https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/public/booking';
+            function aaTab(w) {
+              document.getElementById('aa-cal').hidden = w !== 'cal';
+              document.getElementById('aa-snap').hidden = w !== 'snap';
+              document.getElementById('aa-tab-cal').className = 'tab' + (w === 'cal' ? ' on' : '');
+              document.getElementById('aa-tab-snap').className = 'tab' + (w === 'snap' ? ' on' : '');
+            }
+            // The gateway truncates a multipart body at any value starting
+            // with "(" — phones → digits with dashes, other values guarded.
+            function aaSafe(k, v) {
+              v = String(v || '');
+              if (k === 'phone') { var d = v.replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); return d.length === 10 ? d.slice(0,3) + '-' + d.slice(3,6) + '-' + d.slice(6) : d; }
+              return v.charAt(0) === '(' ? ' ' + v : v;
+            }
+            (function () { var d = new Date(); d.setDate(d.getDate() + 1); var el = document.getElementById('cal-date'); if (el) el.min = d.toISOString().slice(0, 10); })();
+            function aaBook(e) {
+              e.preventDefault();
+              var f = document.getElementById('aa-cal'), b = document.getElementById('cal-btn'), m = document.getElementById('cal-msg');
+              m.className = 'msg'; m.textContent = '';
+              if (!f.shop.value.trim()) { m.className = 'msg err'; m.textContent = 'Please add your shop name.'; return false; }
+              if (!f.phone.value.trim() && !f.email.value.trim()) { m.className = 'msg err'; m.textContent = 'Add a phone number or email so we can confirm.'; return false; }
+              if (!f.date.value) { m.className = 'msg err'; m.textContent = 'Pick the day you need us.'; return false; }
+              b.disabled = true; b.textContent = 'Sending…';
+              var p = new FormData();
+              ['shop','contact','phone','email','year','make','model','vin','ro','date','needs','notes','website'].forEach(function (k) { p.append(k, aaSafe(k, f[k].value)); });
+              p.append('window', (f.querySelector('input[name=window]:checked') || {}).value || 'any');
+              var photo = f.photo.files[0]; if (photo) p.append('photo', photo);
+              fetch(AA_API + '/calibration', { method: 'POST', body: p })
+                .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+                .then(function (r) {
+                  if (r.ok && r.d.ok) { m.className = 'msg ok'; m.textContent = '✓ You\'re on the board for ' + r.d.day + ', ' + String(r.d.window).toLowerCase() + '. Kat will confirm by text shortly.'; f.reset(); b.textContent = 'Sent!'; if (typeof trackEvent === 'function') trackEvent('booking', 'calibration'); }
+                  else { m.className = 'msg err'; m.textContent = (r.d && r.d.error) || 'Something went wrong — call or text us and we\'ll get you on the schedule.'; b.disabled = false; b.textContent = 'Put me on the schedule →'; }
+                })
+                .catch(function () { m.className = 'msg err'; m.textContent = 'Network hiccup — try again, or call/text us.'; b.disabled = false; b.textContent = 'Put me on the schedule →'; });
+              return false;
+            }
+            function aaSnap(e) {
+              e.preventDefault();
+              var f = document.getElementById('aa-snap'), b = document.getElementById('sn-btn'), m = document.getElementById('sn-msg');
+              m.className = 'msg'; m.textContent = '';
+              if (!f.shop.value.trim()) { m.className = 'msg err'; m.textContent = 'Please add your shop name.'; return false; }
+              if (!f.phone.value.trim() && !f.email.value.trim()) { m.className = 'msg err'; m.textContent = 'Add a phone number or email so Mark can reach you.'; return false; }
+              b.disabled = true; b.textContent = 'Sending…';
+              var p = new URLSearchParams();
+              ['shop','contact','phone','email','cars','best_time','notes','website'].forEach(function (k) { p.append(k, aaSafe(k, f[k].value)); });
+              fetch(AA_API + '/snapshot', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: p.toString() })
+                .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+                .then(function (r) {
+                  if (r.ok && r.d.ok) { m.className = 'msg ok'; m.textContent = '✓ Got it. Mark will reach out personally to set up your 15 minutes.'; f.reset(); b.textContent = 'Sent!'; if (typeof trackEvent === 'function') trackEvent('booking', 'snapshot'); }
+                  else { m.className = 'msg err'; m.textContent = (r.d && r.d.error) || 'Something went wrong — call or text us instead.'; b.disabled = false; b.textContent = 'Claim my free Snapshot →'; }
+                })
+                .catch(function () { m.className = 'msg err'; m.textContent = 'Network hiccup — try again, or call/text us.'; b.disabled = false; b.textContent = 'Claim my free Snapshot →'; });
+              return false;
+            }
+          </script>
         </div>
 
         <!-- CONTACT INFO -->
