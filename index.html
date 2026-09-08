@@ -1580,8 +1580,17 @@
         // multipart/form-data so the photo + resume ride along; the browser
         // sets the Content-Type (with boundary) itself — no custom headers,
         // so the Catalyst gateway sees a simple request (no preflight).
+        // Catalyst's gateway truncates a multipart body at any field value
+        // that STARTS with "(" — e.g. a phone typed as "(425) 555-0100".
+        // Phone → digits with dashes; any other value starting with "(" gets
+        // a leading space (the server trims it).
+        var safe = function (k, v) {
+          v = String(v || '');
+          if (k === 'phone') { var d = v.replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); return d.length === 10 ? d.slice(0,3) + '-' + d.slice(3,6) + '-' + d.slice(6) : d; }
+          return v.charAt(0) === '(' ? ' ' + v : v;
+        };
         var p = new FormData();
-        ['name','city','phone','email','role','experience','certs','availability','source','message','website'].forEach(function (k) { p.append(k, f[k].value); });
+        ['name','city','phone','email','role','experience','certs','availability','source','message','website'].forEach(function (k) { p.append(k, safe(k, f[k].value)); });
         if (photo) p.append('photo', photo);
         if (resume) p.append('resume', resume);
         fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/public/recruit/apply', { method: 'POST', body: p })
