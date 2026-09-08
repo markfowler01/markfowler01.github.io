@@ -893,7 +893,7 @@
 
   <!-- ═══ HERO ═══ -->
   <section class="ao-hero">
-    <div class="ao-eyebrow">🚨 LIMITED: Only 3 FREE Audit Slots Left This Month</div>
+    <div class="ao-eyebrow">🚨 LIMITED: Only <span data-sc="n">3</span> FREE Audit Slots Left This Month</div>
     <h1 class="ao-h1">Local Collision Shops Are Quietly Adding $1,400/Month From The Same Number of Cars.<br><br><span style="color:var(--orange);">Your Shop Isn't.</span></h1>
     <p class="ao-hero-sub">Western Washington collision shops doing 75+ cars/month are leaving an average of <strong style="color:#fff;">$153,000 per year</strong> on the table in missed ADAS calibrations. Most don't even know it's happening. <strong style="color:#fff;">We'll show you YOUR exact number—with your own repair orders as proof.</strong> Free audit. 15 minutes. No sales call.</p>
     <div class="ao-hero-btns">
@@ -924,10 +924,10 @@
           </ul>
         </div>
         <div style="background:rgba(205,68,25,.1);border:2px solid rgba(205,68,25,.3);border-radius:16px;padding:32px;text-align:center;">
-          <div style="font-size:.85rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">🔴 June Audit Spots</div>
-          <div style="font-size:3.2rem;font-weight:900;color:var(--orange);margin-bottom:8px;letter-spacing:-.03em;">3</div>
-          <p style="font-size:1rem;color:#fff;font-weight:700;margin-bottom:20px;">Available (Then Closed Until May 1st)</p>
-          <p style="font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:24px;">We audit one shop per week to ensure quality. Once spots are full, the next batch doesn't open until May 1st.</p>
+          <div style="font-size:.85rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">🔴 <span data-sc="month">This Month's</span> Audit Spots</div>
+          <div style="font-size:3.2rem;font-weight:900;color:var(--orange);margin-bottom:8px;letter-spacing:-.03em;" data-sc="n">3</div>
+          <p style="font-size:1rem;color:#fff;font-weight:700;margin-bottom:20px;">Left This Month <span style="color:rgba(255,255,255,.7);font-weight:600;">(Then Closed Until <span data-sc="next">Next Month</span> 1st)</span></p>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:24px;">We audit one shop per week to ensure quality. Once spots are full, the next batch doesn't open until <span data-sc="next">next month</span> 1st.</p>
           <a onclick="trackEvent('cta_click', 'urgency_cta'); navigate('contact')">Book Your Spot Now →</a>
         </div>
       </div>
@@ -1408,15 +1408,15 @@
       <p class="ao-body" style="max-width:700px;margin:0 auto 40px;color:rgba(255,255,255,.8);"><strong style="color:#fff;">The free ADAS Revenue Snapshot is 15 minutes and shows you YOUR exact gap with YOUR repair orders as proof. No pressure. No obligation. Just data.</strong></p>
 
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
-        <a onclick="navigate('contact')" class="ao-btn ao-btn-white" style="font-size:1.15rem;padding:22px 56px;">→ Get Your Free Audit (3 Spots Left)</a>
+        <a onclick="navigate('contact')" class="ao-btn ao-btn-white" style="font-size:1.15rem;padding:22px 56px;">→ Get Your Free Audit (<span data-sc="n">3</span> Spots Left)</a>
         <a href="tel:8443492327" class="ao-btn" style="font-size:1.15rem;padding:22px 56px;background:transparent;border:2px solid var(--orange);color:var(--orange);">📞 Call Now: 1-844-FIX-ADAS</a>
       </div>
 
       <p class="ao-cta-note" style="margin:0 auto 16px;">⏱️ 15 minutes · 💰 Zero cost · ✋ Zero obligation · 📊 Your data, your control</p>
 
       <div style="background:rgba(205,68,25,.08);border:1px solid rgba(205,68,25,.2);border-radius:10px;padding:20px 24px;display:inline-block;max-width:100%;">
-        <p style="font-size:.9rem;color:#fff;font-weight:700;margin-bottom:4px;">🔴 <strong>June Audit Deadline: End of Month</strong></p>
-        <p style="font-size:.85rem;color:rgba(255,255,255,.7);">3 spots available before slots close and reset July 1st. Book now or wait.</p>
+        <p style="font-size:.9rem;color:#fff;font-weight:700;margin-bottom:4px;">🔴 <strong><span data-sc="month">This Month's</span> Audit Deadline: End of Month</strong></p>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.7);"><span data-sc="n">3</span> spots available before slots close and reset <span data-sc="next">next month</span> 1st. Book now or wait.</p>
       </div>
     </div>
   </div>
@@ -2918,6 +2918,29 @@ if (!sessionStorage.getItem('ao-hvco-seen')) {
     img.addEventListener('error', function() { this.classList.add('img-error'); });
     if (img.complete && img.naturalWidth === 0) img.classList.add('img-error');
   });
+</script>
+
+<script>
+(function () {
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+  var month = MONTHS[now.getMonth()], next = MONTHS[(now.getMonth() + 1) % 12];
+  function paint(n) {
+    document.querySelectorAll('[data-sc="month"]').forEach(function (el) { el.textContent = month; });
+    document.querySelectorAll('[data-sc="next"]').forEach(function (el) { el.textContent = next; });
+    document.querySelectorAll('[data-sc="n"]').forEach(function (el) { el.textContent = n; });
+  }
+  paint(3);
+  fetch('/monthly-config.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (c) {
+      if (c && c.currentMonth === month && c.currentYear === now.getFullYear()) {
+        var n = Math.max(0, Math.min(3, Number(c.spotsAvailable)));
+        paint(isNaN(n) ? 3 : n);
+      }
+    })
+    .catch(function () {});
+})();
 </script>
 </body>
 </html>

@@ -1,3 +1,13 @@
+# 📅 Monthly Scarcity Messaging
+
+**As of 2026-09-07 the site updates itself.** Month names ("September Audit Spots", "reset October 1st") come from the real date. The spot count comes from `monthly-config.json` — and only when its `currentMonth`/`currentYear` match the current month; otherwise the page shows the default **3**, so a stale file can never show a wrong number.
+
+**The only thing to edit each month:** `monthly-config.json` → set `currentMonth`, `currentYear`, `spotsBooked`, `spotsAvailable` (3 → 2 → 1 → 0 as audits book). Commit + push. Nothing in `index.html` needs touching.
+
+---
+
+_(Old manual guide below — no longer needed, kept for reference.)_
+
 # 📅 Monthly Scarcity Messaging Update Guide
 
 ## Current Month: JUNE 2026
