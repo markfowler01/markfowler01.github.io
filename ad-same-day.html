@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Absolute ADAS — Same Day. Done Right.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* 1080 x 1350 — Instagram / Facebook portrait, the same 4:5 Elitek used.
+     Everything else follows the locked Absolute ADAS image system: dark
+     masthead, Playfair white serif headline, photo middle, dark footer with
+     the Inter Bold wordmark and the phone big and orange on the right. */
+  :root {
+    --dark:   #0d0d0d;
+    --orange: #CD4419;
+    --sans:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --serif:  'Playfair Display', Georgia, serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* No padding: the page IS the asset, so a headless screenshot at
+     1080x1350 exports something postable with no crop step. */
+  body { background: var(--dark); display: flex; justify-content: center; }
+
+  .ad {
+    width: 1080px; height: 1350px;
+    background: var(--dark);
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  .masthead { padding: 58px 64px 46px; position: relative; z-index: 2; }
+
+  .kicker {
+    font: 800 25px/1 var(--sans);
+    letter-spacing: .16em; color: var(--orange);
+    text-transform: uppercase;
+  }
+  .subline {
+    font: 600 20px/1 var(--sans);
+    letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.75); margin-top: 14px;
+  }
+  .rule      { height: 1px; background: rgba(255,255,255,.45); margin: 26px 0 34px; }
+  .rule.thin { background: rgba(255,255,255,.25); margin: 34px 0 24px; }
+
+  /* The promise. Playfair, white, never Inter — the wordmark is the only
+     Inter Bold thing in the brand and mixing them flattens both. */
+  .headline {
+    font: 900 118px/.98 var(--serif);
+    color: #fff; letter-spacing: -.015em;
+  }
+  .headline .line2 { display: block; }
+
+  .support {
+    font: 400 31px/1.45 var(--sans);
+    color: rgba(255,255,255,.88); max-width: 820px;
+  }
+
+  /* ── photo ────────────────────────────────────────────── */
+  .photo {
+    flex: 1; position: relative;
+    margin-top: -6px;           /* band overlaps the photo, per the spec */
+    overflow: hidden;
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; display: block; }
+  /* Top and bottom feather so the dark bands sit on the photo instead of
+     butting against it in a hard seam. */
+  .photo::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(13,13,13,.92) 0%, rgba(13,13,13,0) 22%),
+      linear-gradient(to top,    rgba(13,13,13,.92) 0%, rgba(13,13,13,0) 20%);
+  }
+
+  /* ── footer ───────────────────────────────────────────── */
+  .footer {
+    height: 186px; margin-top: -8px;
+    background: var(--dark); position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 43px;             /* 4% left pad, brand block left-aligned */
+  }
+  .brand { display: flex; align-items: center; gap: 22px; }
+  .brand img { width: 84px; height: 84px; object-fit: contain; }
+  .wordmark { font: 800 54px/1 var(--sans); letter-spacing: -.01em; color: #fff; }
+  .wordmark span { color: var(--orange); }
+  .tagline {
+    font: 400 21px/1 var(--sans);
+    color: rgba(255,255,255,.85); margin-top: 10px;
+  }
+  /* Phone big and orange, right-aligned, baseline matched to the wordmark.
+     Digits form, never vanity. */
+  .phone {
+    font: 800 45px/1 var(--sans);
+    color: var(--orange); letter-spacing: -.01em; white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="ad">
+    <div class="masthead">
+      <div class="kicker">Mobile ADAS Calibration</div>
+      <div class="subline">Absolute ADAS &middot; Western Washington</div>
+      <div class="rule"></div>
+
+      <h1 class="headline">Same day.<span class="line2">Done right.</span></h1>
+
+      <div class="rule thin"></div>
+      <p class="support">
+        We bring the targets to your shop. Most calibrations finish
+        the same day you call, with the OEM scan report in your hands
+        before the car leaves the bay.
+      </p>
+    </div>
+
+    <div class="photo">
+      <img src="images/techs-calibrating.jpg" alt="Technicians running a calibration on a vehicle in a shop bay">
+    </div>
+
+    <div class="footer">
+      <div class="brand">
+        <img src="logo.png" alt="">
+        <div>
+          <div class="wordmark">Absolute<span>ADAS</span></div>
+          <div class="tagline">Mobile ADAS calibration &middot; Western Washington</div>
+        </div>
+      </div>
+      <div class="phone">1-844-349-2327</div>
+    </div>
+  </div>
+</body>
+</html>
