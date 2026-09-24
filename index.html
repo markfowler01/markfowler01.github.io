@@ -1624,7 +1624,7 @@
         <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(205,68,25,.1);border:1px solid rgba(205,68,25,.25);color:#ccc;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:100px;">🔒 Limited to 8 shops/month</span>
       </div>
 
-      <p class="ao-body" style="max-width:640px;margin:20px 0 40px;">Two things you can do here. <strong style="color:#fff;">Book a calibration</strong> and it lands on our schedule the moment you hit send — Kat confirms by text. Or claim your free <strong style="color:#fff;">ADAS Revenue Snapshot</strong> and Mark will reach out to set up 15 minutes.</p>
+      <p class="ao-body" style="max-width:640px;margin:20px 0 40px;">Two things you can do here. <strong style="color:#fff;">Book a calibration</strong> and it lands on our schedule the moment you hit send — Kat confirms by text if you opted in, or by phone. Or claim your free <strong style="color:#fff;">ADAS Revenue Snapshot</strong> and Mark will reach out to set up 15 minutes.</p>
 
       <div class="ao-contact-grid">
         <!-- FORM (native, 2026-09-07 — posts to the Absolute ADAS app) -->
@@ -1684,6 +1684,24 @@
               <div><label for="cal-phone">Phone</label><input id="cal-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="425-555-0100"></div>
               <div><label for="cal-email">Email</label><input id="cal-email" name="email" type="email" autocomplete="email" placeholder="you@shop.com"></div>
             </div>
+            <style>
+              .sms-consent{margin:14px 0 4px;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px}
+              .sms-consent .sms-opt{display:flex;gap:11px;align-items:flex-start;cursor:pointer;margin:0}
+              .sms-consent .sms-opt input{margin:3px 0 0;width:17px;height:17px;flex:none;accent-color:var(--orange)}
+              .sms-consent .sms-opt span{font-size:.92rem;line-height:1.5;color:#ddd}
+              .sms-consent .sms-opt strong{color:#fff}
+              .sms-consent .sms-fine{margin:10px 0 0;font-size:.72rem;line-height:1.6;color:#8d8d8d}
+              .sms-consent .sms-fine a{color:#b8b8b8;text-decoration:underline}
+              .sms-consent .sms-voice{margin:9px 0 0;font-size:.78rem;color:#9a9a9a}
+            </style>
+            <div class="sms-consent">
+              <label class="sms-opt" for="cal-sms">
+                <input type="checkbox" id="cal-sms" name="sms_consent" value="yes">
+                <span><strong>Text me job updates.</strong> I agree to receive job update texts from Absolute ADAS at the number above — appointment confirmations, technician ETAs, completion reports, pre-work notices, and invoice reminders.</span>
+              </label>
+              <p class="sms-voice">Rather not check a box? Kat can opt you in over the phone when she calls to confirm.</p>
+              <p class="sms-fine">Texts come from 425-675-1329. Msg frequency varies, typically no more than 10 per job. Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out. Consent is not a condition of service. See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
+            </div>
             <div class="sec">The vehicle</div>
             <div class="row3">
               <div><label for="cal-year">Year</label><input id="cal-year" name="year" type="text" inputmode="numeric" placeholder="2022"></div>
@@ -1713,7 +1731,7 @@
             <input class="hp" name="website" tabindex="-1" autocomplete="off">
             <button type="submit" class="go" id="cal-btn">Put me on the schedule →</button>
             <div id="cal-msg" class="msg"></div>
-            <p class="fine">Lands on our dispatch board the moment you send it. Kat confirms by text — usually within the hour.</p>
+            <p class="fine">Lands on our dispatch board the moment you send it. Kat confirms within the hour — by text if you opted in, otherwise by phone.</p>
           </form>
 
           <form id="aa-snap" onsubmit="return aaSnap(event)" novalidate hidden>
@@ -1725,6 +1743,14 @@
             <div class="row">
               <div><label for="sn-phone">Phone</label><input id="sn-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="425-555-0100"></div>
               <div><label for="sn-email">Email</label><input id="sn-email" name="email" type="email" autocomplete="email" placeholder="you@shop.com"></div>
+            </div>
+            <div class="sms-consent">
+              <label class="sms-opt" for="sn-sms">
+                <input type="checkbox" id="sn-sms" name="sms_consent" value="yes">
+                <span><strong>Text me job updates.</strong> I agree to receive job update texts from Absolute ADAS at the number above — appointment confirmations, technician ETAs, completion reports, pre-work notices, and invoice reminders.</span>
+              </label>
+              <p class="sms-voice">Rather not check a box? Kat can opt you in over the phone when she calls to confirm.</p>
+              <p class="sms-fine">Texts come from 425-675-1329. Msg frequency varies, typically no more than 10 per job. Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out. Consent is not a condition of service. See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
             </div>
             <div class="sec">The snapshot</div>
             <div class="row">
@@ -1765,12 +1791,14 @@
               b.disabled = true; b.textContent = 'Sending…';
               var p = new FormData();
               ['shop','contact','phone','email','year','make','model','vin','ro','date','needs','notes','website'].forEach(function (k) { p.append(k, aaSafe(k, f[k].value)); });
+              p.append('sms_consent', f.sms_consent.checked ? 'yes' : 'no');
+              p.append('sms_consent_text', f.sms_consent.checked ? 'Web form checkbox at absoluteadas.com/#contact: agreed to receive job update texts from Absolute ADAS (425-675-1329). Msg frequency varies. Msg & data rates may apply. HELP for help, STOP to opt out. Consent not a condition of service.' : '');
               p.append('window', (f.querySelector('input[name=window]:checked') || {}).value || 'any');
               var photo = f.photo.files[0]; if (photo) p.append('photo', photo);
               fetch(AA_API + '/calibration', { method: 'POST', body: p })
                 .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
                 .then(function (r) {
-                  if (r.ok && r.d.ok) { m.className = 'msg ok'; m.textContent = '✓ You\'re on the board for ' + r.d.day + ', ' + String(r.d.window).toLowerCase() + '. Kat will confirm by text shortly.'; f.reset(); b.textContent = 'Sent!'; if (typeof trackEvent === 'function') trackEvent('booking', 'calibration'); }
+                  if (r.ok && r.d.ok) { m.className = 'msg ok'; m.textContent = '✓ You\'re on the board for ' + r.d.day + ', ' + String(r.d.window).toLowerCase() + '. Kat will confirm shortly — ' + (f.sms_consent.checked ? 'by text.' : 'by phone.'); f.reset(); b.textContent = 'Sent!'; if (typeof trackEvent === 'function') trackEvent('booking', 'calibration'); }
                   else { m.className = 'msg err'; m.textContent = (r.d && r.d.error) || 'Something went wrong — call or text us and we\'ll get you on the schedule.'; b.disabled = false; b.textContent = 'Put me on the schedule →'; }
                 })
                 .catch(function () { m.className = 'msg err'; m.textContent = 'Network hiccup — try again, or call/text us.'; b.disabled = false; b.textContent = 'Put me on the schedule →'; });
@@ -1785,6 +1813,7 @@
               b.disabled = true; b.textContent = 'Sending…';
               var p = new URLSearchParams();
               ['shop','contact','phone','email','cars','best_time','notes','website'].forEach(function (k) { p.append(k, aaSafe(k, f[k].value)); });
+              p.append('sms_consent', f.sms_consent.checked ? 'yes' : 'no');
               fetch(AA_API + '/snapshot', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: p.toString() })
                 .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
                 .then(function (r) {
@@ -2090,7 +2119,7 @@
     <p class="sub">Takes 2 minutes. We show up with everything — no prep, no tow, no dealership wait.</p>
     <div class="sf-booking-box" style="text-align:center;padding:36px 24px;">
       <a href="#contact" onclick="navigate('contact');setTimeout(function(){ if (typeof aaTab==='function') aaTab('cal'); var f=document.getElementById('aa-book'); if (f) f.scrollIntoView({behavior:'smooth'}); },80);return false;" style="display:inline-block;background:var(--orange);color:#fff;padding:18px 44px;border-radius:12px;font-size:1.15rem;font-weight:800;text-decoration:none;letter-spacing:-.01em;">Book my calibration →</a>
-      <p style="color:#aaa;font-size:.9rem;margin:16px 0 0;">Pick your day, before or after lunch. It lands on our dispatch board the moment you send it — Kat confirms by text.</p>
+      <p style="color:#aaa;font-size:.9rem;margin:16px 0 0;">Pick your day, before or after lunch. It lands on our dispatch board the moment you send it — Kat confirms by text if you opted in, or by phone.</p>
     </div>
 
     <div class="sf-divider">or call to book in 5 minutes</div>
@@ -2185,7 +2214,7 @@
     <p class="sub">Takes less than 2 minutes to book. We show up with everything — no prep needed from you.</p>
     <div class="sf-booking-box" style="text-align:center;padding:36px 24px;">
       <a href="#contact" onclick="navigate('contact');setTimeout(function(){ if (typeof aaTab==='function') aaTab('cal'); var f=document.getElementById('aa-book'); if (f) f.scrollIntoView({behavior:'smooth'}); },80);return false;" style="display:inline-block;background:var(--orange);color:#fff;padding:18px 44px;border-radius:12px;font-size:1.15rem;font-weight:800;text-decoration:none;letter-spacing:-.01em;">Book my calibration →</a>
-      <p style="color:#aaa;font-size:.9rem;margin:16px 0 0;">Pick your day, before or after lunch. It lands on our dispatch board the moment you send it — Kat confirms by text.</p>
+      <p style="color:#aaa;font-size:.9rem;margin:16px 0 0;">Pick your day, before or after lunch. It lands on our dispatch board the moment you send it — Kat confirms by text if you opted in, or by phone.</p>
     </div>
 
     <div class="sf-divider">or call to book in 5 minutes</div>
@@ -2731,6 +2760,14 @@ function aaBrewSubscribe(e){
           <li><a>Lynnwood</a></li>
           <li><a>Bellingham</a></li>
           <li><a>Tacoma</a></li>
+        </ul>
+      </div>
+      <div class="ao-footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms &amp; Conditions</a></li>
+          <li><a href="/sms-consent.html">SMS Consent</a></li>
         </ul>
       </div>
     </div>
