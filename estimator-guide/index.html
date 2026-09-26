@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>When Does This Car Need a Calibration? Calibration 101 for Estimators | Absolute ADAS</title>
+  <meta name="description" content="The estimator sheet from Absolute ADAS: which repairs drag in an ADAS calibration, the sensor map, a line picker that writes the estimate lines, bay-or-road by make, the Subaru any-collision rule, and a printable checklist." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://absoluteadas.com/estimator-guide/" />
+  <meta property="og:title" content="When does this car need a calibration?" />
+  <meta property="og:description" content="Calibration 101 for estimators, from the Absolute ADAS van. Sensor map, line picker, the table, the Subaru rule, printable checklist." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://absoluteadas.com/estimator-guide/" />
+  <meta property="og:image" content="https://absoluteadas.com/estimator-guide/slides/slide-01.png" />
+  <meta property="og:image:width" content="1080" />
+  <meta property="og:image:height" content="1080" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/logo.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { color-scheme: light dark; }
+    body { margin: 0; }
+    img { max-width: 100%; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap">
+<style>
+  :root {
+    --paper: #F6F6F3;
+    --ink: #14110F;
+    --ink-2: #3D3833;
+    --muted: #8A837C;
+    --rule: #DDD9D2;
+    --panel: #FFFFFF;
+    --band: #14110F;
+    --band-ink: #F6F6F3;
+    --accent: #CD4419;
+    --accent-ink: #FFFFFF;
+    --yes: #1F7A4D;
+    --yes-bg: #E6F2EB;
+    --check: #B7791F;
+    --check-bg: #FBF1DC;
+    --no: #5B6570;
+    --no-bg: #E9ECEF;
+    --car: #FFFFFF;
+    --cabin: #EDEBE6;
+    --glass: #CFE3EA;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #16140F; --ink: #F1EEE8; --ink-2: #CFC9C0; --muted: #9A9186; --rule: #33302A;
+      --panel: #1E1B16; --band: #0B0A08; --band-ink: #F1EEE8;
+      --yes: #6FCF97; --yes-bg: #17301F; --check: #E2B04A; --check-bg: #3A2C10; --no: #AEB6BE; --no-bg: #2A2E33;
+      --car: #2A2620; --cabin: #3A352D; --glass: #2F4B55;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #16140F; --ink: #F1EEE8; --ink-2: #CFC9C0; --muted: #9A9186; --rule: #33302A;
+    --panel: #1E1B16; --band: #0B0A08; --band-ink: #F1EEE8;
+    --yes: #6FCF97; --yes-bg: #17301F; --check: #E2B04A; --check-bg: #3A2C10; --no: #AEB6BE; --no-bg: #2A2E33;
+    --car: #2A2620; --cabin: #3A352D; --glass: #2F4B55;
+  }
+
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.55; padding-inline: 16px; padding-block: 0 64px; }
+  .wrap { max-width: 800px; margin: 0 auto; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  button { font: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* Masthead with the van */
+  .band { background: var(--band); color: var(--band-ink); margin-inline: -16px; padding-inline: 16px; padding-block: 0 32px; }
+  .band .photo { margin-inline: -16px; height: clamp(180px, 34vw, 340px); background: #222 url("cover-van.jpg") center 55% / cover no-repeat; position: relative; }
+  .band .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, var(--band) 100%); }
+  .band .wrap { display: flex; flex-direction: column; gap: 14px; padding-top: 18px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: .01em; }
+  .brand .dot { width: 12px; height: 12px; background: var(--accent); border-radius: 2px; }
+  .brand span b { color: var(--accent); }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--serif); font-size: clamp(30px, 6vw, 48px); line-height: 1.08; letter-spacing: -.01em; }
+  .sub { font-size: 17px; color: color-mix(in srgb, var(--band-ink) 78%, transparent); max-width: 60ch; }
+  .sub b { color: var(--band-ink); font-weight: 600; }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .jump a { color: var(--band-ink); text-decoration: none; font-size: 13px; font-weight: 600; border: 1px solid color-mix(in srgb, var(--band-ink) 30%, transparent); padding: 6px 10px; border-radius: 3px; }
+  .jump a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Sections */
+  section { padding-block: 36px 0; }
+  .label { display: flex; align-items: baseline; gap: 12px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  h2 { font-size: 24px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 12px; }
+  .lede { max-width: 64ch; color: var(--ink-2); }
+  .stack { display: flex; flex-direction: column; gap: 12px; max-width: 64ch; color: var(--ink-2); }
+  .stack b, .lede b { color: var(--ink); }
+
+  /* 60-second answer */
+  .quick { background: var(--panel); border: 1px solid var(--rule); border-top: 4px solid var(--accent); padding: 22px 22px 20px; }
+  .quick .big { font-family: var(--serif); font-size: clamp(20px, 3.4vw, 26px); line-height: 1.25; margin-bottom: 14px; }
+  .quick ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 22px; }
+  .quick li { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; }
+  .quick li::before { content: ""; flex: none; width: 9px; height: 9px; margin-top: 8px; background: var(--accent); }
+  .quick .subaru { margin-top: 16px; padding: 12px 14px; background: var(--accent); color: var(--accent-ink); font-weight: 700; display: flex; gap: 10px; align-items: baseline; }
+  .quick .subaru small { font-weight: 400; opacity: .9; }
+  .quick .foot { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--ink-2); }
+  .quick .foot b { color: var(--ink); }
+  @media (max-width: 520px) { .quick ul { grid-template-columns: 1fr; } }
+
+  /* Sensor map */
+  .map { display: grid; grid-template-columns: minmax(200px, 300px) 1fr; gap: 22px; align-items: start; background: var(--panel); border: 1px solid var(--rule); padding: 18px; }
+  .map svg { width: 100%; height: auto; display: block; max-width: 100%; }
+  .legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; font-size: 15px; }
+  .legend li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; }
+  .legend .n { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 13px; display: grid; place-items: center; margin-top: 1px; }
+  .legend b { display: block; }
+  .legend span { color: var(--ink-2); }
+  @media (max-width: 600px) { .map { grid-template-columns: 1fr; } .map svg { max-width: 260px; margin: 0 auto; } }
+
+  /* Picker */
+  .picker { background: var(--panel); border: 1px solid var(--rule); padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .picker .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--rule); background: var(--paper); color: var(--ink); padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .picker label { font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .picker select { font: inherit; padding: 8px 10px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 4px; max-width: 100%; }
+  .out { border-top: 1px solid var(--rule); padding-top: 14px; }
+  .out h3 { font-size: 16px; margin-bottom: 8px; }
+  .out ol { margin: 0; padding-left: 22px; font-family: var(--mono); font-size: 14px; color: var(--ink); display: flex; flex-direction: column; gap: 6px; }
+  .out .note { margin-top: 10px; font-size: 14px; color: var(--ink-2); }
+  .out .empty { color: var(--muted); font-size: 15px; }
+  .copy { align-self: flex-start; background: var(--ink); color: var(--paper); border: 0; padding: 9px 14px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 14px; }
+  .copy[disabled] { opacity: .5; cursor: default; }
+
+  /* Table */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--panel); }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 15px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; vertical-align: top; padding: 11px 12px; border-bottom: 1px solid var(--rule); }
+  th { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: color-mix(in srgb, var(--panel) 70%, var(--paper)); position: sticky; top: 0; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 600; }
+  tr.hi td { background: color-mix(in srgb, var(--accent) 8%, var(--panel)); }
+  .pill { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+  .pill.yes { background: var(--yes-bg); color: var(--yes); }
+  .pill.check { background: var(--check-bg); color: var(--check); }
+  .pill.no { background: var(--no-bg); color: var(--no); }
+  .type { font-size: 13px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+  .write { font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
+
+  /* Make grid */
+  .grid3 { display: grid; grid-template-columns: 1fr; border: 1px solid var(--rule); background: var(--panel); }
+  .grid3 .r { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--rule); font-size: 14px; align-items: start; }
+  .grid3 .r:last-child { border-bottom: 0; }
+  .grid3 .h { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: color-mix(in srgb, var(--panel) 70%, var(--paper)); }
+  .grid3 .r b { font-weight: 700; }
+  .grid3 .r span { color: var(--ink-2); }
+  .k { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; margin-right: 4px; }
+  .k.bay { background: var(--check-bg); color: var(--check); }
+  .k.road { background: var(--yes-bg); color: var(--yes); }
+  .k.none { background: var(--no-bg); color: var(--no); }
+  @media (max-width: 640px) { .grid3 .r { grid-template-columns: 1fr; gap: 4px; } .grid3 .h { display: none; } .grid3 .r > div::before { content: attr(data-h) ": "; font-weight: 700; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; } .grid3 .r > div:first-child::before { content: none; } }
+
+  /* Trigger cards */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--rule); padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .card h3 { font-size: 17px; font-weight: 700; }
+  .card p { color: var(--ink-2); font-size: 15px; }
+  .card .ask { font-size: 14px; color: var(--ink); border-left: 3px solid var(--accent); padding-left: 10px; }
+  .card .ask b { color: var(--accent); }
+
+  /* Make list */
+  .makes { display: flex; flex-direction: column; border-top: 1px solid var(--rule); }
+  .make { display: grid; grid-template-columns: 160px 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+  .make b { font-weight: 700; }
+  .make span { color: var(--ink-2); }
+  .make.first { background: color-mix(in srgb, var(--accent) 8%, transparent); margin-inline: -12px; padding-inline: 12px; }
+  @media (max-width: 520px) { .make { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* Proof */
+  .proof { background: var(--panel); border: 1px solid var(--rule); padding: 20px 22px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .proof .n { font-family: var(--serif); font-size: clamp(28px, 5vw, 40px); line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .proof .l { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.35; }
+  .proof .src { grid-column: 1 / -1; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; }
+  @media (max-width: 600px) { .proof { grid-template-columns: 1fr 1fr; } }
+
+  /* Promise + CTA */
+  .promise { background: var(--panel); border: 1px solid var(--rule); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .promise .big { font-family: var(--serif); font-size: clamp(20px, 3.2vw, 25px); line-height: 1.25; }
+  .cta { background: var(--band); color: var(--band-ink); padding: 26px 22px; display: flex; flex-direction: column; gap: 6px; margin-top: 36px; }
+  .cta .num { font-size: clamp(28px, 6vw, 40px); font-weight: 700; letter-spacing: .04em; color: var(--accent-ink); }
+  .cta .num a { color: inherit; text-decoration: none; }
+  .cta .tag { font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-size: 13px; }
+  .cta .small { color: color-mix(in srgb, var(--band-ink) 75%, transparent); font-size: 14px; }
+
+  /* Checklist */
+  .check-sheet { background: var(--panel); border: 1px solid var(--rule); padding: 22px; display: grid; grid-template-columns: 1fr 150px; gap: 22px; align-items: start; }
+  .check-sheet h3 { font-family: var(--serif); font-size: 22px; margin-bottom: 4px; }
+  .check-sheet .who { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .check-sheet ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+  .check-sheet li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+  .check-sheet li::before { content: ""; width: 16px; height: 16px; border: 2px solid var(--ink); border-radius: 2px; margin-top: 3px; }
+  .check-sheet li b { font-weight: 700; }
+  .check-sheet .qr { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: 12px; color: var(--ink-2); }
+  .check-sheet .qr img { width: 130px; height: 130px; border: 1px solid var(--rule); background: #fff; }
+  .printbtn { margin-top: 12px; background: var(--ink); color: var(--paper); border: 0; padding: 10px 14px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 14px; }
+  @media (max-width: 560px) { .check-sheet { grid-template-columns: 1fr; } .check-sheet .qr { flex-direction: row; text-align: left; } }
+
+  /* Appendix */
+  .refs { display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+  .refs li { list-style: none; color: var(--ink-2); }
+  .refs ul { padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .fine { font-size: 13px; color: var(--muted); margin-top: 22px; max-width: 64ch; }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 12px; padding-block: 0; }
+    .band .photo { height: 120px; }
+    .band, .cta { background: #111 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .jump, .picker, .printbtn { display: none !important; }
+    section { padding-block: 16px 0; break-inside: avoid; }
+    .tablewrap { overflow: visible; border: 0; }
+    table { min-width: 0; font-size: 10.5px; }
+    th { position: static; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    #checklist { break-before: page; }
+    a { color: inherit; text-decoration: none; }
+    .refs a::after { content: " (" attr(href) ")"; font-size: 9px; color: #555; }
+  }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="band">
+  <div class="photo" role="img" aria-label="The Absolute ADAS van, a white Ram ProMaster, parked outside a body shop"></div>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span><span>Absolute <b>ADAS</b></span></div>
+    <div class="eyebrow">Calibration 101 for estimators</div>
+    <h1>When does this car need a calibration?</h1>
+    <p class="sub">A working sheet from <b>Mark Fowler</b>, owner of Absolute ADAS. Keep it by the estimating desk. Skim the box first. Use the picker when a car is in front of you. Print the checklist on the last page.</p>
+    <nav class="jump" aria-label="Jump to">
+      <a href="#quick">60-second answer</a><a href="#map">Sensor map</a><a href="#picker">Line picker</a><a href="#table">The table</a><a href="#makes">By make</a><a href="#checklist">Print checklist</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="quick">
+    <div class="label">The 60-second answer</div>
+    <div class="quick">
+      <p class="big">If the repair touched any of these, plan on a calibration.</p>
+      <ul>
+        <li>Windshield R&amp;R, or the camera came off the glass</li>
+        <li>Front bumper cover, grille, emblem, or bumper beam</li>
+        <li>Rear bumper cover, rear body, or quarter panel</li>
+        <li>Side mirror that has a camera in it</li>
+        <li>Liftgate or tailgate with a camera</li>
+        <li>Wheel alignment, struts, springs, tires a different size, lift</li>
+        <li>Any ADAS sensor, camera, or bracket, for any reason</li>
+        <li>Airbag deployed. The hit was hard enough to move structure</li>
+      </ul>
+      <p class="subaru"><span>Subaru with EyeSight: any collision repair, anywhere on the car.</span><small>Not just glass. Subaru bulletin 18-231-23. Details below.</small></p>
+      <p class="foot"><b>Not sure? Text the van: 1-844-FIX-ADAS.</b> Send the year, make, model and what got hit. I will tell you in five minutes so you can write the line now instead of eating it later.</p>
+    </div>
+  </section>
+
+  <section id="map">
+    <div class="label">Where the sensors live</div>
+    <h2>Eight spots. Move the part, move the aim.</h2>
+    <p class="lede" style="margin-bottom:14px">Every sensor is aimed at the factory to a fraction of a degree. It is aimed through, or bolted to, a part your shop repairs. That is the whole story. Calibration puts the aim back.</p>
+    <div class="map">
+      <svg viewBox="0 0 420 900" xmlns="http://www.w3.org/2000/svg" aria-labelledby="mapt" role="img">
+        <title id="mapt">Top-down view of a car with the eight ADAS sensor locations numbered</title>
+        <!-- fields of view -->
+        <polygon points="210,262 110,0 310,0" fill="var(--accent)" opacity=".10"/>
+        <polygon points="210,105 150,0 270,0" fill="var(--accent)" opacity=".18"/>
+        <polygon points="94,303 0,230 0,410" fill="var(--accent)" opacity=".10"/>
+        <polygon points="326,303 420,230 420,410" fill="var(--accent)" opacity=".10"/>
+        <polygon points="135,770 20,900 150,900" fill="var(--accent)" opacity=".16"/>
+        <polygon points="285,770 270,900 400,900" fill="var(--accent)" opacity=".16"/>
+        <polygon points="210,795 140,900 280,900" fill="var(--accent)" opacity=".10"/>
+        <!-- wheels -->
+        <rect x="82" y="165" width="24" height="72" rx="8" fill="var(--ink)"/>
+        <rect x="314" y="165" width="24" height="72" rx="8" fill="var(--ink)"/>
+        <rect x="82" y="650" width="24" height="72" rx="8" fill="var(--ink)"/>
+        <rect x="314" y="650" width="24" height="72" rx="8" fill="var(--ink)"/>
+        <!-- body -->
+        <rect x="100" y="86" width="220" height="736" rx="70" ry="86" fill="var(--car)" stroke="var(--ink-2)" stroke-width="2.5"/>
+        <!-- mirrors -->
+        <rect x="84" y="289" width="18" height="28" rx="4" fill="var(--car)" stroke="var(--ink-2)" stroke-width="2"/>
+        <rect x="318" y="289" width="18" height="28" rx="4" fill="var(--car)" stroke="var(--ink-2)" stroke-width="2"/>
+        <!-- cabin, glass -->
+        <rect x="120" y="248" width="180" height="356" rx="34" fill="var(--cabin)"/>
+        <polygon points="132,302 288,302 276,252 144,252" fill="var(--glass)"/>
+        <polygon points="138,556 282,556 292,602 128,602" fill="var(--glass)"/>
+        <!-- park sensor dots -->
+        <g fill="var(--ink-2)">
+          <circle cx="150" cy="98" r="4.5"/><circle cx="180" cy="94" r="4.5"/><circle cx="240" cy="94" r="4.5"/><circle cx="270" cy="98" r="4.5"/>
+          <circle cx="150" cy="810" r="4.5"/><circle cx="180" cy="814" r="4.5"/><circle cx="240" cy="814" r="4.5"/><circle cx="270" cy="810" r="4.5"/>
+        </g>
+        <!-- small unnumbered twins -->
+        <circle cx="326" cy="303" r="7" fill="var(--accent)"/>
+        <circle cx="135" cy="770" r="7" fill="var(--accent)"/>
+        <!-- numbered sensors -->
+        <g font-family="Inter, Arial, sans-serif" font-weight="700" font-size="15" text-anchor="middle" fill="#fff">
+          <circle cx="210" cy="262" r="14" fill="var(--accent)"/><text x="210" y="267.5">1</text>
+          <circle cx="210" cy="105" r="14" fill="var(--accent)"/><text x="210" y="110.5">2</text>
+          <circle cx="292" cy="128" r="14" fill="var(--accent)"/><text x="292" y="133.5">3</text>
+          <circle cx="94" cy="303" r="14" fill="var(--accent)"/><text x="94" y="308.5">4</text>
+          <circle cx="285" cy="770" r="14" fill="var(--accent)"/><text x="285" y="775.5">5</text>
+          <circle cx="210" cy="795" r="14" fill="var(--accent)"/><text x="210" y="800.5">6</text>
+          <circle cx="128" cy="842" r="14" fill="var(--accent)"/><text x="128" y="847.5">7</text>
+          <circle cx="60" cy="140" r="14" fill="var(--accent)"/><text x="60" y="145.5">8</text>
+        </g>
+        <!-- leaders -->
+        <g stroke="var(--accent)" stroke-width="2" fill="none">
+          <line x1="280" y1="118" x2="262" y2="100"/>
+          <line x1="138" y1="834" x2="152" y2="815"/>
+          <line x1="72" y1="150" x2="84" y2="170"/>
+        </g>
+        <!-- FRONT label -->
+        <text x="210" y="24" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2" text-anchor="middle" fill="var(--muted)">FRONT</text>
+      </svg>
+      <ol class="legend">
+        <li><span class="n">1</span><div><b>Forward camera</b><span>On the windshield, behind the mirror. Runs lane keep, auto brake, adaptive cruise. Moved by: glass R&amp;R, roof or A-pillar work, an alignment.</span></div></li>
+        <li><span class="n">2</span><div><b>Front radar</b><span>Behind the emblem or grille, on the bumper beam. Moved by: bumper cover, grille, emblem, beam, ride height.</span></div></li>
+        <li><span class="n">3</span><div><b>Front park sensors</b><span>In the bumper cover. Usually verify, rarely calibrate. Wrong paint or wrong cover blinds them.</span></div></li>
+        <li><span class="n">4</span><div><b>Mirror cameras</b><span>360 view and LaneWatch. Moved by: mirror R&amp;R, door R&amp;R. A blind spot light alone is not a camera.</span></div></li>
+        <li><span class="n">5</span><div><b>Blind spot radars</b><span>One each corner behind the rear cover, bracketed to the quarter. Rear cross traffic uses the same two. Moved by: rear cover, quarter, rear body.</span></div></li>
+        <li><span class="n">6</span><div><b>Rear camera</b><span>In the liftgate or trunk trim. Moved by: liftgate, tailgate, license trim.</span></div></li>
+        <li><span class="n">7</span><div><b>Rear park sensors</b><span>In the rear cover. Verify after refinish. Ford limits rear cover refinish to 12 mils.</span></div></li>
+        <li><span class="n">8</span><div><b>Wheels and suspension</b><span>Thrust angle decides where 1 and 2 look. Moved by: alignment, struts, springs, tires a different size, lift.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="picker">
+    <div class="label">Line picker</div>
+    <h2>Tap what is on the RO. Get the lines.</h2>
+    <p class="lede" style="margin-bottom:14px">Pick the make and everything the repair touches. The lines below are written to survive an adjuster. Copy them straight into the estimate.</p>
+    <div class="picker">
+      <div>
+        <label for="pk-make">Make</label><br>
+        <select id="pk-make">
+          <option value="other">Pick a make</option>
+          <option value="subaru">Subaru</option>
+          <option value="toyota">Toyota / Lexus</option>
+          <option value="honda">Honda / Acura</option>
+          <option value="ford">Ford / Lincoln</option>
+          <option value="gm">GM (Chevy, GMC, Buick, Cadillac)</option>
+          <option value="nissan">Nissan / Infiniti</option>
+          <option value="hyundai">Hyundai / Kia / Genesis</option>
+          <option value="mazda">Mazda</option>
+          <option value="stellantis">Jeep / Ram / Chrysler / Dodge</option>
+          <option value="tesla">Tesla</option>
+          <option value="vw">VW / Audi</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label id="pk-lab">What the repair touches</label>
+        <div class="row" role="group" aria-labelledby="pk-lab">
+          <button class="chip" type="button" id="pk-windshield" data-k="windshield" aria-pressed="false">Windshield</button>
+          <button class="chip" type="button" id="pk-front" data-k="front" aria-pressed="false">Front bumper / grille / beam</button>
+          <button class="chip" type="button" id="pk-rear" data-k="rear" aria-pressed="false">Rear bumper</button>
+          <button class="chip" type="button" id="pk-quarter" data-k="quarter" aria-pressed="false">Quarter panel</button>
+          <button class="chip" type="button" id="pk-mirror" data-k="mirror" aria-pressed="false">Side mirror</button>
+          <button class="chip" type="button" id="pk-door" data-k="door" aria-pressed="false">Door only</button>
+          <button class="chip" type="button" id="pk-liftgate" data-k="liftgate" aria-pressed="false">Liftgate / tailgate</button>
+          <button class="chip" type="button" id="pk-align" data-k="align" aria-pressed="false">Alignment / suspension</button>
+          <button class="chip" type="button" id="pk-tires" data-k="tires" aria-pressed="false">Tire size / lift / ride height</button>
+          <button class="chip" type="button" id="pk-airbag" data-k="airbag" aria-pressed="false">Airbag deployed</button>
+          <button class="chip" type="button" id="pk-sensor" data-k="sensor" aria-pressed="false">Sensor or bracket R&amp;R</button>
+          <button class="chip" type="button" id="pk-battery" data-k="battery" aria-pressed="false">Battery disconnect only</button>
+        </div>
+      </div>
+      <div class="out" id="pk-out" aria-live="polite">
+        <p class="empty">Pick a make and at least one repair.</p>
+      </div>
+      <button class="copy" type="button" id="pk-copy" disabled>Copy the lines</button>
+    </div>
+  </section>
+
+  <section id="table">
+    <div class="label">The table</div>
+    <h2>Repair on the RO, and what it drags in.</h2>
+    <p class="lede" style="margin-bottom:14px"><span class="pill yes">Yes</span> write the line. <span class="pill check">Check OEM</span> depends on the car, look it up or text me. <span class="pill no">Usually no</span> is there so you do not write lines that get bounced. Bay means targets in a bay. Road means a drive at speed. The last column is wording that survives an adjuster.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Repair on the RO</th><th>Sensor it moves</th><th>Cal</th><th>Type</th><th>Type this on the estimate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Every collision RO, first and last line</td><td>All modules</td><td><span class="pill yes">Yes</span></td><td class="type">Scan</td><td class="write">Pre-repair diagnostic scan / Post-repair diagnostic scan (Ford, GM, most OEMs require both)</td></tr>
+          <tr class="hi"><td>Subaru with EyeSight, any collision repair</td><td>EyeSight stereo camera</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">EyeSight stereo camera calibration per Subaru bulletin 18-231-23, body angle verification first</td></tr>
+          <tr><td>Windshield R&amp;R</td><td>Forward camera (lane keep, auto brake, adaptive cruise)</td><td><span class="pill yes">Yes</span></td><td class="type">By make</td><td class="write">Forward camera calibration per OEM procedure (static, dynamic, or both)</td></tr>
+          <tr><td>Front bumper cover R&amp;R or refinish</td><td>Front radar, park sensors</td><td><span class="pill yes">Yes</span></td><td class="type">Bay, some + road</td><td class="write">Front radar calibration; verify paint thickness over radar; verify park sensors</td></tr>
+          <tr><td>Grille or emblem R&amp;R</td><td>Front radar behind it</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">Front radar calibration; radar-transparent emblem only</td></tr>
+          <tr><td>Bumper beam or reinforcement</td><td>Front radar mount</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">Front radar calibration after mount R&amp;R</td></tr>
+          <tr><td>Rear bumper cover R&amp;R or refinish</td><td>Blind spot radars, rear cross traffic, park sensors</td><td><span class="pill yes">Yes</span></td><td class="type">Bay, some by road</td><td class="write">Blind spot radar calibration, left and right. R&amp;I with no refinish: check OEM</td></tr>
+          <tr><td>Quarter panel repair or replace</td><td>Rear corner radar bracket</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">Blind spot radar calibration, affected side; inspect radar bracket</td></tr>
+          <tr><td>Side mirror R&amp;R, mirror has a camera</td><td>Mirror camera, 360 view, LaneWatch</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">Surround view / side camera calibration</td></tr>
+          <tr><td>Side mirror R&amp;R, blind spot light only</td><td>Nothing that aims</td><td><span class="pill no">Usually no</span></td><td class="type">Verify</td><td class="write">Verify blind spot indicator function on post-scan</td></tr>
+          <tr><td>Door skin or door shell alone</td><td>Nothing, unless the mirror camera came with it</td><td><span class="pill no">Usually no</span></td><td class="type">Verify</td><td class="write">If mirror R&amp;R: see mirror row</td></tr>
+          <tr><td>Liftgate, tailgate, trunk lid, license trim</td><td>Rear camera, 360 rear camera</td><td><span class="pill check">Check OEM</span></td><td class="type">Bay</td><td class="write">Rear camera aim / surround view calibration if equipped (Honda multi-view, Toyota panoramic, Ford 360)</td></tr>
+          <tr><td>Wheel alignment, struts, springs, control arms, tie rods</td><td>Camera, radar, steering angle sensor</td><td><span class="pill yes">Yes</span></td><td class="type">Bay or road</td><td class="write">Steering angle sensor reset; forward camera and front radar calibration after alignment per OEM</td></tr>
+          <tr><td>Tire size change, lift, heavy accessories</td><td>Radar and camera vertical aim</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">Radar and camera calibration after ride height change (Ford lists tire size change by name)</td></tr>
+          <tr><td>Airbag deployment</td><td>Front structure moved. Camera and radar mounts. Seat sensors if seats were serviced</td><td><span class="pill yes">Yes</span></td><td class="type">Bay</td><td class="write">Forward camera and front radar calibration after structural repair; occupant sensor zero-point per OEM if seats or pretensioners were replaced</td></tr>
+          <tr><td>Any ADAS sensor, camera, or bracket R&amp;R</td><td>That sensor</td><td><span class="pill yes">Yes</span></td><td class="type">Per OEM</td><td class="write">Calibration of replaced sensor per OEM procedure, plus pre-scan and post-scan</td></tr>
+          <tr><td>Camera or radar module replaced</td><td>That module, and often its partners</td><td><span class="pill yes">Yes</span></td><td class="type">Per OEM</td><td class="write">Module programming / configuration, then calibration per OEM</td></tr>
+          <tr><td>Battery disconnect only, no parts</td><td>Nothing that aims, on most makes</td><td><span class="pill no">Usually no</span></td><td class="type">Verify</td><td class="write">Verify on post-scan. Some GM front cameras need a relearn after a dead battery (2022 bulletin)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="bymake">
+    <div class="label">Bay or road, by make</div>
+    <h2>Why this matters to your schedule.</h2>
+    <p class="lede" style="margin-bottom:14px"><b>Bay</b> is targets on a level floor with no metal in the radar's view. We can do it at your shop, same day. <b>Road</b> is a drive at speed on a road with good lane lines, in daylight, usually not in rain. Plan road time before you promise delivery. This is the pattern we see most in the van. The OEM procedure for the VIN wins.</p>
+    <div class="grid3">
+      <div class="r h"><div>Make</div><div>Forward camera</div><div>Front radar</div><div>Blind spot radars</div></div>
+      <div class="r"><div><b>Subaru</b></div><div data-h="Forward camera"><span class="k bay">Bay</span><span>chart targets, drive check after; body angle check first</span></div><div data-h="Front radar"><span class="k none">Rare</span><span>EyeSight is cameras</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Toyota / Lexus</b></div><div data-h="Forward camera"><span class="k bay">Bay</span></div><div data-h="Front radar"><span class="k bay">Bay</span><span>reflector, some add a drive</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Honda / Acura</b></div><div data-h="Forward camera"><span class="k bay">Bay</span><span class="k road">Road</span><span>both, in that order</span></div><div data-h="Front radar"><span class="k bay">Bay</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Ford / Lincoln</b></div><div data-h="Forward camera"><span class="k bay">Bay</span><span>2018 and newer; older ones drive</span></div><div data-h="Front radar"><span class="k bay">Bay</span><span class="k road">Road</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span><span>per Ford procedure</span></div></div>
+      <div class="r"><div><b>GM</b></div><div data-h="Forward camera"><span class="k road">Road</span><span>miles, lane lines, daylight</span></div><div data-h="Front radar"><span class="k road">Reset + road</span><span>learns while driving</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Nissan / Infiniti</b></div><div data-h="Forward camera"><span class="k bay">Bay</span><span class="k road">Road</span></div><div data-h="Front radar"><span class="k bay">Bay</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Hyundai / Kia / Genesis</b></div><div data-h="Forward camera"><span class="k bay">Bay</span><span>or road, by model</span></div><div data-h="Front radar"><span class="k bay">Bay</span></div><div data-h="Blind spot radars"><span class="k road">Road</span><span>self-aligns while driving</span></div></div>
+      <div class="r"><div><b>Mazda</b></div><div data-h="Forward camera"><span class="k bay">Bay</span><span class="k road">Road</span></div><div data-h="Front radar"><span class="k bay">Bay</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Jeep / Ram / Chrysler</b></div><div data-h="Forward camera"><span class="k road">Road</span></div><div data-h="Front radar"><span class="k bay">Bay</span><span>reflector</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+      <div class="r"><div><b>Tesla</b></div><div data-h="Forward camera"><span class="k road">Self</span><span>over miles, no shop routine</span></div><div data-h="Front radar"><span class="k none">None</span><span>vision only</span></div><div data-h="Blind spot radars"><span class="k none">None</span><span>cameras</span></div></div>
+      <div class="r"><div><b>VW / Audi</b></div><div data-h="Forward camera"><span class="k bay">Bay</span></div><div data-h="Front radar"><span class="k bay">Bay</span></div><div data-h="Blind spot radars"><span class="k bay">Bay</span></div></div>
+    </div>
+  </section>
+
+  <section id="flags">
+    <div class="label">The eight red flags</div>
+    <h2>When you see one of these on the RO, the question to ask is already written.</h2>
+    <div class="grid">
+      <div class="card"><h3>Windshield</h3><p>The camera is glued to the glass. New glass, new aim. Aftermarket glass fails the calibration more often than OE, and Subaru says genuine glass only.</p><p class="ask"><b>Ask:</b> "Is this OE glass, and does the cal shop know it is a camera car?"</p></div>
+      <div class="card"><h3>Front bumper cover</h3><p>Radar looks through the cover. Extra paint, plastic weld, or a non-OE cover cuts the signal. Nothing shows in the bay. It shows on the highway.</p><p class="ask"><b>Ask:</b> "How many coats went on over the radar, and did the cal complete?"</p></div>
+      <div class="card"><h3>Rear bumper cover</h3><p>Blind spot radars live behind it, one each corner. Refinish counts. Ford: topcoat only, 12 mils max, no substrate repair over the sensors.</p><p class="ask"><b>Ask:</b> "Were both blind spot radars calibrated, and was the bay clear of metal?"</p></div>
+      <div class="card"><h3>Grille or emblem</h3><p>The front radar is usually right behind the badge. Pull the grille, you moved the radar. A non-radar emblem blocks it.</p><p class="ask"><b>Ask:</b> "Was the radar aimed after the grille went back on, and is that the radar emblem?"</p></div>
+      <div class="card"><h3>Side mirror with a camera</h3><p>Mirror cameras feed the 360 view and LaneWatch. Wrong variant mirror, no code, wrong picture. A blind spot light alone does not need a cal.</p><p class="ask"><b>Ask:</b> "Right part number for this trim, and was surround view calibrated?"</p></div>
+      <div class="card"><h3>Alignment, suspension, tires</h3><p>Thrust angle changes where the camera and radar point. Most makes require a recal after an alignment. Bigger tires or a lift change radar height.</p><p class="ask"><b>Ask:</b> "Alignment first, then calibration, and was the steering angle sensor reset?"</p></div>
+      <div class="card"><h3>Airbag deployment</h3><p>The hit was hard enough to fire the bags, so it was hard enough to move the structure the camera and radar bolt to. Treat the front systems as suspect even when the parts look fine.</p><p class="ask"><b>Ask:</b> "Was the front structure measured, and were camera and radar calibrated after the pull?"</p></div>
+      <div class="card"><h3>Quarter, roof, liftgate</h3><p>Radar brackets in the quarter, cameras in the tailgate. Subaru mounts the EyeSight camera to the roof header, so roof and pillar work moves it.</p><p class="ask"><b>Ask:</b> "Did the cal shop check the bracket, or just run the routine?"</p></div>
+    </div>
+  </section>
+
+  <section id="makes">
+    <div class="label">Makes I see every week</div>
+    <h2>Western Washington gotchas.</h2>
+    <div class="makes">
+      <div class="make first"><b>Subaru EyeSight</b><span><b>Any collision repair gets the EyeSight calibration.</b> Not just glass. A hit anywhere can tilt the body a fraction of a degree, and EyeSight sees it. Subaru bulletin 18-231-23 has us check body angle with a digital gauge before the cal. Write it on every Subaru collision RO. Spec OE glass and save yourself the second trip.</span></div>
+      <div class="make"><b>Toyota and Lexus</b><span>The radar sits behind the emblem and will not throw a code when it is a little off. Clean scan, wrong radar. Front hit means radar calibration, every time, and the emblem must be the radar version.</span></div>
+      <div class="make"><b>Honda and Acura</b><span>The forward camera aims in the bay and then on the road, in that order. LaneWatch and 360 cameras in the mirror need aiming after a mirror R&amp;R. Honda calls for camera aiming after an alignment on many models.</span></div>
+      <div class="make"><b>Ford and Lincoln</b><span>Ford's May 2026 statement is the clearest in the industry: calibrate on any ADAS repair, DTC or not. Rear cover refinish is topcoat only, 12 mils max over BLIS. A tire size change is a camera alignment trigger by name.</span></div>
+      <div class="make"><b>GM</b><span>The forward camera calibrates on the road. It needs miles, lane lines, and daylight, so build the drive into the delivery promise. Digital surround-view cameras need no cal; analog ones do. A dead battery can knock a front camera into relearn.</span></div>
+      <div class="make"><b>Nissan and Infiniti</b><span>Radar behind the emblem. Too many coats on the cover, or an aftermarket cover, cuts the signal. You do not get a code in the bay. You get a "front radar obstruction" warning after delivery.</span></div>
+      <div class="make"><b>Hyundai, Kia, Genesis</b><span>Rear corner radars self-align by driving. A bracket bent two degrees still "completes" and still reads wrong on the road. Check the bracket before the drive, not after the comeback.</span></div>
+      <div class="make"><b>Jeep, Ram, Chrysler</b><span>Camera on the road, radar in the bay with a reflector. Most front hits need both, and the bay work comes first. Level floor, clear bay, or the radar aim is a guess.</span></div>
+      <div class="make"><b>Tesla</b><span>Cameras self-calibrate over miles and there is no radar to aim. Deliver before the drive is done and the customer calls you about Autopilot the next morning.</span></div>
+    </div>
+  </section>
+
+  <section id="scan">
+    <div class="label">Scan versus aim</div>
+    <h2>No code does not mean calibrated.</h2>
+    <div class="stack">
+      <p>A scan finds what is broken. It does not prove the aim is right. Those are two different questions and the scan tool only answers one of them.</p>
+      <p>Ford put it in writing on May 1, 2026: system calibration is <b>"required for all vehicles with ADAS-related repairs, regardless of whether a Diagnostic Trouble Code (DTC) is present,"</b> and a pre-repair scan is required on every vehicle with damage, <b>"even when no dashboard indicators are present."</b> Most OEMs say the same thing in their own words. The links are at the bottom.</p>
+      <p>So the order is: pre-scan before the estimate is final, repair, calibrate, post-scan before delivery. If the invoice only says "scanned, no codes found," that is not a calibration and it will not protect you when the car comes back.</p>
+    </div>
+  </section>
+
+  <section id="paper">
+    <div class="label">What the paperwork should show</div>
+    <h2>Six things, or it is not done.</h2>
+    <div class="stack">
+      <p>1. The OEM procedure by name. 2. Pre-scan and post-scan reports. 3. Target setup or aim values, before and after. 4. Bay, road, or both. 5. VIN, tech, date. 6. Any fault that was found and what was done about it.</p>
+      <p>That paperwork is what gets the line paid, and it is what keeps your shop's name off a subrogation letter six months from now.</p>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="label">From our books</div>
+    <h2>This is not theory.</h2>
+    <div class="proof">
+      <div><div class="n">681</div><div class="l">jobs invoiced since November 1, 2025</div></div>
+      <div><div class="n">62</div><div class="l">shops, dealers and glass companies, Bellingham to Olympia</div></div>
+      <div><div class="n">&lt;$500</div><div class="l">typical invoice, all in. Average is $485</div></div>
+      <div><div class="n">5</div><div class="l">shops have each sent us more than 24 cars this year</div></div>
+      <div class="src">Numbers pulled from Absolute ADAS books on September 16, 2026. Most calibration lines cost less than the tow that brings the car back.</div>
+    </div>
+  </section>
+
+  <section id="promise">
+    <div class="label">How I work with your shop</div>
+    <div class="promise">
+      <p class="big">Every calibration I recommend, your shop gets paid for.</p>
+      <p style="color:var(--ink-2)">If the carrier denies a calibration after my documentation, you do not pay me for it. I write the OEM-cited rebuttal and it usually flips on the next round. That is the deal, on every invoice.</p>
+    </div>
+  </section>
+
+  <div class="cta">
+    <div class="tag">Text the van</div>
+    <div class="num"><a href="sms:18443492327">1-844-FIX-ADAS</a></div>
+    <p>Same-day mobile ADAS calibration, Bellingham to Olympia. Send the vehicle and the hit. I will tell you what it needs and be there today if it needs us.</p>
+    <p class="small">Mark Fowler, Absolute ADAS, Lake Stevens, WA. 50,000+ calibrations on the floor.</p>
+  </div>
+
+  <section id="checklist">
+    <div class="label">Print this one</div>
+    <div class="check-sheet">
+      <div>
+        <h3>Tape it by the estimating desk.</h3>
+        <p class="who">Tick each one before the estimate goes out.</p>
+        <ul>
+          <li><b>Pre-scan</b> is on the estimate</li>
+          <li><b>Windshield</b> touched: forward camera calibration</li>
+          <li><b>Front cover, grille, emblem, beam:</b> front radar calibration</li>
+          <li><b>Rear cover or quarter:</b> blind spot radars, left and right</li>
+          <li><b>Mirror with a camera:</b> surround view calibration</li>
+          <li><b>Liftgate or tailgate with a camera:</b> rear camera aim, check OEM</li>
+          <li><b>Alignment, struts, springs, tires, lift:</b> SAS reset plus camera and radar</li>
+          <li><b>Airbag deployed:</b> front camera and radar after the structure is pulled</li>
+          <li><b>Any sensor or bracket R&amp;R:</b> calibrate that sensor</li>
+          <li><b>Subaru, any collision:</b> EyeSight calibration, bulletin 18-231-23</li>
+          <li><b>Post-scan</b> before delivery</li>
+          <li><b>Paperwork:</b> procedure name, both scans, aim values, bay or road, VIN, faults</li>
+        </ul>
+        <button class="printbtn" type="button" id="print-btn">Print the guide</button>
+        <p class="who" style="margin-top:12px">Ten-slide version for your team chat: <a href="https://absoluteadas.com/estimator-guide/when-does-this-car-need-a-calibration.pdf">the carousel PDF</a>.</p>
+      </div>
+      <div class="qr">
+        <img src="qr.png" alt="QR code to absoluteadas.com/estimator-guide" width="130" height="130">
+        <div>absoluteadas.com/<br>estimator-guide</div>
+        <div>Text the van<br><b>1-844-FIX-ADAS</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="label">Where this comes from</div>
+    <div class="refs">
+      <ul>
+        <li><a href="https://absoluteadas.com/adas-position-statements/ford/collision-adas-integrity-2026.pdf">Ford Collision Position Statement: ADAS Integrity and Repair Technical Imperatives (May 1, 2026)</a></li>
+        <li><a href="https://absoluteadas.com/adas-position-statements/ford/adas-scanning-2025.pdf">Ford Position Statement: Pre- and Post-Repair Scanning (Sept 2025)</a></li>
+        <li>Subaru of America technical bulletin 18-231-23 (Sept 11, 2023): EyeSight body alignment verification before calibration</li>
+        <li><a href="https://absoluteadas.com/adas-position-statements/equipment/hunter-decision-guide.pdf">Hunter Engineering ADAS Equipment Decision Guide, OEM by sensor tables (pages 3 and 4)</a></li>
+        <li><a href="https://rts.i-car.com/oem-calibration-requirements-search.html">I-CAR RTS: OEM Calibration Requirements Search</a></li>
+        <li><a href="https://www.adasfind.com/OEM-Position-Statements">ADASFind: OEM position statements by manufacturer</a></li>
+        <li><a href="https://absoluteadas.com/adas-position-statements/">Our growing library of OEM position statements</a></li>
+      </ul>
+    </div>
+    <p class="fine">This sheet is a starting point written from the van, not a substitute for the OEM procedure on the specific VIN in your bay. When the OEM and this sheet disagree, the OEM wins. Version 2, September 2026.</p>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  var MAKE_NOTE = {
+    subaru: 'Subaru with EyeSight: any collision repair gets the EyeSight calibration. Bay work with chart targets, body angle check first (bulletin 18-231-23). OE glass only.',
+    toyota: 'Toyota and Lexus: camera and radar both aim in the bay. The radar will not set a code when it is a little off, so do not wait for one.',
+    honda: 'Honda and Acura: forward camera aims in the bay, then on the road, in that order. Honda also calls for camera aiming after an alignment on many models.',
+    ford: 'Ford and Lincoln: Ford requires calibration on any ADAS repair regardless of DTC (May 2026). Rear cover refinish is topcoat only, 12 mils max over BLIS.',
+    gm: 'GM: the forward camera calibrates on the road. It needs miles, lane lines and daylight, so plan the drive before you promise delivery.',
+    nissan: 'Nissan and Infiniti: camera in the bay then on the road, radar in the bay. Paint over the radar cover shows up as an obstruction warning after delivery, not a code in the bay.',
+    hyundai: 'Hyundai, Kia, Genesis: rear corner radars self-align by driving, so check the bracket before the drive. Forward camera is bay or road by model.',
+    mazda: 'Mazda: forward camera aims in the bay, then on the road. Radar in the bay.',
+    stellantis: 'Jeep, Ram, Chrysler, Dodge: camera on the road, radar in the bay with a reflector. Bay work first.',
+    tesla: 'Tesla: cameras self-calibrate over miles, no radar. Deliver too early and Autopilot reports unavailable.',
+    vw: 'VW and Audi: camera and radars all aim in the bay with targets.',
+    other: 'The OEM procedure for the VIN wins. Text the van with year, make, model and the hit.'
+  };
+  var LINES = {
+    windshield: ['Forward camera calibration per OEM procedure (static, dynamic, or both by make)'],
+    front: ['Front radar calibration per OEM procedure', 'Verify paint film thickness over radar cover after refinish', 'Verify front park sensor operation'],
+    rear: ['Blind spot radar calibration, left and right, per OEM procedure', 'Verify rear park sensor operation after refinish'],
+    quarter: ['Blind spot radar calibration, affected side, per OEM procedure', 'Inspect rear corner radar bracket for damage before calibration'],
+    mirror: ['Surround view / side camera calibration if mirror is camera equipped', 'Blind spot indicator only: verify function on post-repair scan'],
+    door: ['Door alone: no calibration unless a mirror camera was removed with it'],
+    liftgate: ['Rear camera aim / surround view calibration if equipped, per OEM procedure'],
+    align: ['Steering angle sensor reset after alignment', 'Forward camera and front radar calibration after alignment per OEM procedure'],
+    tires: ['Radar and camera calibration after ride height or tire size change per OEM procedure'],
+    airbag: ['Forward camera and front radar calibration after structural repair', 'Occupant classification sensor zero-point per OEM if seats or pretensioners were replaced'],
+    sensor: ['Calibration of replaced sensor or bracket per OEM procedure', 'Module configuration / programming if a module was replaced'],
+    battery: ['Battery disconnect alone: verify on post-repair scan. GM front camera may need a relearn after a dead battery']
+  };
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+  var makeSel = document.getElementById('pk-make');
+  var out = document.getElementById('pk-out');
+  var copyBtn = document.getElementById('pk-copy');
+  var lastText = '';
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function render() {
+    var make = makeSel.value;
+    var picked = chips.filter(function (c) { return c.getAttribute('aria-pressed') === 'true'; }).map(function (c) { return c.dataset.k; });
+    if (!picked.length) {
+      out.innerHTML = '<p class="empty">Pick a make and at least one repair.</p>';
+      copyBtn.disabled = true; lastText = ''; return;
+    }
+    var lines = ['Pre-repair diagnostic scan'];
+    var onlySoft = picked.every(function (k) { return k === 'door' || k === 'battery'; });
+    if (make === 'subaru' && !onlySoft) lines.push('EyeSight stereo camera calibration per Subaru bulletin 18-231-23, body angle verification first');
+    picked.forEach(function (k) { (LINES[k] || []).forEach(function (l) { if (lines.indexOf(l) < 0) lines.push(l); }); });
+    lines.push('Post-repair diagnostic scan');
+    var html = '<h3>Write these lines</h3><ol>' + lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ol>';
+    html += '<p class="note">' + esc(MAKE_NOTE[make] || MAKE_NOTE.other) + '</p>';
+    out.innerHTML = html;
+    lastText = lines.map(function (l, i) { return (i + 1) + '. ' + l; }).join('\n');
+    copyBtn.disabled = false; copyBtn.textContent = 'Copy the lines';
+  }
+
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      render();
+    });
+  });
+  makeSel.addEventListener('change', render);
+  copyBtn.addEventListener('click', function () {
+    if (!lastText) return;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(lastText).then(function () { copyBtn.textContent = 'Copied'; }, function () { copyBtn.textContent = 'Select and copy above'; });
+      } else { copyBtn.textContent = 'Select and copy above'; }
+    } catch (e) { copyBtn.textContent = 'Select and copy above'; }
+  });
+  var pb = document.getElementById('print-btn');
+  if (pb) pb.addEventListener('click', function () { try { window.print(); } catch (e) {} });
+})();
+</script>
+
+</body>
+</html>
