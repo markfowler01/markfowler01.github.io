@@ -181,13 +181,6 @@
   .make.first { background: color-mix(in srgb, var(--accent) 8%, transparent); margin-inline: -12px; padding-inline: 12px; }
   @media (max-width: 520px) { .make { grid-template-columns: 1fr; gap: 4px; } }
 
-  /* Proof */
-  .proof { background: var(--panel); border: 1px solid var(--rule); padding: 20px 22px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .proof .n { font-family: var(--serif); font-size: clamp(28px, 5vw, 40px); line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .proof .l { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.35; }
-  .proof .src { grid-column: 1 / -1; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; }
-  @media (max-width: 600px) { .proof { grid-template-columns: 1fr 1fr; } }
-
   /* Promise + CTA */
   .promise { background: var(--panel); border: 1px solid var(--rule); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
   .promise .big { font-family: var(--serif); font-size: clamp(20px, 3.2vw, 25px); line-height: 1.25; }
@@ -198,17 +191,29 @@
   .cta .small { color: color-mix(in srgb, var(--band-ink) 75%, transparent); font-size: 14px; }
 
   /* Checklist */
-  .check-sheet { background: var(--panel); border: 1px solid var(--rule); padding: 22px; display: grid; grid-template-columns: 1fr 150px; gap: 22px; align-items: start; }
-  .check-sheet h3 { font-family: var(--serif); font-size: 22px; margin-bottom: 4px; }
-  .check-sheet .who { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
-  .check-sheet ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
-  .check-sheet li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
-  .check-sheet li::before { content: ""; width: 16px; height: 16px; border: 2px solid var(--ink); border-radius: 2px; margin-top: 3px; }
-  .check-sheet li b { font-weight: 700; }
-  .check-sheet .qr { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: 12px; color: var(--ink-2); }
-  .check-sheet .qr img { width: 130px; height: 130px; border: 1px solid var(--rule); background: #fff; }
-  .printbtn { margin-top: 12px; background: var(--ink); color: var(--paper); border: 0; padding: 10px 14px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 14px; }
-  @media (max-width: 560px) { .check-sheet { grid-template-columns: 1fr; } .check-sheet .qr { flex-direction: row; text-align: left; } }
+  .check-sheet { background: var(--panel); border: 1px solid var(--rule); border-top: 4px solid var(--accent); padding: 22px; }
+  .check-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; border-bottom: 1px solid var(--rule); padding-bottom: 14px; margin-bottom: 6px; }
+  .check-head h3 { font-family: var(--serif); font-size: clamp(22px, 3.4vw, 28px); line-height: 1.15; }
+  .check-head .who { font-size: 14px; color: var(--ink-2); margin-top: 6px; max-width: 52ch; }
+  .check-sheet ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+  .check-sheet li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.35; padding: 11px 0; border-bottom: 1px dashed var(--rule); }
+  .check-sheet li::before { content: ""; flex: none; width: 20px; height: 20px; border: 2px solid var(--ink); border-radius: 3px; margin-top: 1px; }
+  .check-sheet li > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .check-sheet li b { font-weight: 700; color: var(--ink); }
+  .check-sheet li span { color: var(--ink-2); font-size: 14px; }
+  .check-sheet li.wide { grid-column: 1 / -1; }
+  .check-sheet li.sub { grid-column: 1 / -1; background: var(--accent); padding: 12px 14px; margin-top: 10px; border: 0; border-radius: 3px; }
+  .check-sheet li.sub::before { border-color: var(--accent-ink); }
+  .check-sheet li.sub b, .check-sheet li.sub span { color: var(--accent-ink); }
+  .check-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .check-foot .qr { display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+  .check-foot .qr img { width: 92px; height: 92px; border: 1px solid var(--rule); background: #fff; flex: none; }
+  .check-foot .qr b { color: var(--ink); font-size: 15px; }
+  .check-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .printbtn, .pdfbtn { background: var(--ink); color: var(--paper); border: 0; padding: 10px 14px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; line-height: 1.2; }
+  .pdfbtn { background: var(--accent); color: var(--accent-ink); }
+  .check-sheet .after { font-size: 13px; color: var(--muted); margin-top: 14px; }
+  @media (max-width: 600px) { .check-sheet ul { grid-template-columns: 1fr; } .check-head { flex-direction: column; gap: 10px; } }
 
   /* Appendix */
   .refs { display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
@@ -227,9 +232,17 @@
     th { position: static; }
     .grid { grid-template-columns: 1fr 1fr; }
     #checklist { break-before: page; }
+    .check-sheet li.sub { background: #CD4419 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .check-actions, .check-sheet .after { display: none !important; }
     a { color: inherit; text-decoration: none; }
     .refs a::after { content: " (" attr(href) ")"; font-size: 9px; color: #555; }
+    /* "Print this checklist": only the sheet, on one page */
+    html.only-checklist body > :not(main), html.only-checklist main > :not(#checklist) { display: none !important; }
+    html.only-checklist #checklist { break-before: auto; padding-top: 0; }
+    html.only-checklist .check-sheet { border: 0; padding: 0; }
+    html.only-checklist .check-sheet li { font-size: 13.5px; padding: 9px 0; }
   }
+  @page { margin: 0.55in; }
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
 
@@ -241,7 +254,7 @@
     <h1>When does this car need a calibration?</h1>
     <p class="sub">A working sheet from <b>Mark Fowler</b>, owner of Absolute ADAS. Keep it by the estimating desk. Skim the box first. Use the picker when a car is in front of you. Print the checklist on the last page.</p>
     <nav class="jump" aria-label="Jump to">
-      <a href="#quick">60-second answer</a><a href="#map">Sensor map</a><a href="#picker">Line picker</a><a href="#table">The table</a><a href="#makes">By make</a><a href="#checklist">Print checklist</a>
+      <a href="#quick">60-second answer</a><a href="#map">Sensor map</a><a href="#picker">Line picker</a><a href="#table">The table</a><a href="#makes">By make</a><a href="#checklist">Checklist</a>
     </nav>
   </div>
 </header>
@@ -487,23 +500,12 @@
     </div>
   </section>
 
-  <section id="proof">
-    <div class="label">From our books</div>
-    <h2>This is not theory.</h2>
-    <div class="proof">
-      <div><div class="n">681</div><div class="l">jobs invoiced since November 1, 2025</div></div>
-      <div><div class="n">62</div><div class="l">shops, dealers and glass companies, Bellingham to Olympia</div></div>
-      <div><div class="n">&lt;$500</div><div class="l">typical invoice, all in. Average is $485</div></div>
-      <div><div class="n">5</div><div class="l">shops have each sent us more than 24 cars this year</div></div>
-      <div class="src">Numbers pulled from Absolute ADAS books on September 16, 2026. Most calibration lines cost less than the tow that brings the car back.</div>
-    </div>
-  </section>
-
   <section id="promise">
     <div class="label">How I work with your shop</div>
     <div class="promise">
       <p class="big">Every calibration I recommend, your shop gets paid for.</p>
       <p style="color:var(--ink-2)">If the carrier denies a calibration after my documentation, you do not pay me for it. I write the OEM-cited rebuttal and it usually flips on the next round. That is the deal, on every invoice.</p>
+      <p style="color:var(--ink-2)"><b style="color:var(--ink)">And keep the math in mind.</b> Most calibration lines cost less than the tow that brings the car back.</p>
     </div>
   </section>
 
@@ -515,33 +517,40 @@
   </div>
 
   <section id="checklist">
-    <div class="label">Print this one</div>
+    <div class="label">The checklist</div>
     <div class="check-sheet">
-      <div>
-        <h3>Tape it by the estimating desk.</h3>
-        <p class="who">Tick each one before the estimate goes out.</p>
-        <ul>
-          <li><b>Pre-scan</b> is on the estimate</li>
-          <li><b>Windshield</b> touched: forward camera calibration</li>
-          <li><b>Front cover, grille, emblem, beam:</b> front radar calibration</li>
-          <li><b>Rear cover or quarter:</b> blind spot radars, left and right</li>
-          <li><b>Mirror with a camera:</b> surround view calibration</li>
-          <li><b>Liftgate or tailgate with a camera:</b> rear camera aim, check OEM</li>
-          <li><b>Alignment, struts, springs, tires, lift:</b> SAS reset plus camera and radar</li>
-          <li><b>Airbag deployed:</b> front camera and radar after the structure is pulled</li>
-          <li><b>Any sensor or bracket R&amp;R:</b> calibrate that sensor</li>
-          <li><b>Subaru, any collision:</b> EyeSight calibration, bulletin 18-231-23</li>
-          <li><b>Post-scan</b> before delivery</li>
-          <li><b>Paperwork:</b> procedure name, both scans, aim values, bay or road, VIN, faults</li>
-        </ul>
-        <button class="printbtn" type="button" id="print-btn">Print the guide</button>
-        <p class="who" style="margin-top:12px">Ten-slide version for your team chat: <a href="https://absoluteadas.com/estimator-guide/when-does-this-car-need-a-calibration.pdf">the carousel PDF</a>.</p>
+      <div class="check-head">
+        <div>
+          <h3>Before the estimate goes out.</h3>
+          <p class="who">Tape it by the estimating desk. Tick what the repair touches. The line to write is under each one. Most calibration lines cost less than the tow that brings the car back.</p>
+        </div>
+        <div class="brand" style="flex:none"><span class="dot"></span><span>Absolute <b>ADAS</b></span></div>
       </div>
-      <div class="qr">
-        <img src="qr.png" alt="QR code to absoluteadas.com/estimator-guide" width="130" height="130">
-        <div>absoluteadas.com/<br>estimator-guide</div>
-        <div>Text the van<br><b>1-844-FIX-ADAS</b></div>
+      <ul>
+        <li><div><b>Pre-scan on the estimate</b><span>Pre-repair diagnostic scan</span></div></li>
+        <li><div><b>Post-scan before delivery</b><span>Post-repair diagnostic scan</span></div></li>
+        <li><div><b>Windshield touched</b><span>Forward camera calibration</span></div></li>
+        <li><div><b>Front cover, grille, emblem, beam</b><span>Front radar calibration</span></div></li>
+        <li><div><b>Rear cover or quarter panel</b><span>Blind spot radars, left and right</span></div></li>
+        <li><div><b>Mirror with a camera in it</b><span>Surround view calibration</span></div></li>
+        <li><div><b>Liftgate or tailgate with a camera</b><span>Rear camera aim, check OEM</span></div></li>
+        <li><div><b>Alignment, struts, springs, tires, lift</b><span>SAS reset, then camera and radar</span></div></li>
+        <li><div><b>Airbag deployed</b><span>Front camera and radar after the pull</span></div></li>
+        <li><div><b>Any sensor or bracket R&amp;R</b><span>Calibrate that sensor</span></div></li>
+        <li class="sub"><div><b>Subaru with EyeSight, any collision</b><span>EyeSight calibration, Subaru bulletin 18-231-23</span></div></li>
+        <li class="wide"><div><b>Paperwork shows all six</b><span>Procedure name, both scans, aim values before and after, bay or road, VIN with tech and date, faults found</span></div></li>
+      </ul>
+      <div class="check-foot">
+        <div class="qr">
+          <img src="qr.png" alt="QR code to absoluteadas.com/estimator-guide" width="92" height="92">
+          <div><b>Not sure? Text the van: 1-844-FIX-ADAS</b><br>Send year, make, model and the hit.<br>absoluteadas.com/estimator-guide</div>
+        </div>
+        <div class="check-actions">
+          <a class="pdfbtn" href="https://absoluteadas.com/estimator-guide/calibration-checklist.pdf">One-page PDF</a>
+          <button class="printbtn" type="button" id="print-btn">Print this checklist</button>
+        </div>
       </div>
+      <p class="after">Ten-slide version for your team chat: <a href="https://absoluteadas.com/estimator-guide/when-does-this-car-need-a-calibration.pdf">the carousel PDF</a>.</p>
     </div>
   </section>
 
@@ -636,7 +645,16 @@
     } catch (e) { copyBtn.textContent = 'Select and copy above'; }
   });
   var pb = document.getElementById('print-btn');
-  if (pb) pb.addEventListener('click', function () { try { window.print(); } catch (e) {} });
+  if (pb) pb.addEventListener('click', function () {
+    var root = document.documentElement;
+    var done = function () { root.classList.remove('only-checklist'); window.removeEventListener('afterprint', done); };
+    try {
+      root.classList.add('only-checklist');
+      window.addEventListener('afterprint', done);
+      window.print();
+      setTimeout(done, 1500);
+    } catch (e) { done(); }
+  });
 })();
 </script>
 
