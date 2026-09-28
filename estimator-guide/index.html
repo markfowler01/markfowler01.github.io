@@ -74,6 +74,16 @@
   .lede-hero { font-size: 17px; color: var(--light-gray); max-width: 600px; margin: 0 auto 22px; line-height: 1.55; }
   .lede-hero b { color: var(--white); font-weight: 600; }
   .hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 22px; }
+  /* Estimator lessons opt-in */
+  .lantern { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 0 auto 24px; max-width: 640px; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+  .lantern label { font-size: 14px; color: var(--light-gray); }
+  .lantern .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .lantern input { flex: 1 1 180px; min-width: 0; padding: 11px 12px; background: var(--dark-3); border: 1px solid rgba(255,255,255,.1); border-radius: 9px; color: var(--white); font: inherit; font-size: 15px; }
+  .lantern input:focus { outline: none; border-color: var(--orange); }
+  .lantern button { flex: 0 0 auto; background: var(--orange); color: #fff; border: 0; padding: 11px 16px; border-radius: 9px; font-weight: 800; font-size: 14px; cursor: pointer; }
+  .lantern button[disabled] { opacity: .7; cursor: default; }
+  .lantern .note { font-size: 13px; color: var(--green); }
+  .check-sheet .lantern { margin: 18px 0 0; max-width: none; }
   .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; font-size: 13px; color: var(--gray); margin-bottom: 28px; }
   .trust-row span { display: inline-flex; align-items: center; gap: 6px; }
   .trust-row span::before { content: '\25CF'; color: var(--orange); font-size: 7px; }
@@ -280,6 +290,11 @@
     <h1>When does this car <em>need a calibration?</em></h1>
     <p class="lede-hero">A working sheet from <b>Mark Fowler</b>, owner of Absolute ADAS. Keep it by the estimating desk. Skim the box first. Use the picker when a car is in front of you. Print the checklist at the bottom.</p>
     <div class="hero-cta"><a class="cta-btn" href="https://absoluteadas.com/checklist">Download the one-page checklist (PDF)</a><a class="cta-btn ghost" href="#picker">Open the line picker</a></div>
+    <form class="lantern" id="lantern-hero" data-source="guide-hero" autocomplete="on">
+      <label for="lantern-hero-email">Want the five short lessons by email, one every three days? No pitch until lesson five.</label>
+      <div class="row"><input type="email" id="lantern-hero-email" name="email" placeholder="you@yourshop.com" required><input type="text" id="lantern-hero-shop" name="shop" placeholder="Shop (optional)"><button type="submit">Send lesson 1</button></div>
+      <p class="note" hidden></p>
+    </form>
     <div class="trust-row"><span>Same-day mobile calibration</span><span>Bellingham to Olympia</span><span>50,000+ calibrations</span><span>OEM targets, static and dynamic</span></div>
     <div class="hero-photo" role="img" aria-label="The Absolute ADAS van, a white Ram ProMaster, parked outside a body shop"></div>
     <nav class="jump" aria-label="Jump to">
@@ -610,6 +625,11 @@
           <button class="printbtn" type="button" id="print-btn">Print this checklist</button>
         </div>
       </div>
+      <form class="lantern" id="lantern-foot" data-source="guide-checklist" autocomplete="on">
+        <label for="lantern-foot-email">Five short lessons from this sheet, by email, one every three days. Lesson 1 comes with the checklist attached.</label>
+        <div class="row"><input type="email" id="lantern-foot-email" name="email" placeholder="you@yourshop.com" required><input type="text" id="lantern-foot-shop" name="shop" placeholder="Shop (optional)"><button type="submit">Send lesson 1</button></div>
+        <p class="note" hidden></p>
+      </form>
       <p class="after">Ten-slide version for your team chat: <a href="https://absoluteadas.com/estimator-guide/when-does-this-car-need-a-calibration.pdf">the carousel PDF</a>.</p>
     </div>
   </section>
@@ -709,6 +729,28 @@
         navigator.clipboard.writeText(lastText).then(function () { copyBtn.textContent = 'Copied'; }, function () { copyBtn.textContent = 'Select and copy above'; });
       } else { copyBtn.textContent = 'Select and copy above'; }
     } catch (e) { copyBtn.textContent = 'Select and copy above'; }
+  });
+  // Estimator lessons opt-in (the Magic Lantern). Form-encoded on purpose:
+  // JSON would trigger a preflight the Catalyst gateway does not answer.
+  var LANTERN_URL = 'https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/capture-calc/lantern/enroll';
+  Array.prototype.forEach.call(document.querySelectorAll('form.lantern'), function (f) {
+    f.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var email = (f.querySelector('input[name=email]').value || '').trim();
+      var shop = (f.querySelector('input[name=shop]').value || '').trim();
+      var note = f.querySelector('.note'); var btn = f.querySelector('button');
+      if (!email) return;
+      btn.disabled = true; btn.textContent = 'Sending';
+      var body = 'email=' + encodeURIComponent(email) + '&shop=' + encodeURIComponent(shop) + '&source=' + encodeURIComponent(f.dataset.source || 'guide');
+      fetch(LANTERN_URL, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+        .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
+        .then(function (j) {
+          note.hidden = false;
+          note.textContent = j && j.ok ? (j.already ? 'You are already on the list. Lesson ' + (j.next_lesson || 1) + ' is on its way on schedule.' : 'Lesson 1 is on its way. Check your inbox in a minute.') : 'That did not go through. Text the van instead: 1-844-FIX-ADAS.';
+          btn.textContent = j && j.ok ? 'Sent' : 'Try again'; btn.disabled = !!(j && j.ok);
+        })
+        .catch(function () { note.hidden = false; note.textContent = 'That did not go through. Text the van instead: 1-844-FIX-ADAS.'; btn.disabled = false; btn.textContent = 'Try again'; });
+    });
   });
   var pb = document.getElementById('print-btn');
   if (pb) pb.addEventListener('click', function () {
