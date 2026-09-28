@@ -14,7 +14,12 @@
 </head>
 <body>
   <p>Opening the estimator guide. <a href="/estimator-guide/">Tap here if it does not start.</a></p>
-  <img src="https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/capture-calc/hit?src=guide" alt="" width="1" height="1" style="position:absolute;opacity:0" />
-  <script>setTimeout(function () { location.replace('/estimator-guide/'); }, 350);</script>
+  <script>
+    (function () {
+      var src = (new URLSearchParams(location.search).get('src') || 'social').replace(/[^a-z0-9_-]/gi, '').slice(0, 24) || 'social';
+      var img = new Image(); img.src = 'https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/capture-calc/hit?src=guide-' + src + '&t=' + Date.now();
+      setTimeout(function () { location.replace('/estimator-guide/'); }, 400);
+    })();
+  </script>
 </body>
 </html>
