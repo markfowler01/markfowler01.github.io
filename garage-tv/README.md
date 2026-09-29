@@ -49,13 +49,17 @@ Rough sizes at 1080p: about 10 MB per minute, so an 8-hour file is around
 
 ## Make the long file yourself from a short one
 
-If you only have the 10-minute chunk (`garage-<name>-10m.mp4`), any
-computer with ffmpeg turns it into 8 hours in a few seconds:
+Any build whose audio chunk equals its length loops seamlessly, for example
+`--minutes 2 --audio-minutes 2`. That 2-minute file is small enough to
+send through chat, and any computer with ffmpeg turns it into the exact
+8-hour file in a few seconds, no re-encoding:
 
 ```bash
-for i in $(seq 48); do echo "file 'garage-bay-dusk-10m.mp4'"; done > list.txt
+for i in $(seq 240); do echo "file 'garage-bay-dusk-2m.mp4'"; done > list.txt
 ffmpeg -f concat -safe 0 -i list.txt -c copy garage-bay-dusk-8h.mp4
 ```
+
+Or skip the file entirely and set the TV or player to repeat.
 
 ## Phone workflow
 
