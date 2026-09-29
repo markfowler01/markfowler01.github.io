@@ -118,10 +118,14 @@ def main():
     ap.add_argument("--hum", type=float, default=0.06, help="mains hum level 0-1")
     ap.add_argument("--rumble", type=float, default=0.55, help="brown-noise fan level 0-1")
     ap.add_argument("--hiss", type=float, default=0.18, help="pink-noise air level 0-1")
+    ap.add_argument("--seamless", action="store_true",
+                    help="no fade in/out; crossfade the tail into the head so the file loops cleanly")
     args = ap.parse_args()
 
     rng = np.random.default_rng(args.seed)
     n = int(args.minutes * 60 * SR)
+    xf = int(6 * SR) if args.seamless else 0  # crossfade length
+    n += xf
 
     print(f"rendering {args.minutes} min ({n} samples)...")
     rumble = lowpass_fast(brown_noise(n, rng), 220) * slow_lfo(n, 47, rng, 0.35)
@@ -137,7 +141,14 @@ def main():
     # soft-clip / normalise to -6 dBFS so it's polite on a TV
     mix = np.tanh(mix * 1.4)
     mix *= 0.5 / (np.abs(mix).max() + 1e-9)
-    mix = fade_edges(mix, 4.0)
+    if args.seamless:
+        # equal-power crossfade: the extra tail blends into the head, then is dropped
+        ramp = np.linspace(0, 1, xf)
+        head, tail = mix[:xf], mix[-xf:]
+        mix = mix[:-xf].copy()
+        mix[:xf] = head * np.sqrt(ramp) + tail * np.sqrt(1 - ramp)
+    else:
+        mix = fade_edges(mix, 4.0)
 
     # slight stereo width: delay right channel a hair and decorrelate hiss
     right = np.roll(mix, 37)
