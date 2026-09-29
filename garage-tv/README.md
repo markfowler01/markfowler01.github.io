@@ -47,21 +47,27 @@ visible or audible seam.
 Rough sizes at 1080p: about 10 MB per minute, so an 8-hour file is around
 5 GB. Too big to send through chat, fine for YouTube or a USB stick.
 
-## Make the long file yourself from a short one
+## Make the long file yourself from the seed files
 
-Any build whose audio chunk equals its length loops seamlessly, for example
-`--minutes 2 --audio-minutes 2`. That 2-minute file is small enough to
-send through chat, and any computer with ffmpeg turns it into the exact
-8-hour file in a few seconds, no re-encoding:
+The seed is two small files: the 60 s video loop (`loop-<name>.mp4`, no
+sound) and the seamless raw audio chunk (`ambience-2m-seamless.wav`).
+Any computer with ffmpeg turns them into the exact 8-hour file:
 
 ```bash
-ffmpeg -stream_loop 239 -i garage-bay-dusk-2m.mp4 -c copy garage-bay-dusk-8h.mp4
+ffmpeg -stream_loop 479 -i loop-bay-dusk.mp4 -stream_loop 239 -i ambience-2m-seamless.wav \
+  -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -t 28800 -movflags +faststart garage-bay-dusk-8h.mp4
 ```
 
-(`-stream_loop 239` plays the input 240 times in total; `-c copy` means no
-re-encode, so it finishes in well under a minute.) On a phone the same
-command works in iSH (iPhone, `apk add ffmpeg`) or Termux (Android,
-`pkg install ffmpeg`).
+The video is repeated with stream copy (no re-encode). The audio is looped
+as raw PCM, which has no gaps, and encoded once, so the sound track is one
+continuous 8-hour stream with no click or dropout at any loop point. This
+matters for sleep videos. It takes about 10 minutes, almost all of it audio
+encoding. On a phone the same command works in iSH (iPhone,
+`apk add ffmpeg`) or Termux (Android, `pkg install ffmpeg`).
+
+Do not simply repeat a finished MP4 with `-c copy`: AAC audio carries a
+few milliseconds of encoder padding per file, so you get a tiny hiccup at
+every join.
 
 YouTube notes: accounts must be verified (phone number) before uploads
 over 15 minutes are allowed; the limit is then 12 hours / 256 GB.

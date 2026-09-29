@@ -143,12 +143,16 @@ def main():
     neon_glow = np.asarray(neon.filter(ImageFilter.GaussianBlur(28)), np.float32) / 255
     neon_core = np.asarray(neon.filter(ImageFilter.GaussianBlur(1.2)), np.float32) / 255
 
-    # dust particles: periodic drift so the loop is seamless
+    # dust particles: each sways on a closed sine path so the loop is exactly seamless
     n_dust = 90
     px = rng.uniform(0, W, n_dust)
     py = rng.uniform(H * 0.1, H * 0.95, n_dust)
-    dx = rng.uniform(-14, 14, n_dust)      # pixels per loop-second-ish
-    dy = rng.uniform(-10, 4, n_dust)
+    ax = rng.uniform(15, 45, n_dust)
+    ay = rng.uniform(8, 30, n_dust)
+    kx = rng.integers(1, 3, n_dust)
+    ky = rng.integers(1, 4, n_dust)
+    phx = rng.uniform(0, 2 * math.pi, n_dust)
+    phy = rng.uniform(0, 2 * math.pi, n_dust)
     pr = rng.uniform(0.8, 2.2, n_dust)
     pph = rng.uniform(0, 2 * math.pi, n_dust)
 
@@ -158,7 +162,8 @@ def main():
     cmd = [
         ffmpeg, "-y", "-f", "rawvideo", "-vcodec", "rawvideo", "-s", f"{W}x{H}",
         "-pix_fmt", "rgb24", "-r", str(args.fps), "-i", "-",
-        "-an", "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "20", "-tune", "stillimage",
+        "-g", str(args.fps * 2), "-keyint_min", str(args.fps * 2), "-sc_threshold", "0",
         "-pix_fmt", "yuv420p", "-movflags", "+faststart", args.out,
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -186,8 +191,8 @@ def main():
         dust = Image.new("F", (W, H), 0.0)
         dd = ImageDraw.Draw(dust)
         for k in range(n_dust):
-            x = (px[k] + dx[k] * args.seconds * t) % W
-            y = (py[k] + dy[k] * args.seconds * t) % H
+            x = px[k] + ax[k] * math.sin(2 * math.pi * kx[k] * t + phx[k])
+            y = py[k] + ay[k] * math.sin(2 * math.pi * ky[k] * t + phy[k])
             tw = 0.5 + 0.5 * math.sin(2 * math.pi * 3 * t + pph[k])
             dd.ellipse([x - pr[k], y - pr[k], x + pr[k], y + pr[k]], fill=0.25 * tw)
         frame += np.asarray(dust, np.float32)[..., None] * (0.6 + 0.4 * rgb)

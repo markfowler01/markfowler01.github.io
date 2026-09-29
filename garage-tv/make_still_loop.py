@@ -47,12 +47,17 @@ def main():
     BW, BH = big.size
     base = np.asarray(big, np.float32) / 255
 
-    # dust motes, periodic drift so the loop is seamless
+    # dust motes: each one sways on a closed path (sine in x and y) so the
+    # loop is exactly seamless, no wrap-around jump
     n_dust = args.dust
     px = rng.uniform(0, W, n_dust)
     py = rng.uniform(0, H, n_dust)
-    dx = rng.uniform(-10, 10, n_dust)
-    dy = rng.uniform(-8, 3, n_dust)
+    ax = rng.uniform(15, 45, n_dust)          # sway amplitude, px
+    ay = rng.uniform(8, 30, n_dust)
+    kx = rng.integers(1, 3, n_dust)           # whole cycles per loop
+    ky = rng.integers(1, 4, n_dust)
+    phx = rng.uniform(0, 2 * math.pi, n_dust)
+    phy = rng.uniform(0, 2 * math.pi, n_dust)
     pr = rng.uniform(0.7, 1.8, n_dust)
     pph = rng.uniform(0, 2 * math.pi, n_dust)
 
@@ -60,7 +65,10 @@ def main():
     cmd = [
         ffmpeg, "-y", "-f", "rawvideo", "-vcodec", "rawvideo", "-s", f"{W}x{H}",
         "-pix_fmt", "rgb24", "-r", str(args.fps), "-i", "-",
-        "-an", "-c:v", "libx264", "-preset", "medium", "-crf", "23",
+        # short keyframe interval + stillimage tune: every keyframe refresh is
+        # invisible, so the loop seam (also a keyframe) is invisible too
+        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "21", "-tune", "stillimage",
+        "-g", str(args.fps * 2), "-keyint_min", str(args.fps * 2), "-sc_threshold", "0",
         "-pix_fmt", "yuv420p", "-movflags", "+faststart", args.out,
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -75,8 +83,8 @@ def main():
         ch = int(cw * H / W)
         ox = (BW - cw) / 2 + args.drift * BW * 0.5 * math.sin(2 * math.pi * t)
         oy = (BH - ch) / 2 + args.drift * BH * 0.25 * math.sin(2 * math.pi * t + math.pi / 2)
-        ox = int(max(0, min(BW - cw, ox)))
-        oy = int(max(0, min(BH - ch, oy)))
+        ox = int(round(max(0, min(BW - cw, ox))))
+        oy = int(round(max(0, min(BH - ch, oy))))
 
         crop = big.crop((ox, oy, ox + cw, oy + ch)).resize((W, H), Image.BILINEAR)
         frame = np.asarray(crop, np.float32) / 255
@@ -88,8 +96,8 @@ def main():
             dust = Image.new("F", (W, H), 0.0)
             dd = ImageDraw.Draw(dust)
             for k in range(n_dust):
-                x = (px[k] + dx[k] * args.seconds * t) % W
-                y = (py[k] + dy[k] * args.seconds * t) % H
+                x = px[k] + ax[k] * math.sin(2 * math.pi * kx[k] * t + phx[k])
+                y = py[k] + ay[k] * math.sin(2 * math.pi * ky[k] * t + phy[k])
                 tw = 0.5 + 0.5 * math.sin(2 * math.pi * 2 * t + pph[k])
                 dd.ellipse([x - pr[k], y - pr[k], x + pr[k], y + pr[k]], fill=0.18 * tw)
             frame += np.asarray(dust, np.float32)[..., None]
