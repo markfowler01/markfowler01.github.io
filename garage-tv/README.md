@@ -55,9 +55,16 @@ send through chat, and any computer with ffmpeg turns it into the exact
 8-hour file in a few seconds, no re-encoding:
 
 ```bash
-for i in $(seq 240); do echo "file 'garage-bay-dusk-2m.mp4'"; done > list.txt
-ffmpeg -f concat -safe 0 -i list.txt -c copy garage-bay-dusk-8h.mp4
+ffmpeg -stream_loop 239 -i garage-bay-dusk-2m.mp4 -c copy garage-bay-dusk-8h.mp4
 ```
+
+(`-stream_loop 239` plays the input 240 times in total; `-c copy` means no
+re-encode, so it finishes in well under a minute.) On a phone the same
+command works in iSH (iPhone, `apk add ffmpeg`) or Termux (Android,
+`pkg install ffmpeg`).
+
+YouTube notes: accounts must be verified (phone number) before uploads
+over 15 minutes are allowed; the limit is then 12 hours / 256 GB.
 
 Or skip the file entirely and set the TV or player to repeat.
 
