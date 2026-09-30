@@ -268,12 +268,13 @@ open . 2>/dev/null
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--outdir", default=os.path.join(HERE, "out", "weekly"))
-    ap.add_argument("--date", help="build the kit for the week containing this date (YYYY-MM-DD); default today")
+    ap.add_argument("--date", help="build the kit for the week containing this date (YYYY-MM-DD); default tomorrow")
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
     ap.add_argument("--crf", type=int, default=30)
     args = ap.parse_args()
 
-    day = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
+    # default: the week that starts tomorrow, so the Sunday run builds the coming week's video
+    day = dt.date.fromisoformat(args.date) if args.date else dt.date.today() + dt.timedelta(days=1)
     p = plan(day)
     os.makedirs(args.outdir, exist_ok=True)
     print(json.dumps({k: (os.path.basename(v) if k == "photo" else v) for k, v in p.items()}, indent=2))
