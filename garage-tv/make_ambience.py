@@ -7,11 +7,11 @@ Layers:
   - hum          : 60 Hz mains hum with soft harmonics (fluorescents, chargers)
   - compressor   : an air compressor that kicks on every few minutes, runs,
                    and fades out (optional, off by default for max chill)
-  - drips        : rare soft "tink" of a tool set down or a drip (optional)
+  - recipe layer : rain on the roof, unit heater, or wind outside (--recipe)
 
 Usage:
   python3 make_ambience.py --minutes 60 --out ambience.wav
-  python3 make_ambience.py --minutes 5 --compressor --out ambience.wav
+  python3 make_ambience.py --minutes 2 --recipe rain --seamless --out rain.wav
 """
 import argparse
 import math
@@ -20,6 +20,7 @@ import wave
 import numpy as np
 
 SR = 44100
+TARGET_RMS = 0.06  # about -24 dBFS average: quiet and even, like the first published video
 
 
 def brown_noise(n, rng):
@@ -109,38 +110,103 @@ def compressor_events(n, rng, every_s=(180, 420), run_s=(25, 45)):
     return out
 
 
+def bandpass_fast(x, lo_hz, hi_hz):
+    """FFT band-pass: gentle 2-pole high-pass at lo_hz, 2-pole low-pass at hi_hz."""
+    X = np.fft.rfft(x)
+    f = np.fft.rfftfreq(len(x), 1 / SR)
+    hp = (f / lo_hz) ** 2 / np.sqrt(1 + (f / lo_hz) ** 4)
+    lp = 1.0 / np.sqrt(1 + (f / hi_hz) ** 4)
+    return np.fft.irfft(X * hp * lp, n=len(x))
+
+
+def norm(x):
+    return x / (np.abs(x).max() + 1e-9)
+
+
+def rain_layer(n, rng):
+    """Steady rain on a metal shop roof: a soft wash plus thousands of tiny, dull drop ticks."""
+    wash = bandpass_fast(rng.standard_normal(n), 250, 2200) * slow_lfo(n, 31, rng, 0.25)
+    # drops: sparse impulses (about 60/s) with random size, smeared by a short decaying burst
+    impulses = np.zeros(n)
+    k = int(n / SR * 60)
+    pos = rng.integers(0, n, k)
+    impulses[pos] = rng.pareto(3.0, k) * rng.choice([-1, 1], k)
+    klen = int(0.012 * SR)
+    kern = rng.standard_normal(klen) * np.exp(-np.arange(klen) / (0.0025 * SR))
+    drops = np.fft.irfft(np.fft.rfft(impulses) * np.fft.rfft(kern, n=n), n=n)
+    drops = lowpass_fast(drops, 2400)  # dull the ticks so nothing is sharp enough to wake anyone
+    return 0.7 * norm(wash) + 0.45 * norm(drops)
+
+
+def heater_layer(n, rng):
+    """Shop unit heater: blower whoosh plus a low motor tone that wavers slightly."""
+    t = np.arange(n) / SR
+    wobble = 1 + 0.004 * np.sin(2 * math.pi * t / 13 + rng.uniform(0, 6.28))
+    phase = 2 * math.pi * 29.5 * np.cumsum(wobble) / SR
+    motor = np.sin(phase) + 0.5 * np.sin(2 * phase) + 0.2 * np.sin(4 * phase)
+    blower = bandpass_fast(rng.standard_normal(n), 80, 1100)
+    return 0.8 * norm(blower) + 0.25 * norm(motor)
+
+
+def wind_layer(n, rng):
+    """Wind outside the bay door: slow gusts that swell and settle, darker when calm."""
+    base = rng.standard_normal(n)
+    dark = norm(lowpass_fast(base, 350))
+    bright = norm(bandpass_fast(base, 250, 1400))
+    t = np.arange(n) / SR
+    g = (0.5 + 0.5 * np.sin(2 * math.pi * t / 19 + rng.uniform(0, 6.28))) * \
+        (0.6 + 0.4 * np.sin(2 * math.pi * t / 47 + rng.uniform(0, 6.28)))
+    return 0.8 * dark * (0.5 + 0.5 * g) + 0.5 * bright * g
+
+
+# Each recipe sets the base levels and an extra layer. Flags still override the levels.
+RECIPES = {
+    "fan":    dict(rumble=0.55, hiss=0.18, hum=0.06, extra=None, extra_level=0.0),
+    "rain":   dict(rumble=0.30, hiss=0.05, hum=0.03, extra=rain_layer, extra_level=0.55),
+    "heater": dict(rumble=0.45, hiss=0.08, hum=0.03, extra=heater_layer, extra_level=0.45),
+    "wind":   dict(rumble=0.35, hiss=0.06, hum=0.03, extra=wind_layer, extra_level=0.50),
+}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--minutes", type=float, default=5)
     ap.add_argument("--out", default="ambience.wav")
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--recipe", choices=RECIPES, default="fan",
+                    help="fan (shop fan), rain (rain on the roof), heater (unit heater), wind (wind outside)")
     ap.add_argument("--compressor", action="store_true", help="add occasional air-compressor cycles")
-    ap.add_argument("--hum", type=float, default=0.06, help="mains hum level 0-1")
-    ap.add_argument("--rumble", type=float, default=0.55, help="brown-noise fan level 0-1")
-    ap.add_argument("--hiss", type=float, default=0.18, help="pink-noise air level 0-1")
+    ap.add_argument("--hum", type=float, default=None, help="mains hum level 0-1")
+    ap.add_argument("--rumble", type=float, default=None, help="brown-noise fan level 0-1")
+    ap.add_argument("--hiss", type=float, default=None, help="pink-noise air level 0-1")
     ap.add_argument("--seamless", action="store_true",
                     help="no fade in/out; crossfade the tail into the head so the file loops cleanly")
     args = ap.parse_args()
+    r = RECIPES[args.recipe]
+    lv = {k: (getattr(args, k) if getattr(args, k) is not None else r[k]) for k in ("rumble", "hiss", "hum")}
 
     rng = np.random.default_rng(args.seed)
     n = int(args.minutes * 60 * SR)
     xf = int(6 * SR) if args.seamless else 0  # crossfade length
     n += xf
 
-    print(f"rendering {args.minutes} min ({n} samples)...")
+    print(f"rendering {args.minutes} min of '{args.recipe}' ({n} samples)...")
     rumble = lowpass_fast(brown_noise(n, rng), 220) * slow_lfo(n, 47, rng, 0.35)
     hiss = lowpass_fast(pink_noise(n, rng), 4000) * slow_lfo(n, 23, rng, 0.6)
     mains = hum(n) * slow_lfo(n, 90, rng, 0.2)
 
-    mix = args.rumble * rumble / (np.abs(rumble).max() + 1e-9)
-    mix += args.hiss * hiss / (np.abs(hiss).max() + 1e-9)
-    mix += args.hum * mains
+    mix = lv["rumble"] * norm(rumble)
+    mix += lv["hiss"] * norm(hiss)
+    mix += lv["hum"] * mains
+    if r["extra"] is not None:
+        mix += r["extra_level"] * norm(r["extra"](n, rng))
     if args.compressor:
         mix += 0.28 * compressor_events(n, rng)
 
-    # soft-clip / normalise to -6 dBFS so it's polite on a TV
-    mix = np.tanh(mix * 1.4)
-    mix *= 0.5 / (np.abs(mix).max() + 1e-9)
+    # level by average loudness (not peak) so every recipe plays at the same volume,
+    # then soft-limit any peaks above 0.8 so nothing jumps out
+    mix *= TARGET_RMS / (np.sqrt((mix ** 2).mean()) + 1e-12)
+    mix = 0.8 * np.tanh(mix / 0.8)
     if args.seamless:
         # equal-power crossfade: the extra tail blends into the head, then is dropped
         ramp = np.linspace(0, 1, xf)

@@ -18,6 +18,24 @@ from PIL import Image, ImageDraw, ImageFilter
 import imageio_ffmpeg
 
 
+# Colour grades: (brightness, R, G, B multipliers). Keep them subtle; the photo does the work.
+GRADES = {
+    "none":  (1.00, 1.00, 1.00, 1.00),
+    "night": (0.78, 0.86, 0.93, 1.10),   # later, bluer, darker
+    "amber": (0.95, 1.08, 1.00, 0.84),   # warm work-light glow
+    "cold":  (0.88, 0.92, 0.98, 1.06),   # winter night
+}
+
+
+def grade(img, name):
+    b, r, g, bl = GRADES[name]
+    if name == "none":
+        return img
+    a = np.asarray(img, np.float32) / 255 * b
+    a *= np.array([r, g, bl], np.float32)
+    return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True)
@@ -28,6 +46,8 @@ def main():
     ap.add_argument("--zoom", type=float, default=0.06, help="max extra zoom over the loop (0.06 = 6%%)")
     ap.add_argument("--drift", type=float, default=0.02, help="max sideways drift as a fraction of width")
     ap.add_argument("--dust", type=int, default=60, help="number of dust motes (0 to disable)")
+    ap.add_argument("--grade", choices=GRADES, default="none", help="colour grade applied to the photo")
+    ap.add_argument("--crf", type=int, default=21, help="x264 quality (higher = smaller file)")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -38,7 +58,7 @@ def main():
 
     # Fit the source to the output aspect, then upscale with margin so the
     # crop window always stays inside the picture at maximum zoom + drift.
-    src = Image.open(args.image).convert("RGB")
+    src = grade(Image.open(args.image).convert("RGB"), args.grade)
     margin = 1 + args.zoom + 2 * args.drift
     sw, sh = src.size
     scale = max(W * margin / sw, H * margin / sh)
@@ -67,7 +87,7 @@ def main():
         "-pix_fmt", "rgb24", "-r", str(args.fps), "-i", "-",
         # short keyframe interval + stillimage tune: every keyframe refresh is
         # invisible, so the loop seam (also a keyframe) is invisible too
-        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "21", "-tune", "stillimage",
+        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", str(args.crf), "-tune", "stillimage",
         "-g", str(args.fps * 2), "-keyint_min", str(args.fps * 2), "-sc_threshold", "0",
         "-pix_fmt", "yuv420p", "-movflags", "+faststart", args.out,
     ]

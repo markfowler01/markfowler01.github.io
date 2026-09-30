@@ -74,6 +74,45 @@ over 15 minutes are allowed; the limit is then 12 hours / 256 GB.
 
 Or skip the file entirely and set the TV or player to repeat.
 
+## Weekly machine (Mechanic Sleep)
+
+`.github/workflows/garage-tv-weekly.yml` runs every Sunday at 14:23 UTC and
+calls `weekly.py`, which picks the week's combination from the date:
+
+| Changes | Rotation |
+|---|---|
+| Sound, every week | rain, shop fan, wind, heater |
+| Colour, every 4 weeks | as shot, night, amber work lights, cold winter |
+| Photo, every week | cycles through everything in `stills/` |
+
+It builds the 60 s loop, the 2 min seamless sound, a thumbnail in the
+Mechanic Sleep style, and the title / description / tags, then publishes a
+GitHub release named `garage-tv-YYYY-Www` holding a zip of the kit. Each zip
+has `make-8h.command`: open Terminal, type `bash `, drag the file in, press
+Enter, and the 8-hour MP4 appears next to it.
+
+**Add photos any time.** Drop a landscape JPG/PNG/WebP (1600 px wide or
+more) into `garage-tv/stills/` on the main branch. More photos means more
+variety, and YouTube is less likely to flag the channel as repetitive.
+
+**Full auto-upload (optional).** With these repository secrets set, the job
+also builds the 8-hour file and uploads it to YouTube with the thumbnail:
+`YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN`.
+
+1. console.cloud.google.com: create a project, enable **YouTube Data API v3**.
+2. OAuth consent screen: External, add yourself as a test user, then set
+   publishing status to **In production** (in Testing, tokens die after 7 days).
+3. Credentials: create an OAuth client ID of type **Desktop app**.
+4. On the Mac: `python3 garage-tv/get_youtube_token.py CLIENT_ID CLIENT_SECRET`,
+   sign in, pick the Mechanic Sleep channel, and copy the three values into
+   GitHub > Settings > Secrets and variables > Actions.
+5. Apply for the free YouTube API compliance audit. Until it passes, Google
+   locks API uploads from new projects to private, so you would still flip
+   each one to Public by hand.
+
+Run it by hand any time from the repo's Actions tab: **Garage TV weekly
+video**, then **Run workflow**. Locally: `python3 weekly.py --outdir kit`.
+
 ## Phone workflow
 
 1. Send Claude a photo of a car in the bay (or just say which one to use).

@@ -1,0 +1,60 @@
+name: Garage TV weekly video
+
+# Every Sunday morning, build a new Mechanic Sleep kit (new sound / colour / photo),
+# publish it as a GitHub release, and upload it to YouTube when the YT_* secrets are set.
+on:
+  schedule:
+    - cron: '23 14 * * 0'   # Sundays 14:23 UTC = 7:23 am Pacific (6:23 am in winter)
+  workflow_dispatch:         # "Run workflow" button for an extra or replacement video
+    inputs:
+      date:
+        description: 'Build for the week containing this date (YYYY-MM-DD). Blank = this week.'
+        required: false
+
+concurrency: garage-tv-weekly
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install tools
+        run: |
+          sudo apt-get install -y -qq fonts-dejavu-core >/dev/null
+          pip install numpy Pillow imageio-ffmpeg
+
+      - name: Build this week's kit
+        env:
+          HAS_YT: ${{ secrets.YT_REFRESH_TOKEN != '' }}
+          WEEK_DATE: ${{ github.event.inputs.date }}
+        run: |
+          args="--outdir kit"
+          [ -n "$WEEK_DATE" ] && args="$args --date $WEEK_DATE"
+          [ "$HAS_YT" = "true" ] && args="$args --full"
+          python garage-tv/weekly.py $args
+
+      - name: Publish the kit as a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(cat kit/TAG)
+          gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$tag" kit/*.zip kit/thumbnail.jpg \
+            --title "$(cat kit/RELEASE_TITLE)" --notes-file kit/details.txt
+
+      - name: Upload to YouTube
+        if: ${{ hashFiles('kit/mechanic-sleep-8h.mp4') != '' }}
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_PRIVACY: ${{ vars.YT_PRIVACY || 'public' }}
+        run: python garage-tv/youtube_upload.py kit/mechanic-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
