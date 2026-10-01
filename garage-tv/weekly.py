@@ -51,6 +51,9 @@ RECIPES = {
                    scene="the unit heater running against the cold", tags=["heater sounds", "heater white noise"]),
     "wind": dict(label="WIND OUTSIDE", title="Wind Outside the Bay Door",
                  scene="wind pushing at the bay doors", tags=["wind sounds", "wind for sleep"]),
+    "rain_road": dict(label="RAIN ON THE ROAD", title="Rain on a Mountain Road",
+                      scene="steady rain falling over the road and the pines",
+                      tags=["rain sounds", "rain for sleep", "rain on road"]),
 }
 GRADES = {
     "none": "at dusk, the last light going blue in the windows",
@@ -76,38 +79,66 @@ def week_index(day):
 def photos():
     exts = ("*.jpg", "*.jpeg", "*.png", "*.webp")
     found = sorted(p for e in exts for p in glob.glob(os.path.join(HERE, "stills", e)))
+    # one-off photos ("rotate": false in their .json) are built on request, never on the Sunday schedule
+    found = [p for p in found if photo_meta(p).get("rotate", True)]
     if not found:
         sys.exit("no photos in garage-tv/stills/")
     return found
 
 
-def plan(day):
+def photo_meta(photo):
+    """Optional sidecar stills/<name>.json describing a photo that isn't the garage default:
+    recipes, grades, title, title_tail, label, description, tags, text_side, rain, dust."""
+    path = os.path.splitext(photo)[0] + ".json"
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)
+    return {}
+
+
+def plan(day, photo=None, recipe=None, grade=None):
     i = week_index(day)
     iso = day.isocalendar()
     shots = photos()
+    photo = photo or shots[i % len(shots)]
+    meta = photo_meta(photo)
+    # j counts how many times this photo has come up, so each photo walks through
+    # all of its own sounds and colours no matter how many photos are in the rotation
+    j = i // len(shots)
+    recipes = meta.get("recipes", RECIPE_ORDER)
+    grades = meta.get("grades", GRADE_ORDER)
     return dict(
         index=i,
         tag=f"garage-tv-{iso[0]}-W{iso[1]:02d}",
-        recipe=RECIPE_ORDER[i % len(RECIPE_ORDER)],
-        grade=GRADE_ORDER[(i // len(RECIPE_ORDER)) % len(GRADE_ORDER)],
-        photo=shots[i % len(shots)],
+        recipe=recipe or recipes[j % len(recipes)],
+        grade=grade or grades[(j // len(recipes)) % len(grades)],
+        photo=photo,
+        meta=meta,
     )
 
 
 # --------------------------------------------------------------------------- words
 
 def title_for(p):
-    mid = RECIPES[p["recipe"]]["title"]
+    m = p.get("meta", {})
+    mid = m.get("title", RECIPES[p["recipe"]]["title"])
+    tail = m.get("title_tail", "Garage Ambience for Sleep")
     options = [
-        f"Mechanic Sleep 8 Hours | {mid}, No Music, No Talking | Garage Ambience for Sleep",
+        f"Mechanic Sleep 8 Hours | {mid}, No Music, No Talking | {tail}",
         f"Mechanic Sleep 8 Hours | {mid} | No Music, No Talking",
         f"Mechanic Sleep 8 Hours | {mid}",
     ]
     return next(t for t in options if len(t) <= 100)
 
 
+def label_for(p):
+    return p.get("meta", {}).get("label", RECIPES[p["recipe"]]["label"])
+
+
 def description_for(p):
     r = RECIPES[p["recipe"]]
+    if p.get("meta", {}).get("description"):
+        return p["meta"]["description"]
     return (
         f"The shop after everyone's gone home, {GRADES[p['grade']]}. A truck up on the lift, the floor still wet, "
         f"{r['scene']}. Eight hours of steady garage sound for sleeping, studying, or winding down after a long "
@@ -121,7 +152,7 @@ def description_for(p):
 
 def tags_for(p):
     tags, total = [], 0
-    for t in RECIPES[p["recipe"]]["tags"] + BASE_TAGS:
+    for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + BASE_TAGS:
         if total + len(t) + 1 > 480:  # YouTube caps tags at 500 characters
             break
         tags.append(t)
@@ -207,36 +238,50 @@ def make_thumbnail(p, out_path):
     sys.path.insert(0, HERE)
     from make_still_loop import grade  # same colour grade as the video
 
+    right_side = p.get("meta", {}).get("text_side") == "right"
     bg = cover(grade(Image.open(p["photo"]).convert("RGB"), p["grade"]), 1280, 720).convert("RGBA")
     shade = Image.new("L", (1280, 720))
-    shade.putdata([int(210 * max(0.0, 1 - (x / 1280) * 1.7)) for y in range(720) for x in range(1280)])
+    ramp = [int(210 * max(0.0, 1 - (x / 1280) * 1.7)) for x in range(1280)]
+    if right_side:
+        ramp = ramp[::-1]
+    shade.putdata(ramp * 720)
     bg = Image.composite(Image.new("RGBA", bg.size, (0, 0, 0, 255)), bg, shade)
 
+    target = 640
     left = 70
+    # draw the text block on its own layer so it can be scaled and moved per photo
+    layer = Image.new("RGBA", bg.size, (0, 0, 0, 0))
     mech = word("MECHANIC", 170, WHITE, distress=0.3, seed=p["index"])
     sleep = word("SLEEP", 196, WHITE, distress=0.3, seed=p["index"] + 1)
-    target = 640
     mech = mech.resize((target, int(mech.height * target / mech.width)), Image.LANCZOS)
     sw = int(target * 0.74)
     sleep = sleep.resize((sw, int(sleep.height * sw / sleep.width)), Image.LANCZOS)
-    paste_shadowed(bg, mech, (left, 70))
-    paste_shadowed(bg, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 6))
+    paste_shadowed(layer, mech, (left, 70))
+    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 6))
 
     band_y = 70 + mech.height + sleep.height + 26
     band = brush_band(target + 40, 118, p["index"])
-    bg.alpha_composite(band, (left - 20, band_y))
+    layer.alpha_composite(band, (left - 20, band_y))
     hours = word("8 HOURS", 92, NAVY, squeeze=0.95)
-    bg.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
+    layer.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
 
-    line = f"{RECIPES[p['recipe']]['label']}   |   NO MUSIC   |   NO TALKING"
+    line = f"{label_for(p)}   |   NO MUSIC   |   NO TALKING"
     sub = word(line, 34, WHITE, squeeze=0.95)
     if sub.width > target + 20:
         sub = sub.resize((target + 20, int(sub.height * (target + 20) / sub.width)), Image.LANCZOS)
     sub_y = band_y + band.height + 30
-    paste_shadowed(bg, sub, (left + (target - sub.width) // 2, sub_y), blur=3, offset=2)
+    paste_shadowed(layer, sub, (left + (target - sub.width) // 2, sub_y), blur=3, offset=2)
 
     wave = waveform(520, 70, p["index"])
-    bg.alpha_composite(wave, (left + (target - wave.width) // 2, sub_y + sub.height + 26))
+    layer.alpha_composite(wave, (left + (target - wave.width) // 2, sub_y + sub.height + 26))
+
+    scale = float(p.get("meta", {}).get("text_scale", 1.0))
+    bx, by, bx2, by2 = layer.getbbox()
+    block = layer.crop((bx, by, bx2, by2))
+    if scale != 1.0:
+        block = block.resize((round(block.width * scale), round(block.height * scale)), Image.LANCZOS)
+    x = 1280 - round(bx * scale) - block.width if right_side else bx
+    bg.alpha_composite(block, (x, round(by * scale)))
 
     bg.convert("RGB").save(out_path, quality=90, optimize=True)
 
@@ -271,11 +316,20 @@ def main():
     ap.add_argument("--date", help="build the kit for the week containing this date (YYYY-MM-DD); default tomorrow")
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
     ap.add_argument("--crf", type=int, default=30)
+    ap.add_argument("--photo", help="use this photo instead of the rotation (path or a name in stills/)")
+    ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road)")
+    ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")
+    ap.add_argument("--name", help="folder/tag name for a one-off kit (default: the week tag)")
     args = ap.parse_args()
 
     # default: the week that starts tomorrow, so the Sunday run builds the coming week's video
     day = dt.date.fromisoformat(args.date) if args.date else dt.date.today() + dt.timedelta(days=1)
-    p = plan(day)
+    photo = args.photo
+    if photo and not os.path.exists(photo):
+        photo = os.path.join(HERE, "stills", photo)
+    p = plan(day, photo=photo, recipe=args.recipe, grade=args.grade)
+    if args.name:
+        p["tag"] = args.name
     os.makedirs(args.outdir, exist_ok=True)
     print(json.dumps({k: (os.path.basename(v) if k == "photo" else v) for k, v in p.items()}, indent=2))
 
@@ -283,12 +337,14 @@ def main():
     stage = os.path.join(args.outdir, folder)
     os.makedirs(stage, exist_ok=True)
     loop, wav, thumb = (os.path.join(stage, n) for n in ("loop.mp4", "sound.wav", "thumbnail.jpg"))
-    final_name = f"mechanic-sleep-{p['recipe']}-8h.mp4"
+    meta = p["meta"]
+    final_name = f"mechanic-sleep-{meta.get('slug', p['recipe'].replace('_', '-'))}-8h.mp4"
 
     run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
          "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
     run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"],
          "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
+         "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
          "--seed", str(p["index"]), "--out", loop])
     make_thumbnail(p, thumb)
 
@@ -324,7 +380,7 @@ def main():
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
-        f.write(f"Mechanic Sleep, week of {day - dt.timedelta(days=day.weekday())}: {RECIPES[p['recipe']]['title']}")
+        f.write(f"Mechanic Sleep, week of {day - dt.timedelta(days=day.weekday())}: {meta.get('title', RECIPES[p['recipe']]['title'])}")
 
     if args.full:
         ff = imageio_ffmpeg.get_ffmpeg_exe()

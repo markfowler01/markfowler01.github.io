@@ -123,7 +123,14 @@ def norm(x):
     return x / (np.abs(x).max() + 1e-9)
 
 
-def rain_layer(n, rng):
+def rain_road_layer(n, rng):
+    """Outdoor rain on a wet road and forest: mostly a soft, wide wash, very few individual drops."""
+    wash = bandpass_fast(rng.standard_normal(n), 180, 2600) * slow_lfo(n, 37, rng, 0.2)
+    body = lowpass_fast(rng.standard_normal(n), 500)  # the low "roar" of rain over a wide area
+    return 0.75 * norm(wash) + 0.35 * norm(body) + 0.25 * norm(rain_layer(n, rng, drops_only=True))
+
+
+def rain_layer(n, rng, drops_only=False):
     """Steady rain on a metal shop roof: a soft wash plus thousands of tiny, dull drop ticks."""
     wash = bandpass_fast(rng.standard_normal(n), 250, 2200) * slow_lfo(n, 31, rng, 0.25)
     # drops: sparse impulses (about 60/s) with random size, smeared by a short decaying burst
@@ -135,6 +142,8 @@ def rain_layer(n, rng):
     kern = rng.standard_normal(klen) * np.exp(-np.arange(klen) / (0.0025 * SR))
     drops = np.fft.irfft(np.fft.rfft(impulses) * np.fft.rfft(kern, n=n), n=n)
     drops = lowpass_fast(drops, 2400)  # dull the ticks so nothing is sharp enough to wake anyone
+    if drops_only:
+        return drops
     return 0.7 * norm(wash) + 0.45 * norm(drops)
 
 
@@ -163,6 +172,7 @@ def wind_layer(n, rng):
 RECIPES = {
     "fan":    dict(rumble=0.55, hiss=0.18, hum=0.06, extra=None, extra_level=0.0),
     "rain":   dict(rumble=0.30, hiss=0.05, hum=0.03, extra=rain_layer, extra_level=0.55),
+    "rain_road": dict(rumble=0.22, hiss=0.04, hum=0.0, extra=rain_road_layer, extra_level=0.65),
     "heater": dict(rumble=0.45, hiss=0.08, hum=0.03, extra=heater_layer, extra_level=0.45),
     "wind":   dict(rumble=0.35, hiss=0.06, hum=0.03, extra=wind_layer, extra_level=0.50),
 }

@@ -46,6 +46,8 @@ def main():
     ap.add_argument("--zoom", type=float, default=0.06, help="max extra zoom over the loop (0.06 = 6%%)")
     ap.add_argument("--drift", type=float, default=0.02, help="max sideways drift as a fraction of width")
     ap.add_argument("--dust", type=int, default=60, help="number of dust motes (0 to disable)")
+    ap.add_argument("--rain", type=int, default=0, help="number of falling rain streaks (0 = no rain; ~700 is a steady rain)")
+    ap.add_argument("--rain-angle", type=float, default=8, help="rain slant in degrees")
     ap.add_argument("--grade", choices=GRADES, default="none", help="colour grade applied to the photo")
     ap.add_argument("--crf", type=int, default=21, help="x264 quality (higher = smaller file)")
     ap.add_argument("--out", default="loop.mp4")
@@ -80,6 +82,26 @@ def main():
     phy = rng.uniform(0, 2 * math.pi, n_dust)
     pr = rng.uniform(0.7, 1.8, n_dust)
     pph = rng.uniform(0, 2 * math.pi, n_dust)
+
+    # falling rain streaks in three depth layers. Each streak falls a whole number
+    # of screen-heights per loop, so frame 0 and the frame after the last match exactly.
+    rain = []
+    if args.rain:
+        slant = math.tan(math.radians(args.rain_angle))
+        layers = [  # share of streaks, seconds to cross the screen, streak length px, width, brightness
+            (0.55, 0.95, (18, 34), 1, 0.06),
+            (0.32, 0.55, (40, 70), 1, 0.10),
+            (0.13, 0.32, (80, 130), 2, 0.13),
+        ]
+        for share, cross, (lmin, lmax), width, bright in layers:
+            m = int(args.rain * share)
+            length = rng.uniform(lmin, lmax, m)
+            span = H + length
+            k = np.maximum(1, np.round(args.seconds / (cross * rng.uniform(0.85, 1.15, m))))
+            rain.append(dict(x0=rng.uniform(-0.2 * W, 1.1 * W, m), y0=rng.uniform(0, 1, m) * span,
+                             k=k, length=length, span=span, width=width,
+                             bright=bright * rng.uniform(0.6, 1.0, m), slant=slant))
+    rain_tint = np.array([0.82, 0.88, 1.0], np.float32)
 
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     cmd = [
@@ -121,6 +143,17 @@ def main():
                 tw = 0.5 + 0.5 * math.sin(2 * math.pi * 2 * t + pph[k])
                 dd.ellipse([x - pr[k], y - pr[k], x + pr[k], y + pr[k]], fill=0.18 * tw)
             frame += np.asarray(dust, np.float32)[..., None]
+
+        if rain:
+            sheet = Image.new("L", (W, H), 0)
+            sd = ImageDraw.Draw(sheet)
+            for L in rain:
+                ys = (L["y0"] + L["k"] * L["span"] * t) % L["span"] - L["length"]  # top of each streak
+                for x0, y, ln, b in zip(L["x0"], ys, L["length"], L["bright"]):
+                    xa = x0 + L["slant"] * y
+                    sd.line([(xa, y), (xa + L["slant"] * ln, y + ln)], fill=int(b * 255), width=L["width"])
+            sheet = sheet.filter(ImageFilter.GaussianBlur(0.8))
+            frame += (np.asarray(sheet, np.float32) / 255)[..., None] * rain_tint
 
         img = Image.fromarray((np.clip(frame, 0, 1) * 255).astype(np.uint8))
         proc.stdin.write(img.tobytes())
