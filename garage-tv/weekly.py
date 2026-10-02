@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build this week's Mechanic Sleep video kit, hands-off.
+"""Build this week's Car People Sleep video kit, hands-off.
 
 Every week gets a different combination, chosen from the date so no state
 file is needed:
@@ -8,11 +8,11 @@ file is needed:
   photo  : cycles through every picture in garage-tv/stills/ (add more any time)
 
 Outputs in --outdir:
-  mechanic-sleep-<tag>.zip   loop.mp4 + sound.wav + thumbnail.jpg + details.txt + make-8h.command
+  car-people-sleep-<tag>.zip   loop.mp4 + sound.wav + thumbnail.jpg + details.txt + make-8h.command
   thumbnail.jpg              1280x720 YouTube thumbnail
   details.txt / details.json title, description, tags, upload checklist
   TAG, RELEASE_TITLE         for the GitHub release step
-  mechanic-sleep-8h.mp4      only with --full (the finished 8-hour video)
+  car-people-sleep-8h.mp4    only with --full (the finished 8-hour video)
 
   python3 weekly.py --outdir kit              # this week's kit
   python3 weekly.py --outdir kit --date 2026-11-02 --full
@@ -39,6 +39,11 @@ LOOP_SECONDS = 60
 AUDIO_MINUTES = 2
 TOTAL_MINUTES = 480
 
+# Channel branding: the series name in titles, the two thumbnail lines, file names.
+BRAND = "Car People Sleep"
+BRAND_LINES = ("CAR PEOPLE", "SLEEP")
+BRAND_SLUG = "car-people-sleep"
+
 RECIPE_ORDER = ["rain", "fan", "wind", "heater"]
 GRADE_ORDER = ["none", "night", "amber", "cold"]
 
@@ -61,7 +66,7 @@ GRADES = {
     "amber": "with just the work lights still glowing",
     "cold": "on a winter night, frost on the glass",
 }
-BASE_TAGS = ["mechanic sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
+BASE_TAGS = ["car people sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
              "8 hours", "no music", "mechanic", "shop life", "auto shop ambience", "asmr garage"]
 
 ORANGE = (247, 134, 30)
@@ -124,9 +129,9 @@ def title_for(p):
     mid = m.get("title", RECIPES[p["recipe"]]["title"])
     tail = m.get("title_tail", "Garage Ambience for Sleep")
     options = [
-        f"Mechanic Sleep 8 Hours | {mid}, No Music, No Talking | {tail}",
-        f"Mechanic Sleep 8 Hours | {mid} | No Music, No Talking",
-        f"Mechanic Sleep 8 Hours | {mid}",
+        f"{BRAND} 8 Hours | {mid}, No Music, No Talking | {tail}",
+        f"{BRAND} 8 Hours | {mid} | No Music, No Talking",
+        f"{BRAND} 8 Hours | {mid}",
     ]
     return next(t for t in options if len(t) <= 100)
 
@@ -144,9 +149,9 @@ def description_for(p):
         f"{r['scene']}. Eight hours of steady garage sound for sleeping, studying, or winding down after a long "
         f"day in the bay.\n\n"
         "No music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\n"
-        "Built for mechanics, techs, and anyone who sleeps better with a fan running.\n\n"
+        "Built for car people: mechanics, techs, and anyone who sleeps better with a fan running.\n\n"
         "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
-        "#mechanicsleep #garageambience #whitenoise #sleepsounds #mechanic #shoplife"
+        "#carpeoplesleep #garageambience #whitenoise #sleepsounds #mechanic #shoplife"
     )
 
 
@@ -251,8 +256,8 @@ def make_thumbnail(p, out_path):
     left = 70
     # draw the text block on its own layer so it can be scaled and moved per photo
     layer = Image.new("RGBA", bg.size, (0, 0, 0, 0))
-    mech = word("MECHANIC", 170, WHITE, distress=0.3, seed=p["index"])
-    sleep = word("SLEEP", 196, WHITE, distress=0.3, seed=p["index"] + 1)
+    mech = word(BRAND_LINES[0], 170, WHITE, distress=0.3, seed=p["index"])
+    sleep = word(BRAND_LINES[1], 196, WHITE, distress=0.3, seed=p["index"] + 1)
     mech = mech.resize((target, int(mech.height * target / mech.width)), Image.LANCZOS)
     sw = int(target * 0.74)
     sleep = sleep.resize((sw, int(sleep.height * sw / sleep.width)), Image.LANCZOS)
@@ -333,12 +338,12 @@ def main():
     os.makedirs(args.outdir, exist_ok=True)
     print(json.dumps({k: (os.path.basename(v) if k == "photo" else v) for k, v in p.items()}, indent=2))
 
-    folder = f"mechanic-sleep-{p['tag']}"
+    folder = f"{BRAND_SLUG}-{p['tag']}"
     stage = os.path.join(args.outdir, folder)
     os.makedirs(stage, exist_ok=True)
     loop, wav, thumb = (os.path.join(stage, n) for n in ("loop.mp4", "sound.wav", "thumbnail.jpg"))
     meta = p["meta"]
-    final_name = f"mechanic-sleep-{meta.get('slug', p['recipe'].replace('_', '-'))}-8h.mp4"
+    final_name = f"{BRAND_SLUG}-{meta.get('slug', p['recipe'].replace('_', '-'))}-8h.mp4"
 
     run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
          "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
@@ -380,14 +385,14 @@ def main():
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
-        f.write(f"Mechanic Sleep, week of {day - dt.timedelta(days=day.weekday())}: {meta.get('title', RECIPES[p['recipe']]['title'])}")
+        f.write(f"{BRAND}, week of {day - dt.timedelta(days=day.weekday())}: {meta.get('title', RECIPES[p['recipe']]['title'])}")
 
     if args.full:
         ff = imageio_ffmpeg.get_ffmpeg_exe()
         run([ff, "-y", "-loglevel", "error", "-stream_loop", str(vloops), "-i", loop,
              "-stream_loop", str(aloops), "-i", wav, "-map", "0:v:0", "-map", "1:a:0",
              "-c:v", "copy", "-c:a", "aac", "-b:a", "128k", "-t", str(TOTAL_MINUTES * 60),
-             "-movflags", "+faststart", os.path.join(args.outdir, "mechanic-sleep-8h.mp4")])
+             "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-8h.mp4")])
 
     print(f"\nKIT READY: {zpath} ({os.path.getsize(zpath) / 1e6:.0f} MB)")
     print("TITLE:", title)

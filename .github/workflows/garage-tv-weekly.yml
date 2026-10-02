@@ -1,6 +1,6 @@
 name: Garage TV weekly video
 
-# Every Sunday morning, build a new Mechanic Sleep kit (new sound / colour / photo),
+# Every Sunday morning, build a new Car People Sleep kit (new sound / colour / photo),
 # publish it as a GitHub release, and upload it to YouTube when the YT_* secrets are set.
 on:
   schedule:
@@ -51,10 +51,10 @@ jobs:
             --title "$(cat kit/RELEASE_TITLE)" --notes-file kit/details.txt
 
       - name: Upload to YouTube
-        if: ${{ hashFiles('kit/mechanic-sleep-8h.mp4') != '' }}
+        if: ${{ hashFiles('kit/car-people-sleep-8h.mp4') != '' }}
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'public' }}
-        run: python garage-tv/youtube_upload.py kit/mechanic-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
+        run: python garage-tv/youtube_upload.py kit/car-people-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json

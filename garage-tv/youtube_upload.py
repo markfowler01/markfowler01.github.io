@@ -6,7 +6,7 @@ Needs three environment variables (stored as GitHub Actions secrets):
 Optional:
   YT_PRIVACY   public | unlisted | private   (default public)
 
-  python3 youtube_upload.py kit/mechanic-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
+  python3 youtube_upload.py kit/car-people-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
 
 Note: Google keeps API uploads from a brand-new, unaudited Google Cloud project
 locked to private until the project passes YouTube's free API compliance audit.
