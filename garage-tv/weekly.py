@@ -315,7 +315,7 @@ def main():
     ap.add_argument("--outdir", default=os.path.join(HERE, "out", "weekly"))
     ap.add_argument("--date", help="build the kit for the week containing this date (YYYY-MM-DD); default tomorrow")
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
-    ap.add_argument("--crf", type=int, default=30)
+    ap.add_argument("--crf", type=int, default=27)
     ap.add_argument("--photo", help="use this photo instead of the rotation (path or a name in stills/)")
     ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road)")
     ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")

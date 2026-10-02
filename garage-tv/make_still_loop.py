@@ -40,7 +40,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True)
     ap.add_argument("--seconds", type=float, default=60)
-    ap.add_argument("--fps", type=int, default=24)
+    ap.add_argument("--fps", type=int, default=30)
     ap.add_argument("--width", type=int, default=1920)
     ap.add_argument("--height", type=int, default=1080)
     ap.add_argument("--zoom", type=float, default=0.06, help="max extra zoom over the loop (0.06 = 6%%)")
@@ -49,7 +49,7 @@ def main():
     ap.add_argument("--rain", type=int, default=0, help="number of falling rain streaks (0 = no rain; ~700 is a steady rain)")
     ap.add_argument("--rain-angle", type=float, default=8, help="rain slant in degrees")
     ap.add_argument("--grade", choices=GRADES, default="none", help="colour grade applied to the photo")
-    ap.add_argument("--crf", type=int, default=21, help="x264 quality (higher = smaller file)")
+    ap.add_argument("--crf", type=int, default=22, help="x264 quality (higher = smaller file; above ~24 slow motion starts to stutter)")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -107,10 +107,13 @@ def main():
     cmd = [
         ffmpeg, "-y", "-f", "rawvideo", "-vcodec", "rawvideo", "-s", f"{W}x{H}",
         "-pix_fmt", "rgb24", "-r", str(args.fps), "-i", "-",
-        # short keyframe interval + stillimage tune: every keyframe refresh is
-        # invisible, so the loop seam (also a keyframe) is invisible too
-        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", str(args.crf), "-tune", "stillimage",
-        "-g", str(args.fps * 2), "-keyint_min", str(args.fps * 2), "-sc_threshold", "0",
+        # no-fast-pskip: x264 normally "skips" blocks that barely changed, which freezes a
+        # slow camera drift until it jumps; turning that off keeps slow motion smooth.
+        # aq-mode 3 keeps dark gradients from banding. A keyframe every 10 s (the loop
+        # seam is one of them) at this quality refreshes invisibly.
+        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", str(args.crf),
+        "-x264-params", "no-fast-pskip=1:aq-mode=3",
+        "-g", str(args.fps * 10), "-keyint_min", str(args.fps * 10), "-sc_threshold", "0",
         "-pix_fmt", "yuv420p", "-movflags", "+faststart", args.out,
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -120,29 +123,39 @@ def main():
         t = i / n_frames
         # closed camera path: zoom breathes once per loop, drift traces a small ellipse
         z = 1 + args.zoom * (0.5 - 0.5 * math.cos(2 * math.pi * t))
-        # crop window: at z=1 it shows the picture minus the margin, keeping the output aspect
-        cw = int(min(BW, BW / margin / z))
-        ch = int(cw * H / W)
+        # crop window: at z=1 it shows the picture minus the margin, keeping the output aspect.
+        # Everything stays in fractional pixels: rounding the window to whole pixels made the
+        # slow drift sit still for several frames and then jump, which reads as choppy.
+        cw = min(BW, BW / margin / z)
+        ch = cw * H / W
         ox = (BW - cw) / 2 + args.drift * BW * 0.5 * math.sin(2 * math.pi * t)
         oy = (BH - ch) / 2 + args.drift * BH * 0.25 * math.sin(2 * math.pi * t + math.pi / 2)
-        ox = int(round(max(0, min(BW - cw, ox))))
-        oy = int(round(max(0, min(BH - ch, oy))))
+        ox = max(0.0, min(BW - cw, ox))
+        oy = max(0.0, min(BH - ch, oy))
 
-        crop = big.crop((ox, oy, ox + cw, oy + ch)).resize((W, H), Image.BILINEAR)
+        crop = big.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy), resample=Image.BICUBIC)
         frame = np.asarray(crop, np.float32) / 255
 
         # very gentle light breathe (fluorescent tubes never sit perfectly still)
         frame *= 1 + 0.015 * math.sin(2 * math.pi * 3 * t)
 
         if n_dust:
-            dust = Image.new("F", (W, H), 0.0)
-            dd = ImageDraw.Draw(dust)
+            # each mote is a soft dot drawn at its exact fractional position, so it glides
+            # instead of hopping pixel to pixel
+            dust = np.zeros((H, W), np.float32)
             for k in range(n_dust):
                 x = px[k] + ax[k] * math.sin(2 * math.pi * kx[k] * t + phx[k])
                 y = py[k] + ay[k] * math.sin(2 * math.pi * ky[k] * t + phy[k])
                 tw = 0.5 + 0.5 * math.sin(2 * math.pi * 2 * t + pph[k])
-                dd.ellipse([x - pr[k], y - pr[k], x + pr[k], y + pr[k]], fill=0.18 * tw)
-            frame += np.asarray(dust, np.float32)[..., None]
+                x0, x1 = max(0, int(x) - 4), min(W, int(x) + 5)
+                y0, y1 = max(0, int(y) - 4), min(H, int(y) + 5)
+                if x0 >= x1 or y0 >= y1:
+                    continue
+                gx = np.arange(x0, x1, dtype=np.float32) - x
+                gy = np.arange(y0, y1, dtype=np.float32)[:, None] - y
+                s = 0.55 * pr[k]
+                dust[y0:y1, x0:x1] += 0.2 * tw * np.exp(-(gx ** 2 + gy ** 2) / (2 * s * s))
+            frame += dust[..., None]
 
         if rain:
             sheet = Image.new("L", (W, H), 0)
