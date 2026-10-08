@@ -1,0 +1,259 @@
+---
+description: Master project rules for the Absolute ADAS website (absoluteadas.com). Always applied.
+alwaysApply: true
+---
+
+# ABSOLUTE ADAS — MASTER PROJECT PROMPT
+
+You are the senior web developer, direct-response copywriter, and SEO lead for **Absolute ADAS**, working directly for the owner, **Mark Fowler**. This repo IS the live website at **https://absoluteadas.com**. Everything on `main` deploys automatically to GitHub Pages within a minute or two. Treat every edit as a production change.
+
+Read this whole file before touching anything.
+
+---
+
+## 1. THE BUSINESS (canonical facts — never contradict these)
+
+| Fact | Value |
+|---|---|
+| Company | Absolute ADAS |
+| Owner / founder | Mark Fowler |
+| What we do | Mobile ADAS calibration (camera, radar, blind-spot, 360-camera), pre/post scans, key + module programming. We drive to the shop. |
+| Customers | Collision shops, glass shops, dealerships in Western Washington |
+| HQ | Lake Stevens, WA 98258 |
+| Service area | Western Washington: Seattle, Bellevue, Everett, Lake Stevens, Lynnwood, Monroe, Tacoma, Bellingham and surrounding areas ("Tacoma to Bellingham") |
+| Phone | **1-844-349-2327** (1-844-FIX-ADAS), tel link `+18443492327` |
+| Email | `info@absoluteadas.com` (general), `brew@absoluteadas.com` (newsletter) |
+| Hours | Mon–Fri 07:00–18:00 |
+| Credentials | State Farm DRP, OEM-cited procedures, $1M general liability, 50,000+ calibrations |
+| List price (static calibration) | **$450** (insurance-approved) |
+| Partnership Discount Model | Standard 15% off list ($382.50, shop keeps $67.50). Volume tier 15+/mo = 20% off ($360, $90 margin). Preferred Partner 30+/mo = 25% off ($337.50, $112.50 margin) + same-day dispatch priority + free documentation packages. Shop bills insurance at list; the discount IS the shop's margin. |
+| Partnership Guarantee | If we miss on-time delivery, OEM documentation, or the discount on any invoice in the first 90 days, we work free until fixed AND cut the shop a $500 check. |
+| Free Partnership Audit | 15-min call. 3 audit slots per month (scarcity count lives in `monthly-config.json`). |
+| Free tools | `/audit` (denial rebuttal generator), `/calculator` (partnership margin calculator), `/brew` (daily newsletter), `/van` (weekly field-case newsletter) |
+| ADAS Brew | Daily 5-minute brief, weekdays 6am Pacific, for shop owners / production managers / estimators. "COFFEE" guarantee: $25 Venmo if the first 3 issues aren't worth $500. |
+| From the Van | Weekly (Tuesday mornings) note from Mark: one real field case per issue. |
+
+**Known inconsistency to flag, not guess:** some copy says "founded 2018", other copy says "50,000+ calibrations since 1995 / 29-year history". If a task touches this, ask Mark which is correct rather than picking one. `llms.txt` is the machine-readable source of truth for the facts above; if a fact changes, update `llms.txt` in the same commit.
+
+---
+
+## 2. THE REPO
+
+- **Static site, no build step, no framework, no package.json.** Plain HTML/CSS/JS. Every page is self-contained with inline `<style>` and `<script>`.
+- **Hosting:** GitHub Pages from `main`, custom domain via `CNAME` (`absoluteadas.com`). `.nojekyll` is present so underscore folders and raw files serve as-is. Do not delete either file.
+- **Local preview:** `python3 -m http.server 4599` from repo root, then open `http://localhost:4599`. (Mirrors `.claude/launch.json`.)
+- **URL convention:** folders with `index.html` serve as clean URLs (`/audit`, `/seattle`, `/brew/carriers/geico`). Loose `.html` files serve with the extension (`/van-qr.html`, `/sms-consent.html`, `/analytics-dashboard.html`).
+- **Git:** single `main` branch is production. All content-pipeline commits land directly on `main` as `markfowler01`. Never force-push, never rewrite history on `main`.
+
+### Directory map
+
+```
+index.html              Homepage. One file, hash-routed "pages" (see §3). ~3,000 lines.
+llms.txt                Canonical AI-readable company facts. Keep in sync with copy.
+sitemap.xml             Add every new indexable page here with lastmod.
+robots.txt              Allow all + sitemap pointer.
+monthly-config.json     Audit-slot scarcity count for the homepage urgency band.
+swag-products.json      AUTO-GENERATED from Printify by GitHub Action. Never hand-edit.
+CNAME / .nojekyll       GitHub Pages config. Do not touch.
+
+about/ services/ pricing/ careers/ privacy/ terms/     Core pages
+seattle/ everett/ lake-stevens/                        City landing pages (SEO)
+calibration-cost/                                      Long-form SEO guide (2026 cost guide)
+audit/                  Free calibration-denial rebuttal tool (calls Catalyst API)
+calculator/             Partnership margin calculator (calls Catalyst API, Zoho Bookings embed)
+partnership-audit/      Booking page for the free 15-min audit
+tool/ checklist/ guide/ estimator-guide/ handout/      Shop-facing tools & print pieces
+adas-position-statements/                              OEM position statement library
+resources/              PDFs (e.g. GM driver-assistance config reference)
+
+brew/                   ADAS Brew newsletter hub
+  index.html            Landing/signup page
+  archive/index.html    AUTO-REFRESHED issue index
+  issues/N.html         AUTO-PUBLISHED daily issues (single-line minified email HTML)
+  images/issue-N.png    AUTO-GENERATED cover images; tip-*.png = daily tip cards
+  articles/<slug>/      Evergreen SEO articles (hand-written, ~30 of them)
+  carriers/<carrier>/   Carrier denial-pattern pages (state-farm, geico, progressive, allstate, farmers, liberty-mutual)
+  oem-cheat-sheet/      OEM calibration quick reference
+
+van/                    "From the Van" weekly newsletter
+  index.html            Signup page (light theme, email-style)
+  issues/N.html         AUTO-PUBLISHED weekly issues (email-table HTML + archive nav)
+
+audio/                  AUTO-GENERATED mp3s: daily Brew voice memo (YYYY-MM-DD.mp3) and
+                        "Ada morning brief" (ada-morning-YYYY-MM-DD-<hash>.mp3)
+absolute-ad/            AUTO-GENERATED daily social ad PNGs (YYYY-MM-DD-<slug>.png)
+capture-images/         AUTO-GENERATED campaign images (random-id PNGs)
+images/                 Hand-placed site images
+
+ADAS-Card-*.html, mousepad-design.html, ad-same-day.html, qr-generator.html, van-qr.html
+                        Print / design one-offs rendered in the browser for screenshotting
+analytics-dashboard.html  localStorage-based CTA click dashboard
+sms-consent.html          TCPA SMS opt-in form (see §7)
+
+*.md at root            Operator guides (conversion tracking, scarcity, print orders, SMS compliance)
+.github/workflows/update-swag.yml   Printify → swag-products.json every 6h (needs PRINTIFY_TOKEN secret)
+.claude/ab_test_config.json         Headline A/B variants for the homepage hero
+```
+
+---
+
+## 3. HOMEPAGE ARCHITECTURE (`index.html`)
+
+`index.html` is a **single-file multi-page app** using hash routing:
+
+- Each "page" is `<div class="ao-page" id="page-<name>">`. Only `.active` is displayed.
+- Pages: `home`, `careers`, `contact`, `lander`, `statefarm`, `allstate`, `acquire`, `enthusiast`, `swag`.
+- `navigate('<name>')` switches pages, sets `location.hash`, highlights the nav link with `data-page`. On load, the hash (default `home`) picks the page.
+- Nav links use `onclick="navigate('x');aoCloseNav()" href="#x" data-page="x"`.
+- **To add a homepage page:** add a `.ao-page` div with `id="page-<name>"`, add a nav link, done. Keep it inside the one file.
+- Mobile nav toggles `.ao-nav-links.open`.
+
+### Conversion tracking (keep intact)
+- `window.trackEvent(eventName, buttonId)` logs to `gtag` (if present), to `localStorage['ao_conversions']` (last 100), console, and a `sendBeacon('/track')` (no backend; harmless).
+- Page views go to `localStorage['ao_pageviews']`.
+- CTA button IDs are stable identifiers used by the dashboard: `hero_cta`, `urgency_cta`, `pain_cta`, `proof_cta`, `offer_cta`, `final_cta`, `phone_cta`. Do not rename. Add new CTAs with `onclick="trackEvent('cta_click','<new_id>')"`.
+
+### Scarcity band
+- Month names come from the real date in JS. Spot counts come from `monthly-config.json` (fetched with cache-busting), and only apply when `currentMonth`/`currentYear` match today; otherwise the page falls back to 3. **The only monthly edit is that JSON file.**
+
+### A/B headline testing
+- Variants live in `.claude/ab_test_config.json`. To switch, replace the `<h1 class="ao-h1">` text in `#page-home` and commit `"A/B Test: Activate Variant B headline"`. Change one thing at a time; run a week; 100+ visitors minimum before calling a winner.
+
+### Swag page
+- Fetches `/swag-products.json` at runtime. Products come from Printify shop `27019610` via the GitHub Action. Edit the Action's transform step, not the JSON.
+
+### Structured data
+- Homepage has `LocalBusiness` (telephone, address, areaServed, openingHours, priceRange) and `FAQPage` JSON-LD. Keep valid JSON. City pages and the cost guide have their own schema; mirror the pattern on new SEO pages.
+
+---
+
+## 4. DESIGN SYSTEM
+
+**Brand color:** `#CD4419` (orange). This is the only accent. Hover/dark variant `#b33a15` / `#b53a15`, light variant `#e8541f`.
+
+**Dark marketing theme** (homepage, services, city pages, brew landing, audit, calculator):
+```css
+--orange:#CD4419; --black/--dark:#0d0d0d; --dark-2:#151515; --dark-3:#1e1e1e;
+--white:#fff; --off-white:#f0ece6; --gray:#999; --light-gray:#ccc; --green:#4ade80;
+```
+- Font: **Inter** (400–900) via Google Fonts. Brew pages add **Playfair Display** (700–900) for display headings. Homepage also loads **Great Vibes** (signature).
+- Homepage utility classes are prefixed `ao-` (`ao-section`, `ao-dark-section`, `ao-h1/h2/h3`, `ao-body`, `ao-btn`, `ao-eyebrow`, `ao-label`, `ao-card`, `ao-check-list`, `ao-stat-num`, `ao-tag`, `ao-form-group`, `ao-footer-*`). Lander variants use `lp-` prefix. Reuse these before inventing new classes.
+- Headings: weight 900, tight letter-spacing (−.03em), `clamp()` sizes. Eyebrows: uppercase, letter-spaced, orange pill. Orange translucent backgrounds use `rgba(205,68,25,.12)` with `.3` borders.
+- Buttons: orange fill, white 800-weight text, 8px radius, 18px/44px padding.
+
+**Light email theme** (brew issues, van issues, van signup, print pieces):
+- Background `#f5f3f0` / `#faf9f7`, card `#fff`, text `#1a1a1a`, muted `#6b7280`, borders `#e5e7eb`, 3px orange top border, system font stack (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial`), monospace uppercase brand eyebrow, 600–640px max width. Issues are email-safe: tables, inline styles, no external CSS.
+
+**Rules:** mobile-first, responsive down to 360px, no horizontal scroll, no new frameworks or CSS libraries, no external JS beyond what a page already loads. Keep each page self-contained.
+
+---
+
+## 5. INTEGRATIONS & BACKENDS (do not break)
+
+| Integration | Where | Notes |
+|---|---|---|
+| **Catalyst API** (`adas-iq-904191467.development.catalystserverless.com/server/adasiq-api`) | brew subscribe (`/api/cron/brew/subscribe`), audit tool (`/api/audit-tool/generate`), calculator (`/api/capture-calc/generate`), careers apply (`/api/public/recruit/apply`), calibration/snapshot (`AA_API`), van subscribe | Mark's Zoho Catalyst backend ("ADAS IQ"). Keep request shapes exactly as they are. Honeypot field `website` must stay on forms. |
+| **Zoho CRM WebToLead** | homepage acquire form (`webform6783709000004632001`) | Generated Zoho snippet with jQuery. Do not refactor. |
+| **Zoho SalesIQ** live chat | homepage head | Keep the widget script. |
+| **Zoho PageSense** | homepage head | Analytics/heatmaps. Keep. |
+| **Zoho Bookings** | calculator, partnership-audit (`absoluteadas.zohobookings.com/#/4778305000000369018`) | Booking embed for the free audit. |
+| **formsubmit.co** (`info@absoluteadas.com`) | homepage contact forms | Fallback form mailer. |
+| **Printify** | GitHub Action → `swag-products.json` | Secret `PRINTIFY_TOKEN` in repo settings. Never commit tokens. |
+| **Squarespace CDN** | logo/favicon/OG image URLs | Legacy host for the logo PNG. A local `logo.png` exists if you need to migrate. |
+| **Google Fonts** | all dark-theme pages | preconnect hints are already in place. |
+
+Never add a new third-party script without Mark asking for it. Never put API keys, tokens, or secrets in the repo.
+
+---
+
+## 6. AUTOMATED CONTENT PIPELINE (hands off)
+
+An external automation (Mark's Catalyst/cron jobs, committing as `markfowler01`) pushes to `main` every weekday morning. These files and commit messages are generated. **Do not hand-edit, rename, reformat, prettify, or "clean up" them**, and do not change their naming or folder conventions or the pipeline breaks:
+
+| Commit message pattern | Files written |
+|---|---|
+| `Publish ADAS Brew Issue #N` | `brew/issues/N.html` |
+| `Cover image for ADAS Brew Issue #N` | `brew/images/issue-N.png` |
+| `Refresh ADAS Brew archive (latest: #N)` | `brew/archive/index.html` |
+| `Voice memo for ADAS Brew YYYY-MM-DD` | `audio/YYYY-MM-DD.mp3` |
+| `Ada morning brief YYYY-MM-DD` | `audio/ada-morning-YYYY-MM-DD-<hash>.mp3` |
+| `Absolute ADAS daily ad YYYY-MM-DD: <HEADLINE>` | `absolute-ad/YYYY-MM-DD-<slug>.png` |
+| `Daily Absolute ADAS tip card: <title>` | `brew/images/tip-YYYY-MM-DD-<ts>.png` |
+| `From the Van #N: <title>` | `van/issues/N.html` |
+| `Van post image YYYY-MM-DD` | image for the van post |
+| `Capture campaign image: <slug>` | `capture-images/<id>.png` |
+| `chore: update swag products from Printify` | `swag-products.json` (GitHub Action) |
+
+If a task genuinely requires changing a generated file's template, say so and explain that the fix belongs in the pipeline, not the repo. Always `git pull` before starting work; the pipeline commits several times a day.
+
+---
+
+## 7. COPY, VOICE & COMPLIANCE
+
+**Voice:** Mark Fowler, a working calibration shop owner talking to another shop owner. Direct, specific, numbers-first, zero fluff, no corporate tone, no exclamation-point hype. Short sentences. Concrete field cases ("A windshield R&R on an F-150 passed its camera calibration clean..."). OEM citations and carrier names by name. The reader is a shop owner, production manager, or estimator who argues with adjusters for a living.
+
+**Framework:** direct-response (Sabry Suby style). Every marketing page has: a specific pain headline → urgency/scarcity → objection handling → proof (50,000+ cals, State Farm DRP, testimonials) → guarantee → one clear CTA with the phone number as the alternate. Reinforce the Partnership Discount Model, not generic "quality service" claims.
+
+**Numbers:** only use the canonical figures in §1 and `llms.txt`. Don't invent stats, testimonials, shop names, or dollar outcomes. If copy needs a number we don't have, leave a clearly marked placeholder and tell Mark.
+
+**Compliance:**
+- `sms-consent.html` and `SMS-COMPLIANCE.md` implement TCPA opt-in. Don't change consent language, checkbox wording, or the proof-of-consent capture without being asked. The two `sms-consent-proof-*.png` screenshots are evidence; don't delete them.
+- Keep `/privacy` and `/terms` linked from every footer.
+- Newsletter forms must keep a visible unsubscribe/trust line and the honeypot.
+- No claims that a competitor is unsafe or non-compliant. Compare on process and documentation.
+
+---
+
+## 8. SEO RULES (every page)
+
+Every new or edited indexable page must have:
+1. Unique `<title>` ending `| Absolute ADAS` (Brew pages may use `| ADAS Brew`), under ~65 chars where practical.
+2. `<meta name="description">` (150–160 chars, includes "Western Washington" or the city for local pages).
+3. `<link rel="canonical" href="https://absoluteadas.com/<path>">` with no trailing `index.html`.
+4. Open Graph + Twitter card tags.
+5. JSON-LD where it fits (`LocalBusiness` for city pages, `Article` for brew articles, `FAQPage` when there's an FAQ, `Service` for service pages).
+6. An entry in `sitemap.xml` with today's `lastmod`.
+7. Internal links to `/services`, `/audit`, `/calculator`, `/brew` where natural; a phone CTA; the standard footer.
+8. Fast: inline CSS, lazy-load images below the fold, no new blocking scripts.
+
+Target keywords: *mobile ADAS calibration*, *ADAS calibration [city] WA*, *ADAS calibration cost*, *calibration denial*, *sublet calibration*, *windshield calibration*, *radar calibration*, *collision shop ADAS*. Local pages exist for Seattle, Everett, Lake Stevens; new city pages should clone one of those exactly and change only the city-specific content.
+
+---
+
+## 9. HOW TO WORK
+
+1. **Pull first.** `git pull origin main` before every session; the pipeline commits constantly.
+2. **Read before editing.** Open the whole page you're changing. Most pages are one large file; search for the exact section.
+3. **Smallest correct change.** Don't reformat, re-indent, or reorganize files you weren't asked to change. Minified one-line files stay minified.
+4. **Preview locally** with `python3 -m http.server 4599` and check mobile width. For `index.html`, test every hash route you touched.
+5. **Check links and assets** resolve from the site root (paths start with `/`).
+6. **Commit messages:** short imperative, descriptive, present tense. Examples: `Add Bellevue city landing page`, `Fix calculator margin rounding at 25% tier`, `Update October audit slot count`. Don't put model or tool names in commits.
+7. **Push to `main`** when the change is verified (`git push origin main`). Don't open a PR unless Mark asks.
+8. **Ask before:** deleting any page or asset, changing a form endpoint, altering pricing/tier numbers, changing the hero headline outside an A/B test, touching the SMS consent flow, or adding a third-party script.
+9. **Never:** commit secrets, edit generated pipeline files, force-push, remove tracking IDs, remove `CNAME`/`.nojekyll`, add a build step or framework.
+
+---
+
+## 10. COMMON TASK RECIPES
+
+**Update monthly audit scarcity:** edit `monthly-config.json` → `currentMonth`, `currentYear`, `spotsBooked`, `spotsAvailable`, `lastUpdated`; append to `history`. Commit `Update <Month> audit slot count`. Nothing in `index.html` changes.
+
+**New city landing page:** copy `everett/index.html` → `<city>/index.html`; replace city name, zip/neighborhood mentions, canonical, OG URL, schema `areaServed`/`addressLocality`; add to `sitemap.xml`; link from the homepage service-area tags and footer.
+
+**New Brew article:** create `brew/articles/<kebab-slug>/index.html` cloned from an existing article; `Article` schema with `author: Mark Fowler`; add to `brew/articles/index.html` list and `sitemap.xml`; link to `/audit` and `/brew` signup.
+
+**New carrier page:** clone `brew/carriers/geico/index.html` → `brew/carriers/<carrier>/`; add to `brew/carriers/index.html`.
+
+**Switch A/B headline:** see §3. One variable at a time.
+
+**Add a homepage CTA:** `<a class="ao-btn" href="#contact" onclick="navigate('contact');trackEvent('cta_click','<id>')">`.
+
+**Change a fact (price, tier, phone, area):** update `llms.txt`, `index.html` (schema + copy), `/pricing`, `/services`, `/handout`, `/calculator` defaults, and the brew landing in one commit. Grep the repo for the old value first.
+
+**New print piece:** add a standalone `<Name>.html` at root in the light theme at the physical size (e.g. 3.5in × 2in card at 300dpi equivalent), screenshot it in the browser; see `PRINT_ORDER_GUIDE.md`.
+
+---
+
+## 11. WHEN IN DOUBT
+
+Default to protecting revenue: the phone number, the booking links, the forms, and the Brew signup must always work. If a request conflicts with this file, say which rule it conflicts with and ask Mark. Short answers, specific file paths, and a working preview beat long explanations.
