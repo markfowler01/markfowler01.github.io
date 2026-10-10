@@ -37,6 +37,7 @@ BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 LOOP_SECONDS = 60
 AUDIO_MINUTES = 2
+LOFI_MINUTES = 30  # lo-fi album length; 16 plays fill 8 hours
 TOTAL_MINUTES = 480
 
 # Channel branding: the series name in titles, the two thumbnail lines, file names.
@@ -56,6 +57,8 @@ RECIPES = {
                    scene="the unit heater running against the cold", tags=["heater sounds", "heater white noise"]),
     "wind": dict(label="WIND OUTSIDE", title="Wind Outside the Bay Door",
                  scene="wind pushing at the bay doors", tags=["wind sounds", "wind for sleep"]),
+    "lofi": dict(label="CHILL LO-FI", title="Chill Lo-Fi Beats",
+                 scene="slow lo-fi beats playing low", tags=["lofi", "lofi beats", "lofi for sleep", "chill beats"]),
     "rain_road": dict(label="RAIN ON THE ROAD", title="Rain on a Mountain Road",
                       scene="steady rain falling over the road and the pines",
                       tags=["rain sounds", "rain for sleep", "rain on road"]),
@@ -128,6 +131,11 @@ def title_for(p):
     m = p.get("meta", {})
     mid = m.get("title", RECIPES[p["recipe"]]["title"])
     tail = m.get("title_tail", "Garage Ambience for Sleep")
+    if m.get("title_full"):
+        return m["title_full"]
+    if p["recipe"] == "lofi":
+        options = [f"{BRAND} 8 Hours | {mid} | {tail}", f"{BRAND} 8 Hours | {mid}"]
+        return next(t for t in options if len(t) <= 100)
     options = [
         f"{BRAND} 8 Hours | {mid}, No Music, No Talking | {tail}",
         f"{BRAND} 8 Hours | {mid} | No Music, No Talking",
@@ -144,6 +152,12 @@ def description_for(p):
     r = RECIPES[p["recipe"]]
     if p.get("meta", {}).get("description"):
         return p["meta"]["description"]
+    if p["recipe"] == "lofi":
+        return ("Eight hours of slow, original lo-fi beats for sleeping, studying, or winding down after a long day "
+                "in the bay. Soft keys, warm bass, quiet drums and a little vinyl crackle.\n\n"
+                "No lyrics. No talking. Every track is original to this channel.\n\n"
+                "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
+                "#carpeoplesleep #lofi #lofibeats #sleepmusic #chillbeats")
     return (
         f"The shop after everyone's gone home, {GRADES[p['grade']]}. A truck up on the lift, the floor still wet, "
         f"{r['scene']}. Eight hours of steady garage sound for sleeping, studying, or winding down after a long "
@@ -270,7 +284,8 @@ def make_thumbnail(p, out_path):
     hours = word("8 HOURS", 92, NAVY, squeeze=0.95)
     layer.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
 
-    line = f"{label_for(p)}   |   NO MUSIC   |   NO TALKING"
+    middle = "NO LYRICS" if p["recipe"] == "lofi" else "NO MUSIC"
+    line = p.get("meta", {}).get("subline") or f"{label_for(p)}   |   {middle}   |   NO TALKING"
     sub = word(line, 34, WHITE, squeeze=0.95)
     if sub.width > target + 20:
         sub = sub.resize((target + 20, int(sub.height * (target + 20) / sub.width)), Image.LANCZOS)
@@ -299,7 +314,7 @@ def run(cmd):
 
 
 MAKE_8H = """#!/bin/bash
-# Turns loop.mp4 + sound.wav into the finished 8-hour video.
+# Turns loop.mp4 + {audio} into the finished 8-hour video.
 # Easiest: open Terminal, type  bash  and a space, drag this file in, press Enter.
 cd "$(dirname "$0")"
 FF=""
@@ -307,8 +322,8 @@ for c in ./ffmpeg "$HOME/Downloads/ffmpeg" "$(command -v ffmpeg)"; do
   if [ -n "$c" ] && [ -x "$c" ]; then FF="$c"; break; fi
 done
 if [ -z "$FF" ]; then echo "Can't find ffmpeg. Put the ffmpeg file in your Downloads folder."; exit 1; fi
-"$FF" -y -stream_loop {vloops} -i loop.mp4 -stream_loop {aloops} -i sound.wav -map 0:v:0 -map 1:a:0 \\
-  -c:v copy -c:a aac -b:a 128k -t {seconds} -movflags +faststart "{name}"
+"$FF" -y -stream_loop {vloops} -i loop.mp4 -stream_loop {aloops} -i {audio} -map 0:v:0 -map 1:a:0 \\
+  -c:v copy {acodec} -t {seconds} -movflags +faststart "{name}"
 echo
 echo "Done: $(pwd)/{name}"
 open . 2>/dev/null
@@ -322,7 +337,7 @@ def main():
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
     ap.add_argument("--crf", type=int, default=27)
     ap.add_argument("--photo", help="use this photo instead of the rotation (path or a name in stills/)")
-    ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road)")
+    ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road, lofi)")
     ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")
     ap.add_argument("--name", help="folder/tag name for a one-off kit (default: the week tag)")
     args = ap.parse_args()
@@ -341,12 +356,21 @@ def main():
     folder = f"{BRAND_SLUG}-{p['tag']}"
     stage = os.path.join(args.outdir, folder)
     os.makedirs(stage, exist_ok=True)
-    loop, wav, thumb = (os.path.join(stage, n) for n in ("loop.mp4", "sound.wav", "thumbnail.jpg"))
+    lofi = p["recipe"] == "lofi"
+    audio_name = "music.m4a" if lofi else "sound.wav"
+    audio_minutes = LOFI_MINUTES if lofi else AUDIO_MINUTES
+    # the lo-fi album is already AAC with track fades, so it is stream-copied (no re-encode)
+    acodec = ["-c:a", "copy"] if lofi else ["-c:a", "aac", "-b:a", "128k"]
+    loop, wav, thumb = (os.path.join(stage, n) for n in ("loop.mp4", audio_name, "thumbnail.jpg"))
     meta = p["meta"]
     final_name = f"{BRAND_SLUG}-{meta.get('slug', p['recipe'].replace('_', '-'))}-8h.mp4"
 
-    run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
-         "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
+    if lofi:
+        run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(LOFI_MINUTES),
+             "--seed", str(meta.get("music_seed", 1000 + p["index"])), "--out", wav])
+    else:
+        run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
+             "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
     run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"],
          "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
          "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
@@ -369,13 +393,14 @@ def main():
             f.write(txt)
 
     vloops = math.ceil(TOTAL_MINUTES * 60 / LOOP_SECONDS) - 1
-    aloops = math.ceil(TOTAL_MINUTES / AUDIO_MINUTES) - 1
+    aloops = math.ceil(TOTAL_MINUTES / audio_minutes) - 1
     with open(os.path.join(stage, "make-8h.command"), "w") as f:
-        f.write(MAKE_8H.format(vloops=vloops, aloops=aloops, seconds=TOTAL_MINUTES * 60, name=final_name))
+        f.write(MAKE_8H.format(vloops=vloops, aloops=aloops, seconds=TOTAL_MINUTES * 60, name=final_name,
+                               audio=audio_name, acodec=" ".join(acodec)))
 
     zpath = os.path.join(args.outdir, f"{folder}.zip")
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
-        for n in ("loop.mp4", "sound.wav", "thumbnail.jpg", "details.txt", "make-8h.command"):
+        for n in ("loop.mp4", audio_name, "thumbnail.jpg", "details.txt", "make-8h.command"):
             info = zipfile.ZipInfo(f"{folder}/{n}", date_time=dt.datetime.now().timetuple()[:6])
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = ((0o755 if n.endswith(".command") else 0o644) | 0o100000) << 16
@@ -391,7 +416,7 @@ def main():
         ff = imageio_ffmpeg.get_ffmpeg_exe()
         run([ff, "-y", "-loglevel", "error", "-stream_loop", str(vloops), "-i", loop,
              "-stream_loop", str(aloops), "-i", wav, "-map", "0:v:0", "-map", "1:a:0",
-             "-c:v", "copy", "-c:a", "aac", "-b:a", "128k", "-t", str(TOTAL_MINUTES * 60),
+             "-c:v", "copy", *acodec, "-t", str(TOTAL_MINUTES * 60),
              "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-8h.mp4")])
 
     print(f"\nKIT READY: {zpath} ({os.path.getsize(zpath) / 1e6:.0f} MB)")

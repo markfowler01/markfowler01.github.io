@@ -1,15 +1,29 @@
 {
   "rotate": false,
-  "recipes": ["rain_road"],
-  "grades": ["none"],
-  "title": "Rain on a Mountain Road at Sunset",
-  "title_tail": "Rain Sounds for Sleep",
-  "label": "RAIN AT SUNSET",
-  "slug": "rain-sunset-gt500",
+  "recipes": [
+    "lofi"
+  ],
+  "grades": [
+    "none"
+  ],
+  "title": "Chill Lo-Fi Beats on a Rainy Mountain Road",
+  "title_tail": "Lo-Fi for Sleep & Study",
+  "label": "CHILL LO-FI",
+  "slug": "lofi-gt500",
   "text_side": "right",
   "text_scale": 0.66,
   "rain": 900,
   "dust": 0,
-  "tags": ["rain on a mountain road", "car rain sounds", "shelby gt500", "mustang", "car sleep", "rainy sunset drive"],
-  "description": "Rain on a mountain road as the sun goes down. A red GT500 coming around a wet curve above the lake, headlights on, the last orange light breaking under the storm clouds. Eight hours of soft, even rain for sleeping, studying, or winding down after a long day in the bay.\n\nNo music. No talking. No thunder, no sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\nBuilt for mechanics, car people, and anyone who sleeps better with rain outside.\n\nMade by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n#carpeoplesleep #rainsounds #sleepsounds #carsleep #gt500 #mustang"
+  "tags": [
+    "lofi",
+    "lofi beats",
+    "lofi for sleep",
+    "car lofi",
+    "shelby gt500",
+    "mustang",
+    "rainy sunset drive",
+    "chill beats"
+  ],
+  "description": "Slow lo-fi beats on a rainy mountain road as the sun goes down. A red GT500 coming around a wet curve above the lake, the last orange light breaking under the storm clouds. Eight hours of soft keys, warm bass, quiet drums and a little vinyl crackle for sleeping, studying, or winding down after a long day in the bay.\n\nNo lyrics. No talking. Every track is original to this channel.\n\nBuilt for mechanics, car people, and anyone who sleeps better with something chill playing.\n\nMade by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n#carpeoplesleep #lofi #lofibeats #sleepmusic #gt500 #mustang",
+  "music_seed": 500
 }
