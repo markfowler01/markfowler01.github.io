@@ -77,27 +77,39 @@ Or skip the file entirely and set the TV or player to repeat.
 ## Daily machine (Car People Sleep)
 
 `.github/workflows/car-people-sleep-daily.yml` runs every day at 13:23 UTC
-(6:23 am Pacific) and calls `weekly.py --daily --record`:
+(6:23 am Pacific):
 
-- **Photo:** the next picture in `stills/` that has never been used,
-  alphabetically (name them `01-...`, `02-...` to set the order). When every
-  photo has been used, the one used longest ago comes back with the next colour
-  grade, so a day is never skipped. `published.json` is the log of what went out.
-- **Music:** a brand-new 30-minute album of original lo-fi (`make_lofi.py`)
-  every day, so no two videos share music.
-- **Words:** a photo's own title/description from its `.json` on its first use;
-  otherwise `Chill Lo-Fi Beats Vol. N`, numbered so titles never repeat.
-- **Thumbnail:** Car People Sleep style; the text goes on the calmer side of the
-  picture automatically unless the `.json` says `text_side`.
+1. **Car engine** (`car_engine.py`, needs the `OPENAI_API_KEY` secret): picks a
+   random fast-but-attainable car (Supra, Type R, M3, C8, GT500, Raptor, ...), a
+   colour and a moody scene (rainy mountain road, neon city, shop after hours,
+   snowy cabin, desert dusk, ...), never repeating a car from the last 20 videos
+   or a scene from the last 3, and has OpenAI's image model (the one behind
+   ChatGPT) paint it. The photo and its settings are saved to `stills/`.
+   Without a key, or if the call fails, the day falls back to the photo queue.
+2. **Photo queue:** otherwise the next never-used picture in `stills/`
+   (alphabetical), or the one used longest ago with a new colour grade.
+3. **Sound:** 30 minutes of steady white noise matched to the scene (outdoor
+   rain, rain on the roof, shop fan, wind, heater) with about three original
+   lo-fi tracks drifting in and out (`make_lofi.py --bed`), new every day.
+4. **Kit:** smooth 60 s video loop (with falling rain for rainy scenes),
+   thumbnail, title, description and tags, plus a 30 s vertical **trailer**
+   for YouTube Shorts (`make_trailer.py`). Published as release
+   `daily-YYYY-MM-DD`; kits older than 21 days are deleted. `published.json`
+   logs every video (photo, car, scene) and is committed back with the photo.
 
-It publishes a release named `daily-YYYY-MM-DD` with a zip (loop.mp4,
-music.m4a, thumbnail.jpg, details.txt, make-8h.command) and deletes kits
-older than 21 days. On a Mac: `cd` into the unzipped folder, `bash make-8h.command`.
+On a Mac: unzip the kit, `cd` into it, `bash make-8h.command`, upload the
+8-hour file, then upload `trailer.mp4` as a Short from the YouTube app.
 
-**Adding photos from a phone:** github.com > this repo > `garage-tv/stills` >
-Add file > Upload files > pick the pictures > Commit to `main`. Optional
-`<same-name>.json` beside a photo sets its title, description, tags,
-`text_side`, `text_scale` and `rain` (see `rain-road-gt500.json`).
+**Turning on ChatGPT photos:** platform.openai.com > API keys > Create new
+secret key (billing must be set up; one high-quality image is roughly a
+quarter, so about $5-8 a month daily). Then github.com > this repo > Settings >
+Secrets and variables > Actions > New repository secret, name
+`OPENAI_API_KEY`, paste the key.
+
+**Adding your own photos:** github.com > this repo > `garage-tv/stills` >
+Add file > Upload files > Commit to `main`. Optional `<same-name>.json` beside
+a photo sets its title, description, tags, `bed`, `text_side`, `text_scale`
+and `rain` (see `rain-road-gt500.json`).
 
 **Full auto-upload (optional).** With these repository secrets set, the job
 also builds the 8-hour file and uploads it to YouTube with the thumbnail:

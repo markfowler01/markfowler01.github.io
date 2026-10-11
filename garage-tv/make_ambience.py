@@ -178,29 +178,17 @@ RECIPES = {
 }
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--minutes", type=float, default=5)
-    ap.add_argument("--out", default="ambience.wav")
-    ap.add_argument("--seed", type=int, default=7)
-    ap.add_argument("--recipe", choices=RECIPES, default="fan",
-                    help="fan (shop fan), rain (rain on the roof), heater (unit heater), wind (wind outside)")
-    ap.add_argument("--compressor", action="store_true", help="add occasional air-compressor cycles")
-    ap.add_argument("--hum", type=float, default=None, help="mains hum level 0-1")
-    ap.add_argument("--rumble", type=float, default=None, help="brown-noise fan level 0-1")
-    ap.add_argument("--hiss", type=float, default=None, help="pink-noise air level 0-1")
-    ap.add_argument("--seamless", action="store_true",
-                    help="no fade in/out; crossfade the tail into the head so the file loops cleanly")
-    args = ap.parse_args()
-    r = RECIPES[args.recipe]
-    lv = {k: (getattr(args, k) if getattr(args, k) is not None else r[k]) for k in ("rumble", "hiss", "hum")}
-
-    rng = np.random.default_rng(args.seed)
-    n = int(args.minutes * 60 * SR)
-    xf = int(6 * SR) if args.seamless else 0  # crossfade length
+def render(minutes, recipe="fan", seed=7, seamless=True, compressor=False, levels=None):
+    """Return the soundscape as a stereo float array (samples, 2), levelled to TARGET_RMS.
+    seamless=True crossfades the tail into the head so the array loops without a seam."""
+    r = RECIPES[recipe]
+    lv = {k: r[k] for k in ("rumble", "hiss", "hum")}
+    lv.update({k: v for k, v in (levels or {}).items() if v is not None})
+    rng = np.random.default_rng(seed)
+    n = int(minutes * 60 * SR)
+    xf = int(6 * SR) if seamless else 0  # crossfade length
     n += xf
 
-    print(f"rendering {args.minutes} min of '{args.recipe}' ({n} samples)...")
     rumble = lowpass_fast(brown_noise(n, rng), 220) * slow_lfo(n, 47, rng, 0.35)
     hiss = lowpass_fast(pink_noise(n, rng), 4000) * slow_lfo(n, 23, rng, 0.6)
     mains = hum(n) * slow_lfo(n, 90, rng, 0.2)
@@ -210,14 +198,14 @@ def main():
     mix += lv["hum"] * mains
     if r["extra"] is not None:
         mix += r["extra_level"] * norm(r["extra"](n, rng))
-    if args.compressor:
+    if compressor:
         mix += 0.28 * compressor_events(n, rng)
 
     # level by average loudness (not peak) so every recipe plays at the same volume,
     # then soft-limit any peaks above 0.8 so nothing jumps out
     mix *= TARGET_RMS / (np.sqrt((mix ** 2).mean()) + 1e-12)
     mix = 0.8 * np.tanh(mix / 0.8)
-    if args.seamless:
+    if seamless:
         # equal-power crossfade: the extra tail blends into the head, then is dropped
         ramp = np.linspace(0, 1, xf)
         head, tail = mix[:xf], mix[-xf:]
@@ -226,9 +214,28 @@ def main():
     else:
         mix = fade_edges(mix, 4.0)
 
-    # slight stereo width: delay right channel a hair and decorrelate hiss
-    right = np.roll(mix, 37)
-    stereo = np.stack([mix, right], axis=1)
+    # slight stereo width: delay the right channel a hair
+    return np.stack([mix, np.roll(mix, 37)], axis=1)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--minutes", type=float, default=5)
+    ap.add_argument("--out", default="ambience.wav")
+    ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--recipe", choices=RECIPES, default="fan",
+                    help="fan (shop fan), rain (rain on the roof), rain_road (outdoor rain), heater, wind")
+    ap.add_argument("--compressor", action="store_true", help="add occasional air-compressor cycles")
+    ap.add_argument("--hum", type=float, default=None, help="mains hum level 0-1")
+    ap.add_argument("--rumble", type=float, default=None, help="brown-noise fan level 0-1")
+    ap.add_argument("--hiss", type=float, default=None, help="pink-noise air level 0-1")
+    ap.add_argument("--seamless", action="store_true",
+                    help="no fade in/out; crossfade the tail into the head so the file loops cleanly")
+    args = ap.parse_args()
+
+    print(f"rendering {args.minutes} min of '{args.recipe}'...")
+    stereo = render(args.minutes, args.recipe, args.seed, args.seamless, args.compressor,
+                    dict(rumble=args.rumble, hiss=args.hiss, hum=args.hum))
     pcm = (stereo * 32767).astype(np.int16)
 
     with wave.open(args.out, "wb") as w:

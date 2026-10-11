@@ -13,8 +13,10 @@ padded to exactly --minutes so an 8-hour video is a whole number of album repeat
 
   python3 make_lofi.py --minutes 30 --out album.m4a           # AAC, ready to stream-copy
   python3 make_lofi.py --minutes 3 --out test.wav --seed 4     # quick listen
+  python3 make_lofi.py --minutes 30 --bed rain_road --out mix.m4a   # white noise + occasional lo-fi
 """
 import argparse
+import json
 import math
 import os
 import subprocess
@@ -237,6 +239,18 @@ def compose_track(seed, bars):
                             t0 + (pos - half) * beat * SR + hum(), pan=rng.uniform(-0.15, 0.15))
         b0 += nbars
 
+    # drums and bass ease in and out over about a bar at section changes instead of
+    # starting at full level, so nothing jolts a sleeping listener
+    groove = np.zeros(length)
+    b = 0
+    for name, nbars in sections:
+        if name in ("A", "B"):
+            groove[int(b * bar * SR): int((b + nbars) * bar * SR)] = 1.0
+        b += nbars
+    ramp = moving_avg(groove, int(bar * SR))
+    kit *= ramp[:, None]
+    low *= (0.35 + 0.65 * ramp)[:, None]
+
     # buses: dusty drums, darker keys, gentle sidechain on the keys from the kick
     kit = fft_filter(kit, lo=35, hi=10000)
     keys = fft_filter(keys, lo=170, hi=8000)
@@ -284,61 +298,108 @@ def crackle(n, rng):
     return hiss + np.clip(clicks, -0.06, 0.06)
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--minutes", type=float, default=30, help="exact album length")
-    ap.add_argument("--seed", type=int, default=1)
-    ap.add_argument("--gap", type=float, default=3.0, help="seconds of crackle between tracks")
-    ap.add_argument("--bitrate", default="112k")
-    ap.add_argument("--out", default="album.m4a")
-    args = ap.parse_args()
-    rng = np.random.default_rng(args.seed)
-    target = int(args.minutes * 60 * SR)
+def moving_avg(x, n):
+    """Centred moving average via a running sum: same result as convolving with a box, in O(len(x))."""
+    c = np.cumsum(np.concatenate([np.zeros(1), x]))
+    i = np.arange(len(x))
+    lo, hi = np.clip(i - n // 2, 0, len(x)), np.clip(i - n // 2 + n, 0, len(x))
+    return (c[hi] - c[lo]) / (hi - lo)
 
-    tracks, used, i = [], 0, 0
-    while True:
-        bpm_guess = 76
-        bar_s = 240 / bpm_guess
-        remaining = (target - used) / SR - args.gap
-        if remaining < 70:
-            break
-        bars = int(rng.integers(13, 17)) * 4 if remaining > 4.2 * 60 else max(16, int(remaining / bar_s) // 4 * 4 - 4)
-        mix, info = compose_track(args.seed * 1000 + i, bars)
-        mix = tape(mix, rng)
-        if used + mix.shape[0] + int(args.gap * SR) > target:
-            break
-        tracks.append(mix)
-        used += mix.shape[0] + int(args.gap * SR)
-        print(f"  track {i + 1}: {info['bars']} bars, {info['bpm']} bpm, key {info['key']}, {mix.shape[0] / SR / 60:.1f} min")
-        i += 1
 
-    # spread the leftover time evenly across the gaps so the album is exactly --minutes long
-    extra = target - sum(t.shape[0] for t in tracks)
-    gaps = [extra // len(tracks)] * len(tracks)
-    gaps[-1] += extra - sum(gaps)
-    album = np.zeros((target, 2))
-    p = 0
-    for tr, g in zip(tracks, gaps):
-        album[p:p + tr.shape[0]] += tr
-        p += tr.shape[0] + g
-    album += crackle(target, rng)
-
-    album *= 0.08 / (np.sqrt((album ** 2).mean()) + 1e-12)  # same average loudness every album
-    album = 0.9 * np.tanh(album / 0.9)
+def write_audio(album, out, bitrate):
     pcm = (album * 32767).astype(np.int16)
-    print(f"album: {len(tracks)} tracks, {target / SR / 60:.2f} min, gaps {np.mean(gaps) / SR:.1f} s")
-
-    wav = args.out if args.out.endswith(".wav") else os.path.splitext(args.out)[0] + ".tmp.wav"
+    wav = out if out.endswith(".wav") else os.path.splitext(out)[0] + ".tmp.wav"
     with wave.open(wav, "wb") as w:
         w.setnchannels(2)
         w.setsampwidth(2)
         w.setframerate(SR)
         w.writeframes(pcm.tobytes())
-    if wav != args.out:
+    if wav != out:
         import imageio_ffmpeg
         subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-i", wav,
-                        "-c:a", "aac", "-b:a", args.bitrate, "-movflags", "+faststart", args.out], check=True)
+                        "-c:a", "aac", "-b:a", bitrate, "-movflags", "+faststart", out], check=True)
         os.remove(wav)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--minutes", type=float, default=30, help="exact album length")
+    ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--gap", type=float, default=3.0, help="seconds of crackle between tracks (music-only mode)")
+    ap.add_argument("--bed", help="white-noise bed under the music: rain_road, rain, fan, wind or heater. "
+                                  "With a bed the music only plays part of the time (--music-share)")
+    ap.add_argument("--music-share", type=float, default=0.35, help="fraction of the album with music, when --bed is set")
+    ap.add_argument("--bitrate", default="112k")
+    ap.add_argument("--out", default="album.m4a")
+    args = ap.parse_args()
+    rng = np.random.default_rng(args.seed)
+    target = int(args.minutes * 60 * SR)
+    starts = []
+
+    if args.bed:
+        # white noise the whole way through, with a few lo-fi tracks drifting in and out
+        import make_ambience
+        chunk = make_ambience.render(2, args.bed, seed=args.seed, seamless=True)
+        reps = -(-target // chunk.shape[0])
+        album = np.tile(chunk, (reps, 1))[:target]  # the chunk is seamless, so tiling has no seams
+        n_tracks = max(1, round(args.music_share * args.minutes / 3.3))
+        tracks = []
+        for i in range(n_tracks):
+            mix, info = compose_track(args.seed * 1000 + i, int(rng.integers(13, 17)) * 4)
+            mix = tape(mix, rng)
+            mix *= 0.075 / (np.sqrt((mix[mix.shape[0] // 4: 3 * mix.shape[0] // 4] ** 2).mean()) + 1e-12)
+            tracks.append(mix)
+            print(f"  track {i + 1}: {info['bars']} bars, {info['bpm']} bpm, key {info['key']}, {mix.shape[0] / SR / 60:.1f} min")
+        gap = (target - sum(t.shape[0] for t in tracks)) // len(tracks)
+        if gap < 30 * SR:
+            raise SystemExit("not enough room for the music; lower --music-share or raise --minutes")
+        duck = np.ones(target)
+        p = gap // 2  # half a gap at each end, so the album loops into a full gap
+        for tr in tracks:
+            starts.append(round(p / SR, 2))
+            album[p:p + tr.shape[0]] += tr
+            # dip the noise by up to 35% while the music plays, following the track's own loudness
+            env = np.sqrt(moving_avg(tr.mean(1) ** 2, SR))
+            duck[p:p + tr.shape[0]] -= 0.35 * env / (env.max() + 1e-12)
+            p += tr.shape[0] + gap
+        album *= moving_avg(duck, SR)[:, None]
+        album = 0.9 * np.tanh(album / 0.9)
+        print(f"mix: {args.bed} bed, {len(tracks)} tracks, {sum(t.shape[0] for t in tracks) / target * 100:.0f}% music, "
+              f"{gap / SR / 60:.1f} min of white noise between tracks")
+    else:
+        tracks, used, i = [], 0, 0
+        while True:
+            bar_s = 240 / 76
+            remaining = (target - used) / SR - args.gap
+            if remaining < 70:
+                break
+            bars = int(rng.integers(13, 17)) * 4 if remaining > 4.2 * 60 else max(16, int(remaining / bar_s) // 4 * 4 - 4)
+            mix, info = compose_track(args.seed * 1000 + i, bars)
+            mix = tape(mix, rng)
+            if used + mix.shape[0] + int(args.gap * SR) > target:
+                break
+            tracks.append(mix)
+            used += mix.shape[0] + int(args.gap * SR)
+            print(f"  track {i + 1}: {info['bars']} bars, {info['bpm']} bpm, key {info['key']}, {mix.shape[0] / SR / 60:.1f} min")
+            i += 1
+        # spread the leftover time evenly across the gaps so the album is exactly --minutes long
+        extra = target - sum(t.shape[0] for t in tracks)
+        gaps = [extra // len(tracks)] * len(tracks)
+        gaps[-1] += extra - sum(gaps)
+        album = np.zeros((target, 2))
+        p = 0
+        for tr, g in zip(tracks, gaps):
+            starts.append(round(p / SR, 2))
+            album[p:p + tr.shape[0]] += tr
+            p += tr.shape[0] + g
+        album += crackle(target, rng)
+        album *= 0.08 / (np.sqrt((album ** 2).mean()) + 1e-12)  # same average loudness every album
+        album = 0.9 * np.tanh(album / 0.9)
+        print(f"album: {len(tracks)} tracks, {target / SR / 60:.2f} min, gaps {np.mean(gaps) / SR:.1f} s")
+
+    write_audio(album, args.out, args.bitrate)
+    with open(os.path.splitext(args.out)[0] + ".tracks.json", "w") as f:
+        json.dump(dict(minutes=args.minutes, bed=args.bed, track_starts=starts), f)
     print("wrote", args.out)
 
 

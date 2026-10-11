@@ -61,6 +61,8 @@ RECIPES = {
                    scene="the unit heater running against the cold", tags=["heater sounds", "heater white noise"]),
     "wind": dict(label="WIND OUTSIDE", title="Wind Outside the Bay Door",
                  scene="wind pushing at the bay doors", tags=["wind sounds", "wind for sleep"]),
+    "mix": dict(label="WHITE NOISE + LO-FI", title="White Noise & Lo-Fi",
+                scene="steady white noise with lo-fi drifting in", tags=["white noise", "white noise for sleep", "lofi", "lofi for sleep"]),
     "lofi": dict(label="CHILL LO-FI", title="Chill Lo-Fi Beats",
                  scene="slow lo-fi beats playing low", tags=["lofi", "lofi beats", "lofi for sleep", "chill beats"]),
     "rain_road": dict(label="RAIN ON THE ROAD", title="Rain on a Mountain Road",
@@ -111,7 +113,7 @@ def photo_meta(photo):
 
 
 PUBLISHED = os.path.join(HERE, "published.json")
-DAILY_SOUND = "lofi"  # what the daily schedule makes
+DAILY_SOUND = "mix"  # white noise with an occasional original lo-fi track
 
 
 def load_published():
@@ -138,6 +140,7 @@ def plan_daily(day):
     for e in published:
         used.setdefault(e["photo"], []).append(e["date"])
     fresh = [s for s in shots if os.path.basename(s) not in used]
+    fresh.sort(key=lambda s: (not os.path.basename(s).startswith(day.isoformat()), os.path.basename(s)))
     if fresh:
         photo, uses = fresh[0], 0
     else:
@@ -145,7 +148,7 @@ def plan_daily(day):
         uses = len(used[os.path.basename(photo)])
     meta = photo_meta(photo)
     recipe = meta.get("daily_sound", DAILY_SOUND)
-    vol = sum(1 for e in published if e.get("recipe") == "lofi") + 1
+    vol = sum(1 for e in published if e.get("recipe") == recipe) + 1
     p = dict(
         index=(day - dt.date(2024, 1, 1)).days,
         tag=f"daily-{day.isoformat()}",
@@ -158,7 +161,8 @@ def plan_daily(day):
     )
     # a photo's own title / description only on its first lo-fi outing; reuses get a numbered title
     if not (p["fresh"] and recipe in meta.get("recipes", [recipe]) and meta.get("title")):
-        p["title_override"] = f"Chill Lo-Fi Beats Vol. {vol}" if recipe == "lofi" else None
+        p["title_override"] = {"lofi": f"Chill Lo-Fi Beats Vol. {vol}",
+                               "mix": f"White Noise & Lo-Fi Vol. {vol}"}.get(recipe)
         p["generic_words"] = True
     return p
 
@@ -191,11 +195,13 @@ def title_for(p):
     mid = m.get("title", RECIPES[p["recipe"]]["title"])
     if p.get("title_override"):  # daily reuse / no sidecar: numbered title, ignore the photo's own words
         mid, m = p["title_override"], {}
-    tail = m.get("title_tail", "Lo-Fi for Sleep & Study" if p["recipe"] == "lofi" else "Garage Ambience for Sleep")
+    tail = m.get("title_tail", {"lofi": "Lo-Fi for Sleep & Study", "mix": "White Noise & Lo-Fi for Sleep"}
+                 .get(p["recipe"], "Garage Ambience for Sleep"))
     if m.get("title_full"):
         return m["title_full"]
-    if p["recipe"] == "lofi":
-        options = [f"{BRAND} 8 Hours | {mid} | {tail}", f"{BRAND} 8 Hours | {mid}"]
+    if p["recipe"] in ("lofi", "mix"):
+        short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else "Lo-Fi"
+        options = [f"{BRAND} 8 Hours | {mid} | {tail}", f"{BRAND} 8 Hours | {mid} | {short}", f"{BRAND} 8 Hours | {mid}"]
         return next(t for t in options if len(t) <= 100)
     options = [
         f"{BRAND} 8 Hours | {mid}, No Music, No Talking | {tail}",
@@ -213,6 +219,12 @@ def description_for(p):
     r = RECIPES[p["recipe"]]
     if p.get("meta", {}).get("description") and not p.get("generic_words"):
         return p["meta"]["description"]
+    if p["recipe"] == "mix":
+        return ("Eight hours of steady white noise with a slow, original lo-fi track drifting in now and then, "
+                "for sleeping, studying, or winding down after a long day in the bay.\n\n"
+                "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
+                "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
+                "#carpeoplesleep #whitenoise #lofi #sleepsounds")
     if p["recipe"] == "lofi":
         return ("Eight hours of slow, original lo-fi beats for sleeping, studying, or winding down after a long day "
                 "in the bay. Soft keys, warm bass, quiet drums and a little vinyl crackle.\n\n"
@@ -232,7 +244,7 @@ def description_for(p):
 
 def tags_for(p):
     tags, total = [], 0
-    base = LOFI_TAGS if p["recipe"] == "lofi" else BASE_TAGS
+    base = LOFI_TAGS if p["recipe"] in ("lofi", "mix") else BASE_TAGS
     for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + base:
         if total + len(t) + 1 > 480:  # YouTube caps tags at 500 characters
             break
@@ -358,8 +370,12 @@ def make_thumbnail(p, out_path):
     hours = word("8 HOURS", 92, NAVY, squeeze=0.95)
     layer.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
 
-    middle = "NO LYRICS" if p["recipe"] == "lofi" else "NO MUSIC"
-    line = p.get("meta", {}).get("subline") or f"{label_for(p)}   |   {middle}   |   NO TALKING"
+    if p["recipe"] == "mix":
+        line = f"{label_for(p)}   |   NO TALKING"
+    else:
+        middle = "NO LYRICS" if p["recipe"] == "lofi" else "NO MUSIC"
+        line = f"{label_for(p)}   |   {middle}   |   NO TALKING"
+    line = p.get("meta", {}).get("subline") or line
     sub = word(line, 34, WHITE, squeeze=0.95)
     if sub.width > target + 20:
         sub = sub.resize((target + 20, int(sub.height * (target + 20) / sub.width)), Image.LANCZOS)
@@ -412,7 +428,7 @@ def main():
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
     ap.add_argument("--crf", type=int, default=27)
     ap.add_argument("--photo", help="use this photo instead of the rotation (path or a name in stills/)")
-    ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road, lofi)")
+    ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road, lofi, mix)")
     ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")
     ap.add_argument("--name", help="folder/tag name for a one-off kit (default: the week tag)")
     ap.add_argument("--daily", help=argparse.SUPPRESS, action="store_true")
@@ -438,7 +454,7 @@ def main():
     folder = f"{BRAND_SLUG}-{p['tag']}"
     stage = os.path.join(args.outdir, folder)
     os.makedirs(stage, exist_ok=True)
-    lofi = p["recipe"] == "lofi"
+    lofi = p["recipe"] in ("lofi", "mix")
     audio_name = "music.m4a" if lofi else "sound.wav"
     audio_minutes = args.lofi_minutes if lofi else AUDIO_MINUTES
     # the lo-fi album is already AAC with track fades, so it is stream-copied (no re-encode)
@@ -449,8 +465,9 @@ def main():
 
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
+        bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
         run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
-             "--seed", str(seed), "--out", wav])
+             "--seed", str(seed), *bed, "--out", wav])
     else:
         run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
              "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
@@ -461,6 +478,11 @@ def main():
     make_thumbnail(p, thumb)
 
     title, desc, tags = title_for(p), description_for(p), tags_for(p)
+    scene_line = title.split(" | ")[1] if " | " in title else title
+    trailer = os.path.join(stage, "trailer.mp4")
+    run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
+         "--title", scene_line, "--label", label_for(p), "--out", trailer])
+    short_title = f"{scene_line} | 8 Hours of {RECIPES[p['recipe']]['title']} #shorts"[:100]
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
                    madeForKids=False, alteredContent=True, recipe=p["recipe"], grade=p["grade"],
                    photo=os.path.basename(p["photo"]), tag=p["tag"])
@@ -470,7 +492,10 @@ def main():
            "UPLOAD SETTINGS\n- Thumbnail: thumbnail.jpg\n- Audience: No, it's not made for kids\n"
            "- Altered or synthetic content: Yes\n- Category: Autos & Vehicles\n- Visibility: Public\n\n"
            "MAKE THE 8-HOUR FILE (Mac)\nOpen Terminal, type  bash  and a space, drag make-8h.command into the "
-           f"window, press Enter. About 10 minutes. You get {final_name} in this folder.\n")
+           f"window, press Enter. About 10 minutes. You get {final_name} in this folder.\n\n"
+           f"TRAILER (YouTube Short)\nUpload trailer.mp4 from the YouTube app (+ > Upload a video).\n"
+           f"Title: {short_title}\nDescription: The full 8-hour video is on the channel. #carpeoplesleep #sleep #shorts\n"
+           "After the full video is live, add it as the Short's Related video so viewers can tap through.\n")
     for path in (os.path.join(stage, "details.txt"), os.path.join(args.outdir, "details.txt")):
         with open(path, "w") as f:
             f.write(txt)
@@ -483,13 +508,15 @@ def main():
 
     zpath = os.path.join(args.outdir, f"{folder}.zip")
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
-        for n in ("loop.mp4", audio_name, "thumbnail.jpg", "details.txt", "make-8h.command"):
+        for n in ("loop.mp4", audio_name, "thumbnail.jpg", "trailer.mp4", "details.txt", "make-8h.command"):
             info = zipfile.ZipInfo(f"{folder}/{n}", date_time=dt.datetime.now().timetuple()[:6])
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = ((0o755 if n.endswith(".command") else 0o644) | 0o100000) << 16
             with open(os.path.join(stage, n), "rb") as src:
                 z.writestr(info, src.read())
     Image.open(thumb).save(os.path.join(args.outdir, "thumbnail.jpg"), quality=90)
+    import shutil
+    shutil.copy(trailer, os.path.join(args.outdir, "trailer.mp4"))
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
@@ -506,7 +533,8 @@ def main():
     if args.record:
         log = load_published()
         log.append(dict(date=day.isoformat(), photo=os.path.basename(p["photo"]), recipe=p["recipe"],
-                        grade=p["grade"], title=title, tag=p["tag"]))
+                        grade=p["grade"], title=title, tag=p["tag"],
+                        car=meta.get("car"), scene=meta.get("scene")))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
             f.write("\n")
