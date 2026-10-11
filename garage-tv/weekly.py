@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Build this week's Car People Sleep video kit, hands-off.
+"""Build a Car People Sleep video kit, hands-off.
+
+Daily schedule (--daily, used by the GitHub workflow): next unused photo from stills/,
+fresh original lo-fi album, numbered title; see plan_daily(). The weekly rotation below
+is kept for ambience videos and one-off kits (--photo).
 
 Every week gets a different combination, chosen from the date so no state
 file is needed:
@@ -69,6 +73,8 @@ GRADES = {
     "amber": "with just the work lights still glowing",
     "cold": "on a winter night, frost on the glass",
 }
+LOFI_TAGS = ["car people sleep", "lofi hip hop", "sleep music", "study music", "8 hours", "car lofi",
+             "no lyrics", "chill music", "relaxing music", "mechanic"]
 BASE_TAGS = ["car people sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
              "8 hours", "no music", "mechanic", "shop life", "auto shop ambience", "asmr garage"]
 
@@ -104,6 +110,59 @@ def photo_meta(photo):
     return {}
 
 
+PUBLISHED = os.path.join(HERE, "published.json")
+DAILY_SOUND = "lofi"  # what the daily schedule makes
+
+
+def load_published():
+    if os.path.exists(PUBLISHED):
+        with open(PUBLISHED) as f:
+            return json.load(f)
+    return []
+
+
+def all_photos():
+    exts = ("*.jpg", "*.jpeg", "*.png", "*.webp")
+    return sorted(p for e in exts for p in glob.glob(os.path.join(HERE, "stills", e)))
+
+
+def plan_daily(day):
+    """Daily schedule: the next photo nobody has seen yet (alphabetical, so name new ones
+    01-..., 02-... to set the order). When the queue is empty, reuse the photo that was
+    used longest ago with the next colour grade, so a day is never skipped."""
+    published = load_published()
+    shots = all_photos()
+    if not shots:
+        sys.exit("no photos in garage-tv/stills/")
+    used = {}
+    for e in published:
+        used.setdefault(e["photo"], []).append(e["date"])
+    fresh = [s for s in shots if os.path.basename(s) not in used]
+    if fresh:
+        photo, uses = fresh[0], 0
+    else:
+        photo = min(shots, key=lambda s: max(used[os.path.basename(s)]))
+        uses = len(used[os.path.basename(photo)])
+    meta = photo_meta(photo)
+    recipe = meta.get("daily_sound", DAILY_SOUND)
+    vol = sum(1 for e in published if e.get("recipe") == "lofi") + 1
+    p = dict(
+        index=(day - dt.date(2024, 1, 1)).days,
+        tag=f"daily-{day.isoformat()}",
+        recipe=recipe,
+        grade=meta.get("grades", GRADE_ORDER)[uses % len(meta.get("grades", GRADE_ORDER))] if uses else "none",
+        photo=photo,
+        meta=meta,
+        vol=vol,
+        fresh=(uses == 0),
+    )
+    # a photo's own title / description only on its first lo-fi outing; reuses get a numbered title
+    if not (p["fresh"] and recipe in meta.get("recipes", [recipe]) and meta.get("title")):
+        p["title_override"] = f"Chill Lo-Fi Beats Vol. {vol}" if recipe == "lofi" else None
+        p["generic_words"] = True
+    return p
+
+
 def plan(day, photo=None, recipe=None, grade=None):
     i = week_index(day)
     iso = day.isocalendar()
@@ -130,7 +189,9 @@ def plan(day, photo=None, recipe=None, grade=None):
 def title_for(p):
     m = p.get("meta", {})
     mid = m.get("title", RECIPES[p["recipe"]]["title"])
-    tail = m.get("title_tail", "Garage Ambience for Sleep")
+    if p.get("title_override"):  # daily reuse / no sidecar: numbered title, ignore the photo's own words
+        mid, m = p["title_override"], {}
+    tail = m.get("title_tail", "Lo-Fi for Sleep & Study" if p["recipe"] == "lofi" else "Garage Ambience for Sleep")
     if m.get("title_full"):
         return m["title_full"]
     if p["recipe"] == "lofi":
@@ -150,7 +211,7 @@ def label_for(p):
 
 def description_for(p):
     r = RECIPES[p["recipe"]]
-    if p.get("meta", {}).get("description"):
+    if p.get("meta", {}).get("description") and not p.get("generic_words"):
         return p["meta"]["description"]
     if p["recipe"] == "lofi":
         return ("Eight hours of slow, original lo-fi beats for sleeping, studying, or winding down after a long day "
@@ -171,7 +232,8 @@ def description_for(p):
 
 def tags_for(p):
     tags, total = [], 0
-    for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + BASE_TAGS:
+    base = LOFI_TAGS if p["recipe"] == "lofi" else BASE_TAGS
+    for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + base:
         if total + len(t) + 1 > 480:  # YouTube caps tags at 500 characters
             break
         tags.append(t)
@@ -253,11 +315,23 @@ def waveform(w, h, seed):
     return im
 
 
+def auto_side(photo):
+    """Put the text on whichever side of the picture is calmer (less detail), so it stays off the car."""
+    g = Image.open(photo).convert("L").resize((192, 108))
+    edges = g.filter(ImageFilter.FIND_EDGES)
+    w = edges.width
+    import numpy as np
+    a = np.asarray(edges, float)[: int(edges.height * 0.65)]  # the text sits in the upper part
+    return "right" if a[:, int(w * 0.55):].mean() < a[:, : int(w * 0.45)].mean() else "left"
+
+
 def make_thumbnail(p, out_path):
     sys.path.insert(0, HERE)
     from make_still_loop import grade  # same colour grade as the video
 
-    right_side = p.get("meta", {}).get("text_side") == "right"
+    meta = p.get("meta", {})
+    side = meta.get("text_side") or auto_side(p["photo"])
+    right_side = side == "right"
     bg = cover(grade(Image.open(p["photo"]).convert("RGB"), p["grade"]), 1280, 720).convert("RGBA")
     shade = Image.new("L", (1280, 720))
     ramp = [int(210 * max(0.0, 1 - (x / 1280) * 1.7)) for x in range(1280)]
@@ -295,7 +369,8 @@ def make_thumbnail(p, out_path):
     wave = waveform(520, 70, p["index"])
     layer.alpha_composite(wave, (left + (target - wave.width) // 2, sub_y + sub.height + 26))
 
-    scale = float(p.get("meta", {}).get("text_scale", 1.0))
+    # photos with no settings file get the smaller corner block that keeps the car clear
+    scale = float(meta.get("text_scale", 1.0 if meta else 0.72))
     bx, by, bx2, by2 = layer.getbbox()
     block = layer.crop((bx, by, bx2, by2))
     if scale != 1.0:
@@ -340,14 +415,21 @@ def main():
     ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road, lofi)")
     ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")
     ap.add_argument("--name", help="folder/tag name for a one-off kit (default: the week tag)")
+    ap.add_argument("--daily", help=argparse.SUPPRESS, action="store_true")
+    ap.add_argument("--record", action="store_true", help="log this video in published.json (the scheduled run does this)")
+    ap.add_argument("--lofi-minutes", type=float, default=LOFI_MINUTES, help=argparse.SUPPRESS)
     args = ap.parse_args()
 
     # default: the week that starts tomorrow, so the Sunday run builds the coming week's video
-    day = dt.date.fromisoformat(args.date) if args.date else dt.date.today() + dt.timedelta(days=1)
-    photo = args.photo
-    if photo and not os.path.exists(photo):
-        photo = os.path.join(HERE, "stills", photo)
-    p = plan(day, photo=photo, recipe=args.recipe, grade=args.grade)
+    if args.daily:
+        day = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
+        p = plan_daily(day)
+    else:
+        day = dt.date.fromisoformat(args.date) if args.date else dt.date.today() + dt.timedelta(days=1)
+        photo = args.photo
+        if photo and not os.path.exists(photo):
+            photo = os.path.join(HERE, "stills", photo)
+        p = plan(day, photo=photo, recipe=args.recipe, grade=args.grade)
     if args.name:
         p["tag"] = args.name
     os.makedirs(args.outdir, exist_ok=True)
@@ -358,7 +440,7 @@ def main():
     os.makedirs(stage, exist_ok=True)
     lofi = p["recipe"] == "lofi"
     audio_name = "music.m4a" if lofi else "sound.wav"
-    audio_minutes = LOFI_MINUTES if lofi else AUDIO_MINUTES
+    audio_minutes = args.lofi_minutes if lofi else AUDIO_MINUTES
     # the lo-fi album is already AAC with track fades, so it is stream-copied (no re-encode)
     acodec = ["-c:a", "copy"] if lofi else ["-c:a", "aac", "-b:a", "128k"]
     loop, wav, thumb = (os.path.join(stage, n) for n in ("loop.mp4", audio_name, "thumbnail.jpg"))
@@ -366,8 +448,9 @@ def main():
     final_name = f"{BRAND_SLUG}-{meta.get('slug', p['recipe'].replace('_', '-'))}-8h.mp4"
 
     if lofi:
-        run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(LOFI_MINUTES),
-             "--seed", str(meta.get("music_seed", 1000 + p["index"])), "--out", wav])
+        seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
+        run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
+             "--seed", str(seed), "--out", wav])
     else:
         run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
              "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
@@ -410,7 +493,8 @@ def main():
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
-        f.write(f"{BRAND}, week of {day - dt.timedelta(days=day.weekday())}: {meta.get('title', RECIPES[p['recipe']]['title'])}")
+        when = day.isoformat() if args.daily else f"week of {day - dt.timedelta(days=day.weekday())}"
+        f.write(f"{when}: {title.replace(BRAND + ' ', '', 1)}")
 
     if args.full:
         ff = imageio_ffmpeg.get_ffmpeg_exe()
@@ -419,6 +503,14 @@ def main():
              "-c:v", "copy", *acodec, "-t", str(TOTAL_MINUTES * 60),
              "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-8h.mp4")])
 
+    if args.record:
+        log = load_published()
+        log.append(dict(date=day.isoformat(), photo=os.path.basename(p["photo"]), recipe=p["recipe"],
+                        grade=p["grade"], title=title, tag=p["tag"]))
+        with open(PUBLISHED, "w") as f:
+            json.dump(log, f, indent=2)
+            f.write("\n")
+        print("recorded in", PUBLISHED)
     print(f"\nKIT READY: {zpath} ({os.path.getsize(zpath) / 1e6:.0f} MB)")
     print("TITLE:", title)
 

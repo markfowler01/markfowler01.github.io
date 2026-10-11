@@ -74,26 +74,30 @@ over 15 minutes are allowed; the limit is then 12 hours / 256 GB.
 
 Or skip the file entirely and set the TV or player to repeat.
 
-## Weekly machine (Car People Sleep)
+## Daily machine (Car People Sleep)
 
-`.github/workflows/garage-tv-weekly.yml` runs every Sunday at 14:23 UTC and
-calls `weekly.py`, which picks the week's combination from the date:
+`.github/workflows/car-people-sleep-daily.yml` runs every day at 13:23 UTC
+(6:23 am Pacific) and calls `weekly.py --daily --record`:
 
-| Changes | Rotation |
-|---|---|
-| Sound, every week | rain, shop fan, wind, heater |
-| Colour, every 4 weeks | as shot, night, amber work lights, cold winter |
-| Photo, every week | cycles through everything in `stills/` |
+- **Photo:** the next picture in `stills/` that has never been used,
+  alphabetically (name them `01-...`, `02-...` to set the order). When every
+  photo has been used, the one used longest ago comes back with the next colour
+  grade, so a day is never skipped. `published.json` is the log of what went out.
+- **Music:** a brand-new 30-minute album of original lo-fi (`make_lofi.py`)
+  every day, so no two videos share music.
+- **Words:** a photo's own title/description from its `.json` on its first use;
+  otherwise `Chill Lo-Fi Beats Vol. N`, numbered so titles never repeat.
+- **Thumbnail:** Car People Sleep style; the text goes on the calmer side of the
+  picture automatically unless the `.json` says `text_side`.
 
-It builds the 60 s loop, the 2 min seamless sound, a thumbnail in the
-Car People Sleep style, and the title / description / tags, then publishes a
-GitHub release named `garage-tv-YYYY-Www` holding a zip of the kit. Each zip
-has `make-8h.command`: open Terminal, type `bash `, drag the file in, press
-Enter, and the 8-hour MP4 appears next to it.
+It publishes a release named `daily-YYYY-MM-DD` with a zip (loop.mp4,
+music.m4a, thumbnail.jpg, details.txt, make-8h.command) and deletes kits
+older than 21 days. On a Mac: `cd` into the unzipped folder, `bash make-8h.command`.
 
-**Add photos any time.** Drop a landscape JPG/PNG/WebP (1600 px wide or
-more) into `garage-tv/stills/` on the main branch. More photos means more
-variety, and YouTube is less likely to flag the channel as repetitive.
+**Adding photos from a phone:** github.com > this repo > `garage-tv/stills` >
+Add file > Upload files > pick the pictures > Commit to `main`. Optional
+`<same-name>.json` beside a photo sets its title, description, tags,
+`text_side`, `text_scale` and `rain` (see `rain-road-gt500.json`).
 
 **Full auto-upload (optional).** With these repository secrets set, the job
 also builds the 8-hour file and uploads it to YouTube with the thumbnail:
@@ -110,7 +114,7 @@ also builds the 8-hour file and uploads it to YouTube with the thumbnail:
    locks API uploads from new projects to private, so you would still flip
    each one to Public by hand.
 
-Run it by hand any time from the repo's Actions tab: **Garage TV weekly
+Run it by hand any time from the repo's Actions tab: **Car People Sleep daily
 video**, then **Run workflow**. Locally: `python3 weekly.py --outdir kit`.
 
 ## Phone workflow
