@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Car engine: pick a random high-performance-but-obtainable car and a moody scene, have
-OpenAI's image model (the one behind ChatGPT) paint it, and write the photo's settings
+Google's Nano Banana (GEMINI_API_KEY) or OpenAI's image model (OPENAI_API_KEY) paint it, and write the photo's settings
 (title, description, tags, white-noise bed, rain, thumbnail text side) next to it.
 
   python3 car_engine.py --date 2026-10-12 --dry-run      # show the pick and the prompt
-  OPENAI_API_KEY=... python3 car_engine.py --date 2026-10-12
+  GEMINI_API_KEY=... python3 car_engine.py --date 2026-10-12     # Nano Banana
+  OPENAI_API_KEY=... python3 car_engine.py --date 2026-10-12     # ChatGPT images
 
 Picks avoid repeating a car used in the last 20 videos or a scene used in the last 3
 (read from published.json). Output: stills/<date>-<car>.webp + .json, marked rotate:false
@@ -146,7 +147,47 @@ def sidecar(choice):
 
 
 def generate(prompt, out_path):
-    """Ask OpenAI's image model for the picture; save it as a 1536x1024 WebP."""
+    """Paint the picture with whichever image service has a key: Google's Nano Banana
+    (Gemini image model, GEMINI_API_KEY) first, else OpenAI (OPENAI_API_KEY)."""
+    if os.environ.get("GEMINI_API_KEY"):
+        try:
+            return generate_gemini(prompt, out_path)
+        except RuntimeError as e:
+            if not os.environ.get("OPENAI_API_KEY"):
+                raise
+            print("Nano Banana failed, trying OpenAI:", e, file=sys.stderr)
+    return generate_openai(prompt, out_path)
+
+
+def generate_gemini(prompt, out_path):
+    """Nano Banana: Gemini image model via the Gemini API, 16:9 output."""
+    key = os.environ["GEMINI_API_KEY"]
+    model = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
+    body = json.dumps({
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": "16:9"}},
+    }).encode()
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+    req = urllib.request.Request(url, data=body, method="POST")
+    req.add_header("x-goog-api-key", key)
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            data = json.load(r)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Gemini said {e.code}: {e.read()[:400]!r}")
+    for cand in data.get("candidates", []):
+        for part in cand.get("content", {}).get("parts", []):
+            inline = part.get("inlineData") or part.get("inline_data")
+            if inline and inline.get("data"):
+                img = Image.open(io.BytesIO(base64.b64decode(inline["data"]))).convert("RGB")
+                img.save(out_path, quality=92)
+                return out_path
+    raise RuntimeError(f"Gemini returned no image: {json.dumps(data)[:400]}")
+
+
+def generate_openai(prompt, out_path):
+    """OpenAI's image model (the one behind ChatGPT); save it as a 1536x1024 WebP."""
     key = os.environ.get("OPENAI_API_KEY")
     if not key:
         raise RuntimeError("OPENAI_API_KEY is not set")

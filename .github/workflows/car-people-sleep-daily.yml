@@ -1,7 +1,7 @@
 name: Car People Sleep daily video
 
-# Every morning: have the car engine paint a new car photo with OpenAI's image model (when
-# OPENAI_API_KEY is set), otherwise take the next photo from garage-tv/stills or reuse the
+# Every morning: have the car engine paint a new car photo with Nano Banana (GEMINI_API_KEY)
+# or OpenAI's image model (OPENAI_API_KEY) when a key is set, otherwise take the next photo from garage-tv/stills or reuse the
 # oldest one; compose 30 minutes of white noise with occasional original lo-fi,
 # build the video loop, thumbnail, title and description, and publish it all as a release.
 # With the YT_* secrets set it also builds the 8-hour file and uploads it to YouTube.
@@ -30,14 +30,15 @@ jobs:
           sudo apt-get install -y -qq fonts-dejavu-core >/dev/null
           pip install numpy Pillow imageio-ffmpeg
 
-      - name: Paint today's car (OpenAI image model)
+      - name: Paint today's car (Nano Banana or OpenAI)
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          if [ -n "$OPENAI_API_KEY" ]; then
+          if [ -n "$GEMINI_API_KEY" ] || [ -n "$OPENAI_API_KEY" ]; then
             python garage-tv/car_engine.py || echo "::warning::car engine failed; using the photo queue today"
           else
-            echo "No OPENAI_API_KEY secret; using the photo queue"
+            echo "No GEMINI_API_KEY or OPENAI_API_KEY secret; using the photo queue"
           fi
 
       - name: Build today's kit
