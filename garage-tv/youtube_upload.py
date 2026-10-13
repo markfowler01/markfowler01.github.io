@@ -7,6 +7,11 @@ Optional:
   YT_PRIVACY   public | unlisted | private   (default public)
 
   python3 youtube_upload.py kit/car-people-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
+  python3 youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id VIDEO_ID
+
+With --short it uses short_title / short_description from details.json (and links the
+full video when --full-id is given). A thumbnail of "-" skips the thumbnail step.
+The new video id is printed and, with --id-file, written to that file.
 
 Note: Google keeps API uploads from a brand-new, unaudited Google Cloud project
 locked to private until the project passes YouTube's free API compliance audit.
@@ -41,13 +46,19 @@ def request(url, token, method="POST", body=None, headers=None):
     return urllib.request.urlopen(req, timeout=600)
 
 
-def upload(video, thumb, details):
+def upload(video, thumb, details, short=False, full_id=None):
     token = access_token()
     size = os.path.getsize(video)
+    title, desc = details["title"], details["description"]
+    if short:
+        title = details.get("short_title", title)[:100]
+        desc = details.get("short_description", "The full 8-hour video is on the channel.")
+        if full_id:
+            desc = f"Full 8-hour video: https://youtu.be/{full_id}\n\n" + desc
     meta = {
         "snippet": {
-            "title": details["title"],
-            "description": details["description"],
+            "title": title,
+            "description": desc,
             "tags": details["tags"],
             "categoryId": details.get("categoryId", "2"),
         },
@@ -98,17 +109,28 @@ def upload(video, thumb, details):
             print(f"  uploaded {min(sent, size) / 1e9:.2f} / {size / 1e9:.2f} GB", flush=True)
 
     print("video id:", video_id)
-    with open(thumb, "rb") as f:
-        with request(f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={video_id}",
-                     token, body=f.read(), headers={"Content-Type": "image/jpeg"}):
-            pass
-    print("thumbnail set")
+    if thumb and thumb != "-":
+        with open(thumb, "rb") as f:
+            with request(f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={video_id}",
+                         token, body=f.read(), headers={"Content-Type": "image/jpeg"}):
+                pass
+        print("thumbnail set")
     print(f"https://youtu.be/{video_id}")
     return video_id
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        sys.exit(__doc__)
-    with open(sys.argv[3]) as f:
-        upload(sys.argv[1], sys.argv[2], json.load(f))
+    import argparse
+    ap = argparse.ArgumentParser(usage=__doc__)
+    ap.add_argument("video")
+    ap.add_argument("thumb")
+    ap.add_argument("details")
+    ap.add_argument("--short", action="store_true")
+    ap.add_argument("--full-id")
+    ap.add_argument("--id-file")
+    a = ap.parse_args()
+    with open(a.details) as f:
+        vid = upload(a.video, a.thumb, json.load(f), short=a.short, full_id=a.full_id)
+    if a.id_file:
+        with open(a.id_file, "w") as f:
+            f.write(vid)

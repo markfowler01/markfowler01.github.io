@@ -484,6 +484,8 @@ def main():
          "--title", scene_line, "--label", label_for(p), "--out", trailer])
     short_title = f"{scene_line} | 8 Hours of {RECIPES[p['recipe']]['title']} #shorts"[:100]
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
+                   short_title=short_title,
+                   short_description="The full 8-hour video is on the channel. #carpeoplesleep #sleep #shorts",
                    madeForKids=False, alteredContent=True, recipe=p["recipe"], grade=p["grade"],
                    photo=os.path.basename(p["photo"]), tag=p["tag"])
     with open(os.path.join(args.outdir, "details.json"), "w") as f:
