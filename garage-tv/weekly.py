@@ -75,6 +75,8 @@ GRADES = {
     "amber": "with just the work lights still glowing",
     "cold": "on a winter night, frost on the glass",
 }
+BED_WORDS = {"rain_road": "Rain Sounds", "rain": "Rain on the Roof", "fan": "Shop Fan Noise",
+             "wind": "Wind Sounds", "heater": "Heater Hum"}
 LOFI_TAGS = ["car people sleep", "lofi hip hop", "sleep music", "study music", "8 hours", "car lofi",
              "no lyrics", "chill music", "relaxing music", "mechanic"]
 BASE_TAGS = ["car people sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
@@ -193,10 +195,14 @@ def plan(day, photo=None, recipe=None, grade=None):
 def title_for(p):
     m = p.get("meta", {})
     mid = m.get("title", RECIPES[p["recipe"]]["title"])
+    bed = m.get("bed", "rain_road")
     if p.get("title_override"):  # daily reuse / no sidecar: numbered title, ignore the photo's own words
         mid, m = p["title_override"], {}
     tail = m.get("title_tail", {"lofi": "Lo-Fi for Sleep & Study", "mix": "White Noise & Lo-Fi for Sleep"}
                  .get(p["recipe"], "Garage Ambience for Sleep"))
+    if p.get("title_override") and p["recipe"] == "mix":
+        # the numbered title already says "White Noise & Lo-Fi", so end on the sound instead
+        tail = BED_WORDS.get(bed, "Rain Sounds") + " for Sleep"
     if m.get("title_full"):
         return m["title_full"]
     if p["recipe"] in ("lofi", "mix"):
