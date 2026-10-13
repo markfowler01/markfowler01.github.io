@@ -79,12 +79,12 @@ Or skip the file entirely and set the TV or player to repeat.
 `.github/workflows/car-people-sleep-daily.yml` runs every day at 13:23 UTC
 (6:23 am Pacific):
 
-1. **Car engine** (`car_engine.py`, needs the `OPENAI_API_KEY` secret): picks a
+1. **Car engine** (`car_engine.py`, needs a `GEMINI_API_KEY` (Nano Banana, preferred) or `OPENAI_API_KEY` secret): picks a
    random fast-but-attainable car (Supra, Type R, M3, C8, GT500, Raptor, ...), a
    colour and a moody scene (rainy mountain road, neon city, shop after hours,
    snowy cabin, desert dusk, ...), never repeating a car from the last 20 videos
-   or a scene from the last 3, and has OpenAI's image model (the one behind
-   ChatGPT) paint it. The photo and its settings are saved to `stills/`.
+   or a scene from the last 3, and has Google's Nano Banana (Gemini image
+   model) or OpenAI's image model paint it. The photo and its settings are saved to `stills/`.
    Without a key, or if the call fails, the day falls back to the photo queue.
 2. **Photo queue:** otherwise the next never-used picture in `stills/`
    (alphabetical), or the one used longest ago with a new colour grade.
@@ -100,7 +100,11 @@ Or skip the file entirely and set the TV or player to repeat.
 On a Mac: unzip the kit, `cd` into it, `bash make-8h.command`, upload the
 8-hour file, then upload `trailer.mp4` as a Short from the YouTube app.
 
-**Turning on ChatGPT photos:** platform.openai.com > API keys > Create new
+**Turning on Nano Banana photos (preferred, about 4 cents an image):**
+aistudio.google.com > Get API key > Create API key (set up billing on that
+project if asked), then add it as repository secret `GEMINI_API_KEY`.
+
+**Or ChatGPT photos:** platform.openai.com > API keys > Create new
 secret key (billing must be set up; one high-quality image is roughly a
 quarter, so about $5-8 a month daily). Then github.com > this repo > Settings >
 Secrets and variables > Actions > New repository secret, name
