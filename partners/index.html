@@ -375,13 +375,21 @@
     p.append('next_date', sorted[0] || '');
     p.append('brew', document.getElementById('pf-brew').checked ? 'yes' : 'no');
     p.append('message', msg);
-    p.append('source', 'website: partners');
+    var src = (new URLSearchParams(location.search).get('src') || '').replace(/[^\w-]/g, '').slice(0, 40);
+    p.append('source', src ? 'website: partners (' + src + ')' : 'website: partners');
     p.append('website', f.website.value);   // honeypot, must stay empty
 
     go.disabled = true; go.textContent = 'Sending...';
     fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: p.toString() })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error(j.error || 'Something went wrong.'); }); })
       .then(function () {
+        // Ticked "send me ADAS Brew" with an email: subscribe them as an operator.
+        if (email && document.getElementById('pf-brew').checked) {
+          var b = new URLSearchParams();
+          b.append('email', email); b.append('name', name.split(' ')[0]); b.append('shop', company);
+          b.append('location', f.service_area.value.trim() || 'Pacific NW'); b.append('role', 'ADAS / calibration business owner'); b.append('website', '');
+          fetch('https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/cron/brew/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: b.toString() }).catch(function () {});
+        }
         f.hidden = true;
         document.getElementById('pf-done-msg').textContent = anytime
           ? 'Mark will call you at ' + phone + ' to find a time.'
