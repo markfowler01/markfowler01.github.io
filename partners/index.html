@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Founding Partner Program | Absolute ADAS</title>
+  <meta name="description" content="For independent ADAS owners in the Pacific Northwest. Keep your company, your shops and your prices. Plug into the Absolute ADAS app, billing team and network. 3 founding spots." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://absoluteadas.com/partners/" />
+  <meta property="og:title" content="You built it. You keep it. We grow together." />
+  <meta property="og:description" content="The Absolute ADAS Founding Partner Program for independent ADAS owners. 0% on your existing book. 3 founding spots." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://absoluteadas.com/partners/" />
+  <meta property="og:image" content="https://absoluteadas.com/logo.png" />
+  <link rel="icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --dark: #0d0d0d; --dark-2: #151515; --dark-3: #1e1e1e;
+      --white: #fff; --light: #cccccc; --gray: #999; --orange: #CD4419; --orange-dark: #b33a15; --green: #22c55e;
+      --line: rgba(255,255,255,.08);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    }
+    html { color-scheme: dark; scroll-behavior: smooth; }
+    body { margin: 0; background: var(--dark); color: var(--white); font-family: var(--sans); font-size: 17px; line-height: 1.6; padding-inline: 16px; }
+    img { max-width: 100%; }
+    a { color: var(--orange); }
+    h1, h2, h3 { margin: 0; text-wrap: balance; }
+    p { margin: 0; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+    .wrap { max-width: 880px; margin: 0 auto; }
+
+    .site-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-inline: -16px; padding: 14px 32px; background: rgba(13,13,13,.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .site-nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--white); font-size: 1.1rem; font-weight: 900; letter-spacing: -.02em; }
+    .site-nav-logo img { height: 36px; width: auto; display: block; }
+    .site-nav-logo b { color: var(--orange); }
+    .site-nav-links { display: flex; align-items: center; gap: 22px; }
+    .site-nav-links a { color: rgba(255,255,255,.78); font-weight: 600; font-size: 14px; text-decoration: none; }
+    .site-nav-links a:hover { color: var(--orange); }
+    .site-nav-links a.nav-cta { background: var(--orange); color: #fff; padding: 9px 16px; border-radius: 6px; font-weight: 700; }
+    @media (max-width: 560px) { .site-nav { padding: 12px 18px; } .site-nav-links a:not(.nav-cta) { display: none; } }
+
+    section { padding-block: 56px; border-bottom: 1px solid var(--line); }
+    section:last-of-type { border-bottom: 0; }
+    .kicker { font-size: 12px; font-weight: 800; letter-spacing: .2em; color: var(--orange); text-transform: uppercase; margin-bottom: 14px; }
+    h2 { font-family: var(--serif); font-size: clamp(28px, 4.4vw, 40px); font-weight: 900; line-height: 1.1; margin-bottom: 18px; }
+    h2 em, h1 em { color: var(--orange); font-style: normal; }
+    .lede { color: var(--light); font-size: 18px; max-width: 680px; }
+    .lede b { color: var(--white); }
+
+    .hero { text-align: center; padding-block: 64px 56px; }
+    h1 { font-family: var(--serif); font-size: clamp(38px, 7vw, 68px); font-weight: 900; line-height: 1.02; letter-spacing: -.015em; margin-bottom: 22px; }
+    .hero .lede { margin: 0 auto 28px; }
+    .btn { display: inline-block; background: var(--orange); color: #fff; font-weight: 800; font-size: 17px; text-decoration: none; padding: 16px 30px; border-radius: 8px; border: 0; cursor: pointer; }
+    .btn:hover { background: var(--orange-dark); }
+    .btn-ghost { background: transparent; border: 1.5px solid rgba(255,255,255,.25); color: #fff; }
+    .btn-ghost:hover { background: rgba(255,255,255,.06); }
+    .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .spots { display: inline-flex; gap: 8px; align-items: center; margin-top: 26px; font-size: 14px; color: var(--light); }
+    .spots i { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); display: inline-block; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; }
+    .card { background: var(--dark-2); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+    .card h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .card p { color: var(--light); font-size: 15.5px; }
+    .card .ico { font-size: 24px; margin-bottom: 8px; display: block; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; margin-top: 10px; }
+    .tag.now { background: rgba(34,197,94,.14); color: var(--green); }
+    .tag.pilot { background: rgba(205,68,25,.16); color: #ff8a5c; }
+
+    .keep { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+    .keep li { background: var(--dark-2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; font-weight: 700; }
+    .keep li::before { content: '✓ '; color: var(--green); }
+    .zero { margin-top: 22px; background: linear-gradient(135deg, rgba(205,68,25,.18), rgba(205,68,25,.05)); border: 1px solid rgba(205,68,25,.4); border-radius: 14px; padding: 24px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .zero .big { font-family: var(--serif); font-size: 64px; font-weight: 900; color: var(--orange); line-height: 1; }
+    .zero p { color: var(--light); max-width: 520px; }
+    .zero b { color: #fff; }
+
+    .pains { list-style: none; padding: 0; margin: 22px 0 0; }
+    .pains li { padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--light); }
+    .pains li b { color: #fff; }
+
+    .steps { counter-reset: s; display: grid; gap: 14px; margin-top: 26px; }
+    .step { counter-increment: s; display: flex; gap: 16px; background: var(--dark-2); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+    .step::before { content: counter(s); flex: 0 0 40px; height: 40px; border-radius: 50%; background: var(--orange); color: #fff; font-weight: 900; display: grid; place-items: center; font-size: 18px; }
+    .step h3 { font-size: 18px; margin-bottom: 4px; }
+    .step p { color: var(--light); font-size: 15.5px; }
+
+    .fit { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 24px; }
+    .fit ul { margin: 8px 0 0; padding-left: 20px; color: var(--light); }
+    .fit li { margin-bottom: 6px; }
+
+    details { background: var(--dark-2); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+    summary { cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::after { content: '+'; color: var(--orange); font-size: 22px; line-height: 1; }
+    details[open] summary::after { content: '–'; }
+    details p { padding: 0 18px 18px; color: var(--light); }
+
+    .note { background: var(--dark-2); border-left: 4px solid var(--orange); border-radius: 0 12px 12px 0; padding: 26px; }
+    .note p { color: var(--light); margin-bottom: 12px; }
+    .note p:last-child { margin-bottom: 0; }
+    .note .sig { color: #fff; font-family: var(--serif); font-size: 22px; font-weight: 700; }
+
+    form { background: var(--dark-2); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-top: 24px; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    label { display: block; font-size: 13px; font-weight: 700; color: var(--light); margin-bottom: 5px; }
+    label small { font-weight: 400; color: var(--gray); }
+    input[type=text], input[type=email], input[type=tel], select, textarea { width: 100%; background: var(--dark-3); border: 1px solid rgba(255,255,255,.14); color: #fff; border-radius: 8px; padding: 12px; font: inherit; font-size: 16px; }
+    textarea { min-height: 90px; resize: vertical; }
+    .sec { font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--orange); margin: 22px 0 10px; }
+    .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    .day { background: var(--dark-3); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 10px; }
+    .day b { display: block; font-size: 14px; margin-bottom: 6px; }
+    .slot { display: block; width: 100%; text-align: left; background: transparent; color: var(--light); border: 1px solid rgba(255,255,255,.14); border-radius: 6px; padding: 7px 9px; font: inherit; font-size: 13.5px; margin-top: 5px; cursor: pointer; }
+    .slot[aria-pressed=true] { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 700; }
+    .slot:disabled { opacity: .35; cursor: not-allowed; }
+    .picked { font-size: 14px; color: var(--light); margin-top: 10px; min-height: 22px; }
+    .picked b { color: #fff; }
+    .check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; color: var(--light); font-weight: 400; margin-top: 12px; }
+    .check input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--orange); flex: 0 0 auto; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .err { color: #ff8a5c; font-weight: 700; margin-top: 12px; min-height: 22px; }
+    .fine { font-size: 13px; color: var(--gray); margin-top: 14px; }
+    .done { text-align: center; padding: 40px 20px; }
+    .done h3 { font-family: var(--serif); font-size: 32px; margin-bottom: 10px; }
+    .done p { color: var(--light); }
+
+    footer { text-align: center; color: var(--gray); font-size: 14px; padding: 36px 0 48px; border-top: 1px solid var(--line); }
+    footer a { color: var(--light); }
+  </style>
+</head>
+<body>
+
+<header class="site-nav">
+  <a class="site-nav-logo" href="https://absoluteadas.com/"><img src="/logo.png" alt="" width="36" height="36"><span>Absolute <b>ADAS</b></span></a>
+  <nav class="site-nav-links" aria-label="Site">
+    <a href="https://absoluteadas.com/">For shops</a>
+    <a href="https://absoluteadas.com/brew">ADAS Brew</a>
+    <a class="nav-cta" href="#apply">Talk to Mark</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="kicker">Founding Partner Program &middot; Pacific Northwest</div>
+    <h1>You built it. You keep it. <em>We grow together.</em></h1>
+    <p class="lede">For independent ADAS owners. <b>Keep your company, your shops and your prices.</b> Plug into the app, the billing team and the work we already run every day. No buyout. No royalty on what you built.</p>
+    <div class="ctas">
+      <a class="btn" href="#apply">Pick a time to talk</a>
+      <a class="btn btn-ghost" href="#how">How it works</a>
+    </div>
+    <div class="spots"><i></i><i></i><i></i> 3 founding spots. That's the whole pilot.</div>
+  </section>
+
+  <section>
+    <div class="kicker">Sound familiar?</div>
+    <h2>You're great at calibrations. <em>The rest of it is the hard part.</em></h2>
+    <ul class="pains">
+      <li><b>Chasing money.</b> Invoices sit 60 days. You call the shop. The shop calls the insurer.</li>
+      <li><b>Paperwork at night.</b> Reports, photos, OEM docs, scan files. After a full day in the van.</li>
+      <li><b>Denials.</b> A cal gets kicked back because one document was missing.</li>
+      <li><b>You can't take a vacation.</b> A week off means a week of worrying who's calling on your shops while you're gone.</li>
+      <li><b>Nobody to cover you.</b> Sick day, family day, van in the shop. The work waits, or it walks to someone else.</li>
+      <li><b>Big players squeezing.</b> National outfits with sales teams calling on your shops.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="kicker">What you keep</div>
+    <h2>Everything you built <em>stays yours.</em></h2>
+    <ul class="keep">
+      <li>Your company and your name</li>
+      <li>Your vans, tools and team</li>
+      <li>Your shops and your relationships</li>
+      <li>Your prices. You set them.</li>
+      <li>Your data. It leaves with you.</li>
+      <li>Your call on every job</li>
+    </ul>
+    <div class="zero">
+      <div class="big">0%</div>
+      <p><b>Zero on your existing book.</b> The shops you have today are yours. We don't take a cut of that work. We write them down together on day one so nobody ever argues about it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">What you plug into</div>
+    <h2>Only what's real <em>today.</em></h2>
+    <p class="lede">We run Absolute ADAS on this every day. No promises about stuff we haven't built.</p>
+    <div class="grid">
+      <div class="card"><span class="ico">📱</span><h3>The app</h3><p>Job board, estimate scrubber that reads the CCC estimate and calls each sensor, photo checks before invoicing, and reports with the OEM docs attached.</p><span class="tag now">Running today</span></div>
+      <div class="card"><span class="ico">💵</span><h3>The billing team</h3><p>Insurance invoices, cost invoices and the follow-up calls. The part most owners hate.</p><span class="tag pilot">Offered in the pilot</span></div>
+      <div class="card"><span class="ico">📄</span><h3>OEM documents</h3><p>Position statements and procedures, kept current and tied to each job so the paperwork holds up.</p><span class="tag now">Running today</span></div>
+      <div class="card"><span class="ico">🚐</span><h3>Onboarding</h3><p>The same onboarding we use for our own techs and shops. Get your people set up fast.</p><span class="tag now">Running today</span></div>
+      <div class="card"><span class="ico">🛟</span><h3>We cover for each other</h3><p>Sick, on vacation, van down? A partner covers your shops, does the work your way, and hands them right back. Your shops stay yours.</p><span class="tag pilot">Offered in the pilot</span></div>
+      <div class="card"><span class="ico">🤝</span><h3>Extra work</h3><p>When we have work in your area we can't cover, partners hear first. Terms in writing before any job.</p><span class="tag pilot">Offered in the pilot</span></div>
+      <div class="card"><span class="ico">☎️</span><h3>A real person</h3><p>Mark on the phone. Owner to owner. When a car won't calibrate, you're not alone.</p><span class="tag now">Running today</span></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="kicker">How it works</div>
+    <h2>Small, slow and <em>easy to walk away from.</em></h2>
+    <div class="steps">
+      <div class="step"><div><h3>A 30-minute call</h3><p>Owner to owner. What's working, what's a headache, what you want. No pitch deck.</p></div></div>
+      <div class="step"><div><h3>A private look at your setup</h3><p>Your shops, your tools, your area. Kept confidential. We write down your existing book so it stays 100% yours.</p></div></div>
+      <div class="step"><div><h3>A 90-day test</h3><p>Try the app and billing on real jobs. We check in at 30, 60 and 90 days. If it doesn't make you more money, you stop. No hard feelings.</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Is this you?</div>
+    <h2>Built for owners who <em>already do it right.</em></h2>
+    <div class="fit">
+      <div class="card"><h3>A good fit</h3><ul><li>1 to 3 techs, your own van</li><li>Real tools and OEM procedure access</li><li>Shops that already trust you</li><li>Pre and post scans on every job</li><li>Room to take on more work</li></ul></div>
+      <div class="card"><h3>Not a fit right now</h3><ul><li>Just getting started</li><li>Outside the Pacific Northwest (for now)</li><li>Looking to sell your company today</li><li>Skipping documentation to go faster</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Owner questions</div>
+    <h2>The stuff you're <em>actually wondering.</em></h2>
+    <details><summary>Are you going to take my shops?</summary><p>No. Your shops are written down as yours on day one. We don't call on them and we don't bill them. If you leave, they were always yours.</p></details>
+    <details><summary>If another partner covers my shops, will they keep them?</summary><p>No. Cover work is written down as yours before anyone steps in. The partner covering does the job, bills it the way the agreement says, and steps back. Nobody calls on your shops while you're out.</p></details>
+    <details><summary>Is there a royalty?</summary><p>Not on your existing book. 0%. Things like the app or the billing team have their own price, shown in writing before you sign anything. You only pay for what you choose to use.</p></details>
+    <details><summary>What does it cost?</summary><p>We set that together after the first call. We want it in front of a lawyer before we put numbers on a website. You see every number before you agree to anything.</p></details>
+    <details><summary>What if I want out?</summary><p>You leave with your company, your shops and your data. Exit terms are in the agreement from the start, not made up later.</p></details>
+    <details><summary>Do I have to change my name or put your logo on my van?</summary><p>No. You keep your own brand.</p></details>
+    <details><summary>Will you tell me what to charge?</summary><p>No. You set your own prices. We will never ask partners to line up their prices with anyone.</p></details>
+    <details><summary>Why only three spots?</summary><p>Because we want to get it right with three owners before we offer it to anyone else. Small pilot, real results, then decide.</p></details>
+  </section>
+
+  <section>
+    <div class="kicker">From Mark</div>
+    <div class="note">
+      <p>I've been part of more than 50,000 calibrations. I know what it's like to do great work all day and then fight paperwork and late payments all night. I know what it's like to skip a vacation because you're worried who's going to call on your shops while you're gone.</p>
+      <p>We built the app, the billing and the process to fix that for ourselves. It works. Now I want to share it with a few owners who already do the work right, without asking you to give up what you built.</p>
+      <p>No pressure. Pick a time below and let's talk.</p>
+      <p class="sig">Mark Fowler, owner, Absolute ADAS</p>
+    </div>
+  </section>
+
+  <section id="apply">
+    <div class="kicker">Pick a time to talk</div>
+    <h2>30 minutes. <em>Owner to owner.</em></h2>
+    <p class="lede">Pick up to 3 times that work for you. Mark will call to lock one in. All times Pacific.</p>
+
+    <form id="pf" novalidate>
+      <div class="sec">You</div>
+      <div class="row">
+        <div><label for="pf-name">Your name</label><input id="pf-name" name="name" type="text" autocomplete="name" required></div>
+        <div><label for="pf-company">Company</label><input id="pf-company" name="company" type="text" autocomplete="organization" required></div>
+      </div>
+      <div class="row">
+        <div><label for="pf-phone">Phone</label><input id="pf-phone" name="phone" type="tel" autocomplete="tel" placeholder="425 555 0100" required></div>
+        <div><label for="pf-email">Email</label><input id="pf-email" name="email" type="email" autocomplete="email"></div>
+      </div>
+
+      <div class="sec">Your business</div>
+      <div class="row">
+        <div><label for="pf-area">Where you work <small>(cities or counties)</small></label><input id="pf-area" name="service_area" type="text" placeholder="Snohomish and King County"></div>
+        <div><label for="pf-site">Website <small>(optional)</small></label><input id="pf-site" name="company_site" type="text" inputmode="url"></div>
+      </div>
+      <div class="row">
+        <div><label for="pf-techs">Techs</label><select id="pf-techs" name="techs"><option value="">Pick one</option><option>Just me</option><option>2</option><option>3</option><option>4+</option></select></div>
+        <div><label for="pf-years">Years in business</label><select id="pf-years" name="years"><option value="">Pick one</option><option>Under 1</option><option>1 to 3</option><option>3 to 5</option><option>5+</option></select></div>
+        <div><label for="pf-shops">Shops you serve</label><select id="pf-shops" name="shops"><option value="">Pick one</option><option>1 to 5</option><option>6 to 15</option><option>16 to 30</option><option>30+</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="pf-tools">Calibration tools <small>(brands)</small></label><input id="pf-tools" name="tools" type="text" placeholder="Autel, Bosch, OEM..."></div>
+        <div><label for="pf-interest">Most interested in</label><select id="pf-interest" name="interest"><option value="">Pick one</option><option>The app</option><option>Billing and collections</option><option>Extra work</option><option>Backup coverage</option><option>All of it</option><option>Just want to talk</option></select></div>
+      </div>
+      <div><label for="pf-pains">Biggest headache right now <small>(optional)</small></label><textarea id="pf-pains" name="pains" placeholder="Getting paid, paperwork, too much work, not enough work..."></textarea></div>
+
+      <div class="sec">Pick up to 3 times</div>
+      <div class="slots" id="slots" role="group" aria-label="Call times"></div>
+      <div class="picked" id="picked" aria-live="polite"></div>
+      <label class="check"><input type="checkbox" id="pf-anytime" name="anytime" value="yes"> None of these work. Just call me when you can.</label>
+      <label class="check"><input type="checkbox" id="pf-brew" name="brew" value="yes" checked> Send me ADAS Brew, the weekly email. Unsubscribe anytime.</label>
+
+      <div class="hp" aria-hidden="true"><label for="pf-website">Leave this empty</label><input id="pf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <div class="err" id="pf-err" role="alert"></div>
+      <button class="btn" type="submit" id="pf-go" style="width:100%;margin-top:6px;">Request my call</button>
+      <p class="fine">Mark calls you from our main line to confirm. What you share here stays confidential and is only used to talk about the program. <a href="/privacy">Privacy Policy</a>.</p>
+    </form>
+
+    <div class="done" id="pf-done" hidden>
+      <h3>Got it. Talk soon.</h3>
+      <p id="pf-done-msg">Mark will call you to lock in a time.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Absolute ADAS &middot; <a href="https://absoluteadas.com/">For collision shops</a> &middot; <a href="https://absoluteadas.com/brew">ADAS Brew</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="tel:+18443492327">1-844-349-2327</a>
+</footer>
+
+<script>
+(function () {
+  var API = 'https://adas-iq-904191467.development.catalystserverless.com/server/adasiq-api/api/public/recruit/apply';
+  var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var WINDOWS = [['Morning', '8 to 11 am'], ['Midday', '11 am to 2 pm'], ['Afternoon', '2 to 5 pm']];
+  var MAX = 3, picks = [];
+  var slotsEl = document.getElementById('slots'), pickedEl = document.getElementById('picked');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  // Next 8 weekdays, starting tomorrow (Pacific is close enough for day picks).
+  var d = new Date(); d.setHours(12, 0, 0, 0);
+  var days = [];
+  while (days.length < 8) {
+    d.setDate(d.getDate() + 1);
+    if (d.getDay() === 0 || d.getDay() === 6) continue;
+    days.push({ iso: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()), label: DAYS[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + d.getDate() });
+  }
+  days.forEach(function (day) {
+    var box = document.createElement('div'); box.className = 'day';
+    var h = document.createElement('b'); h.textContent = day.label; box.appendChild(h);
+    WINDOWS.forEach(function (w) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'slot'; b.setAttribute('aria-pressed', 'false');
+      b.textContent = w[0] + ' · ' + w[1];
+      b.dataset.iso = day.iso; b.dataset.label = day.label + ', ' + w[0].toLowerCase() + ' (' + w[1] + ')';
+      b.addEventListener('click', function () { toggle(b); });
+      box.appendChild(b);
+    });
+    slotsEl.appendChild(box);
+  });
+
+  function toggle(b) {
+    var i = picks.indexOf(b);
+    if (i >= 0) { picks.splice(i, 1); b.setAttribute('aria-pressed', 'false'); }
+    else if (picks.length < MAX) { picks.push(b); b.setAttribute('aria-pressed', 'true'); }
+    render();
+  }
+  function render() {
+    var full = picks.length >= MAX;
+    slotsEl.querySelectorAll('.slot').forEach(function (s) { s.disabled = full && s.getAttribute('aria-pressed') !== 'true'; });
+    pickedEl.innerHTML = picks.length ? '<b>Picked:</b> ' + picks.map(function (p) { return p.dataset.label; }).join(' · ') : '';
+    if (picks.length) document.getElementById('pf-anytime').checked = false;
+  }
+  document.getElementById('pf-anytime').addEventListener('change', function (e) {
+    if (e.target.checked) { picks.forEach(function (p) { p.setAttribute('aria-pressed', 'false'); }); picks = []; render(); }
+  });
+
+  // The gateway chokes on values that start with "(" (see careers form), so phones are normalized.
+  function clean(v) { return String(v || '').trim().replace(/^\(/, '').replace(/\)\s*/, ' '); }
+
+  var f = document.getElementById('pf'), err = document.getElementById('pf-err'), go = document.getElementById('pf-go');
+  f.addEventListener('submit', function (e) {
+    e.preventDefault(); err.textContent = '';
+    var name = f.name.value.trim(), phone = clean(f.phone.value), email = f.email.value.trim(), company = f.company.value.trim();
+    if (!name) { err.textContent = 'Add your name.'; f.name.focus(); return; }
+    if (!company) { err.textContent = 'Add your company name.'; f.company.focus(); return; }
+    if (!phone) { err.textContent = 'Add a phone number so Mark can call you.'; f.phone.focus(); return; }
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = 'That email doesn’t look right.'; f.email.focus(); return; }
+    var anytime = document.getElementById('pf-anytime').checked;
+    if (!picks.length && !anytime) { err.textContent = 'Pick at least one time, or check "just call me".'; return; }
+
+    var times = picks.map(function (p) { return p.dataset.label; });
+    var sorted = picks.map(function (p) { return p.dataset.iso; }).sort();
+    var site = f.company_site.value.trim();
+    var msg = (anytime ? 'Call times: any time, just call.' : 'Call times (Pacific): ' + times.join(' | ')) + (site ? '\nWebsite: ' + site : '');
+    var p = new URLSearchParams();
+    p.append('kind', 'partner');
+    p.append('name', name); p.append('company', company); p.append('phone', phone); p.append('email', email);
+    ['service_area', 'techs', 'years', 'shops', 'tools', 'interest', 'pains'].forEach(function (k) { p.append(k, clean(f[k].value)); });
+    p.append('company_site', site);
+    p.append('next_step', anytime ? 'Discovery call: any time, just call' : 'Discovery call: ' + times.join(' | '));
+    p.append('next_date', sorted[0] || '');
+    p.append('brew', document.getElementById('pf-brew').checked ? 'yes' : 'no');
+    p.append('message', msg);
+    p.append('source', 'website: partners');
+    p.append('website', f.website.value);   // honeypot, must stay empty
+
+    go.disabled = true; go.textContent = 'Sending...';
+    fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: p.toString() })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error(j.error || 'Something went wrong.'); }); })
+      .then(function () {
+        f.hidden = true;
+        document.getElementById('pf-done-msg').textContent = anytime
+          ? 'Mark will call you at ' + phone + ' to find a time.'
+          : 'Mark will call you at ' + phone + ' to lock in one of: ' + times.join(', ') + '.';
+        document.getElementById('pf-done').hidden = false;
+        document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+      })
+      .catch(function (x) {
+        err.innerHTML = (x.message || 'Something went wrong.') + ' Call or text us at <a href="tel:+18443492327">1-844-349-2327</a>.';
+        go.disabled = false; go.textContent = 'Request my call';
+      });
+  });
+})();
+</script>
+</body>
+</html>
