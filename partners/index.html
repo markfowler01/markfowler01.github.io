@@ -354,7 +354,7 @@
   var f = document.getElementById('pf'), err = document.getElementById('pf-err'), go = document.getElementById('pf-go');
   f.addEventListener('submit', function (e) {
     e.preventDefault(); err.textContent = '';
-    var name = f.name.value.trim(), phone = clean(f.phone.value), email = f.email.value.trim(), company = f.company.value.trim();
+    var name = f.name.value.trim(), phone = String(f.phone.value || '').replace(/[^\d+]/g, ''), email = f.email.value.trim(), company = f.company.value.trim();
     if (!name) { err.textContent = 'Add your name.'; f.name.focus(); return; }
     if (!company) { err.textContent = 'Add your company name.'; f.company.focus(); return; }
     if (!phone) { err.textContent = 'Add a phone number so Mark can call you.'; f.phone.focus(); return; }
