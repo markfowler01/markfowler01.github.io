@@ -27,69 +27,87 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# Fast, attainable cars: things a mechanic or enthusiast could actually own or work on.
+# Exotic cars only: supercars and hypercars, a different one every video.
 CARS = [
-    ("Toyota GR Supra", "Supra"), ("Toyota GR Corolla", "GR Corolla"), ("Toyota GR86", "GR86"),
-    ("Honda Civic Type R", "Civic Type R"), ("Acura Integra Type S", "Integra Type S"),
-    ("Nissan Z", "Nissan Z"), ("Nissan GT-R", "GT-R"), ("Subaru WRX", "WRX"),
-    ("Mazda MX-5 Miata", "Miata"), ("Hyundai Elantra N", "Elantra N"), ("Hyundai Ioniq 5 N", "Ioniq 5 N"),
-    ("Volkswagen Golf R", "Golf R"), ("Ford Mustang Dark Horse", "Mustang Dark Horse"),
-    ("Ford Mustang Shelby GT500", "GT500"), ("Chevrolet Camaro ZL1", "Camaro ZL1"),
-    ("Chevrolet Corvette Stingray C8", "C8 Corvette"), ("Chevrolet Corvette Z06", "Corvette Z06"),
-    ("Dodge Challenger SRT Hellcat", "Hellcat"), ("Dodge Charger Scat Pack", "Charger Scat Pack"),
-    ("Cadillac CT5-V Blackwing", "CT5-V Blackwing"), ("BMW M2", "BMW M2"), ("BMW M3 Competition", "M3"),
-    ("BMW M4", "M4"), ("Audi RS 3", "RS 3"), ("Audi RS 5", "RS 5"), ("Mercedes-AMG C 63", "C 63"),
-    ("Porsche 911 Carrera S", "911 Carrera S"), ("Porsche 718 Cayman GT4", "Cayman GT4"),
-    ("Porsche 911 GT3", "911 GT3"), ("Lexus RC F", "RC F"), ("Alfa Romeo Giulia Quadrifoglio", "Giulia QV"),
-    ("Lotus Emira", "Emira"), ("Tesla Model 3 Performance", "Model 3 Performance"),
-    ("Ford F-150 Raptor", "Raptor"), ("Ram 1500 TRX", "TRX"), ("Ford Bronco Raptor", "Bronco Raptor"),
-    ("Mitsubishi Lancer Evolution X", "Evo X"), ("Subaru WRX STI", "WRX STI"),
+    ("Ferrari 296 GTB", "Ferrari 296 GTB"), ("Ferrari SF90 Stradale", "Ferrari SF90"), ("Ferrari Roma", "Ferrari Roma"),
+    ("Ferrari F8 Tributo", "Ferrari F8"), ("Ferrari 812 Superfast", "Ferrari 812"), ("Ferrari 12Cilindri", "Ferrari 12Cilindri"),
+    ("Lamborghini Huracan STO", "Huracan STO"), ("Lamborghini Revuelto", "Lamborghini Revuelto"),
+    ("Lamborghini Aventador SVJ", "Aventador SVJ"), ("Lamborghini Countach LPI 800-4", "Countach"),
+    ("McLaren 750S", "McLaren 750S"), ("McLaren 720S", "McLaren 720S"), ("McLaren Artura", "McLaren Artura"),
+    ("McLaren P1", "McLaren P1"), ("McLaren Senna", "McLaren Senna"),
+    ("Porsche 911 GT3 RS", "911 GT3 RS"), ("Porsche 911 Turbo S", "911 Turbo S"), ("Porsche 918 Spyder", "918 Spyder"),
+    ("Porsche Carrera GT", "Carrera GT"), ("Aston Martin Vantage", "Aston Martin Vantage"),
+    ("Aston Martin DBS", "Aston Martin DBS"), ("Aston Martin Valkyrie", "Aston Martin Valkyrie"),
+    ("Bugatti Chiron", "Bugatti Chiron"), ("Pagani Huayra", "Pagani Huayra"), ("Koenigsegg Jesko", "Koenigsegg Jesko"),
+    ("Ford GT", "Ford GT"), ("Lexus LFA", "Lexus LFA"), ("Audi R8 V10", "Audi R8"),
+    ("Mercedes-AMG GT Black Series", "AMG GT Black Series"), ("Mercedes-AMG One", "AMG One"),
+    ("Maserati MC20", "Maserati MC20"), ("Rimac Nevera", "Rimac Nevera"), ("Nissan GT-R Nismo", "GT-R Nismo"),
+    ("Acura NSX Type S", "NSX Type S"), ("Chevrolet Corvette ZR1", "Corvette ZR1"), ("Lotus Evija", "Lotus Evija"),
 ]
-COLORS = ["deep red", "gloss black", "nardo grey", "pearl white", "midnight blue", "dark green",
-          "burnt orange", "silver", "satin black", "electric blue", "yellow", "gunmetal grey"]
+COLORS = ["rosso red", "gloss black", "chalk grey", "pearl white", "midnight blue", "british racing green",
+          "papaya orange", "liquid silver", "satin black", "giallo yellow", "gunmetal grey", "deep burgundy"]
 
-# Scenes: where the car sits, which white noise plays under the lo-fi, and whether it rains.
+# The three PARKED FM series: how long the video runs, what sits under the lo-fi, the words.
+SERIES = {
+    "midnight_garage": dict(name="Midnight Garage", minutes=180, tail="Late-Night Lo-Fi for Work & Focus"),
+    "rainy_drives": dict(name="Rainy Drives", minutes=480, tail="Lo-Fi & Rain for Sleep, Work & Focus"),
+    "parked_peaceful": dict(name="Parked & Peaceful", minutes=240, tail="Calm Lo-Fi for Relaxing & Focus"),
+}
+
+# Scenes: where the car sits, its series, which ambience plays softly under the lo-fi, and rain on screen.
 SCENES = [
-    dict(id="rain_mountain", bed="rain_road", rain=900, label="RAIN + LO-FI",
-         title="in the Rain on a Mountain Road",
-         prompt="parked on a wet mountain road overlook at dusk in steady rain, dark pine trees, low clouds over a lake below",
-         words="rain falling over the pines and a lake below"),
-    dict(id="neon_city", bed="rain_road", rain=900, label="RAIN + LO-FI",
-         title="on a Rainy Neon Night",
-         prompt="parked on an empty rain-soaked city street at night, soft neon signs reflecting in the wet asphalt",
-         words="rain on an empty city street, neon reflecting in the puddles"),
-    dict(id="forest_rain", bed="rain_road", rain=900, label="RAIN + LO-FI",
-         title="on a Forest Road in the Rain",
-         prompt="stopped on a narrow forest road at night in heavy rain, headlights on, mist between tall trees",
-         words="heavy rain in a dark forest, mist between the trees"),
-    dict(id="gas_station", bed="rain_road", rain=700, label="RAIN + LO-FI",
-         title="at a Late-Night Gas Station",
-         prompt="parked under the canopy of an empty retro gas station at 2 am in light rain, warm canopy lights",
-         words="light rain at an empty gas station at 2 am"),
-    dict(id="shop_night", bed="fan", rain=0, label="SHOP FAN + LO-FI",
+    dict(id="skyline_garage", series="midnight_garage", bed="rain", rain=0,
+         title="in a Garage Above the Rainy City",
+         prompt="parked inside a warm modern luxury garage with floor-to-ceiling windows overlooking a rainy city skyline at night, rain on the glass, city lights reflecting",
+         words="rain on the glass and the city glowing below"),
+    dict(id="shop_night", series="midnight_garage", bed="fan", rain=0,
          title="in the Shop After Hours",
-         prompt="inside a clean, dark mechanic shop after hours, parked in a service bay, warm work lights, tool chests",
+         prompt="inside a clean, dark high-end workshop after hours, parked in a service bay, warm work lights, polished floor",
          words="the shop after everyone has gone home, the fans still humming"),
-    dict(id="home_garage", bed="rain", rain=0, label="RAIN + LO-FI",
+    dict(id="home_garage", series="midnight_garage", bed="rain", rain=0,
          title="in the Garage on a Rainy Night",
-         prompt="inside a cozy home garage at night with the door open to falling rain, warm string lights",
+         prompt="inside a cozy private garage at night with the door open to falling rain, warm string lights, a workbench",
          words="rain on the garage roof and a warm light on"),
-    dict(id="snow_cabin", bed="wind", rain=0, label="WIND + LO-FI",
-         title="at a Cabin on a Snowy Night",
-         prompt="parked outside a log cabin at night in gently falling snow, warm light in the windows",
-         words="snow falling outside a warm cabin, wind in the trees"),
-    dict(id="desert_dusk", bed="wind", rain=0, label="WIND + LO-FI",
-         title="on a Desert Highway at Dusk",
-         prompt="parked on the shoulder of an empty desert highway at blue hour, distant mountains, first stars",
-         words="a warm desert wind on an empty highway at dusk"),
-    dict(id="coast_fog", bed="wind", rain=0, label="WIND + LO-FI",
-         title="on a Foggy Coast Road",
-         prompt="parked at a pull-out on a foggy coastal cliff road at dawn, the ocean below fading into fog",
-         words="fog rolling in off the ocean, a soft wind on the cliffs"),
-    dict(id="parking_deck", bed="heater", rain=0, label="WHITE NOISE + LO-FI",
+    dict(id="parking_deck", series="midnight_garage", bed="heater", rain=0,
          title="on a Rooftop Parking Deck at Night",
          prompt="parked alone on the top floor of an empty parking garage at night, city lights in the distance",
          words="a quiet city humming below an empty rooftop deck"),
+    dict(id="rain_mountain", series="rainy_drives", bed="rain_road", rain=900,
+         title="in the Rain on a Mountain Road",
+         prompt="parked on a wet mountain road overlook at dusk in steady rain, dark pine trees, low clouds over a lake below",
+         words="rain falling over the pines and a lake below"),
+    dict(id="neon_city", series="rainy_drives", bed="rain_road", rain=900,
+         title="on a Rainy Neon Night",
+         prompt="parked on an empty rain-soaked city street at night, soft neon signs reflecting in the wet asphalt",
+         words="rain on an empty city street, neon reflecting in the puddles"),
+    dict(id="forest_rain", series="rainy_drives", bed="rain_road", rain=900,
+         title="on a Forest Road in the Rain",
+         prompt="stopped on a narrow forest road at night in heavy rain, headlights on, mist between tall trees",
+         words="heavy rain in a dark forest, mist between the trees"),
+    dict(id="gas_station", series="rainy_drives", bed="rain_road", rain=700,
+         title="at a Late-Night Gas Station",
+         prompt="parked under the canopy of an empty modern gas station at 2 am in light rain, warm canopy lights",
+         words="light rain at an empty gas station at 2 am"),
+    dict(id="snow_cabin", series="parked_peaceful", bed="wind", rain=0,
+         title="at a Cabin on a Snowy Night",
+         prompt="parked outside a log cabin at night in gently falling snow, warm light in the windows",
+         words="snow falling outside a warm cabin, wind in the trees"),
+    dict(id="desert_dusk", series="parked_peaceful", bed="wind", rain=0,
+         title="on a Desert Highway at Dusk",
+         prompt="parked on the shoulder of an empty desert highway at blue hour, distant mountains, first stars",
+         words="a warm desert wind on an empty highway at dusk"),
+    dict(id="coast_fog", series="parked_peaceful", bed="wind", rain=0,
+         title="on a Foggy Coast Road",
+         prompt="parked at a pull-out on a foggy coastal cliff road at dawn, the ocean below fading into fog",
+         words="fog rolling in off the ocean, a soft wind on the cliffs"),
+    dict(id="mountain_overlook", series="parked_peaceful", bed="wind", rain=0,
+         title="at a Mountain Overlook at Sunset",
+         prompt="parked at a scenic mountain overlook at sunset, a wide valley below in golden haze",
+         words="a soft wind at a mountain overlook as the sun goes down"),
+    dict(id="lakeside_cafe", series="parked_peaceful", bed="rain", rain=0,
+         title="Outside a Lakeside Cafe at Dusk",
+         prompt="parked outside a small lakeside cafe at dusk in a light drizzle, warm window light, calm water",
+         words="a light drizzle by the lake and warm light from the cafe"),
 ]
 
 PROMPT = (
@@ -107,7 +125,7 @@ def slug(s):
 
 
 def pick(day, published):
-    rng = random.Random(day.toordinal())
+    rng = random.Random(day.toordinal() * 7 + len(published))
     recent_cars = {e.get("car") for e in published[-20:]}
     recent_scenes = [e.get("scene") for e in published[-3:]]
     cars = [c for c in CARS if c[0] not in recent_cars] or CARS
@@ -118,31 +136,36 @@ def pick(day, published):
 
 def sidecar(choice):
     sc, short = choice["scene"], choice["short"]
+    series = SERIES[sc["series"]]
+    hours = series["minutes"] // 60
     title = f"{short} {sc['title']}"
+    where = sc["title"].lower()
     return {
         "rotate": False,
-        "recipes": ["lofi", "mix"],
+        "recipes": ["lofi"],
         "bed": sc["bed"],
         "rain": sc["rain"],
         "dust": 0 if sc["rain"] else 40,
         "grades": ["none"],
+        "minutes": series["minutes"],
+        "series": series["name"],
         "text_side": "right",
         "text_scale": 0.66,
         "title": title,
-        "title_tail": "Chill Music for Work & Focus",
-        "label": "CHILL LO-FI",
+        "title_tail": series["tail"],
+        "label": series["name"].upper(),
         "slug": slug(short),
         "car": choice["car"],
         "scene": sc["id"],
-        "tags": [choice["car"].lower(), short.lower(), "lofi for work", "focus music", "car lofi"],
+        "tags": [choice["car"].lower(), short.lower(), series["name"].lower(), "exotic cars", "supercar",
+                 "lofi for work", "focus music"],
         "description": (
-            f"A {choice['color']} {choice['car']} {sc['title'].split(' ', 1)[0].lower()} {sc['title'].split(' ', 1)[1].lower()}: "
-            f"{sc['words']}. Eight hours of slow, original lo-fi with the weather soft underneath, "
-            "for working, studying, or winding down after a long day in the bay.\n\n"
+            f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
+            f"{hours} hours of slow, original lo-fi with the weather soft underneath, for working, studying, "
+            "relaxing or drifting off to sleep.\n\n"
             "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
-            "Built for mechanics, car people, and anyone who works better with something chill playing.\n\n"
-            "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
-            f"#carpeoplesleep #lofi #musicforwork #focusmusic #{slug(short).replace('-', '')}"
+            "PARKED FM | Dream Cars. Easy Listening.\n\n"
+            f"#parkedfm #lofi #musicforwork #focusmusic #{slug(short).replace('-', '')}"
         ),
     }
 

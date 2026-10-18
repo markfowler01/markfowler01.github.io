@@ -117,6 +117,59 @@ def hat(vel, rng):
     return vel * noise * np.exp(-t / 0.022)
 
 
+def piano(freq, dur, vel, rng):
+    """Soft acoustic-style piano: slightly stretched partials that die away faster the higher they are."""
+    rel = 0.35
+    n = int((dur + rel) * SR)
+    t = np.arange(n) / SR
+    tau0 = 1.2 + 2.2 * min(1.0, 160.0 / freq)  # low notes ring longer
+    out = np.zeros(n)
+    for k in range(1, 9):
+        fk = k * freq * np.sqrt(1 + 0.0004 * k * k)
+        if fk > 9000:
+            break
+        amp = (1.0 / k ** 1.3) * (0.6 + 0.4 * vel) ** (k - 1)
+        out += amp * np.exp(-t / (tau0 / (1 + 0.55 * (k - 1)))) * np.sin(2 * np.pi * fk * t + rng.uniform(0, 6.28))
+    thump = fft_filter(rng.standard_normal(min(n, int(0.02 * SR))), hi=900)
+    out[: len(thump)] += 0.08 * thump * np.exp(-np.arange(len(thump)) / (0.004 * SR))
+    env = (1 - np.exp(-t / 0.003)) * np.where(t > dur, np.exp(-(t - dur) / 0.12), 1.0)
+    return 0.45 * vel * out * env
+
+
+def ride(vel, rng):
+    """Jazz ride cymbal: a bright, shimmering ping that rings briefly."""
+    n = int(0.6 * SR)
+    t = np.arange(n) / SR
+    tone = sum(np.sin(2 * np.pi * f * t + rng.uniform(0, 6.28)) for f in (3150, 4120, 5310, 6740))
+    hiss = fft_filter(rng.standard_normal(n), lo=4000, hi=11000)
+    hiss /= np.abs(hiss).max() + 1e-9
+    return vel * (0.18 * tone * np.exp(-t / 0.22) + 0.5 * hiss * np.exp(-t / 0.3)) * (1 - np.exp(-t / 0.0015))
+
+
+def brush(vel, rng):
+    """Brush on the snare: a soft swish rather than a crack."""
+    n = int(0.35 * SR)
+    t = np.arange(n) / SR
+    noise = fft_filter(rng.standard_normal(n), lo=600, hi=3500)
+    noise /= np.abs(noise).max() + 1e-9
+    return vel * noise * (1 - np.exp(-t / 0.02)) * np.exp(-t / 0.12)
+
+
+def reverb(x, seconds=2.2, wet=0.2, seed=0):
+    """Room reverb: convolve with a decaying, darkening noise tail (FFT convolution)."""
+    rng = np.random.default_rng(seed)
+    m = int(seconds * SR)
+    t = np.arange(m) / SR
+    ir = rng.standard_normal((m, 2)) * np.exp(-t / (seconds / 6.9))[:, None]
+    ir = fft_filter(ir, lo=200, hi=5000)
+    ir /= np.sqrt((ir ** 2).sum(axis=0)) + 1e-12
+    n = x.shape[0] + m
+    nfft = 1 << (n - 1).bit_length()
+    X = np.fft.rfft(x, nfft, axis=0)
+    w = np.fft.irfft(X * np.fft.rfft(ir, nfft, axis=0), nfft, axis=0)[: x.shape[0]]
+    return (1 - wet) * x + wet * w
+
+
 def add(buf, sig, start, pan=0.0):
     """Mix a mono signal into a stereo buffer at sample `start` with constant-power pan."""
     s = int(start)
@@ -160,16 +213,18 @@ def arrangement(total_bars, rng):
     return plan + blocks + [("outro", 4)]
 
 
-def compose_track(seed, bars):
+def compose_track(seed, bars, style="lofi"):
+    """style: lofi (boom-bap lo-fi), jazz (chill jazz: brushes, ride, walking bass),
+    piano (soft piano and ambient: no drums, broken chords, reverb)."""
     rng = np.random.default_rng(seed)
-    bpm = rng.uniform(70, 82)
+    bpm = {"lofi": rng.uniform(70, 82), "jazz": rng.uniform(66, 78), "piano": rng.uniform(58, 68)}[style]
     beat = 60.0 / bpm
     bar = 4 * beat
     key = int(rng.choice([57, 58, 60, 62, 63, 65]))  # A, Bb, C, D, Eb, F (tonic, MIDI)
     progA = PROGRESSIONS[rng.integers(len(PROGRESSIONS))]
     progB = PROGRESSIONS[rng.integers(len(PROGRESSIONS))]
     drums = DRUM_PATTERNS[rng.integers(len(DRUM_PATTERNS))]
-    swing = rng.uniform(0.08, 0.13)  # offbeat 8ths land this many beats late
+    swing = rng.uniform(0.08, 0.13) if style == "lofi" else rng.uniform(0.15, 0.19)  # late offbeats
 
     length = int((bars * bar + 3.0) * SR)
     keys = np.zeros((length, 2))
@@ -195,16 +250,32 @@ def compose_track(seed, bars):
             notes = voice(root, q, center)
             center = int(np.mean(notes))
             soft = 0.55 if name in ("intro", "outro", "break") else 0.7
+            if style == "piano":
+                pattern = rng.choice([[0, 1, 2, 1, 3, 1, 2, 1], [0, 2, 1, 3, 2, 1, 3, 2], [0, 1, 2, 3, 2, 1, 2, 3]])
+                pool = notes + [notes[0] + 12]
+                for e, idx in enumerate(pattern):
+                    m = pool[idx % len(pool)]
+                    add(keys, piano(mtof(m), beat * 1.6, 0.42 * rng.uniform(0.8, 1.0), rng),
+                        t0 + e * 0.5 * beat * SR + hum(0.006), pan=(m - 64) / 40)
+                add(low, piano(mtof(root - 12 if root - 12 >= 40 else root), bar * 1.0, 0.5, rng), t0 + hum(0.004))
+                notes = []
             for j, m in enumerate(notes):
                 add(keys, epiano(mtof(m), bar * 0.95, soft * rng.uniform(0.8, 1.0), rng),
                     t0 + j * rng.uniform(0.008, 0.022) * SR + hum(), pan=rng.uniform(-0.35, 0.35))
-            if name in ("A", "B") and rng.random() < 0.45:
+            if style != "piano" and name in ("A", "B") and rng.random() < 0.45:
                 at = rng.choice([1.5, 2.0, 2.5])
                 for m in notes[1:]:
                     add(keys, epiano(mtof(m), beat * 1.2, 0.35 * rng.uniform(0.8, 1.0), rng, bright=0.7),
                         t0 + at * beat * SR + hum(), pan=rng.uniform(-0.3, 0.3))
             # bass: root on 1, fifth or approach note late in the bar
-            if name not in ("intro", "outro"):
+            if style == "jazz" and name not in ("intro", "outro"):
+                bm = root - 24 if root - 24 >= 33 else root - 12
+                nxt = key + prog[(bi + 1) % 4][0]
+                nb = nxt - 24 if nxt - 24 >= 33 else nxt - 12
+                tones = [bm, bm + QUALITY[q][1], bm + 7, nb + rng.choice([-1, 1])]  # root, 3rd, 5th, approach
+                for qn, m in enumerate(tones):
+                    add(low, bass_note(mtof(m), beat * 0.9, 0.8 if qn == 0 else 0.62), t0 + qn * beat * SR + hum(0.006))
+            elif style == "lofi" and name not in ("intro", "outro"):
                 bm = root - 24 if root - 24 >= 33 else root - 12
                 add(low, bass_note(mtof(bm), beat * 1.6, 0.85), t0 + hum(0.004))
                 if rng.random() < 0.6:
@@ -212,7 +283,15 @@ def compose_track(seed, bars):
                     approach = rng.choice([bm + 7, (nxt - 24 if nxt - 24 >= 33 else nxt - 12) - 1])
                     add(low, bass_note(mtof(approach), beat * 0.8, 0.6), t0 + 3 * beat * SR + hum(0.004))
             # drums: swung, quiet, humanised; out for intro / break / outro
-            if name in ("A", "B"):
+            if style == "jazz" and name in ("A", "B"):
+                for pos in (0, 1, 1 + 2 / 3, 2, 3, 3 + 2 / 3):  # spang, spang-a-lang
+                    add(kit, ride((0.5 if pos in (1, 3) else 0.38) * rng.uniform(0.8, 1.0), rng),
+                        t0 + pos * beat * SR + hum(0.006), pan=0.3)
+                for b in (1, 3):
+                    add(kit, brush(0.55 * rng.uniform(0.8, 1.0), rng), t0 + b * beat * SR + hum(0.008), pan=-0.1)
+                for b in range(4):  # feathered kick, felt more than heard
+                    add(kit, kick(0.28 * rng.uniform(0.8, 1.0), rng), t0 + b * beat * SR + hum(0.005))
+            if style == "lofi" and name in ("A", "B"):
                 for b in drums["kick"]:
                     add(kit, kick(0.9 * rng.uniform(0.85, 1.0), rng), t0 + b * beat * SR + hum(0.005))
                 for b in drums["snare"]:
@@ -235,7 +314,9 @@ def compose_track(seed, bars):
                         m = key + 12 + d
                         if rng.random() < 0.15:
                             m += rng.choice([-2, 2, 3])
-                        add(lead, epiano(mtof(m), ln * beat, 0.32, rng, bright=0.5),
+                        voice_fn = piano(mtof(m + 12), ln * beat * 1.5, 0.4, rng) if style == "piano" else \
+                            epiano(mtof(m), ln * beat, 0.32, rng, bright=0.5)
+                        add(lead, voice_fn,
                             t0 + (pos - half) * beat * SR + hum(), pan=rng.uniform(-0.15, 0.15))
         b0 += nbars
 
@@ -262,7 +343,16 @@ def compose_track(seed, bars):
     trem = 0.12 * np.sin(2 * np.pi * 3.6 * t)
     keys[:, 0] *= (1 + trem) * duck
     keys[:, 1] *= (1 - trem) * duck
-    mix = 0.8 * keys + 0.6 * low + 0.8 * kit + 0.6 * lead
+    if style == "piano":
+        keys[:, 0] /= (1 + trem) * duck
+        keys[:, 1] /= (1 - trem) * duck  # piano: no tremolo, no ducking
+        mix = 0.9 * keys + 0.55 * low + 0.7 * lead
+        mix = reverb(mix, seconds=2.8, wet=0.32, seed=seed)
+    elif style == "jazz":
+        mix = 0.8 * keys + 0.75 * low + 0.7 * kit + 0.6 * lead
+        mix = reverb(mix, seconds=1.8, wet=0.16, seed=seed)
+    else:
+        mix = 0.8 * keys + 0.6 * low + 0.8 * kit + 0.6 * lead
 
     # fades: intro rises in, outro falls away
     fin = int(bar * 2 * SR)
@@ -271,7 +361,7 @@ def compose_track(seed, bars):
     fade[:fin] = np.linspace(0, 1, fin) ** 2
     fade[fout_start:] = np.linspace(1, 0, length - fout_start) ** 1.5
     mix *= fade[:, None]
-    return mix, dict(bpm=round(bpm), key=key, bars=bars)
+    return mix, dict(bpm=round(bpm), key=key, bars=bars, style=style)
 
 
 def tape(mix, rng):
@@ -332,6 +422,8 @@ def main():
     ap.add_argument("--under", help="continuous music with this ambience kept quietly underneath "
                                     "(rain_road, rain, fan, wind, heater); the work/study-music style")
     ap.add_argument("--under-level", type=float, default=0.03, help="loudness of the ambience under the music (RMS)")
+    ap.add_argument("--style", choices=["lofi", "jazz", "piano"], default="lofi",
+                    help="lofi beats, chill jazz (brushes, walking bass) or soft piano / ambient")
     ap.add_argument("--bitrate", default="112k")
     ap.add_argument("--out", default="album.m4a")
     args = ap.parse_args()
@@ -348,7 +440,7 @@ def main():
         n_tracks = max(1, round(args.music_share * args.minutes / 3.3))
         tracks = []
         for i in range(n_tracks):
-            mix, info = compose_track(args.seed * 1000 + i, int(rng.integers(13, 17)) * 4)
+            mix, info = compose_track(args.seed * 1000 + i, int(rng.integers(13, 17)) * 4, args.style)
             mix = tape(mix, rng)
             mix *= 0.075 / (np.sqrt((mix[mix.shape[0] // 4: 3 * mix.shape[0] // 4] ** 2).mean()) + 1e-12)
             tracks.append(mix)
@@ -372,12 +464,15 @@ def main():
     else:
         tracks, used, i = [], 0, 0
         while True:
-            bar_s = 240 / 76
+            bar_s = 240 / {"lofi": 74, "jazz": 68, "piano": 59}[args.style]  # slow end of each style's tempo
             remaining = (target - used) / SR - args.gap
             if remaining < 70:
                 break
             bars = int(rng.integers(13, 17)) * 4 if remaining > 4.2 * 60 else max(16, int(remaining / bar_s) // 4 * 4 - 4)
-            mix, info = compose_track(args.seed * 1000 + i, bars)
+            mix, info = compose_track(args.seed * 1000 + i, bars, args.style)
+            while used + mix.shape[0] + int(args.gap * SR) > target and bars > 16:
+                bars -= 8  # too long for the space left: try a shorter arrangement
+                mix, info = compose_track(args.seed * 1000 + i, bars, args.style)
             mix = tape(mix, rng)
             if used + mix.shape[0] + int(args.gap * SR) > target:
                 break

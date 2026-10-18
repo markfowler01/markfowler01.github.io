@@ -6,7 +6,7 @@ Needs three environment variables (stored as GitHub Actions secrets):
 Optional:
   YT_PRIVACY   public | unlisted | private   (default public)
 
-  python3 youtube_upload.py kit/car-people-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
+  python3 youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json
   python3 youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id VIDEO_ID
 
 With --short it uses short_title / short_description from details.json (and links the
@@ -52,9 +52,10 @@ def upload(video, thumb, details, short=False, full_id=None):
     title, desc = details["title"], details["description"]
     if short:
         title = details.get("short_title", title)[:100]
-        desc = details.get("short_description", "The full 8-hour video is on the channel.")
+        h = details.get("hours", 8)
+        desc = details.get("short_description", f"The full {h}-hour video is on the channel.")
         if full_id:
-            desc = f"Full 8-hour video: https://youtu.be/{full_id}\n\n" + desc
+            desc = f"Full {h}-hour video: https://youtu.be/{full_id}\n\n" + desc
     meta = {
         "snippet": {
             "title": title,
