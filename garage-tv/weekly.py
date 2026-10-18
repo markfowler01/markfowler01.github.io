@@ -153,7 +153,8 @@ def plan_daily(day):
     vol = sum(1 for e in published if e.get("recipe") == recipe) + 1
     p = dict(
         index=(day - dt.date(2024, 1, 1)).days,
-        tag=f"daily-{day.isoformat()}",
+        # a second run on the same day (e.g. a manual one) gets its own release instead of replacing the first
+        tag=f"daily-{day.isoformat()}" + (f"-{same_day + 1}" if (same_day := sum(e["date"] == day.isoformat() for e in published)) else ""),
         recipe=recipe,
         grade=meta.get("grades", GRADE_ORDER)[uses % len(meta.get("grades", GRADE_ORDER))] if uses else "none",
         photo=photo,
