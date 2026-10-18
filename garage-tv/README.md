@@ -94,9 +94,8 @@ runs every day around 13:23 UTC:
 
 2. **Photo queue** fallback: the next never-used picture in `stills/`, or the
    one used longest ago with a new colour grade.
-3. **Sound:** 30 minutes of continuous original lo-fi (`make_lofi.py --under`),
-   new every day, with the scene's ambience (rain, wind, shop fan) about 12 dB
-   underneath. `--style jazz` and `--style piano` exist but are not used.
+3. **Sound:** 30 minutes of continuous original lo-fi (`make_lofi.py`), new every
+   day, music only (no rain or wind under it; rain stays on screen). `--style jazz` and `--style piano` exist but are not used.
 4. **Kit:** smooth 60 s video loop (falling rain on rainy scenes), PARKED FM
    thumbnail (navy, cream, amber), title, description, tags, and a 30 s vertical
    **trailer** for Shorts. Published as release `daily-YYYY-MM-DD`; kits older

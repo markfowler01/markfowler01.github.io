@@ -47,14 +47,23 @@ CARS = [
 COLORS = ["rosso red", "gloss black", "chalk grey", "pearl white", "midnight blue", "british racing green",
           "papaya orange", "liquid silver", "satin black", "giallo yellow", "gunmetal grey", "deep burgundy"]
 
-# The three PARKED FM series: how long the video runs, what sits under the lo-fi, the words.
+# The three PARKED FM series: how long the video runs, the title words.
 SERIES = {
     "midnight_garage": dict(name="Midnight Garage", minutes=180, tail="Late-Night Lo-Fi for Work & Focus"),
-    "rainy_drives": dict(name="Rainy Drives", minutes=480, tail="Lo-Fi & Rain for Sleep, Work & Focus"),
+    "rainy_drives": dict(name="Rainy Drives", minutes=480, tail="Rainy Night Lo-Fi for Sleep, Work & Focus"),
     "parked_peaceful": dict(name="Parked & Peaceful", minutes=240, tail="Calm Lo-Fi for Relaxing & Focus"),
 }
 
-# Scenes: where the car sits, its series, which ambience plays softly under the lo-fi, and rain on screen.
+# Videos alternate: one day lo-fi music only, the next day a soundscape only (no music), 8 hours
+# for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
+SOUND_MINUTES = 480
+SOUND_NAMES = {"rain_road": "Rain Sounds", "rain": "Rain Sounds", "wind": "Wind Sounds", "fan": "Fan Noise",
+               "heater": "Heater Hum", "brown": "Brown Noise", "white": "White Noise"}
+SOUND_WORDS = {"rain_road": "steady rain", "rain": "soft rain on the roof", "wind": "soft wind",
+               "fan": "a steady fan", "heater": "a low heater hum", "brown": "deep brown noise",
+               "white": "smooth white noise"}
+
+# Scenes: where the car sits, its series, which ambience it would suit (only used by the white-noise mixes), and rain on screen.
 SCENES = [
     dict(id="skyline_garage", series="midnight_garage", bed="rain", rain=0,
          title="in a Garage Above the Rainy City",
@@ -131,43 +140,70 @@ def pick(day, published):
     cars = [c for c in CARS if c[0] not in recent_cars] or CARS
     scenes = [s for s in SCENES if s["id"] not in recent_scenes] or SCENES
     car, short = rng.choice(cars)
-    return dict(car=car, short=short, color=rng.choice(COLORS), scene=rng.choice(scenes))
+    scene = rng.choice(scenes)
+    last = published[-1].get("recipe") if published else None
+    sound = rng.choice([scene["bed"], scene["bed"], "brown", "white"]) if last == "lofi" else "lofi"
+    return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound)
 
 
 def sidecar(choice):
-    sc, short = choice["scene"], choice["short"]
+    sc, short, sound = choice["scene"], choice["short"], choice.get("sound", "lofi")
     series = SERIES[sc["series"]]
-    hours = series["minutes"] // 60
     title = f"{short} {sc['title']}"
     where = sc["title"].lower()
-    return {
+    tag = slug(short).replace("-", "")
+    meta = {
         "rotate": False,
-        "recipes": ["lofi"],
+        "recipes": [sound],
+        "daily_sound": sound,
         "bed": sc["bed"],
         "rain": sc["rain"],
         "dust": 0 if sc["rain"] else 40,
         "grades": ["none"],
-        "minutes": series["minutes"],
         "series": series["name"],
         "text_side": "right",
         "text_scale": 0.66,
         "title": title,
-        "title_tail": series["tail"],
         "label": series["name"].upper(),
         "slug": slug(short),
         "car": choice["car"],
         "scene": sc["id"],
-        "tags": [choice["car"].lower(), short.lower(), series["name"].lower(), "exotic cars", "supercar",
-                 "lofi for work", "focus music"],
-        "description": (
-            f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
-            f"{hours} hours of slow, original lo-fi with the weather soft underneath, for working, studying, "
-            "relaxing or drifting off to sleep.\n\n"
-            "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
-            "PARKED FM | Dream Cars. Easy Listening.\n\n"
-            f"#parkedfm #lofi #musicforwork #focusmusic #{slug(short).replace('-', '')}"
-        ),
     }
+    if sound == "lofi":
+        hours = series["minutes"] // 60
+        meta.update(
+            minutes=series["minutes"],
+            title_tail=series["tail"],
+            tags=[choice["car"].lower(), short.lower(), series["name"].lower(), "exotic cars", "supercar",
+                  "lofi for work", "focus music"],
+            description=(
+                f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
+                f"{hours} hours of slow, original lo-fi, music only, for working, studying, "
+                "relaxing or drifting off to sleep.\n\n"
+                "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
+                "PARKED FM | Dream Cars. Easy Listening.\n\n"
+                f"#parkedfm #lofi #musicforwork #focusmusic #{tag}"
+            ),
+        )
+    else:
+        name = SOUND_NAMES[sound]
+        hashtag = name.lower().replace(" ", "")
+        meta.update(
+            minutes=SOUND_MINUTES,
+            title_tail=f"{name} for Sleep & Focus",
+            sound_name=name,
+            tags=[name.lower(), f"{name.lower()} for sleeping", "white noise", "sleep sounds", "no music",
+                  choice["car"].lower(), short.lower(), "exotic cars", "supercar"],
+            description=(
+                f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
+                f"{SOUND_MINUTES // 60} hours of {SOUND_WORDS[sound]}, no music, for sleeping, studying, "
+                "or blocking out the world while you work.\n\n"
+                "No music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\n"
+                "PARKED FM | Dream Cars. Easy Listening.\n\n"
+                f"#parkedfm #{hashtag} #sleepsounds #whitenoise #{tag}"
+            ),
+        )
+    return meta
 
 
 def trim_bars(img, dark=14, spread=8):
@@ -200,12 +236,27 @@ def generate(prompt, out_path):
 
 
 def generate_gemini(prompt, out_path):
-    """Nano Banana: Gemini image model via the Gemini API, 16:9 output."""
+    """Nano Banana Pro at 2K (about 2752x1536, sharp at 1080p after the zoom), falling back to the
+    original Nano Banana (about 1344x768) if Pro is unavailable."""
+    models = [os.environ["GEMINI_IMAGE_MODEL"]] if os.environ.get("GEMINI_IMAGE_MODEL") else \
+        ["gemini-3-pro-image-preview", "gemini-2.5-flash-image"]
+    for i, model in enumerate(models):
+        try:
+            return gemini_image(model, prompt, out_path)
+        except RuntimeError as e:
+            if i == len(models) - 1:
+                raise
+            print(f"{model} failed, trying {models[i + 1]}:", e, file=sys.stderr)
+
+
+def gemini_image(model, prompt, out_path):
     key = os.environ["GEMINI_API_KEY"]
-    model = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
+    image_config = {"aspectRatio": "16:9"}
+    if "pro" in model:
+        image_config["imageSize"] = "2K"
     body = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": "16:9"}},
+        "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": image_config},
     }).encode()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
     req = urllib.request.Request(url, data=body, method="POST")

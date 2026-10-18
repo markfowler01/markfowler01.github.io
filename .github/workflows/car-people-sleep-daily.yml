@@ -2,8 +2,8 @@ name: PARKED FM daily video
 
 # Every morning: have the car engine paint a new car photo with Nano Banana (GEMINI_API_KEY)
 # or OpenAI's image model (OPENAI_API_KEY) when a key is set, otherwise take the next photo from garage-tv/stills or reuse the
-# oldest one; compose 30 minutes of white noise with occasional original lo-fi,
-# build the video loop, thumbnail, title and description, and publish it all as a release.
+# oldest one; alternate days between original lo-fi (music only) and a soundscape (rain, wind,
+# brown or white noise, no music); build the video loop, thumbnail, title and description, and publish it all as a release.
 # With the YT_* secrets set it also builds the 8-hour file and uploads it to YouTube.
 on:
   schedule:
@@ -27,6 +27,9 @@ jobs:
 
       - name: Install tools
         run: |
+          # the 8-hour file can pass 10 GB; drop preinstalled SDKs this job never uses
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h / | tail -1
           sudo apt-get install -y -qq fonts-dejavu-core >/dev/null
           pip install numpy Pillow imageio-ffmpeg
 
