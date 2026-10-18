@@ -329,6 +329,9 @@ def main():
     ap.add_argument("--bed", help="white-noise bed under the music: rain_road, rain, fan, wind or heater. "
                                   "With a bed the music only plays part of the time (--music-share)")
     ap.add_argument("--music-share", type=float, default=0.35, help="fraction of the album with music, when --bed is set")
+    ap.add_argument("--under", help="continuous music with this ambience kept quietly underneath "
+                                    "(rain_road, rain, fan, wind, heater); the work/study-music style")
+    ap.add_argument("--under-level", type=float, default=0.03, help="loudness of the ambience under the music (RMS)")
     ap.add_argument("--bitrate", default="112k")
     ap.add_argument("--out", default="album.m4a")
     args = ap.parse_args()
@@ -394,6 +397,12 @@ def main():
             p += tr.shape[0] + g
         album += crackle(target, rng)
         album *= 0.08 / (np.sqrt((album ** 2).mean()) + 1e-12)  # same average loudness every album
+        if args.under:
+            import make_ambience
+            chunk = make_ambience.render(2, args.under, seed=args.seed, seamless=True)
+            reps = -(-target // chunk.shape[0])
+            bed = np.tile(chunk, (reps, 1))[:target]
+            album += bed * (args.under_level / (np.sqrt((bed ** 2).mean()) + 1e-12))
         album = 0.9 * np.tanh(album / 0.9)
         print(f"album: {len(tracks)} tracks, {target / SR / 60:.2f} min, gaps {np.mean(gaps) / SR:.1f} s")
 
