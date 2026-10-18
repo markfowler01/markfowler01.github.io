@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Car engine: pick a random high-performance-but-obtainable car and a moody scene, have
+"""Car engine: pick a random exotic car and a moody scene, have
 Google's Nano Banana (GEMINI_API_KEY) or OpenAI's image model (OPENAI_API_KEY) paint it, and write the photo's settings
 (title, description, tags, white-noise bed, rain, thumbnail text side) next to it.
 
@@ -222,17 +222,43 @@ def trim_bars(img, dark=14, spread=8):
     return img.crop((left, top, right, bottom))
 
 
-def generate(prompt, out_path):
-    """Paint the picture with whichever image service has a key: Google's Nano Banana
-    (Gemini image model, GEMINI_API_KEY) first, else OpenAI (OPENAI_API_KEY)."""
-    if os.environ.get("GEMINI_API_KEY"):
+# The three-way test: Nano Banana photo, ChatGPT photo, and Sora (a ChatGPT photo brought to life
+# as a moving clip). Each needs its key; Sora uses the OpenAI key.
+MAKERS = {"gemini": "GEMINI_API_KEY", "openai": "OPENAI_API_KEY", "sora": "OPENAI_API_KEY"}
+CLIPS = os.path.join(HERE, "out", "clips")
+
+
+def pick_maker(published, sound):
+    """Each maker gets the same number of music days and of soundscape days (so the sound can't
+    skew the views); a tie goes to the next maker after the one that did the last video of that kind."""
+    makers = [m for m, k in MAKERS.items() if os.environ.get(k)]
+    if len(makers) < 2:
+        return makers[0] if makers else "gemini"
+    group = [e["maker"] for e in published if e.get("maker") in MAKERS and (e.get("recipe") == "lofi") == (sound == "lofi")]
+    counts = {m: group.count(m) for m in makers}
+    low = min(counts.values())
+    tied = [m for m in makers if counts[m] == low]
+    if group and group[-1] in makers:
+        after = makers[makers.index(group[-1]) + 1:] + makers[:makers.index(group[-1]) + 1]
+        return next(m for m in after if m in tied)
+    return tied[0]
+
+
+def generate(prompt, out_path, maker="gemini"):
+    """Paint the picture with the chosen maker (Google's Nano Banana, GEMINI_API_KEY, or OpenAI's
+    image model behind ChatGPT, OPENAI_API_KEY), falling back to the other one if it fails.
+    Returns the maker that actually painted it."""
+    painters = ["gemini", "openai"]
+    order = [maker] + [m for m in painters if m != maker]
+    order = [m for m in order if os.environ.get(MAKERS[m])] or ["openai"]
+    for i, m in enumerate(order):
         try:
-            return generate_gemini(prompt, out_path)
+            (generate_gemini if m == "gemini" else generate_openai)(prompt, out_path)
+            return m
         except RuntimeError as e:
-            if not os.environ.get("OPENAI_API_KEY"):
+            if i == len(order) - 1:
                 raise
-            print("Nano Banana failed, trying OpenAI:", e, file=sys.stderr)
-    return generate_openai(prompt, out_path)
+            print(f"{m} failed, trying {order[i + 1]}:", e, file=sys.stderr)
 
 
 def generate_gemini(prompt, out_path):
@@ -302,6 +328,76 @@ def generate_openai(prompt, out_path):
     return out_path
 
 
+SORA_PROMPT = (
+    "Bring this photo to life as a calm, cinematic ambient shot. Locked-off tripod camera: the camera does not "
+    "move, pan, zoom or cut at all. The {color} {car} stays perfectly still, parked, with its headlights on. "
+    "Only gentle natural motion in the scene: {motion}. Slow, peaceful, relaxing. No people, no text, no new objects."
+)
+
+
+def scene_motion(scene):
+    if scene.get("rain"):
+        return "rain falling steadily, ripples and reflections shimmering on the wet ground, drifting mist"
+    return "soft light flickering and glowing, slow drifting mist or clouds, gentle movement in the air"
+
+
+def multipart(fields, files):
+    """Encode a multipart/form-data body by hand (standard library only)."""
+    boundary = "----parkedfm" + base64.b16encode(os.urandom(8)).decode()
+    out = io.BytesIO()
+    for k, v in fields.items():
+        out.write(f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
+    for k, (name, data, ctype) in files.items():
+        out.write(f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"; filename="{name}"\r\n'
+                  f"Content-Type: {ctype}\r\n\r\n".encode())
+        out.write(data)
+        out.write(b"\r\n")
+    out.write(f"--{boundary}--\r\n".encode())
+    return out.getvalue(), f"multipart/form-data; boundary={boundary}"
+
+
+def openai_call(url, data=None, ctype=None, method=None, raw=False, timeout=120):
+    req = urllib.request.Request(url, data=data, method=method or ("POST" if data else "GET"))
+    req.add_header("Authorization", f"Bearer {os.environ['OPENAI_API_KEY']}")
+    if ctype:
+        req.add_header("Content-Type", ctype)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read() if raw else json.load(r)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"OpenAI said {e.code}: {e.read()[:400]!r}")
+
+
+def generate_sora(still_path, prompt, out_clip):
+    """Animate the still with Sora (OpenAI Videos API): the photo is the first frame, 12 seconds."""
+    import time
+    model = os.environ.get("SORA_MODEL") or "sora-2"
+    size = os.environ.get("SORA_SIZE") or ("1792x1024" if model == "sora-2-pro" else "1280x720")
+    w, h = map(int, size.split("x"))
+    img = Image.open(still_path).convert("RGB")
+    s = max(w / img.width, h / img.height)  # cover the video frame, centre crop
+    img = img.resize((round(img.width * s), round(img.height * s)), Image.LANCZOS)
+    img = img.crop(((img.width - w) // 2, (img.height - h) // 2, (img.width - w) // 2 + w, (img.height - h) // 2 + h))
+    ref = io.BytesIO()
+    img.save(ref, "JPEG", quality=95)
+    body, ctype = multipart(dict(model=model, prompt=prompt, seconds=os.environ.get("SORA_SECONDS") or "12", size=size),
+                            {"input_reference": ("first-frame.jpg", ref.getvalue(), "image/jpeg")})
+    job = openai_call("https://api.openai.com/v1/videos", body, ctype)
+    print("Sora job", job.get("id"), job.get("status"), file=sys.stderr)
+    deadline = time.time() + 30 * 60
+    while job.get("status") in ("queued", "in_progress"):
+        if time.time() > deadline:
+            raise RuntimeError("Sora took longer than 30 minutes")
+        time.sleep(15)
+        job = openai_call(f"https://api.openai.com/v1/videos/{job['id']}")
+    if job.get("status") != "completed":
+        raise RuntimeError(f"Sora job {job.get('status')}: {json.dumps(job.get('error'))[:300]}")
+    os.makedirs(os.path.dirname(out_clip), exist_ok=True)
+    with open(out_clip, "wb") as f:
+        f.write(openai_call(f"https://api.openai.com/v1/videos/{job['id']}/content", raw=True, timeout=600))
+    return out_clip
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD (default today); the same date always gives the same pick")
@@ -314,16 +410,25 @@ def main():
     choice = pick(day, published)
     prompt = PROMPT.format(color=choice["color"], car=choice["car"], scene=choice["scene"]["prompt"])
     meta = sidecar(choice)
+    maker = pick_maker(published, choice["sound"])
     print(json.dumps(dict(car=choice["car"], color=choice["color"], scene=choice["scene"]["id"],
-                          title=meta["title"], prompt=prompt), indent=2))
+                          sound=choice["sound"], maker=maker, title=meta["title"], prompt=prompt), indent=2))
     if args.dry_run:
         return
     base = os.path.join(HERE, "stills", f"{day.isoformat()}-{slug(choice['short'])}")
-    generate(prompt, base + ".webp")
+    meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker)
+    if maker == "sora" and meta["maker"] == "openai":
+        clip = os.path.join(CLIPS, os.path.basename(base) + ".mp4")
+        try:
+            generate_sora(base + ".webp", SORA_PROMPT.format(color=choice["color"], car=choice["car"],
+                                                             motion=scene_motion(choice["scene"])), clip)
+            meta["maker"], meta["motion_clip"] = "sora", os.path.relpath(clip, HERE)
+        except RuntimeError as e:
+            print("Sora failed; using the still photo today:", e, file=sys.stderr)
     with open(base + ".json", "w") as f:
         json.dump(meta, f, indent=2)
         f.write("\n")
-    print("wrote", base + ".webp")
+    print("wrote", base + ".webp", "painted by", meta["maker"])
 
 
 if __name__ == "__main__":

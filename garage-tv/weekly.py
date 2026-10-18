@@ -507,10 +507,15 @@ def main():
     else:
         run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
              "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])
-    run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"],
-         "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
-         "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
-         "--seed", str(p["index"]), "--out", loop])
+    clip = os.path.join(HERE, meta["motion_clip"]) if meta.get("motion_clip") else None
+    if clip and os.path.exists(clip):  # Sora day: the moving clip, looped seamlessly
+        run([sys.executable, os.path.join(HERE, "make_motion_loop.py"), "--clip", clip, "--out", loop])
+    else:
+        run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"],
+             "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
+             "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
+             "--seed", str(p["index"]), "--out", loop])
+    loop_seconds = imageio_ffmpeg.count_frames_and_secs(loop)[1]
     make_thumbnail(p, thumb)
 
     title, desc, tags = title_for(p), description_for(p), tags_for(p)
@@ -541,7 +546,7 @@ def main():
         with open(path, "w") as f:
             f.write(txt)
 
-    vloops = math.ceil(total_minutes * 60 / LOOP_SECONDS) - 1
+    vloops = math.ceil(total_minutes * 60 / loop_seconds) - 1
     aloops = math.ceil(total_minutes / audio_minutes) - 1
     with open(os.path.join(stage, "make-video.command"), "w") as f:
         f.write(MAKE_8H.format(vloops=vloops, aloops=aloops, seconds=total_minutes * 60, name=final_name, hours=hours_for(p),
@@ -575,7 +580,7 @@ def main():
         log = load_published()
         log.append(dict(date=day.isoformat(), photo=os.path.basename(p["photo"]), recipe=p["recipe"],
                         grade=p["grade"], title=title, tag=p["tag"],
-                        car=meta.get("car"), scene=meta.get("scene")))
+                        car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker")))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
             f.write("\n")

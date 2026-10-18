@@ -1,0 +1,62 @@
+{
+  "updated": "2026-10-18 17:34 UTC",
+  "names": {
+    "gemini": "Nano Banana",
+    "openai": "ChatGPT",
+    "sora": "Sora (moving)"
+  },
+  "board": {
+    "all": {
+      "gemini": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      },
+      "openai": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      },
+      "sora": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      }
+    },
+    "music": {
+      "gemini": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      },
+      "openai": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      },
+      "sora": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      }
+    },
+    "soundscape": {
+      "gemini": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      },
+      "openai": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      },
+      "sora": {
+        "videos": 0,
+        "counted": 0,
+        "avg_views": null
+      }
+    }
+  },
+  "videos": []
+}

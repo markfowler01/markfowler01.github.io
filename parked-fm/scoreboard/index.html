@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARKED FM Scoreboard</title>
+  <meta name="description" content="Nano Banana vs ChatGPT vs Sora: which AI's car videos get PARKED FM more views." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#101830" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/parked-fm/style.css" />
+  <style>
+    .vs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+    .vs .card { margin: 0; text-align: center; }
+    .vs .who { font-weight: 800; letter-spacing: 0.08em; font-size: 14px; color: var(--muted); }
+    .vs .big { font-size: 44px; font-weight: 800; line-height: 1.1; margin: 6px 0 2px; }
+    .vs .sub { font-size: 13px; color: var(--muted); }
+    .vs .win { border-color: var(--amber); }
+    .vs .win .who { color: var(--amber); }
+    .split { display: grid; grid-template-columns: 1fr; gap: 0; }
+    td.n { text-align: right; white-space: nowrap; }
+    .pill { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+    .pill.gemini { background: #23314f; color: #9fc0ff; }
+    .pill.openai { background: #1f3a33; color: #8fe0c0; }
+    .pill.sora { background: #3a2a1f; color: #f3c58f; }
+    @media (max-width: 560px) { .vs { grid-template-columns: 1fr; } .vs .big { font-size: 34px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="/parked-fm/">PARKED FM</a>
+      <a href="/parked-fm/uploader/">Uploader</a>
+      <a href="/parked-fm/scoreboard/">Scoreboard</a>
+    </nav>
+
+    <h1>Nano Banana vs ChatGPT vs Sora</h1>
+    <p class="updated" id="updated">Loading...</p>
+    <p style="margin-top:14px">Same music, same sounds, same titles. The only difference is the picture: a Nano Banana photo, a ChatGPT photo, or a ChatGPT photo brought to life by Sora.
+      Average views per video; private videos aren't counted until they're public.</p>
+
+    <h2>Overall</h2>
+    <div class="vs" id="all"></div>
+    <div class="split">
+      <div><h2>Music days</h2><div class="vs" id="music"></div></div>
+      <div><h2>Soundscape days</h2><div class="vs" id="soundscape"></div></div>
+    </div>
+
+    <h2>Every video</h2>
+    <div class="card scroll">
+      <table id="list"><tr><th>Date</th><th>Video</th><th>AI</th><th class="n">Views</th></tr></table>
+    </div>
+
+    <footer>Updated by the daily job. View counts from YouTube API Services.</footer>
+  </div>
+  <script>
+    const fmt = n => n == null ? '—' : n.toLocaleString();
+    function vs(el, row, names) {
+      const ms = Object.keys(names).filter(m => row[m]);
+      const live = ms.filter(m => row[m].avg_views != null).sort((a, b) => row[b].avg_views - row[a].avg_views);
+      const lead = live.length > 1 && row[live[0]].avg_views > row[live[1]].avg_views ? live[0] : null;
+      el.innerHTML = ms.map(m => `
+        <div class="card ${lead === m ? 'win' : ''}">
+          <div class="who">${names[m].toUpperCase()}${lead === m ? ' · AHEAD' : ''}</div>
+          <div class="big">${fmt(row[m].avg_views)}</div>
+          <div class="sub">avg views · ${row[m].counted} of ${row[m].videos} videos counted</div>
+        </div>`).join('');
+    }
+    fetch('/parked-fm/scoreboard.json', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('updated').textContent = 'Updated ' + d.updated;
+        ['all', 'music', 'soundscape'].forEach(k => vs(document.getElementById(k), d.board[k], d.names));
+        const t = document.getElementById('list');
+        d.videos.forEach(v => {
+          const tr = t.insertRow();
+          const c0 = tr.insertCell(); c0.textContent = v.date; c0.style.whiteSpace = 'nowrap';
+          const c1 = tr.insertCell(); const a = document.createElement('a');
+          a.href = 'https://youtu.be/' + v.youtube; a.textContent = v.title.split(' | ')[0]; c1.appendChild(a);
+          const c2 = tr.insertCell(); c2.innerHTML = `<span class="pill ${v.maker}">${d.names[v.maker]}</span>`;
+          const c3 = tr.insertCell(); c3.className = 'n'; c3.textContent = v.public ? fmt(v.views) : 'private';
+        });
+        if (!d.videos.length) t.insertRow().insertCell().textContent = 'No test videos yet. The first one goes up with the next daily run.';
+      })
+      .catch(() => { document.getElementById('updated').textContent = 'No scoreboard yet. It appears after the first test video.'; });
+  </script>
+</body>
+</html>
