@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a Car People Sleep video kit, hands-off.
+"""Build a PARKED FM video kit, hands-off.
 
 Daily schedule (--daily, used by the GitHub workflow): next unused photo from stills/,
 fresh original lo-fi album, numbered title; see plan_daily(). The weekly rotation below
@@ -79,7 +79,7 @@ BED_WORDS = {"rain_road": "Rain Sounds", "rain": "Rain on the Roof", "fan": "Sho
              "wind": "Wind Sounds", "heater": "Heater Hum"}
 LOFI_TAGS = ["parked fm", "lofi hip hop", "music for work", "focus music", "study music", "8 hours", "car lofi",
              "no lyrics", "chill music", "relaxing music", "mechanic"]
-BASE_TAGS = ["car people sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
+BASE_TAGS = ["parked fm", "garage ambience", "garage sounds", "white noise", "sleep sounds",
              "8 hours", "no music", "mechanic", "shop life", "auto shop ambience", "asmr garage"]
 
 # PARKED FM palette: midnight navy, cream and amber
@@ -238,7 +238,7 @@ def description_for(p):
                 "for sleeping, studying, or winding down after a long day in the bay.\n\n"
                 "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
-                "#carpeoplesleep #whitenoise #lofi #sleepsounds")
+                "#parkedfm #whitenoise #lofi #sleepsounds")
     if p["recipe"] == "lofi":
         return (f"{hours_for(p)} hours of slow, original lo-fi for working, studying, or winding down after a long day "
                 "in the bay. Soft keys, warm bass, quiet drums, a little vinyl crackle and soft rain underneath.\n\n"
@@ -252,7 +252,7 @@ def description_for(p):
         "No music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\n"
         "Built for car people: mechanics, techs, and anyone who sleeps better with a fan running.\n\n"
         "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
-        "#carpeoplesleep #garageambience #whitenoise #sleepsounds #mechanic #shoplife"
+        "#parkedfm #garageambience #whitenoise #sleepsounds #mechanic #shoplife"
     )
 
 
@@ -507,7 +507,8 @@ def main():
     short_title = f"{scene_line} | {hours_for(p)} Hours of Chill Lo-Fi #shorts"[:100]
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
                    short_title=short_title,
-                   short_description="The full 8-hour video is on the channel. #carpeoplesleep #sleep #shorts",
+                   short_description=f"The full {hours_for(p)}-hour video is on the channel. #parkedfm #lofi #shorts",
+                   hours=hours_for(p),
                    madeForKids=False, alteredContent=True, recipe=p["recipe"], grade=p["grade"],
                    photo=os.path.basename(p["photo"]), tag=p["tag"])
     with open(os.path.join(args.outdir, "details.json"), "w") as f:
@@ -518,7 +519,7 @@ def main():
            f"MAKE THE {hours_for(p)}-HOUR FILE (Mac)\nOpen Terminal, type  bash  and a space, drag make-video.command into the "
            f"window, press Enter. About 10 minutes. You get {final_name} in this folder.\n\n"
            f"TRAILER (YouTube Short)\nUpload trailer.mp4 from the YouTube app (+ > Upload a video).\n"
-           f"Title: {short_title}\nDescription: The full 8-hour video is on the channel. #carpeoplesleep #sleep #shorts\n"
+           f"Title: {short_title}\nDescription: {details['short_description']}\n"
            "After the full video is live, add it as the Short's Related video so viewers can tap through.\n")
     for path in (os.path.join(stage, "details.txt"), os.path.join(args.outdir, "details.txt")):
         with open(path, "w") as f:

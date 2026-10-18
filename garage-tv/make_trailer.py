@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Make a 30-second vertical trailer (YouTube Short) for a Car People Sleep video.
+"""Make a 30-second vertical trailer (YouTube Short) for a PARKED FM video.
 
 Layout (1080x1920): blurred photo fills the frame, the real photo sits in the middle with a
 slow push-in, PARKED FM / N HOURS on top, the scene title and a pointer to the full
