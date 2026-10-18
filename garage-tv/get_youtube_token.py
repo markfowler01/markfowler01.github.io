@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""One-time helper: sign in to YouTube and print a refresh token for the weekly uploader.
+"""One-time helper: sign in to YouTube and hand the three upload secrets to GitHub.
 
-Run this on your own Mac (not in the cloud):
-  python3 get_youtube_token.py CLIENT_ID CLIENT_SECRET
+Run this on your own Mac (not in the cloud). Easiest: in Google Cloud > Clients, click
+Download JSON on your Desktop client, then in Terminal:
+  cd ~/Downloads && python3 get_youtube_token.py
 
-A browser opens. Sign in, pick the channel you want the videos on, and allow access.
-The script prints YT_REFRESH_TOKEN. Paste it, with the client ID and secret, into the
-repository's Settings > Secrets and variables > Actions.
+It finds the client_secret_....json file in Downloads by itself (or pass
+CLIENT_ID CLIENT_SECRET). A browser opens: sign in, pick the channel, allow access.
+Then it opens GitHub's "New secret" page and puts each name and value on the clipboard,
+one at a time, so you only paste (Cmd+V).
 """
+import glob
 import http.server
 import json
+import os
+import subprocess
 import sys
 import urllib.parse
 import urllib.request
@@ -18,12 +23,38 @@ import webbrowser
 SCOPE = "https://www.googleapis.com/auth/youtube.upload"
 PORT = 8765
 REDIRECT = f"http://127.0.0.1:{PORT}/"
+NEW_SECRET = "https://github.com/markfowler01/markfowler01.github.io/settings/secrets/actions/new"
+
+
+def find_client():
+    """Client ID and secret from the newest client_secret*.json in Downloads or here."""
+    files = glob.glob(os.path.expanduser("~/Downloads/client_secret*.json")) + glob.glob("client_secret*.json")
+    if not files:
+        sys.exit("Couldn't find the Google key file.\nIn Google Cloud > Clients, click your PARKED FM client, "
+                 "then Download JSON, and run this again.")
+    newest = max(files, key=os.path.getmtime)
+    with open(newest) as f:
+        c = json.load(f)
+    c = c.get("installed") or c.get("web") or c
+    print("Using", os.path.basename(newest))
+    return c["client_id"], c["client_secret"]
+
+
+def copy(text):
+    try:
+        subprocess.run(["pbcopy"], input=text.encode(), check=True)
+        return True
+    except (OSError, subprocess.CalledProcessError):
+        return False
 
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) == 3:
+        client_id, client_secret = sys.argv[1], sys.argv[2]
+    elif len(sys.argv) == 1:
+        client_id, client_secret = find_client()
+    else:
         sys.exit(__doc__)
-    client_id, client_secret = sys.argv[1], sys.argv[2]
     auth = "https://accounts.google.com/o/oauth2/v2/auth?" + urllib.parse.urlencode({
         "client_id": client_id, "redirect_uri": REDIRECT, "response_type": "code",
         "scope": SCOPE, "access_type": "offline", "prompt": "consent select_account",
@@ -58,10 +89,23 @@ def main():
         tok = json.load(r)
     if "refresh_token" not in tok:
         sys.exit("No refresh token came back. Remove the app's access at myaccount.google.com/permissions and run again.")
-    print("Copy these three into GitHub > Settings > Secrets and variables > Actions > New repository secret:\n")
-    print("YT_CLIENT_ID      =", client_id)
-    print("YT_CLIENT_SECRET  =", client_secret)
-    print("YT_REFRESH_TOKEN  =", tok["refresh_token"])
+
+    secrets = [("YT_CLIENT_ID", client_id), ("YT_CLIENT_SECRET", client_secret),
+               ("YT_REFRESH_TOKEN", tok["refresh_token"])]
+    if not copy("test"):
+        print("Copy these three into GitHub > Settings > Secrets and variables > Actions > New repository secret:\n")
+        for name, value in secrets:
+            print(f"{name:18}= {value}")
+        return
+    print("\nSigned in. Now 3 GitHub secrets. Each one: paste the name, paste the value, click Add secret.\n")
+    for i, (name, value) in enumerate(secrets, 1):
+        webbrowser.open(NEW_SECRET)
+        copy(name)
+        input(f"[{i}/3] Name copied ({name}). Click the Name box, press Cmd+V, then press Enter here...")
+        copy(value)
+        input(f"[{i}/3] Value copied. Click the Secret box, press Cmd+V, click Add secret, then press Enter here...")
+    copy("")
+    print("\nDone. All three secrets are in GitHub, and tomorrow's video uploads itself.")
 
 
 if __name__ == "__main__":
