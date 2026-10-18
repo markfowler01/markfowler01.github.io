@@ -20,6 +20,11 @@ on:
 
 concurrency: car-people-sleep-daily
 
+env:
+  # last day the music library's licence covers new videos (e.g. the Epidemic Sound trial's
+  # end); after it, music days switch off and every day is a soundscape. Empty = no limit.
+  MUSIC_UNTIL: ${{ vars.MUSIC_UNTIL }}
+
 jobs:
   build:
     runs-on: ubuntu-latest

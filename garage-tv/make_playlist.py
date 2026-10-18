@@ -10,6 +10,7 @@ next to it lists where each song starts.
   python3 make_playlist.py --seed 7 --out music.m4a
 """
 import argparse
+import datetime
 import glob
 import json
 import os
@@ -32,7 +33,15 @@ def library():
     return sorted(p for e in EXTS for p in glob.glob(os.path.join(LIBRARY, e)))
 
 
-def music_ready():
+def music_ready(day=None):
+    """Music days run only with enough songs, and only while their licence covers new videos:
+    set MUSIC_UNTIL=YYYY-MM-DD (e.g. the last day of an Epidemic Sound trial or subscription)
+    and music days stop by themselves after that date."""
+    until = os.environ.get("MUSIC_UNTIL", "").strip()
+    if until:
+        today = day or datetime.date.today()
+        if today > datetime.date.fromisoformat(until):
+            return False
     return len(library()) >= MIN_TRACKS
 
 
