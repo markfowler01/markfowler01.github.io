@@ -1,0 +1,34 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Maserati MC20 in the Garage on a Rainy Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "maserati-mc20",
+  "car": "Maserati MC20",
+  "scene": "home_garage",
+  "minutes": 180,
+  "title_tail": "Late-Night Lo-Fi for Work & Focus",
+  "tags": [
+    "maserati mc20",
+    "maserati mc20",
+    "midnight garage",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Midnight Garage: a papaya orange Maserati MC20 in the garage on a rainy night, rain on the garage roof and a warm light on. 3 hours of slow, original lo-fi, music only, for working, studying, relaxing or drifting off to sleep.\n\nNo talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofi #musicforwork #focusmusic #maseratimc20",
+  "maker": "openai"
+}
