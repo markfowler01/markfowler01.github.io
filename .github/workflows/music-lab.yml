@@ -9,12 +9,16 @@ on:
       task:
         description: "discover = list instrument libraries and their licences; sample = render a test song"
         type: choice
-        options: [discover, inspect, sample]
+        options: [discover, inspect, explore, sample]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
         type: string
         default: "Osiris_Piano karoryfer.sneakybass virtuosity_drums karoryfer.emilyguitar jlearman.jRhodes3c"
+      cmd:
+        description: "explore: bash run inside /tmp/libs after the repos are cloned (no samples fetched unless the command reads them)"
+        type: string
+        default: "ls"
 
 jobs:
   lab:
@@ -53,3 +57,14 @@ jobs:
             git ls-tree -r --name-only HEAD | grep -iE '\.(wav|flac|ogg)$' | head -25
             cd - >/dev/null
           done
+
+      - name: Explore the instrument libraries
+        if: ${{ inputs.task == 'explore' }}
+        env:
+          CMD: ${{ inputs.cmd }}
+        run: |
+          mkdir -p /tmp/libs && cd /tmp/libs
+          for r in ${{ inputs.repos }}; do
+            git clone -q --filter=blob:none --no-checkout --depth 1 "https://github.com/sfzinstruments/$r" "$r"
+          done
+          bash -c "$CMD" 2>&1 | head -c 60000
