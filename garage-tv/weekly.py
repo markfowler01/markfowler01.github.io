@@ -500,13 +500,15 @@ def main():
     final_name = f"{BRAND_SLUG}-{meta.get('slug', p['recipe'].replace('_', '-'))}-{hours_for(p)}h.mp4"
     total_minutes = hours_for(p) * 60
 
+    album_songs = None
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
         if p["recipe"] == "lofi" and make_playlist.library():
             # real songs from garage-tv/music (YouTube Audio Library), shuffled; music only
             run([sys.executable, os.path.join(HERE, "make_playlist.py"), "--seed", str(seed), "--out", wav])
             with open(os.path.splitext(wav)[0] + ".tracks.json") as f:
-                audio_minutes = json.load(f)["minutes"]
+                album = json.load(f)
+            audio_minutes, album_songs = album["minutes"], album["songs"]
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
@@ -587,7 +589,8 @@ def main():
         log = load_published()
         log.append(dict(date=day.isoformat(), photo=os.path.basename(p["photo"]), recipe=p["recipe"],
                         grade=p["grade"], title=title, tag=p["tag"],
-                        car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker")))
+                        car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
+                        songs=album_songs))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
             f.write("\n")
