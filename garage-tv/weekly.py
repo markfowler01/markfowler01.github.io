@@ -68,6 +68,10 @@ RECIPES = {
     "rain_road": dict(label="RAIN ON THE ROAD", title="Rain on a Mountain Road",
                       scene="steady rain falling over the road and the pines",
                       tags=["rain sounds", "rain for sleep", "rain on road"]),
+    "brown": dict(label="BROWN NOISE", title="Brown Noise", scene="deep, even brown noise",
+                  tags=["brown noise", "brown noise for sleeping", "deep brown noise"]),
+    "white": dict(label="WHITE NOISE", title="White Noise", scene="smooth, steady white noise",
+                  tags=["white noise", "white noise for sleeping", "white noise for focus"]),
 }
 GRADES = {
     "none": "at dusk, the last light going blue in the windows",
@@ -76,11 +80,11 @@ GRADES = {
     "cold": "on a winter night, frost on the glass",
 }
 BED_WORDS = {"rain_road": "Rain Sounds", "rain": "Rain on the Roof", "fan": "Shop Fan Noise",
-             "wind": "Wind Sounds", "heater": "Heater Hum"}
+             "wind": "Wind Sounds", "heater": "Heater Hum", "brown": "Brown Noise", "white": "White Noise"}
 LOFI_TAGS = ["parked fm", "lofi hip hop", "music for work", "focus music", "study music", "8 hours", "car lofi",
              "no lyrics", "chill music", "relaxing music", "mechanic"]
-BASE_TAGS = ["parked fm", "garage ambience", "garage sounds", "white noise", "sleep sounds",
-             "8 hours", "no music", "mechanic", "shop life", "auto shop ambience", "asmr garage"]
+BASE_TAGS = ["parked fm", "white noise", "sleep sounds", "8 hours", "no music", "ambient sounds",
+             "sounds for sleeping", "focus sounds", "car ambience", "relaxing sounds"]
 
 # PARKED FM palette: midnight navy, cream and amber
 AMBER = (232, 163, 61)
@@ -117,7 +121,9 @@ def photo_meta(photo):
 
 
 PUBLISHED = os.path.join(HERE, "published.json")
-DAILY_SOUND = "lofi"  # continuous original lo-fi with soft ambience underneath (work / focus music)
+DAILY_SOUND = "lofi"  # continuous original lo-fi, music only (work / focus music)
+# Days alternate: lo-fi music only, then a soundscape only (no music). The car engine writes the
+# day's choice into the photo's settings as daily_sound; a photo without one follows the same rule.
 
 
 def load_published():
@@ -151,7 +157,8 @@ def plan_daily(day):
         photo = min(shots, key=lambda s: max(used[os.path.basename(s)]))
         uses = len(used[os.path.basename(photo)])
     meta = photo_meta(photo)
-    recipe = meta.get("daily_sound", DAILY_SOUND)
+    last = published[-1].get("recipe") if published else None
+    recipe = meta.get("daily_sound") or (meta.get("bed", "rain_road") if last == DAILY_SOUND else DAILY_SOUND)
     vol = sum(1 for e in published if e.get("recipe") == recipe) + 1
     p = dict(
         index=(day - dt.date(2024, 1, 1)).days,
@@ -213,8 +220,8 @@ def title_for(p):
     if m.get("title_full"):
         return m["title_full"]
     h = hours_for(p)
-    if p["recipe"] in ("lofi", "mix"):
-        short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else "Chill Lo-Fi"
+    if p["recipe"] in ("lofi", "mix") or m.get("series"):
+        short = {"mix": "White Noise & Lo-Fi", "lofi": "Chill Lo-Fi"}.get(p["recipe"], sound_name(p))
         options = [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
         return next(t for t in options if len(t) <= 100)
     options = [
@@ -223,6 +230,13 @@ def title_for(p):
         f"{mid} | {h} Hours",
     ]
     return next(t for t in options if len(t) <= 100)
+
+
+def sound_name(p):
+    """What you hear, for titles and thumbnails: 'Chill Lo-Fi', 'Rain Sounds', 'Brown Noise', ..."""
+    if p["recipe"] == "lofi":
+        return "Chill Lo-Fi"
+    return p.get("meta", {}).get("sound_name") or BED_WORDS.get(p["recipe"], RECIPES[p["recipe"]]["title"])
 
 
 def label_for(p):
@@ -241,7 +255,7 @@ def description_for(p):
                 "#parkedfm #whitenoise #lofi #sleepsounds")
     if p["recipe"] == "lofi":
         return (f"{hours_for(p)} hours of slow, original lo-fi for working, studying, or winding down after a long day "
-                "in the bay. Soft keys, warm bass, quiet drums, a little vinyl crackle and soft rain underneath.\n\n"
+                "in the bay. Soft keys, warm bass, quiet drums, and a little vinyl crackle.\n\n"
                 "No lyrics. No talking. Every track is original to this channel.\n\n"
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofi #lofibeats #musicforwork #chillbeats")
@@ -260,6 +274,8 @@ def tags_for(p):
     tags, total = [], 0
     base = LOFI_TAGS if p["recipe"] in ("lofi", "mix") else BASE_TAGS
     for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + base:
+        if t in tags:
+            continue
         if total + len(t) + 1 > 480:  # YouTube caps tags at 500 characters
             break
         tags.append(t)
@@ -385,7 +401,7 @@ def make_thumbnail(p, out_path):
     layer.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
 
     if meta.get("series"):
-        line = f"{label_for(p)}   |   CHILL LO-FI"
+        line = f"{label_for(p)}   |   {sound_name(p).upper()}"
     elif p["recipe"] == "mix":
         line = f"{label_for(p)}   |   NO TALKING"
     else:
@@ -442,7 +458,7 @@ def main():
     ap.add_argument("--outdir", default=os.path.join(HERE, "out", "weekly"))
     ap.add_argument("--date", help="build the kit for the week containing this date (YYYY-MM-DD); default tomorrow")
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
-    ap.add_argument("--crf", type=int, default=27)
+    ap.add_argument("--crf", type=int, default=23)
     ap.add_argument("--photo", help="use this photo instead of the rotation (path or a name in stills/)")
     ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road, lofi, mix)")
     ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")
@@ -484,9 +500,7 @@ def main():
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
         if p["recipe"] == "mix":
             bed = ["--bed", meta.get("bed", "rain_road")]
-        elif args.daily:  # daily lo-fi: soft rain / wind for the scene under the music
-            bed = ["--under", meta.get("bed", "rain_road")]
-        else:
+        else:  # daily lo-fi is music only: no rain or wind under it
             bed = []
         run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
              "--seed", str(seed), *bed, "--out", wav])
@@ -503,11 +517,13 @@ def main():
     scene_line = title.split(" | ")[0]  # the car and scene, e.g. "Ferrari Roma on a Rainy Neon Night"
     trailer = os.path.join(stage, "trailer.mp4")
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
-         "--title", scene_line, "--label", label_for(p), "--hours", str(hours_for(p)), "--out", trailer])
-    short_title = f"{scene_line} | {hours_for(p)} Hours of Chill Lo-Fi #shorts"[:100]
+         "--title", scene_line, "--label", f"{label_for(p)}  ·  {sound_name(p).upper()}",
+         "--hours", str(hours_for(p)), "--out", trailer])
+    short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]
+    short_tags = "#parkedfm #lofi #shorts" if lofi else f"#parkedfm #{sound_name(p).lower().replace(' ', '')} #shorts"
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
                    short_title=short_title,
-                   short_description=f"The full {hours_for(p)}-hour video is on the channel. #parkedfm #lofi #shorts",
+                   short_description=f"The full {hours_for(p)}-hour video is on the channel. {short_tags}",
                    hours=hours_for(p),
                    madeForKids=False, alteredContent=True, recipe=p["recipe"], grade=p["grade"],
                    photo=os.path.basename(p["photo"]), tag=p["tag"])

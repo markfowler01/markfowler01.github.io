@@ -175,6 +175,8 @@ RECIPES = {
     "rain_road": dict(rumble=0.22, hiss=0.04, hum=0.0, extra=rain_road_layer, extra_level=0.65),
     "heater": dict(rumble=0.45, hiss=0.08, hum=0.03, extra=heater_layer, extra_level=0.45),
     "wind":   dict(rumble=0.35, hiss=0.06, hum=0.03, extra=wind_layer, extra_level=0.50),
+    "brown":  dict(rumble=1.00, hiss=0.00, hum=0.0, extra=None, extra_level=0.0),
+    "white":  dict(rumble=0.20, hiss=1.00, hum=0.0, extra=None, extra_level=0.0),
 }
 
 

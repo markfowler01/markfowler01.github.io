@@ -79,7 +79,8 @@ Or skip the file entirely and set the TV or player to repeat.
 PARKED FM: *Dream Cars. Easy Listening.* `.github/workflows/car-people-sleep-daily.yml`
 runs every day around 13:23 UTC:
 
-1. **Car engine** (`car_engine.py`, with a `GEMINI_API_KEY` (Nano Banana) or
+1. **Car engine** (`car_engine.py`, with a `GEMINI_API_KEY` (Nano Banana Pro at 2K,
+   falling back to Nano Banana) or
    `OPENAI_API_KEY` secret): picks a random **exotic** car (Ferrari, Lamborghini,
    McLaren, Porsche GT, Aston Martin, Bugatti, Pagani, Koenigsegg, ...), a colour
    and a scene from one of three series, never repeating a car from the last 20
@@ -94,9 +95,11 @@ runs every day around 13:23 UTC:
 
 2. **Photo queue** fallback: the next never-used picture in `stills/`, or the
    one used longest ago with a new colour grade.
-3. **Sound:** 30 minutes of continuous original lo-fi (`make_lofi.py --under`),
-   new every day, with the scene's ambience (rain, wind, shop fan) about 12 dB
-   underneath. `--style jazz` and `--style piano` exist but are not used.
+3. **Sound, alternating days:**
+   - **Music day:** 30 minutes of continuous original lo-fi (`make_lofi.py`), new
+     every time, music only, at the series length.
+   - **Soundscape day:** 8 hours, no music. The scene's own rain, wind, fan or heater
+     sound, or plain brown or white noise (`make_ambience.py`). `--style jazz` and `--style piano` exist but are not used.
 4. **Kit:** smooth 60 s video loop (falling rain on rainy scenes), PARKED FM
    thumbnail (navy, cream, amber), title, description, tags, and a 30 s vertical
    **trailer** for Shorts. Published as release `daily-YYYY-MM-DD`; kits older
