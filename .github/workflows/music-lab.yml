@@ -9,8 +9,12 @@ on:
       task:
         description: "discover = list instrument libraries and their licences; sample = render a test song"
         type: choice
-        options: [discover, sample]
+        options: [discover, inspect, sample]
         default: discover
+      repos:
+        description: "inspect: sfzinstruments repo names, space-separated"
+        type: string
+        default: "Osiris_Piano karoryfer.sneakybass virtuosity_drums karoryfer.emilyguitar jlearman.jRhodes3c"
 
 jobs:
   lab:
@@ -28,3 +32,24 @@ jobs:
         run: |
           gh api --paginate orgs/sfzinstruments/repos \
             --jq '.[] | "\(.name)\t\(.license.spdx_id // "none")\t\(.size)KB\t\(.description // "")"' | sort
+
+      - name: Show how each instrument library is laid out (no samples downloaded)
+        if: ${{ inputs.task == 'inspect' }}
+        run: |
+          for r in ${{ inputs.repos }}; do
+            echo "=================== $r"
+            git clone -q --filter=blob:none --no-checkout --depth 1 "https://github.com/sfzinstruments/$r" "/tmp/$r"
+            cd "/tmp/$r"
+            echo "--- files: $(git ls-tree -r --name-only HEAD | wc -l) total; by extension:"
+            git ls-tree -r --name-only HEAD | sed 's/.*\.//' | sort | uniq -c | sort -rn | head
+            echo "--- folders:"
+            git ls-tree -r -d --name-only HEAD | head -30
+            echo "--- licence / readme:"
+            for f in $(git ls-tree --name-only HEAD | grep -iE '^(licen|copying|readme)' | head -3); do echo "## $f"; git show "HEAD:$f" | head -25; done
+            echo "--- sfz files:"
+            git ls-tree -r --name-only HEAD | grep -iE '\.sfz$' | head -20
+            for f in $(git ls-tree -r --name-only HEAD | grep -iE '\.(sfz|sfzh)$' | head -4); do echo "## $f"; git show "HEAD:$f" | head -60; done
+            echo "--- sample names:"
+            git ls-tree -r --name-only HEAD | grep -iE '\.(wav|flac|ogg)$' | head -25
+            cd - >/dev/null
+          done
