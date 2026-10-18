@@ -410,7 +410,7 @@ def main():
     choice = pick(day, published)
     prompt = PROMPT.format(color=choice["color"], car=choice["car"], scene=choice["scene"]["prompt"])
     meta = sidecar(choice)
-    maker = pick_maker(published, choice["sound"])
+    maker = os.environ.get("MAKER") if os.environ.get("MAKER") in MAKERS else pick_maker(published, choice["sound"])
     print(json.dumps(dict(car=choice["car"], color=choice["color"], scene=choice["scene"]["id"],
                           sound=choice["sound"], maker=maker, title=meta["title"], prompt=prompt), indent=2))
     if args.dry_run:

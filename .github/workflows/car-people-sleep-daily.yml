@@ -11,6 +11,12 @@ on:
   schedule:
     - cron: '23 13 * * *'   # every day 13:23 UTC = 6:23 am Pacific (5:23 am in winter)
   workflow_dispatch:         # "Run workflow" button for an extra video
+    inputs:
+      maker:
+        description: "Who paints the picture (auto = the picture-test rotation)"
+        type: choice
+        options: [auto, gemini, openai, sora]
+        default: auto
 
 concurrency: car-people-sleep-daily
 
@@ -40,6 +46,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SORA_MODEL: ${{ vars.SORA_MODEL }}
+          MAKER: ${{ inputs.maker }}
         run: |
           if [ -n "$GEMINI_API_KEY" ] || [ -n "$OPENAI_API_KEY" ]; then
             python garage-tv/car_engine.py || echo "::warning::car engine failed; using the photo queue today"
