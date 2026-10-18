@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18 17:34 UTC",
+  "updated": "2026-10-18 19:24 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,7 +8,7 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 0,
+        "videos": 1,
         "counted": 0,
         "avg_views": null
       },
@@ -42,7 +42,7 @@
     },
     "soundscape": {
       "gemini": {
-        "videos": 0,
+        "videos": 1,
         "counted": 0,
         "avg_views": null
       },
@@ -58,5 +58,17 @@
       }
     }
   },
-  "videos": []
+  "videos": [
+    {
+      "date": "2026-10-18",
+      "title": "Huracan STO on a Rainy Neon Night | White Noise for Sleep & Focus | 8 Hours",
+      "maker": "gemini",
+      "kind": "soundscape",
+      "youtube": "CHey6IuHnKc",
+      "views": null,
+      "likes": null,
+      "short_views": null,
+      "public": false
+    }
+  ]
 }
