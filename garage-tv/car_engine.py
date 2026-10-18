@@ -53,7 +53,7 @@ COLORS = ["rosso red", "gloss black", "chalk grey", "pearl white", "midnight blu
 # The three PARKED FM series: how long the video runs, the title words.
 SERIES = {
     "midnight_garage": dict(name="Midnight Garage", minutes=180, tail="Late-Night Lo-Fi for Work & Focus"),
-    "rainy_drives": dict(name="Rainy Drives", minutes=480, tail="Rainy Night Lo-Fi for Sleep, Work & Focus"),
+    "rainy_drives": dict(name="Rainy Nights", minutes=480, tail="Rainy Night Lo-Fi for Sleep, Work & Focus"),
     "parked_peaceful": dict(name="Parked & Peaceful", minutes=240, tail="Calm Lo-Fi for Relaxing & Focus"),
 }
 
@@ -66,69 +66,68 @@ SOUND_WORDS = {"rain_road": "steady rain", "rain": "soft rain on the roof", "win
                "fan": "a steady fan", "heater": "a low heater hum", "brown": "deep brown noise",
                "white": "smooth white noise"}
 
-# Scenes: where the car sits, its series, which ambience it would suit (only used by the white-noise mixes), and rain on screen.
+# The PARKED FM loft: one signature room every video, so the channel feels like a place you
+# come back to. The car changes; the weather and time of day outside the big window change.
+LOFT = (
+    "a cozy, warm loft garage with exposed red-brick walls, a black steel-framed floor-to-ceiling window wall, "
+    "warm amber Edison-bulb pendant lights, a wooden workbench with a steaming mug of coffee and a small glowing "
+    "vintage radio, a worn brown leather armchair with a knit blanket, potted plants, and a polished concrete floor"
+)
+
+# Scenes: the loft's mood, its series, the soundscape that suits it, the words for the description,
+# and the gentle motion Sora adds. rain=0 everywhere: the rain is on the window, not falling indoors.
 SCENES = [
-    dict(id="skyline_garage", series="midnight_garage", bed="rain", rain=0,
-         title="in a Garage Above the Rainy City",
-         prompt="parked inside a warm modern luxury garage with floor-to-ceiling windows overlooking a rainy city skyline at night, rain on the glass, city lights reflecting",
-         words="rain on the glass and the city glowing below"),
-    dict(id="shop_night", series="midnight_garage", bed="fan", rain=0,
-         title="in the Shop After Hours",
-         prompt="inside a clean, dark high-end workshop after hours, parked in a service bay, warm work lights, polished floor",
-         words="the shop after everyone has gone home, the fans still humming"),
-    dict(id="home_garage", series="midnight_garage", bed="rain", rain=0,
-         title="in the Garage on a Rainy Night",
-         prompt="inside a cozy private garage at night with the door open to falling rain, warm string lights, a workbench",
-         words="rain on the garage roof and a warm light on"),
-    dict(id="parking_deck", series="midnight_garage", bed="heater", rain=0,
-         title="on a Rooftop Parking Deck at Night",
-         prompt="parked alone on the top floor of an empty parking garage at night, city lights in the distance",
-         words="a quiet city humming below an empty rooftop deck"),
-    dict(id="rain_mountain", series="rainy_drives", bed="rain_road", rain=900,
-         title="in the Rain on a Mountain Road",
-         prompt="parked on a wet mountain road overlook at dusk in steady rain, dark pine trees, low clouds over a lake below",
-         words="rain falling over the pines and a lake below"),
-    dict(id="neon_city", series="rainy_drives", bed="rain_road", rain=900,
-         title="on a Rainy Neon Night",
-         prompt="parked on an empty rain-soaked city street at night, soft neon signs reflecting in the wet asphalt",
-         words="rain on an empty city street, neon reflecting in the puddles"),
-    dict(id="forest_rain", series="rainy_drives", bed="rain_road", rain=900,
-         title="on a Forest Road in the Rain",
-         prompt="stopped on a narrow forest road at night in heavy rain, headlights on, mist between tall trees",
-         words="heavy rain in a dark forest, mist between the trees"),
-    dict(id="gas_station", series="rainy_drives", bed="rain_road", rain=700,
-         title="at a Late-Night Gas Station",
-         prompt="parked under the canopy of an empty modern gas station at 2 am in light rain, warm canopy lights",
-         words="light rain at an empty gas station at 2 am"),
-    dict(id="snow_cabin", series="parked_peaceful", bed="wind", rain=0,
-         title="at a Cabin on a Snowy Night",
-         prompt="parked outside a log cabin at night in gently falling snow, warm light in the windows",
-         words="snow falling outside a warm cabin, wind in the trees"),
-    dict(id="desert_dusk", series="parked_peaceful", bed="wind", rain=0,
-         title="on a Desert Highway at Dusk",
-         prompt="parked on the shoulder of an empty desert highway at blue hour, distant mountains, first stars",
-         words="a warm desert wind on an empty highway at dusk"),
-    dict(id="coast_fog", series="parked_peaceful", bed="wind", rain=0,
-         title="on a Foggy Coast Road",
-         prompt="parked at a pull-out on a foggy coastal cliff road at dawn, the ocean below fading into fog",
-         words="fog rolling in off the ocean, a soft wind on the cliffs"),
-    dict(id="mountain_overlook", series="parked_peaceful", bed="wind", rain=0,
-         title="at a Mountain Overlook at Sunset",
-         prompt="parked at a scenic mountain overlook at sunset, a wide valley below in golden haze",
-         words="a soft wind at a mountain overlook as the sun goes down"),
-    dict(id="lakeside_cafe", series="parked_peaceful", bed="rain", rain=0,
-         title="Outside a Lakeside Cafe at Dusk",
-         prompt="parked outside a small lakeside cafe at dusk in a light drizzle, warm window light, calm water",
-         words="a light drizzle by the lake and warm light from the cafe"),
+    dict(id="loft_rain_night", series="midnight_garage", bed="rain", rain=0,
+         title="in the Loft on a Rainy Night",
+         view="outside the big window it is night and raining over the city skyline, rain streaks and droplets on the glass, city lights glowing softly through the wet window",
+         words="rain running down the big window, coffee steaming on the bench and the city glowing below",
+         motion="raindrops running down the window glass, steam curling up from the coffee mug, city lights twinkling softly"),
+    dict(id="loft_late_night", series="midnight_garage", bed="brown", rain=0,
+         title="in the Loft Late at Night",
+         view="outside the big window it is 2 am, a quiet city with scattered lit windows under a light drizzle, the room lit only by warm lamps and the radio's glow",
+         words="the city asleep outside, a light drizzle on the glass and the radio glowing low",
+         motion="a light drizzle on the window, the radio dial glowing gently, steam rising from the coffee"),
+    dict(id="loft_heavy_rain", series="rainy_drives", bed="rain", rain=0,
+         title="in the Loft in Heavy Rain",
+         view="outside the big window heavy rain pours over the city at night, sheets of water running down the glass, blurred lights beyond",
+         words="water pouring down the windows while it stays warm and dry inside",
+         motion="heavy rain streaming down the window glass, blurred city lights shimmering through the water, steam from the coffee"),
+    dict(id="loft_rain_dusk", series="rainy_drives", bed="rain", rain=0,
+         title="in the Loft on a Rainy Evening",
+         view="outside the big window it is blue-hour dusk in steady rain, the city lights just coming on, raindrops beading on the glass",
+         words="the city lights coming on and raindrops beading on the glass",
+         motion="raindrops sliding down the window, city lights flickering on one by one, steam from the coffee"),
+    dict(id="loft_autumn_rain", series="rainy_drives", bed="rain", rain=0,
+         title="in the Loft on a Rainy Autumn Afternoon",
+         view="outside the big window it is a grey autumn afternoon with soft rain, orange and red trees along the street below, a few wet leaves stuck to the glass",
+         words="red and orange trees outside and a warm lamp on",
+         motion="soft rain running down the window, a leaf drifting past outside, steam from the coffee"),
+    dict(id="loft_snow", series="parked_peaceful", bed="heater", rain=0,
+         title="in the Loft on a Snowy Evening",
+         view="outside the big window snow is falling gently over the city rooftops at dusk, frost in the corners of the glass, a small wood stove glowing in the corner",
+         words="snow on the rooftops, a wood stove glowing and the lamps on low",
+         motion="snow drifting down outside the window, the wood stove's fire flickering, steam from the coffee"),
+    dict(id="loft_fog_morning", series="parked_peaceful", bed="white", rain=0,
+         title="in the Loft on a Foggy Morning",
+         view="outside the big window soft morning fog hides the city, only the nearest rooftops visible, pale cool light mixing with the warm lamps",
+         words="the city hidden in mist and the first coffee of the day",
+         motion="fog slowly drifting past the window, steam curling from the coffee, the lamps glowing softly"),
+    dict(id="loft_golden_rain", series="parked_peaceful", bed="rain", rain=0,
+         title="in the Loft as the Rain Clears at Sunset",
+         view="outside the big window the rain is clearing at sunset, golden light breaking through the clouds over the wet city, the last raindrops on the glass catching the light",
+         words="golden light on the wet city and the last drops on the glass",
+         motion="the last raindrops sliding down the glowing window, clouds drifting, steam from the coffee"),
 ]
 
 PROMPT = (
-    "Photorealistic cinematic wide photograph, 16:9 framing, of a {color} {car} {scene}. "
-    "The car sits in the left two-thirds of the frame in a three-quarter front view with its headlights on. "
-    "The right third of the image is calm and uncluttered (sky, wall, road or fog) so text can go there. "
-    "Moody, dark, relaxing late-night atmosphere, rich detail, wet reflections where it fits, shallow depth of field. "
+    "Photorealistic, warm and inviting cinematic interior photograph, 16:9 framing, inside {loft}. "
+    "A {color} {car} is parked inside on the polished concrete floor, in the left two-thirds of the frame, "
+    "three-quarter front view, softly lit by the warm lamps with gentle reflections on its paint. "
+    "{view}. The big window takes up the right third of the image and stays calm and uncluttered so text can go there. "
+    "The feeling is cozy and peaceful, a place you would want to sit with a coffee and listen to music, not dark or gloomy. "
+    "Rich detail, soft depth of field, natural light falloff. "
     "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
-    "No people, no text, no watermarks, no license plate numbers."
+    "No people, no text, no logos on the radio, no watermarks, no license plate numbers."
 )
 
 
@@ -335,15 +334,13 @@ def generate_openai(prompt, out_path):
 
 SORA_PROMPT = (
     "Bring this photo to life as a calm, cinematic ambient shot. Locked-off tripod camera: the camera does not "
-    "move, pan, zoom or cut at all. The {color} {car} stays perfectly still, parked, with its headlights on. "
+    "move, pan, zoom or cut at all. The {color} {car} stays perfectly still, parked. "
     "Only gentle natural motion in the scene: {motion}. Slow, peaceful, relaxing. No people, no text, no new objects."
 )
 
 
 def scene_motion(scene):
-    if scene.get("rain"):
-        return "rain falling steadily, ripples and reflections shimmering on the wet ground, drifting mist"
-    return "soft light flickering and glowing, slow drifting mist or clouds, gentle movement in the air"
+    return scene.get("motion") or "soft light glowing, steam curling from the coffee, gentle movement outside the window"
 
 
 def multipart(fields, files):
@@ -413,7 +410,8 @@ def main():
     published = json.load(open(pub_path)) if os.path.exists(pub_path) else []
 
     choice = pick(day, published)
-    prompt = PROMPT.format(color=choice["color"], car=choice["car"], scene=choice["scene"]["prompt"])
+    view = choice["scene"]["view"]
+    prompt = PROMPT.format(loft=LOFT, color=choice["color"], car=choice["car"], view=view[0].upper() + view[1:])
     meta = sidecar(choice)
     maker = os.environ.get("MAKER") if os.environ.get("MAKER") in MAKERS else pick_maker(published, choice["sound"])
     print(json.dumps(dict(car=choice["car"], color=choice["color"], scene=choice["scene"]["id"],

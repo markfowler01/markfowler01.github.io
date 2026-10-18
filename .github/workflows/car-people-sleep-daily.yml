@@ -17,6 +17,10 @@ on:
         type: choice
         options: [auto, gemini, openai, sora]
         default: auto
+      preview:
+        description: "Preview only: paint the picture and attach it to a 'preview' release; build and post nothing"
+        type: boolean
+        default: false
 
 concurrency: car-people-sleep-daily
 
@@ -59,7 +63,19 @@ jobs:
             echo "No GEMINI_API_KEY or OPENAI_API_KEY secret; using the photo queue"
           fi
 
+      - name: Preview the picture (preview runs only)
+        if: ${{ inputs.preview }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pic=$(git ls-files --others --exclude-standard garage-tv/stills | grep -E '\.(webp|png|jpg)$' | head -1)
+          [ -n "$pic" ] || { echo "::error::no new picture was painted"; exit 1; }
+          tag="preview-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$tag" "$pic" "${pic%.*}.json" --prerelease --title "Preview: $(basename "$pic")" --notes "Picture preview only; nothing was posted."
+          echo "https://github.com/${{ github.repository }}/releases/download/$tag/$(basename "$pic")"
+
       - name: Build today's kit
+        if: ${{ !inputs.preview }}
         env:
           HAS_YT: ${{ secrets.YT_REFRESH_TOKEN != '' }}
         run: |
@@ -68,6 +84,7 @@ jobs:
           python garage-tv/weekly.py $args
 
       - name: Publish the kit as a release
+        if: ${{ !inputs.preview }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -77,6 +94,7 @@ jobs:
             --title "$(cat kit/RELEASE_TITLE)" --notes-file kit/details.txt
 
       - name: Save today's photo and log it as used
+        if: ${{ !inputs.preview }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -84,6 +102,7 @@ jobs:
           git diff --staged --quiet || (git commit -m "PARKED FM: log $(cat kit/TAG)" && git pull --rebase && git push)
 
       - name: Remove kits older than 21 days
+        if: ${{ !inputs.preview }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -93,7 +112,7 @@ jobs:
           while read -r t; do gh release delete "$t" --yes --cleanup-tag; done
 
       - name: Upload to YouTube
-        if: ${{ hashFiles('kit/parked-fm-full.mp4') != '' }}
+        if: ${{ !inputs.preview && hashFiles('kit/parked-fm-full.mp4') != '' }}
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
@@ -105,6 +124,7 @@ jobs:
           python garage-tv/scoreboard.py --log "$(cat kit/TAG)" "$(cat kit/video_id.txt)" "$(cat kit/short_id.txt)"
 
       - name: Update the picture-test scoreboard
+        if: ${{ !inputs.preview }}
         env:
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
         run: |
