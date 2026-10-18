@@ -97,7 +97,7 @@ SCENES = [
          view="outside the big window it is blue-hour dusk in steady rain, the city lights just coming on, raindrops beading on the glass",
          words="the city lights coming on and raindrops beading on the glass",
          motion="raindrops sliding down the window, city lights flickering on one by one, steam from the coffee"),
-    dict(id="loft_autumn_rain", series="rainy_drives", bed="rain", rain=0,
+    dict(id="loft_autumn_rain", series="parked_peaceful", bed="rain", rain=0,
          title="in the Loft on a Rainy Autumn Afternoon",
          view="outside the big window it is a grey autumn afternoon with soft rain, orange and red trees along the street below, a few wet leaves stuck to the glass",
          words="red and orange trees outside and a warm lamp on",
