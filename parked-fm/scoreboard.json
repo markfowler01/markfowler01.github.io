@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18 19:24 UTC",
+  "updated": "2026-10-18 21:36 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -9,13 +9,13 @@
     "all": {
       "gemini": {
         "videos": 1,
-        "counted": 0,
-        "avg_views": null
+        "counted": 1,
+        "avg_views": 1
       },
       "openai": {
-        "videos": 0,
-        "counted": 0,
-        "avg_views": null
+        "videos": 1,
+        "counted": 1,
+        "avg_views": 0
       },
       "sora": {
         "videos": 0,
@@ -30,9 +30,9 @@
         "avg_views": null
       },
       "openai": {
-        "videos": 0,
-        "counted": 0,
-        "avg_views": null
+        "videos": 1,
+        "counted": 1,
+        "avg_views": 0
       },
       "sora": {
         "videos": 0,
@@ -43,8 +43,8 @@
     "soundscape": {
       "gemini": {
         "videos": 1,
-        "counted": 0,
-        "avg_views": null
+        "counted": 1,
+        "avg_views": 1
       },
       "openai": {
         "videos": 0,
@@ -61,14 +61,25 @@
   "videos": [
     {
       "date": "2026-10-18",
+      "title": "Maserati MC20 in the Garage on a Rainy Night | Late-Night Lo-Fi for Work & Focus | 3 Hours",
+      "maker": "openai",
+      "kind": "music",
+      "youtube": "jswov9PNLTY",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
+      "date": "2026-10-18",
       "title": "Huracan STO on a Rainy Neon Night | White Noise for Sleep & Focus | 8 Hours",
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "CHey6IuHnKc",
-      "views": null,
-      "likes": null,
-      "short_views": null,
-      "public": false
+      "views": 1,
+      "likes": 0,
+      "short_views": 1,
+      "public": true
     }
   ]
 }
