@@ -88,9 +88,9 @@ Or skip the file entirely and set the TV or player to repeat.
    Without a key, or if the call fails, the day falls back to the photo queue.
 2. **Photo queue:** otherwise the next never-used picture in `stills/`
    (alphabetical), or the one used longest ago with a new colour grade.
-3. **Sound:** 30 minutes of steady white noise matched to the scene (outdoor
-   rain, rain on the roof, shop fan, wind, heater) with about three original
-   lo-fi tracks drifting in and out (`make_lofi.py --bed`), new every day.
+3. **Sound:** 30 minutes of continuous, original lo-fi (`make_lofi.py --under`),
+   new every day, with soft ambience for the scene (rain, wind, shop fan)
+   about 12 dB underneath so it never drops to silence. Work / focus music.
 4. **Kit:** smooth 60 s video loop (with falling rain for rainy scenes),
    thumbnail, title, description and tags, plus a 30 s vertical **trailer**
    for YouTube Shorts (`make_trailer.py`). Published as release

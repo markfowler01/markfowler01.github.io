@@ -77,7 +77,7 @@ GRADES = {
 }
 BED_WORDS = {"rain_road": "Rain Sounds", "rain": "Rain on the Roof", "fan": "Shop Fan Noise",
              "wind": "Wind Sounds", "heater": "Heater Hum"}
-LOFI_TAGS = ["car people sleep", "lofi hip hop", "sleep music", "study music", "8 hours", "car lofi",
+LOFI_TAGS = ["car people sleep", "lofi hip hop", "music for work", "focus music", "study music", "8 hours", "car lofi",
              "no lyrics", "chill music", "relaxing music", "mechanic"]
 BASE_TAGS = ["car people sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
              "8 hours", "no music", "mechanic", "shop life", "auto shop ambience", "asmr garage"]
@@ -115,7 +115,7 @@ def photo_meta(photo):
 
 
 PUBLISHED = os.path.join(HERE, "published.json")
-DAILY_SOUND = "mix"  # white noise with an occasional original lo-fi track
+DAILY_SOUND = "lofi"  # continuous original lo-fi with soft ambience underneath (work / focus music)
 
 
 def load_published():
@@ -164,7 +164,7 @@ def plan_daily(day):
     )
     # a photo's own title / description only on its first lo-fi outing; reuses get a numbered title
     if not (p["fresh"] and recipe in meta.get("recipes", [recipe]) and meta.get("title")):
-        p["title_override"] = {"lofi": f"Chill Lo-Fi Beats Vol. {vol}",
+        p["title_override"] = {"lofi": f"Lo-Fi Beats Vol. {vol}",
                                "mix": f"White Noise & Lo-Fi Vol. {vol}"}.get(recipe)
         p["generic_words"] = True
     return p
@@ -199,7 +199,7 @@ def title_for(p):
     bed = m.get("bed", "rain_road")
     if p.get("title_override"):  # daily reuse / no sidecar: numbered title, ignore the photo's own words
         mid, m = p["title_override"], {}
-    tail = m.get("title_tail", {"lofi": "Lo-Fi for Sleep & Study", "mix": "White Noise & Lo-Fi for Sleep"}
+    tail = m.get("title_tail", {"lofi": "Chill Music for Work & Focus", "mix": "White Noise & Lo-Fi for Sleep"}
                  .get(p["recipe"], "Garage Ambience for Sleep"))
     if p.get("title_override") and p["recipe"] == "mix":
         # the numbered title already says "White Noise & Lo-Fi", so end on the sound instead
@@ -233,8 +233,8 @@ def description_for(p):
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
                 "#carpeoplesleep #whitenoise #lofi #sleepsounds")
     if p["recipe"] == "lofi":
-        return ("Eight hours of slow, original lo-fi beats for sleeping, studying, or winding down after a long day "
-                "in the bay. Soft keys, warm bass, quiet drums and a little vinyl crackle.\n\n"
+        return ("Eight hours of slow, original lo-fi for working, studying, or winding down after a long day "
+                "in the bay. Soft keys, warm bass, quiet drums, a little vinyl crackle and soft rain underneath.\n\n"
                 "No lyrics. No talking. Every track is original to this channel.\n\n"
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
                 "#carpeoplesleep #lofi #lofibeats #sleepmusic #chillbeats")
@@ -472,7 +472,12 @@ def main():
 
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
-        bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
+        if p["recipe"] == "mix":
+            bed = ["--bed", meta.get("bed", "rain_road")]
+        elif args.daily:  # daily lo-fi: soft rain / wind for the scene under the music
+            bed = ["--under", meta.get("bed", "rain_road")]
+        else:
+            bed = []
         run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
              "--seed", str(seed), *bed, "--out", wav])
     else:

@@ -97,6 +97,7 @@ PROMPT = (
     "The car sits in the left two-thirds of the frame in a three-quarter front view with its headlights on. "
     "The right third of the image is calm and uncluttered (sky, wall, road or fog) so text can go there. "
     "Moody, dark, relaxing late-night atmosphere, rich detail, wet reflections where it fits, shallow depth of field. "
+    "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
     "No people, no text, no watermarks, no license plate numbers."
 )
 
@@ -120,7 +121,7 @@ def sidecar(choice):
     title = f"{short} {sc['title']}"
     return {
         "rotate": False,
-        "recipes": ["mix"],
+        "recipes": ["lofi", "mix"],
         "bed": sc["bed"],
         "rain": sc["rain"],
         "dust": 0 if sc["rain"] else 40,
@@ -128,22 +129,38 @@ def sidecar(choice):
         "text_side": "right",
         "text_scale": 0.66,
         "title": title,
-        "title_tail": "White Noise & Lo-Fi for Sleep",
-        "label": sc["label"],
+        "title_tail": "Chill Music for Work & Focus",
+        "label": "CHILL LO-FI",
         "slug": slug(short),
         "car": choice["car"],
         "scene": sc["id"],
-        "tags": [choice["car"].lower(), short.lower(), "car sleep video", "white noise for sleep", "lofi for sleep"],
+        "tags": [choice["car"].lower(), short.lower(), "lofi for work", "focus music", "car lofi"],
         "description": (
             f"A {choice['color']} {choice['car']} {sc['title'].split(' ', 1)[0].lower()} {sc['title'].split(' ', 1)[1].lower()}: "
-            f"{sc['words']}. Eight hours of steady white noise with a slow, original lo-fi track drifting in now and then, "
-            "for sleeping, studying, or winding down after a long day in the bay.\n\n"
+            f"{sc['words']}. Eight hours of slow, original lo-fi with the weather soft underneath, "
+            "for working, studying, or winding down after a long day in the bay.\n\n"
             "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
-            "Built for mechanics, car people, and anyone who sleeps better with a little noise.\n\n"
+            "Built for mechanics, car people, and anyone who works better with something chill playing.\n\n"
             "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
-            f"#carpeoplesleep #whitenoise #lofi #sleepsounds #{slug(short).replace('-', '')}"
+            f"#carpeoplesleep #lofi #musicforwork #focusmusic #{slug(short).replace('-', '')}"
         ),
     }
+
+
+def trim_bars(img, dark=14, spread=8):
+    """Cut off black letterbox / pillarbox bars that image models sometimes add."""
+    import numpy as np
+    a = np.asarray(img.convert("L"), float)
+    def flat_dark(lines):
+        return (lines.mean(axis=1) < dark) & (lines.std(axis=1) < spread)
+    rows, cols = flat_dark(a), flat_dark(a.T)
+    top = int(np.argmin(rows)) if rows.any() else 0
+    bottom = len(rows) - int(np.argmin(rows[::-1])) if rows.any() else len(rows)
+    left = int(np.argmin(cols)) if cols.any() else 0
+    right = len(cols) - int(np.argmin(cols[::-1])) if cols.any() else len(cols)
+    if bottom - top < a.shape[0] * 0.5 or right - left < a.shape[1] * 0.5:
+        return img  # a genuinely dark picture, not bars: leave it alone
+    return img.crop((left, top, right, bottom))
 
 
 def generate(prompt, out_path):
@@ -180,7 +197,7 @@ def generate_gemini(prompt, out_path):
         for part in cand.get("content", {}).get("parts", []):
             inline = part.get("inlineData") or part.get("inline_data")
             if inline and inline.get("data"):
-                img = Image.open(io.BytesIO(base64.b64decode(inline["data"]))).convert("RGB")
+                img = trim_bars(Image.open(io.BytesIO(base64.b64decode(inline["data"]))).convert("RGB"))
                 img.save(out_path, quality=92)
                 return out_path
     raise RuntimeError(f"Gemini returned no image: {json.dumps(data)[:400]}")
@@ -206,7 +223,7 @@ def generate_openai(prompt, out_path):
             data = json.load(r)
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"OpenAI said {e.code}: {e.read()[:400]!r}")
-    img = Image.open(io.BytesIO(base64.b64decode(data["data"][0]["b64_json"]))).convert("RGB")
+    img = trim_bars(Image.open(io.BytesIO(base64.b64decode(data["data"][0]["b64_json"]))).convert("RGB"))
     img.save(out_path, quality=92)
     return out_path
 
