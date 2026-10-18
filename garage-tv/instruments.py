@@ -233,3 +233,76 @@ class DrumFolder:
         layer = levels[min(len(levels) - 1, int(vel * len(levels)))]
         p = self.layers[layer][int(rng.integers(len(self.layers[layer])))]
         return (load(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)).astype(np.float32)
+
+
+def detect_pitch(x):
+    """Rough fundamental of a mono note (Hz): autocorrelation peak over 25 Hz to 2 kHz."""
+    x = x[int(0.05 * SR):int(0.55 * SR)]
+    x = x - x.mean()
+    n = 1 << (2 * len(x) - 1).bit_length()
+    X = np.fft.rfft(x, n)
+    ac = np.fft.irfft(X * np.conj(X), n)[:len(x)]
+    lo, hi = int(SR / 2000), int(SR / 25)
+    lag = lo + int(np.argmax(ac[lo:hi]))
+    return SR / lag
+
+
+class NoteFolder:
+    """A pitched instrument from sample files whose names say the note, e.g.
+    Piano_UC_MicA_A4_vl2.flac or sneakybass_eb2_finger_rr3.wav. `regex` must have a group
+    `note` and may have `vl` (loudness layer, ordered by `vl_order` or numerically) and `rr`.
+    The octave numbering of the file names is checked against the real pitch of a sample."""
+
+    def __init__(self, repo, folder, regex, vl_order=None, gain=1.0, release=0.25, max_len=6.0):
+        self.path = clone(repo)
+        listing = subprocess.run(["git", "-C", self.path, "ls-tree", "-r", "--name-only", "HEAD", folder],
+                                 capture_output=True, text=True, check=True).stdout.split()
+        rx = re.compile(regex, re.I)
+        self.samples = []  # (midi note, layer index, path)
+        layers = set()
+        for p in listing:
+            m = rx.search(os.path.basename(p))
+            if not m:
+                continue
+            vl = (m.groupdict().get("vl") or "1").lower()
+            layers.add(vl)
+            self.samples.append([note_number(m.group("note")), vl, p])
+        if not self.samples:
+            raise SystemExit(f"{repo}/{folder}: no samples matched {regex}")
+        order = vl_order or sorted(layers, key=lambda v: float(v) if v.replace(".", "").isdigit() else v)
+        rank = {v: i for i, v in enumerate([v.lower() for v in order])}
+        for s in self.samples:
+            s[1] = rank.get(s[1], 0)
+        self.n_layers = max(s[1] for s in self.samples) + 1
+        ensure_many(self.path, [s[2] for s in self.samples])
+        # check the file names' octave numbering against a real pitch near the middle
+        mid = sorted(self.samples, key=lambda s: abs(s[0] - 57))[0]
+        f0 = detect_pitch(load(os.path.join(self.path, mid[2])).mean(axis=1))
+        expected = 440 * 2 ** ((mid[0] - 69) / 12)
+        self.shift = 12 * round(np.log2(f0 / expected))
+        for s in self.samples:
+            s[0] += self.shift
+        self.gain, self.release, self.max_len = gain, release, max_len
+        self.notes = sorted({s[0] for s in self.samples})
+        print(f"{repo}/{folder}: {len(self.samples)} samples, notes {self.notes[0]}-{self.notes[-1]}, "
+              f"{self.n_layers} layers, octave fix {self.shift:+d} (heard {f0:.1f} Hz for {os.path.basename(mid[2])})")
+
+    def play(self, note, vel, dur, rng, cents=0.0):
+        layer = min(self.n_layers - 1, int(vel * self.n_layers))
+        near = min(self.notes, key=lambda n: (abs(n - note), n < note))
+        cands = [s for s in self.samples if s[0] == near and s[1] == layer] or [s for s in self.samples if s[0] == near]
+        root, _, p = cands[int(rng.integers(len(cands)))]
+        s = load(os.path.join(self.path, p))
+        ratio = 2 ** ((note - root) / 12 + cents / 1200)
+        n_out = int(min(dur + self.release, self.max_len) * SR)
+        need = min(len(s), int(n_out * ratio) + 2)
+        if abs(ratio - 1) > 1e-4:
+            pos = np.arange(0, need - 1, ratio)[:n_out]
+            out = np.stack([np.interp(pos, np.arange(need), s[:need, c]) for c in (0, 1)], axis=1)
+        else:
+            out = s[:n_out].copy()
+        t = np.arange(len(out)) / SR
+        out *= np.where(t > dur, np.exp(-(t - dur) / max(self.release / 4, 0.01)), 1.0)[:, None]
+        fade = min(len(out), int(0.01 * SR))
+        out[len(out) - fade:] *= np.linspace(1, 0, fade)[:, None]
+        return (out * self.gain * (0.3 + 0.7 * vel)).astype(np.float32)
