@@ -274,6 +274,8 @@ def tags_for(p):
     tags, total = [], 0
     base = LOFI_TAGS if p["recipe"] in ("lofi", "mix") else BASE_TAGS
     for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + base:
+        if t in tags:
+            continue
         if total + len(t) + 1 > 480:  # YouTube caps tags at 500 characters
             break
         tags.append(t)
