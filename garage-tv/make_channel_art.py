@@ -61,7 +61,7 @@ def fit_size(s, font, max_w, start):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True)
-    ap.add_argument("--name", default="CAR PEOPLE SLEEP")
+    ap.add_argument("--name", default="PARKED FM")
     ap.add_argument("--subtitle", default="rain  ·  garage  ·  white noise  ·  8 hours for sleep")
     ap.add_argument("--banner-focus", default="0.3,0.55", help="x,y focus (0-1) of the banner crop")
     ap.add_argument("--avatar-box", default="0.72,0.35,0.6",

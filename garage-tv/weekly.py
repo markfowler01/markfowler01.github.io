@@ -12,11 +12,11 @@ file is needed:
   photo  : cycles through every picture in garage-tv/stills/ (add more any time)
 
 Outputs in --outdir:
-  car-people-sleep-<tag>.zip   loop.mp4 + sound.wav + thumbnail.jpg + details.txt + make-8h.command
+  parked-fm-<tag>.zip   loop.mp4 + music.m4a + thumbnail.jpg + trailer.mp4 + details.txt + make-video.command
   thumbnail.jpg              1280x720 YouTube thumbnail
   details.txt / details.json title, description, tags, upload checklist
   TAG, RELEASE_TITLE         for the GitHub release step
-  car-people-sleep-8h.mp4    only with --full (the finished 8-hour video)
+  parked-fm-full.mp4         only with --full (the finished full-length video)
 
   python3 weekly.py --outdir kit              # this week's kit
   python3 weekly.py --outdir kit --date 2026-11-02 --full
@@ -45,9 +45,9 @@ LOFI_MINUTES = 30  # lo-fi album length; 16 plays fill 8 hours
 TOTAL_MINUTES = 480
 
 # Channel branding: the series name in titles, the two thumbnail lines, file names.
-BRAND = "Car People Sleep"
-BRAND_LINES = ("CAR PEOPLE", "SLEEP")
-BRAND_SLUG = "car-people-sleep"
+BRAND = "PARKED FM"
+TAGLINE = "DREAM CARS. EASY LISTENING."
+BRAND_SLUG = "parked-fm"
 
 RECIPE_ORDER = ["rain", "fan", "wind", "heater"]
 GRADE_ORDER = ["none", "night", "amber", "cold"]
@@ -77,14 +77,16 @@ GRADES = {
 }
 BED_WORDS = {"rain_road": "Rain Sounds", "rain": "Rain on the Roof", "fan": "Shop Fan Noise",
              "wind": "Wind Sounds", "heater": "Heater Hum"}
-LOFI_TAGS = ["car people sleep", "lofi hip hop", "music for work", "focus music", "study music", "8 hours", "car lofi",
+LOFI_TAGS = ["parked fm", "lofi hip hop", "music for work", "focus music", "study music", "8 hours", "car lofi",
              "no lyrics", "chill music", "relaxing music", "mechanic"]
 BASE_TAGS = ["car people sleep", "garage ambience", "garage sounds", "white noise", "sleep sounds",
              "8 hours", "no music", "mechanic", "shop life", "auto shop ambience", "asmr garage"]
 
-ORANGE = (247, 134, 30)
-NAVY = (14, 24, 44)
-WHITE = (246, 246, 250)
+# PARKED FM palette: midnight navy, cream and amber
+AMBER = (232, 163, 61)
+NAVY = (16, 24, 48)
+CREAM = (243, 233, 210)
+ORANGE, WHITE = AMBER, CREAM  # older names used around the code
 
 
 # --------------------------------------------------------------------------- choosing the week
@@ -193,6 +195,10 @@ def plan(day, photo=None, recipe=None, grade=None):
 
 # --------------------------------------------------------------------------- words
 
+def hours_for(p):
+    return int(p.get("meta", {}).get("minutes", TOTAL_MINUTES)) // 60
+
+
 def title_for(p):
     m = p.get("meta", {})
     mid = m.get("title", RECIPES[p["recipe"]]["title"])
@@ -206,14 +212,15 @@ def title_for(p):
         tail = BED_WORDS.get(bed, "Rain Sounds") + " for Sleep"
     if m.get("title_full"):
         return m["title_full"]
+    h = hours_for(p)
     if p["recipe"] in ("lofi", "mix"):
-        short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else "Lo-Fi"
-        options = [f"{BRAND} 8 Hours | {mid} | {tail}", f"{BRAND} 8 Hours | {mid} | {short}", f"{BRAND} 8 Hours | {mid}"]
+        short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else "Chill Lo-Fi"
+        options = [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
         return next(t for t in options if len(t) <= 100)
     options = [
-        f"{BRAND} 8 Hours | {mid}, No Music, No Talking | {tail}",
-        f"{BRAND} 8 Hours | {mid} | No Music, No Talking",
-        f"{BRAND} 8 Hours | {mid}",
+        f"{mid}, No Music, No Talking | {tail} | {h} Hours",
+        f"{mid} | No Music, No Talking | {h} Hours",
+        f"{mid} | {h} Hours",
     ]
     return next(t for t in options if len(t) <= 100)
 
@@ -233,11 +240,11 @@ def description_for(p):
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
                 "#carpeoplesleep #whitenoise #lofi #sleepsounds")
     if p["recipe"] == "lofi":
-        return ("Eight hours of slow, original lo-fi for working, studying, or winding down after a long day "
+        return (f"{hours_for(p)} hours of slow, original lo-fi for working, studying, or winding down after a long day "
                 "in the bay. Soft keys, warm bass, quiet drums, a little vinyl crackle and soft rain underneath.\n\n"
                 "No lyrics. No talking. Every track is original to this channel.\n\n"
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
-                "#carpeoplesleep #lofi #lofibeats #sleepmusic #chillbeats")
+                "PARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofi #lofibeats #musicforwork #chillbeats")
     return (
         f"The shop after everyone's gone home, {GRADES[p['grade']]}. A truck up on the lift, the floor still wet, "
         f"{r['scene']}. Eight hours of steady garage sound for sleeping, studying, or winding down after a long "
@@ -363,21 +370,23 @@ def make_thumbnail(p, out_path):
     left = 70
     # draw the text block on its own layer so it can be scaled and moved per photo
     layer = Image.new("RGBA", bg.size, (0, 0, 0, 0))
-    mech = word(BRAND_LINES[0], 170, WHITE, distress=0.3, seed=p["index"])
-    sleep = word(BRAND_LINES[1], 196, WHITE, distress=0.3, seed=p["index"] + 1)
+    mech = word(BRAND, 170, CREAM, distress=0.3, seed=p["index"])
     mech = mech.resize((target, int(mech.height * target / mech.width)), Image.LANCZOS)
-    sw = int(target * 0.74)
-    sleep = sleep.resize((sw, int(sleep.height * sw / sleep.width)), Image.LANCZOS)
+    sleep = word(TAGLINE, 44, AMBER, squeeze=0.95)
+    if sleep.width > target:
+        sleep = sleep.resize((target, int(sleep.height * target / sleep.width)), Image.LANCZOS)
     paste_shadowed(layer, mech, (left, 70))
-    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 6))
+    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=3, offset=2)
 
     band_y = 70 + mech.height + sleep.height + 26
     band = brush_band(target + 40, 118, p["index"])
     layer.alpha_composite(band, (left - 20, band_y))
-    hours = word("8 HOURS", 92, NAVY, squeeze=0.95)
+    hours = word(f"{hours_for(p)} HOURS", 92, NAVY, squeeze=0.95)
     layer.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
 
-    if p["recipe"] == "mix":
+    if meta.get("series"):
+        line = f"{label_for(p)}   |   CHILL LO-FI"
+    elif p["recipe"] == "mix":
         line = f"{label_for(p)}   |   NO TALKING"
     else:
         middle = "NO LYRICS" if p["recipe"] == "lofi" else "NO MUSIC"
@@ -412,7 +421,7 @@ def run(cmd):
 
 
 MAKE_8H = """#!/bin/bash
-# Turns loop.mp4 + {audio} into the finished 8-hour video.
+# Turns loop.mp4 + {audio} into the finished {hours}-hour video.
 # Easiest: open Terminal, type  bash  and a space, drag this file in, press Enter.
 cd "$(dirname "$0")"
 FF=""
@@ -468,7 +477,8 @@ def main():
     acodec = ["-c:a", "copy"] if lofi else ["-c:a", "aac", "-b:a", "128k"]
     loop, wav, thumb = (os.path.join(stage, n) for n in ("loop.mp4", audio_name, "thumbnail.jpg"))
     meta = p["meta"]
-    final_name = f"{BRAND_SLUG}-{meta.get('slug', p['recipe'].replace('_', '-'))}-8h.mp4"
+    final_name = f"{BRAND_SLUG}-{meta.get('slug', p['recipe'].replace('_', '-'))}-{hours_for(p)}h.mp4"
+    total_minutes = hours_for(p) * 60
 
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
@@ -490,11 +500,11 @@ def main():
     make_thumbnail(p, thumb)
 
     title, desc, tags = title_for(p), description_for(p), tags_for(p)
-    scene_line = title.split(" | ")[1] if " | " in title else title
+    scene_line = title.split(" | ")[0]  # the car and scene, e.g. "Ferrari Roma on a Rainy Neon Night"
     trailer = os.path.join(stage, "trailer.mp4")
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
-         "--title", scene_line, "--label", label_for(p), "--out", trailer])
-    short_title = f"{scene_line} | 8 Hours of {RECIPES[p['recipe']]['title']} #shorts"[:100]
+         "--title", scene_line, "--label", label_for(p), "--hours", str(hours_for(p)), "--out", trailer])
+    short_title = f"{scene_line} | {hours_for(p)} Hours of Chill Lo-Fi #shorts"[:100]
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
                    short_title=short_title,
                    short_description="The full 8-hour video is on the channel. #carpeoplesleep #sleep #shorts",
@@ -505,7 +515,7 @@ def main():
     txt = (f"TITLE\n{title}\n\nDESCRIPTION\n{desc}\n\nTAGS\n{', '.join(tags)}\n\n"
            "UPLOAD SETTINGS\n- Thumbnail: thumbnail.jpg\n- Audience: No, it's not made for kids\n"
            "- Altered or synthetic content: Yes\n- Category: Autos & Vehicles\n- Visibility: Public\n\n"
-           "MAKE THE 8-HOUR FILE (Mac)\nOpen Terminal, type  bash  and a space, drag make-8h.command into the "
+           f"MAKE THE {hours_for(p)}-HOUR FILE (Mac)\nOpen Terminal, type  bash  and a space, drag make-video.command into the "
            f"window, press Enter. About 10 minutes. You get {final_name} in this folder.\n\n"
            f"TRAILER (YouTube Short)\nUpload trailer.mp4 from the YouTube app (+ > Upload a video).\n"
            f"Title: {short_title}\nDescription: The full 8-hour video is on the channel. #carpeoplesleep #sleep #shorts\n"
@@ -514,15 +524,15 @@ def main():
         with open(path, "w") as f:
             f.write(txt)
 
-    vloops = math.ceil(TOTAL_MINUTES * 60 / LOOP_SECONDS) - 1
-    aloops = math.ceil(TOTAL_MINUTES / audio_minutes) - 1
-    with open(os.path.join(stage, "make-8h.command"), "w") as f:
-        f.write(MAKE_8H.format(vloops=vloops, aloops=aloops, seconds=TOTAL_MINUTES * 60, name=final_name,
+    vloops = math.ceil(total_minutes * 60 / LOOP_SECONDS) - 1
+    aloops = math.ceil(total_minutes / audio_minutes) - 1
+    with open(os.path.join(stage, "make-video.command"), "w") as f:
+        f.write(MAKE_8H.format(vloops=vloops, aloops=aloops, seconds=total_minutes * 60, name=final_name, hours=hours_for(p),
                                audio=audio_name, acodec=" ".join(acodec)))
 
     zpath = os.path.join(args.outdir, f"{folder}.zip")
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
-        for n in ("loop.mp4", audio_name, "thumbnail.jpg", "trailer.mp4", "details.txt", "make-8h.command"):
+        for n in ("loop.mp4", audio_name, "thumbnail.jpg", "trailer.mp4", "details.txt", "make-video.command"):
             info = zipfile.ZipInfo(f"{folder}/{n}", date_time=dt.datetime.now().timetuple()[:6])
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = ((0o755 if n.endswith(".command") else 0o644) | 0o100000) << 16
@@ -535,14 +545,14 @@ def main():
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
         when = day.isoformat() if args.daily else f"week of {day - dt.timedelta(days=day.weekday())}"
-        f.write(f"{when}: {title.replace(BRAND + ' ', '', 1)}")
+        f.write(f"{when}: {title}")
 
     if args.full:
         ff = imageio_ffmpeg.get_ffmpeg_exe()
         run([ff, "-y", "-loglevel", "error", "-stream_loop", str(vloops), "-i", loop,
              "-stream_loop", str(aloops), "-i", wav, "-map", "0:v:0", "-map", "1:a:0",
-             "-c:v", "copy", *acodec, "-t", str(TOTAL_MINUTES * 60),
-             "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-8h.mp4")])
+             "-c:v", "copy", *acodec, "-t", str(total_minutes * 60),
+             "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-full.mp4")])
 
     if args.record:
         log = load_published()

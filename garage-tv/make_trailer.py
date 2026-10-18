@@ -2,7 +2,7 @@
 """Make a 30-second vertical trailer (YouTube Short) for a Car People Sleep video.
 
 Layout (1080x1920): blurred photo fills the frame, the real photo sits in the middle with a
-slow push-in, Car People Sleep / 8 HOURS on top, the scene title and a pointer to the full
+slow push-in, PARKED FM / N HOURS on top, the scene title and a pointer to the full
 video below. Audio is taken from the album where the music is playing, with soft fades.
 
   python3 make_trailer.py --image stills/x.webp --audio music.m4a --title "Supra in the Rain" --out trailer.mp4
@@ -40,7 +40,8 @@ def main():
     ap.add_argument("--image", required=True)
     ap.add_argument("--audio", required=True)
     ap.add_argument("--title", required=True, help="scene line, e.g. 'Supra in the Rain on a Mountain Road'")
-    ap.add_argument("--label", default="WHITE NOISE + LO-FI")
+    ap.add_argument("--label", default="CHILL LO-FI")
+    ap.add_argument("--hours", type=int, default=8)
     ap.add_argument("--seconds", type=float, default=30)
     ap.add_argument("--out", default="trailer.mp4")
     args = ap.parse_args()
@@ -51,10 +52,11 @@ def main():
     bg = cover(photo, W, H).filter(ImageFilter.GaussianBlur(28))
     bg = ImageEnhance.Brightness(bg).enhance(0.45).convert("RGBA")
     top = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    car_line = weekly.word(weekly.BRAND_LINES[0], 150, weekly.WHITE, distress=0.3, seed=3)
-    sleep = weekly.word(weekly.BRAND_LINES[1], 190, weekly.WHITE, distress=0.3, seed=4)
-    car_line = car_line.resize((860, int(car_line.height * 860 / car_line.width)), Image.LANCZOS)
-    sleep = sleep.resize((640, int(sleep.height * 640 / sleep.width)), Image.LANCZOS)
+    car_line = weekly.word(weekly.BRAND, 150, weekly.CREAM, distress=0.3, seed=3)
+    sleep = weekly.word(weekly.TAGLINE, 46, weekly.AMBER, squeeze=0.95)
+    car_line = car_line.resize((900, int(car_line.height * 900 / car_line.width)), Image.LANCZOS)
+    if sleep.width > 860:
+        sleep = sleep.resize((860, int(sleep.height * 860 / sleep.width)), Image.LANCZOS)
     y = 150
     weekly.paste_shadowed(top, car_line, ((W - car_line.width) // 2, y))
     y += car_line.height + 8
@@ -62,7 +64,7 @@ def main():
     y += sleep.height + 30
     band = weekly.brush_band(760, 130, 7)
     top.alpha_composite(band, ((W - band.width) // 2, y))
-    hours = weekly.word("8 HOURS", 100, weekly.NAVY, squeeze=0.95)
+    hours = weekly.word(f"{args.hours} HOURS", 100, weekly.NAVY, squeeze=0.95)
     top.alpha_composite(hours, ((W - hours.width) // 2, y + (band.height - hours.height) // 2))
 
     photo_h = round(W * photo.height / photo.width)
@@ -76,7 +78,7 @@ def main():
         d.text((W // 2, ty), line, font=f_title, fill=weekly.WHITE, anchor="ma")
         ty += 70
     d.text((W // 2, ty + 30), args.label, font=f_small, fill=weekly.ORANGE, anchor="ma")
-    d.text((W // 2, H - 170), "Full 8-hour video on the channel", font=f_small, fill=weekly.WHITE, anchor="ma")
+    d.text((W // 2, H - 170), f"Full {args.hours}-hour video on the channel", font=f_small, fill=weekly.WHITE, anchor="ma")
     static = Image.alpha_composite(bg, Image.new("RGBA", (W, H), (0, 0, 0, 0)))
 
     # audio: start where the music is playing, if the album says where its tracks are

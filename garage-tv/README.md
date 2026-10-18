@@ -74,31 +74,36 @@ over 15 minutes are allowed; the limit is then 12 hours / 256 GB.
 
 Or skip the file entirely and set the TV or player to repeat.
 
-## Daily machine (Car People Sleep)
+## Daily machine (PARKED FM)
 
-`.github/workflows/car-people-sleep-daily.yml` runs every day at 13:23 UTC
-(6:23 am Pacific):
+PARKED FM: *Dream Cars. Easy Listening.* `.github/workflows/car-people-sleep-daily.yml`
+runs every day around 13:23 UTC:
 
-1. **Car engine** (`car_engine.py`, needs a `GEMINI_API_KEY` (Nano Banana, preferred) or `OPENAI_API_KEY` secret): picks a
-   random fast-but-attainable car (Supra, Type R, M3, C8, GT500, Raptor, ...), a
-   colour and a moody scene (rainy mountain road, neon city, shop after hours,
-   snowy cabin, desert dusk, ...), never repeating a car from the last 20 videos
-   or a scene from the last 3, and has Google's Nano Banana (Gemini image
-   model) or OpenAI's image model paint it. The photo and its settings are saved to `stills/`.
-   Without a key, or if the call fails, the day falls back to the photo queue.
-2. **Photo queue:** otherwise the next never-used picture in `stills/`
-   (alphabetical), or the one used longest ago with a new colour grade.
-3. **Sound:** 30 minutes of continuous, original lo-fi (`make_lofi.py --under`),
-   new every day, with soft ambience for the scene (rain, wind, shop fan)
-   about 12 dB underneath so it never drops to silence. Work / focus music.
-4. **Kit:** smooth 60 s video loop (with falling rain for rainy scenes),
-   thumbnail, title, description and tags, plus a 30 s vertical **trailer**
-   for YouTube Shorts (`make_trailer.py`). Published as release
-   `daily-YYYY-MM-DD`; kits older than 21 days are deleted. `published.json`
-   logs every video (photo, car, scene) and is committed back with the photo.
+1. **Car engine** (`car_engine.py`, with a `GEMINI_API_KEY` (Nano Banana) or
+   `OPENAI_API_KEY` secret): picks a random **exotic** car (Ferrari, Lamborghini,
+   McLaren, Porsche GT, Aston Martin, Bugatti, Pagani, Koenigsegg, ...), a colour
+   and a scene from one of three series, never repeating a car from the last 20
+   videos or a scene from the last 3, and paints it. Black letterbox bars are
+   trimmed. Without a key, or if the call fails, the day uses the photo queue.
 
-On a Mac: unzip the kit, `cd` into it, `bash make-8h.command`, upload the
-8-hour file, then upload `trailer.mp4` as a Short from the YouTube app.
+   | Series | Scenes | Length |
+   |---|---|---|
+   | Midnight Garage | garages above a rainy city, the shop after hours, rooftop deck | 3 h |
+   | Rainy Drives | rainy mountain road, neon city, forest road, late-night gas station | 8 h |
+   | Parked & Peaceful | snowy cabin, desert dusk, foggy coast, mountain overlook, lakeside cafe | 4 h |
+
+2. **Photo queue** fallback: the next never-used picture in `stills/`, or the
+   one used longest ago with a new colour grade.
+3. **Sound:** 30 minutes of continuous original lo-fi (`make_lofi.py --under`),
+   new every day, with the scene's ambience (rain, wind, shop fan) about 12 dB
+   underneath. `--style jazz` and `--style piano` exist but are not used.
+4. **Kit:** smooth 60 s video loop (falling rain on rainy scenes), PARKED FM
+   thumbnail (navy, cream, amber), title, description, tags, and a 30 s vertical
+   **trailer** for Shorts. Published as release `daily-YYYY-MM-DD`; kits older
+   than 21 days are deleted. `published.json` logs every video.
+
+On a Mac: unzip the kit, `cd` into it, `bash make-video.command`, upload the
+finished file, then upload `trailer.mp4` as a Short from the YouTube app.
 
 **Turning on Nano Banana photos (preferred, about 4 cents an image):**
 aistudio.google.com > Get API key > Create API key (set up billing on that

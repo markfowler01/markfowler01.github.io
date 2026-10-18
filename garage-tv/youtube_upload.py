@@ -6,7 +6,7 @@ Needs three environment variables (stored as GitHub Actions secrets):
 Optional:
   YT_PRIVACY   public | unlisted | private   (default public)
 
-  python3 youtube_upload.py kit/car-people-sleep-8h.mp4 kit/thumbnail.jpg kit/details.json
+  python3 youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json
   python3 youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id VIDEO_ID
 
 With --short it uses short_title / short_description from details.json (and links the
