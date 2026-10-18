@@ -200,7 +200,7 @@ def sidecar(choice):
                 "or blocking out the world while you work.\n\n"
                 "No music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n"
-                f"#parkedfm #{hashtag} #sleepsounds #whitenoise #{tag}"
+                + " ".join(dict.fromkeys(f"#{h}" for h in ("parkedfm", hashtag, "sleepsounds", "whitenoise", tag)))
             ),
         )
     return meta
