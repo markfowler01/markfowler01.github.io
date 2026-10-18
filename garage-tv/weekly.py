@@ -90,7 +90,7 @@ BASE_TAGS = ["parked fm", "white noise", "sleep sounds", "8 hours", "no music", 
              "sounds for sleeping", "focus sounds", "car ambience", "relaxing sounds"]
 
 # PARKED FM palette: midnight navy, cream and amber
-AMBER = (232, 163, 61)
+AMBER = (205, 68, 25)  # #CD4419, the Absolute ADAS orange
 NAVY = (16, 24, 48)
 CREAM = (243, 233, 210)
 ORANGE, WHITE = AMBER, CREAM  # older names used around the code
@@ -396,7 +396,8 @@ def make_thumbnail(p, out_path):
     if sleep.width > target:
         sleep = sleep.resize((target, int(sleep.height * target / sleep.width)), Image.LANCZOS)
     paste_shadowed(layer, mech, (left, 70))
-    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=3, offset=2)
+    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=5, offset=2, strength=255)
+    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=12, offset=0, strength=230)
 
     band_y = 70 + mech.height + sleep.height + 26
     band = brush_band(target + 40, 118, p["index"])

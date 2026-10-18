@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-AMBER = (247, 134, 30)  # same orange as the video thumbnails
+AMBER = (205, 68, 25)  # #CD4419, same orange as the video thumbnails
 WHITE = (245, 245, 250)
 
 
