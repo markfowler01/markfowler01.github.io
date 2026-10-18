@@ -82,5 +82,15 @@
     "tag": "daily-2026-10-18",
     "car": "Porsche 911 Carrera S",
     "scene": "gas_station"
+  },
+  {
+    "date": "2026-10-18",
+    "photo": "2026-10-18-ferrari-812.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Ferrari 812 on a Desert Highway at Dusk | Calm Lo-Fi for Relaxing & Focus | 4 Hours",
+    "tag": "daily-2026-10-18-2",
+    "car": "Ferrari 812 Superfast",
+    "scene": "desert_dusk"
   }
 ]
