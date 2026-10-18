@@ -9,6 +9,9 @@ It finds the client_secret_....json file in Downloads by itself (or pass
 CLIENT_ID CLIENT_SECRET). A browser opens: sign in, pick the channel, allow access.
 Then it opens GitHub's "New secret" page and puts each name and value on the clipboard,
 one at a time, so you only paste (Cmd+V).
+
+  python3 get_youtube_token.py --renew   replaces only YT_REFRESH_TOKEN (if uploads stop with
+                                         invalid_grant, or after publishing the consent screen)
 """
 import glob
 import http.server
@@ -24,6 +27,7 @@ SCOPE = "https://www.googleapis.com/auth/youtube.upload"
 PORT = 8765
 REDIRECT = f"http://127.0.0.1:{PORT}/"
 NEW_SECRET = "https://github.com/markfowler01/markfowler01.github.io/settings/secrets/actions/new"
+EDIT_TOKEN = "https://github.com/markfowler01/markfowler01.github.io/settings/secrets/actions/YT_REFRESH_TOKEN"
 
 
 def find_client():
@@ -49,6 +53,9 @@ def copy(text):
 
 
 def main():
+    renew = "--renew" in sys.argv  # only replace YT_REFRESH_TOKEN (the other two never change)
+    if renew:
+        sys.argv.remove("--renew")
     if len(sys.argv) == 3:
         client_id, client_secret = sys.argv[1], sys.argv[2]
     elif len(sys.argv) == 1:
@@ -92,6 +99,13 @@ def main():
 
     secrets = [("YT_CLIENT_ID", client_id), ("YT_CLIENT_SECRET", client_secret),
                ("YT_REFRESH_TOKEN", tok["refresh_token"])]
+    if renew and copy(tok["refresh_token"]):
+        webbrowser.open(EDIT_TOKEN)
+        input("\nNew token copied. On the GitHub page, click in the Value box, press Cmd+V, click "
+              "Update secret, then press Enter here...")
+        copy("")
+        print("\nDone. YouTube uploads stay connected for good now.")
+        return
     if not copy("test"):
         print("Copy these three into GitHub > Settings > Secrets and variables > Actions > New repository secret:\n")
         for name, value in secrets:
