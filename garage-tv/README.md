@@ -108,6 +108,15 @@ runs every day around 13:23 UTC:
 On a Mac: unzip the kit, `cd` into it, `bash make-video.command`, upload the
 finished file, then upload `trailer.mp4` as a Short from the YouTube app.
 
+**Picture test (Nano Banana vs ChatGPT vs Sora).** With both `GEMINI_API_KEY` and
+`OPENAI_API_KEY` set, the car engine rotates three makers: a Nano Banana Pro photo, a ChatGPT
+(`gpt-image-1`) photo, and Sora (a ChatGPT photo animated into a 12 s clip, looped seamlessly by
+`make_motion_loop.py`). Each maker gets the same number of music days and soundscape days.
+`published.json` records the maker and YouTube ids. With a `YT_API_KEY` secret (a plain Google
+Cloud API key for YouTube Data API v3), `scoreboard.py` refreshes view counts daily into
+absoluteadas.com/parked-fm/scoreboard. Sora costs about $1.20 a video (`sora-2`, 720p); set the
+repository variable or env `SORA_MODEL=sora-2-pro` for 1792x1024 at about $6.
+
 **Turning on Nano Banana photos (preferred, about 4 cents an image):**
 aistudio.google.com > Get API key > Create API key (set up billing on that
 project if asked), then add it as repository secret `GEMINI_API_KEY`.

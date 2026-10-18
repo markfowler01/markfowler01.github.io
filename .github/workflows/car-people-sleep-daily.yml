@@ -1,10 +1,12 @@
 name: PARKED FM daily video
 
-# Every morning: have the car engine paint a new car photo with Nano Banana (GEMINI_API_KEY)
-# or OpenAI's image model (OPENAI_API_KEY) when a key is set, otherwise take the next photo from garage-tv/stills or reuse the
-# oldest one; alternate days between original lo-fi (music only) and a soundscape (rain, wind,
-# brown or white noise, no music); build the video loop, thumbnail, title and description, and publish it all as a release.
-# With the YT_* secrets set it also builds the 8-hour file and uploads it to YouTube.
+# Every morning: the car engine picks an exotic car and scene and has it painted, rotating a
+# picture test (Nano Banana photo / ChatGPT photo / Sora moving clip) when both GEMINI_API_KEY and
+# OPENAI_API_KEY are set; otherwise it uses whichever key exists, or the next photo in garage-tv/stills.
+# Days alternate between original lo-fi (music only) and a soundscape (rain, wind, brown or white
+# noise, no music). Builds the loop, thumbnail, title, description and trailer, publishes a release,
+# and with the YT_* secrets uploads the full video and the Short to YouTube. With YT_API_KEY it also
+# refreshes the view-count scoreboard at absoluteadas.com/parked-fm/scoreboard.
 on:
   schedule:
     - cron: '23 13 * * *'   # every day 13:23 UTC = 6:23 am Pacific (5:23 am in winter)
@@ -33,10 +35,11 @@ jobs:
           sudo apt-get install -y -qq fonts-dejavu-core >/dev/null
           pip install numpy Pillow imageio-ffmpeg
 
-      - name: Paint today's car (Nano Banana or OpenAI)
+      - name: Paint today's car (Nano Banana, ChatGPT or Sora)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SORA_MODEL: ${{ vars.SORA_MODEL }}
         run: |
           if [ -n "$GEMINI_API_KEY" ] || [ -n "$OPENAI_API_KEY" ]; then
             python garage-tv/car_engine.py || echo "::warning::car engine failed; using the photo queue today"
@@ -86,4 +89,13 @@ jobs:
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'public' }}
         run: |
           python garage-tv/youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json --id-file kit/video_id.txt
-          python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id "$(cat kit/video_id.txt)"
+          python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id "$(cat kit/video_id.txt)" --id-file kit/short_id.txt
+          python garage-tv/scoreboard.py --log "$(cat kit/TAG)" "$(cat kit/video_id.txt)" "$(cat kit/short_id.txt)"
+
+      - name: Update the picture-test scoreboard
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+        run: |
+          python garage-tv/scoreboard.py || echo "::warning::scoreboard refresh failed"
+          git add garage-tv/published.json parked-fm/scoreboard.json
+          git diff --staged --quiet || (git commit -m "PARKED FM: scoreboard $(cat kit/TAG)" && git pull --rebase && git push)
