@@ -24,25 +24,30 @@ import imageio_ffmpeg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LIBRARY = os.path.join(HERE, "music")
+# Songs whose licence only covers videos published before a date (e.g. an Epidemic Sound trial)
+# go in music/epidemic/; they drop out after MUSIC_UNTIL. Free-forever songs (Pixabay, YouTube
+# Audio Library) go straight in music/ and always play.
+LIMITED = os.path.join(LIBRARY, "epidemic")
 EXTS = ("*.mp3", "*.m4a", "*.wav", "*.aac", "*.ogg", "*.flac")
 MIN_TRACKS = 8  # music days stay off until the library has at least this many songs
 SR = 44100
 
 
-def library():
-    return sorted(p for e in EXTS for p in glob.glob(os.path.join(LIBRARY, e)))
+def limited_ok(day=None):
+    """True while the time-limited songs (music/epidemic) may go in new videos:
+    up to and including MUSIC_UNTIL (YYYY-MM-DD); always, if it isn't set."""
+    until = os.environ.get("MUSIC_UNTIL", "").strip()
+    return not until or (day or datetime.date.today()) <= datetime.date.fromisoformat(until)
+
+
+def library(day=None):
+    folders = [LIBRARY] + ([LIMITED] if limited_ok(day) else [])
+    return sorted(p for d in folders for e in EXTS for p in glob.glob(os.path.join(d, e)))
 
 
 def music_ready(day=None):
-    """Music days run only with enough songs, and only while their licence covers new videos:
-    set MUSIC_UNTIL=YYYY-MM-DD (e.g. the last day of an Epidemic Sound trial or subscription)
-    and music days stop by themselves after that date."""
-    until = os.environ.get("MUSIC_UNTIL", "").strip()
-    if until:
-        today = day or datetime.date.today()
-        if today > datetime.date.fromisoformat(until):
-            return False
-    return len(library()) >= MIN_TRACKS
+    """Music days run only when at least MIN_TRACKS songs are usable today."""
+    return len(library(day)) >= MIN_TRACKS
 
 
 def wav_seconds(path):
