@@ -128,7 +128,8 @@ also builds the 8-hour file and uploads it to YouTube with the thumbnail:
 2. OAuth consent screen: External, add yourself as a test user, then set
    publishing status to **In production** (in Testing, tokens die after 7 days).
 3. Credentials: create an OAuth client ID of type **Desktop app**.
-4. On the Mac: `python3 garage-tv/get_youtube_token.py CLIENT_ID CLIENT_SECRET`,
+4. Click **Download JSON** on the client, then on the Mac: `cd ~/Downloads && python3 get_youtube_token.py`
+   (it finds the key file itself),
    sign in, pick the PARKED FM channel, and copy the three values into
    GitHub > Settings > Secrets and variables > Actions.
 5. Apply for the free YouTube API compliance audit. Until it passes, Google
