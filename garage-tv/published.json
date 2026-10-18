@@ -72,5 +72,15 @@
     "tag": "daily-2026-10-17",
     "car": null,
     "scene": null
+  },
+  {
+    "date": "2026-10-18",
+    "photo": "2026-10-18-911-carrera-s.webp",
+    "recipe": "mix",
+    "grade": "none",
+    "title": "Car People Sleep 8 Hours | 911 Carrera S at a Late-Night Gas Station | White Noise & Lo-Fi for Sleep",
+    "tag": "daily-2026-10-18",
+    "car": "Porsche 911 Carrera S",
+    "scene": "gas_station"
   }
 ]
