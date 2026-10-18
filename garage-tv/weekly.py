@@ -36,6 +36,9 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 import imageio_ffmpeg
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import make_playlist  # noqa: E402  (the real-song music library)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
@@ -158,7 +161,8 @@ def plan_daily(day):
         uses = len(used[os.path.basename(photo)])
     meta = photo_meta(photo)
     last = published[-1].get("recipe") if published else None
-    recipe = meta.get("daily_sound") or (meta.get("bed", "rain_road") if last == DAILY_SOUND else DAILY_SOUND)
+    recipe = meta.get("daily_sound") or (DAILY_SOUND if last != DAILY_SOUND and make_playlist.music_ready()
+                                         else meta.get("bed", "rain_road"))
     vol = sum(1 for e in published if e.get("recipe") == recipe) + 1
     p = dict(
         index=(day - dt.date(2024, 1, 1)).days,
@@ -256,7 +260,7 @@ def description_for(p):
     if p["recipe"] == "lofi":
         return (f"{hours_for(p)} hours of slow, original lo-fi for working, studying, or winding down after a long day "
                 "in the bay. Soft keys, warm bass and quiet drums, music only.\n\n"
-                "No lyrics. No talking. Every track is original to this channel.\n\n"
+                "No lyrics. No talking.\n\n"
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofi #lofibeats #musicforwork #chillbeats")
     return (
@@ -498,12 +502,15 @@ def main():
 
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
-        if p["recipe"] == "mix":
-            bed = ["--bed", meta.get("bed", "rain_road")]
-        else:  # daily lo-fi is music only: no rain or wind under it
-            bed = []
-        run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
-             "--seed", str(seed), *bed, "--out", wav])
+        if p["recipe"] == "lofi" and make_playlist.library():
+            # real songs from garage-tv/music (YouTube Audio Library), shuffled; music only
+            run([sys.executable, os.path.join(HERE, "make_playlist.py"), "--seed", str(seed), "--out", wav])
+            with open(os.path.splitext(wav)[0] + ".tracks.json") as f:
+                audio_minutes = json.load(f)["minutes"]
+        else:
+            bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
+            run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
+                 "--seed", str(seed), *bed, "--out", wav])
     else:
         run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", str(AUDIO_MINUTES),
              "--recipe", p["recipe"], "--seamless", "--seed", str(1000 + p["index"]), "--out", wav])

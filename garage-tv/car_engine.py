@@ -25,6 +25,9 @@ import urllib.request
 
 from PIL import Image
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import make_playlist  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # Exotic cars only: supercars and hypercars, a different one every video.
@@ -142,7 +145,9 @@ def pick(day, published):
     car, short = rng.choice(cars)
     scene = rng.choice(scenes)
     last = published[-1].get("recipe") if published else None
-    sound = rng.choice([scene["bed"], scene["bed"], "brown", "white"]) if last == "lofi" else "lofi"
+    # music days alternate in only once the real-song library (garage-tv/music) is stocked
+    soundscape = rng.choice([scene["bed"], scene["bed"], "brown", "white"])
+    sound = "lofi" if last != "lofi" and make_playlist.music_ready() else soundscape
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound)
 
 
@@ -178,9 +183,9 @@ def sidecar(choice):
                   "lofi for work", "focus music"],
             description=(
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
-                f"{hours} hours of slow, original lo-fi, music only, for working, studying, "
+                f"{hours} hours of slow, chill lo-fi, music only, for working, studying, "
                 "relaxing or drifting off to sleep.\n\n"
-                "No talking. No lyrics. No sudden sounds. Every track is original to this channel.\n\n"
+                "No talking. No lyrics. No sudden sounds. Music from the YouTube Audio Library.\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n"
                 f"#parkedfm #lofi #musicforwork #focusmusic #{tag}"
             ),
