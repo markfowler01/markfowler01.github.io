@@ -1,0 +1,30 @@
+name: PARKED FM music lab
+
+# Experiments for the music creator: find free recorded-instrument libraries (SFZ format) whose
+# licences allow commercial use, and render short samples with them for listening. Run by hand;
+# nothing here posts to YouTube.
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "discover = list instrument libraries and their licences; sample = render a test song"
+        type: choice
+        options: [discover, sample]
+        default: discover
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: List free instrument libraries and their licences
+        if: ${{ inputs.task == 'discover' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate orgs/sfzinstruments/repos \
+            --jq '.[] | "\(.name)\t\(.license.spdx_id // "none")\t\(.size)KB\t\(.description // "")"' | sort
