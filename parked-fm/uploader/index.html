@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARKED FM Uploader</title>
+  <meta name="description" content="How the PARKED FM Uploader, PARKED FM's private daily publishing tool, uses YouTube API Services." />
+  <link rel="canonical" href="https://absoluteadas.com/parked-fm/uploader/" />
+  <meta name="theme-color" content="#101830" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/parked-fm/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="/parked-fm/">PARKED FM</a>
+      <a href="/parked-fm/privacy/">Privacy Policy</a>
+      <a href="/parked-fm/terms/">Terms of Service</a>
+      <a href="/parked-fm/uploader/">Uploader</a>
+    </nav>
+
+    <h1>PARKED FM Uploader</h1>
+    <p class="updated">Internal tool. Used only by the PARKED FM channel owner.</p>
+
+    <h2>What it does, once a day</h2>
+    <ol>
+      <li>Creates an original lo-fi album and a car artwork, then renders the full video and a 30-second trailer.</li>
+      <li>Uploads the full video to the PARKED FM channel with its title, description, tags and
+        <em>altered or synthetic content</em> label (<code>videos.insert</code>).</li>
+      <li>Sets the video's custom thumbnail (<code>thumbnails.set</code>).</li>
+      <li>Uploads the trailer as a YouTube Short whose description links to the full video (<code>videos.insert</code>).</li>
+    </ol>
+
+    <h2>YouTube API usage</h2>
+    <div class="card scroll">
+      <table>
+        <tr><th>Method</th><th>Per day</th><th>Quota units</th></tr>
+        <tr><td><code>videos.insert</code></td><td>2</td><td>3,200</td></tr>
+        <tr><td><code>thumbnails.set</code></td><td>1</td><td>50</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td><strong>3,250</strong> of the default 10,000</td></tr>
+      </table>
+    </div>
+
+    <h2>Authorization</h2>
+    <div class="card">
+      <p><strong>Who signs in:</strong> only the channel owner, once, with Google's standard OAuth 2.0 consent screen.</p>
+      <p><strong>Scope:</strong> <code>https://www.googleapis.com/auth/youtube.upload</code> (upload videos and set thumbnails, nothing else).</p>
+      <p><strong>Token storage:</strong> an encrypted GitHub Actions secret; never logged.</p>
+      <p><strong>Revoke:</strong> <a href="https://security.google.com/settings/security/permissions">Google Account &gt; Security &gt; Third-party access</a>.</p>
+      <p><strong>Data kept:</strong> none beyond the new video's ID, used to link the Short.</p>
+    </div>
+
+    <h2>Recent videos</h2>
+    <div class="card scroll">
+      <table id="log">
+        <tr><th>Date</th><th>Video</th></tr>
+        <tr><td colspan="2">Loading...</td></tr>
+      </table>
+    </div>
+
+    <footer>
+      <a href="/parked-fm/privacy/">Privacy Policy</a>
+      <a href="/parked-fm/terms/">Terms of Service</a>
+      <a href="https://github.com/markfowler01/markfowler01.github.io/tree/main/garage-tv">Source code</a>
+      <p style="margin-top:12px">PARKED FM Uploader uses YouTube API Services.
+        <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> &middot;
+        <a href="https://policies.google.com/privacy">Google Privacy Policy</a></p>
+    </footer>
+  </div>
+  <script>
+    // the daily job logs every published video in garage-tv/published.json
+    fetch('/garage-tv/published.json')
+      .then(r => r.json())
+      .then(log => {
+        const t = document.getElementById('log');
+        t.querySelectorAll('tr:not(:first-child)').forEach(r => r.remove());
+        log.slice(-5).reverse().forEach(e => {
+          const tr = t.insertRow();
+          const d = tr.insertCell(); d.textContent = e.date; d.style.whiteSpace = 'nowrap';
+          tr.insertCell().textContent = e.title;
+        });
+      })
+      .catch(() => { document.querySelector('#log td').textContent = 'Upload log unavailable.'; });
+  </script>
+</body>
+</html>
