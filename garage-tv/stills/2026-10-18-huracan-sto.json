@@ -1,0 +1,37 @@
+{
+  "rotate": false,
+  "recipes": [
+    "white"
+  ],
+  "daily_sound": "white",
+  "bed": "rain_road",
+  "rain": 900,
+  "dust": 0,
+  "grades": [
+    "none"
+  ],
+  "series": "Rainy Drives",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Huracan STO on a Rainy Neon Night",
+  "label": "RAINY DRIVES",
+  "slug": "huracan-sto",
+  "car": "Lamborghini Huracan STO",
+  "scene": "neon_city",
+  "minutes": 480,
+  "title_tail": "White Noise for Sleep & Focus",
+  "sound_name": "White Noise",
+  "tags": [
+    "white noise",
+    "white noise for sleeping",
+    "white noise",
+    "sleep sounds",
+    "no music",
+    "lamborghini huracan sto",
+    "huracan sto",
+    "exotic cars",
+    "supercar"
+  ],
+  "description": "Rainy Drives: a chalk grey Lamborghini Huracan STO on a rainy neon night, rain on an empty city street, neon reflecting in the puddles. 8 hours of smooth white noise, no music, for sleeping, studying, or blocking out the world while you work.\n\nNo music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #whitenoise #sleepsounds #whitenoise #huracansto",
+  "maker": "gemini"
+}
