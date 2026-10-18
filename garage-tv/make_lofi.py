@@ -6,7 +6,7 @@ Every track is generated from scratch (no samples, no borrowed music):
   bass   : warm round bass following the chord roots
   drums  : quiet, dusty, swung boom-bap (kick, snare, hats), humanised
   lead   : sparse pentatonic melody on a bell-like piano in some sections
-  texture: vinyl crackle and hiss, tape wow and flutter, gentle saturation
+  texture: tape wow and flutter and gentle saturation. Music only: never any hiss, crackle or noise
 
 Tracks are 2.5-3.5 minutes with intro, verses, a breakdown and an outro. The album is
 padded to exactly --minutes so an 8-hour video is a whole number of album repeats.
@@ -415,7 +415,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--minutes", type=float, default=30, help="exact album length")
     ap.add_argument("--seed", type=int, default=1)
-    ap.add_argument("--gap", type=float, default=3.0, help="seconds of crackle between tracks (music-only mode)")
+    ap.add_argument("--gap", type=float, default=3.0, help="seconds of silence between tracks (music-only mode)")
     ap.add_argument("--bed", help="white-noise bed under the music: rain_road, rain, fan, wind or heater. "
                                   "With a bed the music only plays part of the time (--music-share)")
     ap.add_argument("--music-share", type=float, default=0.35, help="fraction of the album with music, when --bed is set")
@@ -490,7 +490,7 @@ def main():
             starts.append(round(p / SR, 2))
             album[p:p + tr.shape[0]] += tr
             p += tr.shape[0] + g
-        album += crackle(target, rng)
+        # no crackle, hiss or any noise under the music: the channel keeps music and white noise apart
         album *= 0.08 / (np.sqrt((album ** 2).mean()) + 1e-12)  # same average loudness every album
         if args.under:
             import make_ambience

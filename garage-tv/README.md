@@ -97,7 +97,8 @@ runs every day around 13:23 UTC:
    one used longest ago with a new colour grade.
 3. **Sound, alternating days:**
    - **Music day:** 30 minutes of continuous original lo-fi (`make_lofi.py`), new
-     every time, music only, at the series length.
+     every time, at the series length. **Music only: never any rain, hiss, crackle or
+     other noise mixed in.** Music and white noise always stay in separate videos.
    - **Soundscape day:** 8 hours, no music. The scene's own rain, wind, fan or heater
      sound, or plain brown or white noise (`make_ambience.py`). `--style jazz` and `--style piano` exist but are not used.
 4. **Kit:** smooth 60 s video loop (falling rain on rainy scenes), PARKED FM

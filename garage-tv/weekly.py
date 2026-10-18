@@ -255,7 +255,7 @@ def description_for(p):
                 "#parkedfm #whitenoise #lofi #sleepsounds")
     if p["recipe"] == "lofi":
         return (f"{hours_for(p)} hours of slow, original lo-fi for working, studying, or winding down after a long day "
-                "in the bay. Soft keys, warm bass, quiet drums, and a little vinyl crackle.\n\n"
+                "in the bay. Soft keys, warm bass and quiet drums, music only.\n\n"
                 "No lyrics. No talking. Every track is original to this channel.\n\n"
                 "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofi #lofibeats #musicforwork #chillbeats")
