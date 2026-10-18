@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARKED FM Uploader Architecture</title>
+  <link rel="stylesheet" href="/parked-fm/style.css" />
+  <style>
+    body { padding: 32px 16px; }
+    .wrap { max-width: 1180px; }
+    h1 { margin-top: 0; }
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 28px; align-items: stretch; }
+    .step { background: var(--navy-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; position: relative; }
+    .step:not(:last-child)::after { content: ""; position: absolute; right: -11px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-left: 9px solid var(--amber); }
+    .step .n { color: var(--amber); font-weight: 800; font-size: 13px; letter-spacing: 0.08em; }
+    .step h3 { font-size: 17px; margin: 4px 0 8px; }
+    .step p, .step li { font-size: 14px; color: var(--muted); }
+    .step ul { padding-left: 18px; margin: 0; }
+    .api { border-color: #ff0000; }
+    .step code { font-size: 12.5px; white-space: nowrap; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+    @media (max-width: 900px) { .flow, .row { grid-template-columns: 1fr; } .step:not(:last-child)::after { right: 50%; top: auto; bottom: -21px; margin: 0 -8px 0 0; border: 8px solid transparent; border-top: 9px solid var(--amber); } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>PARKED FM Uploader: architecture</h1>
+    <p class="updated">Internal tool, single user (the PARKED FM channel owner). Runs once a day.</p>
+
+    <div class="flow">
+      <div class="step"><div class="n">1 · SCHEDULE</div><h3>GitHub Actions</h3>
+        <p>Daily scheduled job in the owner's GitHub repository.</p></div>
+      <div class="step"><div class="n">2 · CREATE</div><h3>Build the video</h3>
+        <ul><li>Original lo-fi music (own code)</li><li>Car artwork (AI image)</li><li>Full video, thumbnail, 30 s trailer</li></ul></div>
+      <div class="step"><div class="n">3 · AUTHORIZE</div><h3>OAuth 2.0 token</h3>
+        <p>Refresh token from an encrypted GitHub secret is exchanged for a short-lived access token. Scope: <code>youtube.upload</code>.</p></div>
+      <div class="step api"><div class="n">4 · YOUTUBE API</div><h3>YouTube Data API v3</h3>
+        <ul><li><code>videos.insert</code> full video</li><li><code>thumbnails.set</code></li><li><code>videos.insert</code> Short, linked to the full video</li></ul></div>
+      <div class="step"><div class="n">5 · RESULT</div><h3>PARKED FM channel</h3>
+        <p>New video and Short on the owner's own channel, labeled altered/synthetic, not made for kids.</p></div>
+    </div>
+
+    <div class="row">
+      <div class="card"><h2 style="margin-top:0">One-time setup (owner only)</h2>
+        <p>The owner runs a small script once, signs in on Google's consent screen, chooses the PARKED FM channel, and saves the
+          resulting refresh token as a GitHub secret. No other users ever sign in.</p></div>
+      <div class="card"><h2 style="margin-top:0">Data handling</h2>
+        <p>No YouTube data is read, stored, or shared. The only value kept is the new video's ID, used once to link the Short.
+          Access can be revoked at any time in Google Account security settings.</p></div>
+    </div>
+
+    <footer>absoluteadas.com/parked-fm/uploader · Privacy: absoluteadas.com/parked-fm/privacy · Uses YouTube API Services</footer>
+  </div>
+</body>
+</html>
