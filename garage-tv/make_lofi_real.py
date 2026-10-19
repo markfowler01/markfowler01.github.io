@@ -55,11 +55,13 @@ class Band:
                                      r"^(?P<note>[a-g][b#]?\d)_(?P<vl>p|mp|mf|f)_rr(?P<rr>\d)",
                                      vl_order=["p", "mp", "mf", "f"], gain=0.8, release=0.2, max_len=4)
         kit = "virtuosity_drums"
+        # a dusty break: muted kick, a muted snare cut short, soft hats and a shaker standing in for
+        # brushes (the kit has none). Gains are peak levels relative to the kick.
         self.kick = ins.DrumFolder(kit, "Samples/lofi/kick", "*kick_snoff*", gain=1.0)
-        # the recorded snare rings for ~2 s and peaks ~10 dB above the kick; lo-fi wants a short soft snap
-        self.snare = ins.DrumFolder(kit, "Samples/lofi/snare", "*snare_center*", gain=0.55, length=0.22)
-        self.hat = ins.DrumFolder(kit, "Samples/lofi/hh", "*hh_closed*", gain=0.55)
-        self.hat_open = ins.DrumFolder(kit, "Samples/lofi/hh", "*hh_half*", gain=0.45)
+        self.snare = ins.DrumFolder(kit, "Samples/lofi/snare", "*snare_muted*", gain=0.75, length=0.25)
+        self.hat = ins.DrumFolder(kit, "Samples/lofi/hh", "*hh_closed*", gain=0.35)
+        self.hat_open = ins.DrumFolder(kit, "Samples/lofi/hh", "*hh_half*", gain=0.3)
+        self.shaker = ins.DrumFolder(kit, "Samples/perc/close/shaker", "*", gain=0.22, length=0.2)
 
 
 def put(buf, sig, start, pan=0.0):
@@ -113,17 +115,17 @@ def glue(x, threshold=0.25, ratio=2.5, window=0.08):
 
 def compose(band, seed, bars):
     rng = np.random.default_rng(seed)
-    bpm = rng.uniform(70, 84)
+    bpm = rng.uniform(72, 84)
     beat = 60.0 / bpm
     bar = 4 * beat
     key = int(rng.choice([57, 58, 60, 62, 63, 65]))
     progA = PROGRESSIONS[rng.integers(len(PROGRESSIONS))]
     progB = PROGRESSIONS[rng.integers(len(PROGRESSIONS))]
     groove = DRUM_PATTERNS[rng.integers(len(DRUM_PATTERNS))]
-    swing = rng.uniform(0.04, 0.09)
+    swing = rng.uniform(0.06, 0.10)  # a soft head-nod sway
     compA, compB = (COMP_PATTERNS[i] for i in rng.choice(len(COMP_PATTERNS), 2, replace=False))
-    keys_inst = band.rhodes if rng.random() < 0.7 else band.piano
-    lead_inst = band.guitar if (keys_inst is band.piano or rng.random() < 0.6) else band.piano
+    keys_inst = band.rhodes  # warm Rhodes carries every song
+    lead_inst = band.guitar if rng.random() < 0.6 else band.piano
     rhythm = melody_rhythm(rng)
 
     length = int((bars * bar + 4.0) * SR)
@@ -172,9 +174,9 @@ def compose(band, seed, bars):
             bm = root - 24 if root - 24 >= 31 else root - 12
             nroot = chord(prog, bi + 1)[0]
             nb = nroot - 24 if nroot - 24 >= 31 else nroot - 12
-            if name not in ("intro", "outro"):
-                put(low, band.bass.play(bm, 0.8, beat * 1.7, rng), t0 + hum(0.004))
-                if rng.random() < 0.6:
+            if name not in ("intro", "outro"):  # sparse, round bass
+                put(low, band.bass.play(bm, 0.8, beat * 2.6, rng), t0 + hum(0.004))
+                if rng.random() < 0.3:
                     put(low, band.bass.play(int(rng.choice([bm + 7, nb - 1, nb + 2])), 0.6, beat * 0.8, rng),
                         at(t0, 3) + hum(0.004))
             # drums
@@ -184,10 +186,13 @@ def compose(band, seed, bars):
                     put(kit, band.kick.play(0.92 * rng.uniform(0.92, 1.0), rng), at(t0, b) + hum(0.002))
                 # snare lands exactly with the hi-hat on 2 and 4 (any lag between them sounds like a flam)
                 for b in groove["snare"]:
-                    put(snr, band.snare.play(0.5 * rng.uniform(0.9, 1.0), rng), at(t0, b) + hum(0.001), pan=0.05)
+                    put(snr, band.snare.play(0.6 * rng.uniform(0.9, 1.0), rng), at(t0, b) + hum(0.001), pan=0.05)
                 for g in range(16):
                     if g % 4 and g % 2 and rng.random() < 0.04:
-                        put(snr, band.snare.play(0.12, rng), at(t0, g * 0.25) + hum(0.001), pan=0.05)
+                        put(snr, band.snare.play(0.15, rng), at(t0, g * 0.25) + hum(0.001), pan=0.05)
+                for h in range(8):  # brush-like swish on the offbeats
+                    if h % 2:
+                        put(kit, band.shaker.play(0.6 * rng.uniform(0.8, 1.0), rng), at(t0, h * 0.5) + hum(0.002), pan=-0.25)
                 if fill:
                     for i, pos in enumerate((3.25, 3.5, 3.75)):
                         put(snr, band.snare.play(0.25 + 0.08 * i, rng), at(t0, pos) + hum(0.001), pan=0.05)
@@ -226,16 +231,20 @@ def compose(band, seed, bars):
     kit *= ramp[:, None]
     low *= (0.4 + 0.6 * ramp)[:, None]
 
-    # mix: warm keys with a soft sidechain from the kick, round bass, dusty drums in a small room
-    keys = fft_filter(keys, lo=140, hi=7500)
-    lead = reverb(fft_filter(lead, lo=200, hi=8000), seconds=1.8, wet=0.2, seed=seed + 4)
-    low = fft_filter(low, lo=35, hi=2500)
-    kit = reverb(fft_filter(kit, lo=30, hi=12000), seconds=0.6, wet=0.1, seed=seed + 1)
+    # mix: warm keys with a soft sidechain from the kick, round bass, hazy drums in a small room.
+    # The Rhodes opens filtered (muffled) and brightens as the drums come in.
+    first = sections[0][1] if sections[0][0] == "intro" else 2
+    opened = np.clip((np.arange(length) / SR / bar - 0.5) / max(first, 1), 0, 1) ** 1.5
+    keys = (fft_filter(keys, lo=140, hi=900) * (1 - opened[:, None])
+            + fft_filter(keys, lo=140, hi=6000) * opened[:, None])
+    lead = reverb(fft_filter(lead, lo=200, hi=6500), seconds=1.8, wet=0.22, seed=seed + 4)
+    low = fft_filter(low, lo=35, hi=1200)
+    kit = reverb(fft_filter(kit, lo=30, hi=7000), seconds=0.6, wet=0.12, seed=seed + 1)
     kenv = np.abs(fft_filter(kit[:, 0], hi=8))
     duck = (1 - 0.2 * kenv / (kenv.max() + 1e-9))[:, None]
     keys = reverb(keys * duck, seconds=1.6, wet=0.16, seed=seed + 3)
     level = lambda x: x / (np.sqrt((x ** 2).mean()) + 1e-9)  # noqa: E731
-    mix = 0.95 * level(keys) + 0.75 * level(low) + 0.8 * level(kit) + 0.45 * level(lead)
+    mix = 1.0 * level(keys) + 0.75 * level(low) + 0.7 * level(kit) + 0.32 * level(lead)
     mix = glue(mix / 4)
     fin, fout = int(bar * 2 * SR), int((bars - 4) * bar * SR)
     fade = np.ones(length)

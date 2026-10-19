@@ -263,7 +263,10 @@ class DrumFolder:
         levels = sorted(self.layers)
         layer = levels[min(len(levels) - 1, int(vel * len(levels)))]
         p = self.layers[layer][int(rng.integers(len(self.layers[layer])))]
-        x = load_trimmed(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)
+        x = load_trimmed(os.path.join(self.path, p))
+        # every hit normalised to the same peak, so `gain` sets the drum's level in the kit and
+        # `vel` its loudness (the layer still changes the tone)
+        x = x * (self.gain * vel / (np.abs(x).max() + 1e-9))
         if self.length and len(x) > self.length * SR:
             n, fade = int(self.length * SR), int(0.08 * SR)
             x = x[:n + fade].copy()
