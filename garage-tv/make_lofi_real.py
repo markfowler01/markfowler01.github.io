@@ -129,8 +129,17 @@ def compose(band, seed, bars):
     length = int((bars * bar + 4.0) * SR)
     keys, low, kit, lead = (np.zeros((length, 2), np.float32) for _ in range(4))
 
-    def hum(sec=0.008):
+    def hum(sec=0.006):
         return rng.normal(0, sec) * SR
+
+    def at(t0, pos):
+        """Sample position of beat `pos` in the bar starting at t0, on the song's swing grid:
+        every offbeat 8th is late by `swing` beats and the 16ths around it move in proportion,
+        so drums, bass, keys and melody all share one feel."""
+        whole, frac = divmod(pos, 1.0)
+        mid = 0.5 + swing
+        frac = frac * mid / 0.5 if frac < 0.5 else mid + (frac - 0.5) * (1 - mid) / 0.5
+        return t0 + (whole + frac) * beat * SR
 
     def chord(prog, i):
         deg, q = prog[i % 4]
@@ -158,7 +167,7 @@ def compose(band, seed, bars):
                 ch = voice(*chord(prog, bi + 1), center) if push else notes
                 for j, m in enumerate(ch):  # a slight roll, low note first, like real hands
                     put(keys, keys_inst.play(m, soft * v * rng.uniform(0.85, 1.0), ln * beat, rng),
-                        t0 + (pos * beat + j * rng.uniform(0.006, 0.018)) * SR + hum(), pan=(m - 62) / 30)
+                        at(t0, pos) + j * rng.uniform(0.006, 0.018) * SR + hum(), pan=(m - 62) / 30)
             # bass: root on 1, a passing note into the next chord on 4
             bm = root - 24 if root - 24 >= 31 else root - 12
             nroot = chord(prog, bi + 1)[0]
@@ -167,28 +176,28 @@ def compose(band, seed, bars):
                 put(low, band.bass.play(bm, 0.8, beat * 1.7, rng), t0 + hum(0.004))
                 if rng.random() < 0.6:
                     put(low, band.bass.play(int(rng.choice([bm + 7, nb - 1, nb + 2])), 0.6, beat * 0.8, rng),
-                        t0 + 3 * beat * SR + hum(0.004))
+                        at(t0, 3) + hum(0.004))
             # drums
             if busy:
                 fill = k == nbars - 1 and not last
                 for b in groove["kick"]:
-                    put(kit, band.kick.play(0.75 * rng.uniform(0.85, 1.0), rng), t0 + b * beat * SR + hum(0.004))
+                    put(kit, band.kick.play(0.75 * rng.uniform(0.85, 1.0), rng), at(t0, b) + hum(0.003))
                 for b in groove["snare"]:
                     hit = band.rim if (name == "A" and b0 < 12) else band.snare  # cross-stick early on
-                    put(kit, hit.play(0.6 * rng.uniform(0.85, 1.0), rng), t0 + (b * beat + 0.01) * SR + hum(0.005), pan=0.05)
+                    put(kit, hit.play(0.6 * rng.uniform(0.85, 1.0), rng), at(t0, b) + 0.008 * SR + hum(0.003), pan=0.05)
                 for g in range(16):
                     if g % 4 and rng.random() < 0.06:
-                        put(kit, band.snare.play(0.15, rng), t0 + g * 0.25 * beat * SR + hum(0.005), pan=0.05)
+                        put(kit, band.snare.play(0.15, rng), at(t0, g * 0.25) + hum(0.003), pan=0.05)
                 if fill:
                     for i, pos in enumerate((3.25, 3.5, 3.75)):
-                        put(kit, band.snare.play(0.25 + 0.1 * i, rng), t0 + pos * beat * SR + hum(0.003), pan=0.05)
+                        put(kit, band.snare.play(0.25 + 0.1 * i, rng), at(t0, pos) + hum(0.002), pan=0.05)
                 for h in range(8):
-                    pos = h * 0.5 + (swing if h % 2 else 0)
+                    pos = h * 0.5
                     if fill and pos > 3.2:
                         continue
                     opn = h == 7 and k % 8 == 7 and not fill
                     v = (0.45 if h % 2 else 0.6) * (1.15 if h % 4 == 0 else 1.0) * rng.uniform(0.8, 1.0)
-                    put(kit, (band.hat_open if opn else band.hat).play(v, rng), t0 + pos * beat * SR + hum(0.005), pan=0.3)
+                    put(kit, (band.hat_open if opn else band.hat).play(v, rng), at(t0, pos) + hum(0.003), pan=0.3)
             # lead: a 4-bar question and answer that follows the chords
             if lead_on and k % 4 == 0 and nbars - k >= 4:
                 tk = (name, (k // 4) % 2)
@@ -201,7 +210,7 @@ def compose(band, seed, bars):
                         if rng.random() < 0.12:
                             continue
                         put(lead, lead_inst.play(m, 0.5 * rng.uniform(0.85, 1.0), ln * beat, rng),
-                            t0 + (half * 8 + pos) * beat * SR + hum(), pan=rng.uniform(-0.2, 0.2))
+                            at(t0, half * 8 + pos) + hum(), pan=rng.uniform(-0.2, 0.2))
                         prev = m
         b0 += nbars
 
@@ -277,6 +286,9 @@ def main():
     write_audio(album, args.out, args.bitrate)
     with open(os.path.splitext(args.out)[0] + ".tracks.json", "w") as f:
         json.dump(dict(minutes=args.minutes, track_starts=starts), f)
+    if ins.lead_trims:
+        lt = np.array(ins.lead_trims) * 1000
+        print(f"sample starts trimmed: {len(lt)} samples, median {np.median(lt):.1f} ms, max {lt.max():.1f} ms")
     print(f"album: {len(tracks)} songs, {args.minutes:.1f} min -> {args.out}")
 
 

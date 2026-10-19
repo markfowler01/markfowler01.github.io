@@ -75,6 +75,25 @@ def ensure_many(repo_path, rels):
 
 
 _cache = {}
+_trimmed = {}
+lead_trims = []  # how much silence was cut from each sample, for the log
+
+
+def load_trimmed(path, pre=0.003):
+    """A sample with the silence or noise before its attack cut off, so every hit lands exactly
+    on time: the start is the first moment the level reaches 10% of the sample's peak (smoothed
+    over 1 ms), less 3 ms so the attack itself is kept whole."""
+    if path not in _trimmed:
+        x = load(path)
+        env = np.convolve(np.abs(x).mean(axis=1), np.ones(44) / 44, mode="same")
+        hit = int(np.argmax(env >= 0.1 * env.max())) if env.max() > 0 else 0
+        start = max(0, hit - int(pre * SR))
+        lead_trims.append(start / SR)
+        fade = min(64, len(x) - start)
+        y = x[start:].copy()
+        y[:fade] *= np.linspace(0, 1, fade)[:, None]  # no click where the cut is
+        _trimmed[path] = y
+    return _trimmed[path]
 
 
 def load(path):
@@ -204,7 +223,7 @@ class SfzInstrument:
     def play(self, note, vel, dur, rng, cents=0.0):
         """One note: `dur` seconds held, then the region's release. Returns (n, 2) float32."""
         r = self.pick(note, vel, rng)
-        s = load(ensure(self.path, r["sample"]))[r["offset"]:]
+        s = load_trimmed(ensure(self.path, r["sample"]))[r["offset"]:]
         ratio = 2 ** ((note - r["center"]) / 12 + (r["tune"] + cents) / 1200)
         rel = self.release if self.release is not None else r["release"]
         n_out = int((dur + rel) * SR)
@@ -243,7 +262,7 @@ class DrumFolder:
         levels = sorted(self.layers)
         layer = levels[min(len(levels) - 1, int(vel * len(levels)))]
         p = self.layers[layer][int(rng.integers(len(self.layers[layer])))]
-        return (load(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)).astype(np.float32)
+        return (load_trimmed(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)).astype(np.float32)
 
 
 def octave_offset(x, midi):
@@ -320,7 +339,7 @@ class NoteFolder:
         near = min(self.notes, key=lambda n: (abs(n - note), n < note))
         cands = [s for s in self.samples if s[0] == near and s[1] == layer] or [s for s in self.samples if s[0] == near]
         root, _, p = cands[int(rng.integers(len(cands)))]
-        s = load(os.path.join(self.path, p))
+        s = load_trimmed(os.path.join(self.path, p))
         ratio = 2 ** ((note - root) / 12 + cents / 1200)
         n_out = int(min(dur + self.release, self.max_len) * SR)
         need = min(len(s), int(n_out * ratio) + 2)
