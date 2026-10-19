@@ -27,6 +27,11 @@ on:
         description: "sample: length in minutes"
         type: string
         default: "4"
+      style:
+        description: "sample: lofi (lo-fi hip hop), garage (future garage / chillstep) or house (lo-fi house)"
+        type: choice
+        options: [lofi, garage, house]
+        default: lofi
 
 jobs:
   lab:
@@ -89,10 +94,10 @@ jobs:
         run: |
           pip install -q numpy Pillow imageio-ffmpeg
           mkdir -p lab
-          python garage-tv/make_lofi_real.py --minutes "${{ inputs.minutes }}" --seed "${{ inputs.seed }}" --out lab/sample.m4a
+          python garage-tv/make_lofi_real.py --minutes "${{ inputs.minutes }}" --seed "${{ inputs.seed }}" --style "${{ inputs.style }}" --out lab/sample.m4a
           FF=$(python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
-          name="parked-fm-real-instruments-seed${{ inputs.seed }}.mp3"
+          name="parked-fm-${{ inputs.style }}-seed${{ inputs.seed }}.mp3"
           "$FF" -y -loglevel error -i lab/sample.m4a -c:a libmp3lame -b:a 192k "lab/$name"
           tag="music-lab-$(date -u +%Y%m%d-%H%M%S)"
-          gh release create "$tag" "lab/$name" --prerelease --title "Music lab: real instruments, seed ${{ inputs.seed }}" --notes "Test render only; nothing was posted."
+          gh release create "$tag" "lab/$name" --prerelease --title "Music lab: ${{ inputs.style }}, seed ${{ inputs.seed }}" --notes "Test render only; nothing was posted."
           echo "https://github.com/${{ github.repository }}/releases/download/$tag/$name"
