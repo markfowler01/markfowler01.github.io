@@ -30,7 +30,32 @@ env:
   MUSIC_UNTIL: ${{ vars.MUSIC_UNTIL }}
 
 jobs:
+  # GitHub sometimes starts the scheduled run hours late (or not at all), so a video may already
+  # have been started by hand that day; the scheduled run then stands down instead of posting twice.
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.today.outputs.skip }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: garage-tv/published.json
+          sparse-checkout-cone-mode: false
+      - id: today
+        run: |
+          skip=false
+          if [ "${{ github.event_name }}" = schedule ] && python3 -c "
+          import datetime, json, sys
+          log = json.load(open('garage-tv/published.json'))
+          sys.exit(0 if any(e.get('date') == datetime.date.today().isoformat() for e in log) else 1)"; then
+            skip=true
+            echo "::notice::Today's video is already up (started by hand); the scheduled run stands down."
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+
   build:
+    needs: check
+    if: needs.check.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 150
     permissions:
