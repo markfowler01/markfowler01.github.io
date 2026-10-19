@@ -46,8 +46,6 @@ def clone(repo):
         os.makedirs(STORE, exist_ok=True)
         subprocess.run(["git", "clone", "-q", "--filter=blob:none", "--no-checkout", "--depth", "1",
                         f"https://github.com/sfzinstruments/{repo}", path], check=True)
-        subprocess.run(["git", "-C", path, "checkout", "-q", "HEAD", "--", "."], check=False,
-                       env=dict(os.environ, GIT_NO_LAZY_FETCH="1"), stderr=subprocess.DEVNULL)
     return path
 
 
@@ -57,6 +55,17 @@ def ensure(repo_path, rel):
     if not os.path.exists(full):
         subprocess.run(["git", "-C", repo_path, "checkout", "-q", "HEAD", "--", rel], check=True)
     return full
+
+
+def find_file(repo, pattern):
+    """First file in a library whose path matches a glob pattern, e.g. '*mono*.sfz'."""
+    path = clone(repo)
+    names = subprocess.run(["git", "-C", path, "ls-tree", "-r", "--name-only", "HEAD"],
+                           capture_output=True, text=True, check=True).stdout.split("\n")
+    hits = sorted(n for n in names if glob.fnmatch.fnmatch(n, pattern))
+    if not hits:
+        raise SystemExit(f"{repo}: nothing matches {pattern}")
+    return hits[0]
 
 
 def ensure_many(repo_path, rels):
@@ -174,6 +183,8 @@ class SfzInstrument:
             ))
         if not self.regions:
             raise SystemExit(f"{repo}/{sfz_rel}: no playable regions found")
+        ensure_many(self.path, sorted({r["sample"] for r in self.regions}))
+        print(f"{repo}/{sfz_rel}: {len(self.regions)} regions, keys {self.keys()}")
 
     def keys(self):
         return min(r["lo"] for r in self.regions), max(r["hi"] for r in self.regions)

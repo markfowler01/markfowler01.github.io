@@ -19,6 +19,14 @@ on:
         description: "explore: bash run inside /tmp/libs after the repos are cloned (no samples fetched unless the command reads them)"
         type: string
         default: "ls"
+      seed:
+        description: "sample: song seed (different number = different songs)"
+        type: string
+        default: "1"
+      minutes:
+        description: "sample: length in minutes"
+        type: string
+        default: "4"
 
 jobs:
   lab:
@@ -68,3 +76,23 @@ jobs:
             git clone -q --filter=blob:none --no-checkout --depth 1 "https://github.com/sfzinstruments/$r" "$r"
           done
           bash -c "$CMD" 2>&1 | head -c 60000
+
+      - uses: actions/setup-python@v5
+        if: ${{ inputs.task == 'sample' }}
+        with:
+          python-version: '3.12'
+
+      - name: Render a test album on real instruments
+        if: ${{ inputs.task == 'sample' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pip install -q numpy Pillow imageio-ffmpeg
+          mkdir -p lab
+          python garage-tv/make_lofi_real.py --minutes "${{ inputs.minutes }}" --seed "${{ inputs.seed }}" --out lab/sample.m4a
+          FF=$(python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
+          name="parked-fm-real-instruments-seed${{ inputs.seed }}.mp3"
+          "$FF" -y -loglevel error -i lab/sample.m4a -c:a libmp3lame -b:a 192k "lab/$name"
+          tag="music-lab-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$tag" "lab/$name" --prerelease --title "Music lab: real instruments, seed ${{ inputs.seed }}" --notes "Test render only; nothing was posted."
+          echo "https://github.com/${{ github.repository }}/releases/download/$tag/$name"
