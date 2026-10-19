@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18 21:36 UTC",
+  "updated": "2026-10-19 18:11 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -10,12 +10,12 @@
       "gemini": {
         "videos": 1,
         "counted": 1,
-        "avg_views": 1
+        "avg_views": 2
       },
       "openai": {
-        "videos": 1,
-        "counted": 1,
-        "avg_views": 0
+        "videos": 2,
+        "counted": 2,
+        "avg_views": 2
       },
       "sora": {
         "videos": 0,
@@ -32,7 +32,7 @@
       "openai": {
         "videos": 1,
         "counted": 1,
-        "avg_views": 0
+        "avg_views": 5
       },
       "sora": {
         "videos": 0,
@@ -44,12 +44,12 @@
       "gemini": {
         "videos": 1,
         "counted": 1,
-        "avg_views": 1
+        "avg_views": 2
       },
       "openai": {
-        "videos": 0,
-        "counted": 0,
-        "avg_views": null
+        "videos": 1,
+        "counted": 1,
+        "avg_views": 0
       },
       "sora": {
         "videos": 0,
@@ -60,14 +60,25 @@
   },
   "videos": [
     {
+      "date": "2026-10-19",
+      "title": "Pagani Huayra in the Loft on a Snowy Evening | Brown Noise for Sleep & Focus | 8 Hours",
+      "maker": "openai",
+      "kind": "soundscape",
+      "youtube": "5VXE7LCN7D4",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
       "date": "2026-10-18",
       "title": "Maserati MC20 in the Garage on a Rainy Night | Late-Night Lo-Fi for Work & Focus | 3 Hours",
       "maker": "openai",
       "kind": "music",
       "youtube": "jswov9PNLTY",
-      "views": 0,
+      "views": 5,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 112,
       "public": true
     },
     {
@@ -76,9 +87,9 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "CHey6IuHnKc",
-      "views": 1,
+      "views": 2,
       "likes": 0,
-      "short_views": 1,
+      "short_views": 52,
       "public": true
     }
   ]
