@@ -246,16 +246,30 @@ class DrumFolder:
         return (load(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)).astype(np.float32)
 
 
-def detect_pitch(x):
-    """Rough fundamental of a mono note (Hz): autocorrelation peak over 25 Hz to 2 kHz."""
-    x = x[int(0.05 * SR):int(0.55 * SR)]
-    x = x - x.mean()
-    n = 1 << (2 * len(x) - 1).bit_length()
-    X = np.fft.rfft(x, n)
-    ac = np.fft.irfft(X * np.conj(X), n)[:len(x)]
-    lo, hi = int(SR / 2000), int(SR / 25)
-    lag = lo + int(np.argmax(ac[lo:hi]))
-    return SR / lag
+def octave_offset(x, midi):
+    """How many semitones (a multiple of 12) a sample named `midi` really sits from that note.
+    Scores each candidate octave by how much louder the spectrum is at its harmonics than
+    halfway between them (a too-low guess gets punished by the real harmonics landing on its
+    half-way points), which is robust to piano hammer noise and bass finger noise."""
+    seg = x[int(0.08 * SR):int(1.2 * SR)]
+    seg = (seg - seg.mean()) * np.hanning(len(seg))
+    mag = np.abs(np.fft.rfft(seg, 1 << 18))
+    freqs = np.fft.rfftfreq(1 << 18, 1 / SR)
+    logm = np.log(mag + mag.max() * 1e-6)
+
+    def at(f):
+        band = (freqs > f * 0.985) & (freqs < f * 1.015)
+        return logm[band].max() if band.any() else logm.min()
+
+    best, best_score = 0, -1e9
+    for k in range(-3, 4):
+        f0 = 440 * 2 ** ((midi - 69) / 12 + k)
+        if f0 < 25 or f0 * 6 > SR / 2:
+            continue
+        score = np.mean([at(h * f0) - at((h - 0.5) * f0) for h in range(1, 7)])
+        if score > best_score:
+            best, best_score = 12 * k, score
+    return best
 
 
 class NoteFolder:
@@ -287,16 +301,15 @@ class NoteFolder:
         self.n_layers = max(s[1] for s in self.samples) + 1
         ensure_many(self.path, [s[2] for s in self.samples])
         # check the file names' octave numbering against a real pitch near the middle
-        mid = sorted(self.samples, key=lambda s: abs(s[0] - 57))[0]
-        f0 = detect_pitch(load(os.path.join(self.path, mid[2])).mean(axis=1))
-        expected = 440 * 2 ** ((mid[0] - 69) / 12)
-        self.shift = 12 * round(np.log2(f0 / expected))
+        votes = [octave_offset(load(os.path.join(self.path, smp[2])).mean(axis=1), smp[0])
+                 for smp in sorted(self.samples, key=lambda smp: abs(smp[0] - 57))[:5]]
+        self.shift = max(set(votes), key=votes.count)  # majority of five samples near the middle
         for s in self.samples:
             s[0] += self.shift
         self.gain, self.release, self.max_len = gain, release, max_len
         self.notes = sorted({s[0] for s in self.samples})
         print(f"{repo}/{folder}: {len(self.samples)} samples, notes {self.notes[0]}-{self.notes[-1]}, "
-              f"{self.n_layers} layers, octave fix {self.shift:+d} (heard {f0:.1f} Hz for {os.path.basename(mid[2])})")
+              f"{self.n_layers} layers, octave fix {self.shift:+d} (votes {votes})")
 
     def play(self, note, vel, dur, rng, cents=0.0):
         layer = min(self.n_layers - 1, int(vel * self.n_layers))

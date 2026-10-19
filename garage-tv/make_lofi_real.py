@@ -65,6 +65,8 @@ class Band:
 def put(buf, sig, start, pan=0.0):
     """Mix a stereo note into the buffer with a gentle pan (constant power)."""
     s = int(start)
+    if s < 0:  # a humanised note that lands just before the song starts
+        sig, s = sig[-s:], 0
     if s >= len(buf) or len(sig) == 0:
         return
     e = min(len(buf), s + len(sig))
