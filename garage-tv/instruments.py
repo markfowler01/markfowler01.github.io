@@ -303,7 +303,11 @@ class NoteFolder:
         # check the file names' octave numbering against a real pitch near the middle
         votes = [octave_offset(load(os.path.join(self.path, smp[2])).mean(axis=1), smp[0])
                  for smp in sorted(self.samples, key=lambda smp: abs(smp[0] - 57))[:5]]
-        self.shift = max(set(votes), key=votes.count)  # majority of five samples near the middle
+        # the most-voted octave whose notes stay inside a real instrument's range (A0..C8);
+        # deep bass fundamentals are weak, so votes can split between two octaves
+        lo, hi = min(smp[0] for smp in self.samples), max(smp[0] for smp in self.samples)
+        ranked = sorted(set(votes), key=lambda v: (-votes.count(v), abs(v)))
+        self.shift = next((v for v in ranked if lo + v >= 21 and hi + v <= 108), ranked[0])
         for s in self.samples:
             s[0] += self.shift
         self.gain, self.release, self.max_len = gain, release, max_len
