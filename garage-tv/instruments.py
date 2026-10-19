@@ -243,8 +243,9 @@ class DrumFolder:
     """One drum from a folder of one-shot samples named like ..._vl3_rr2.flac (velocity layer,
     round robin), e.g. virtuosity_drums Samples/lofi/kick."""
 
-    def __init__(self, repo, folder, pattern="*", gain=1.0):
+    def __init__(self, repo, folder, pattern="*", gain=1.0, length=None):
         self.path = clone(repo)
+        self.length = length  # seconds kept before a short fade, for drums that ring too long
         listing = subprocess.run(["git", "-C", self.path, "ls-tree", "-r", "--name-only", "HEAD", folder],
                                  capture_output=True, text=True, check=True).stdout.split()
         names = [p for p in listing if glob.fnmatch.fnmatch(os.path.basename(p), pattern)
@@ -262,7 +263,12 @@ class DrumFolder:
         levels = sorted(self.layers)
         layer = levels[min(len(levels) - 1, int(vel * len(levels)))]
         p = self.layers[layer][int(rng.integers(len(self.layers[layer])))]
-        return (load_trimmed(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)).astype(np.float32)
+        x = load_trimmed(os.path.join(self.path, p)) * self.gain * (0.35 + 0.65 * vel)
+        if self.length and len(x) > self.length * SR:
+            n, fade = int(self.length * SR), int(0.08 * SR)
+            x = x[:n + fade].copy()
+            x[n:] *= np.linspace(1, 0, len(x) - n)[:, None] ** 2
+        return x.astype(np.float32)
 
 
 def octave_offset(x, midi):
