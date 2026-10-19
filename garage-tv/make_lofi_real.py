@@ -56,8 +56,8 @@ class Band:
                                      vl_order=["p", "mp", "mf", "f"], gain=0.8, release=0.2, max_len=4)
         kit = "virtuosity_drums"
         self.kick = ins.DrumFolder(kit, "Samples/lofi/kick", "*kick_snoff*", gain=1.0)
-        self.snare = ins.DrumFolder(kit, "Samples/lofi/snare", "*snare_center*", gain=0.8)
-        self.rim = ins.DrumFolder(kit, "Samples/lofi/snare", "*snare_crossstick*", gain=0.7)
+        # the recorded snare rings for ~2 s and peaks ~10 dB above the kick; lo-fi wants a short soft snap
+        self.snare = ins.DrumFolder(kit, "Samples/lofi/snare", "*snare_center*", gain=0.55, length=0.22)
         self.hat = ins.DrumFolder(kit, "Samples/lofi/hh", "*hh_closed*", gain=0.55)
         self.hat_open = ins.DrumFolder(kit, "Samples/lofi/hh", "*hh_half*", gain=0.45)
 
@@ -120,14 +120,14 @@ def compose(band, seed, bars):
     progA = PROGRESSIONS[rng.integers(len(PROGRESSIONS))]
     progB = PROGRESSIONS[rng.integers(len(PROGRESSIONS))]
     groove = DRUM_PATTERNS[rng.integers(len(DRUM_PATTERNS))]
-    swing = rng.uniform(0.08, 0.14)
+    swing = rng.uniform(0.04, 0.09)
     compA, compB = (COMP_PATTERNS[i] for i in rng.choice(len(COMP_PATTERNS), 2, replace=False))
     keys_inst = band.rhodes if rng.random() < 0.7 else band.piano
     lead_inst = band.guitar if (keys_inst is band.piano or rng.random() < 0.6) else band.piano
     rhythm = melody_rhythm(rng)
 
     length = int((bars * bar + 4.0) * SR)
-    keys, low, kit, lead = (np.zeros((length, 2), np.float32) for _ in range(4))
+    keys, low, kit, snr, lead = (np.zeros((length, 2), np.float32) for _ in range(5))
 
     def hum(sec=0.006):
         return rng.normal(0, sec) * SR
@@ -181,16 +181,16 @@ def compose(band, seed, bars):
             if busy:
                 fill = k == nbars - 1 and not last
                 for b in groove["kick"]:
-                    put(kit, band.kick.play(0.75 * rng.uniform(0.85, 1.0), rng), at(t0, b) + hum(0.003))
+                    put(kit, band.kick.play(0.92 * rng.uniform(0.92, 1.0), rng), at(t0, b) + hum(0.002))
+                # snare lands exactly with the hi-hat on 2 and 4 (any lag between them sounds like a flam)
                 for b in groove["snare"]:
-                    hit = band.rim if (name == "A" and b0 < 12) else band.snare  # cross-stick early on
-                    put(kit, hit.play(0.6 * rng.uniform(0.85, 1.0), rng), at(t0, b) + 0.008 * SR + hum(0.003), pan=0.05)
+                    put(snr, band.snare.play(0.5 * rng.uniform(0.9, 1.0), rng), at(t0, b) + hum(0.001), pan=0.05)
                 for g in range(16):
-                    if g % 4 and rng.random() < 0.06:
-                        put(kit, band.snare.play(0.15, rng), at(t0, g * 0.25) + hum(0.003), pan=0.05)
+                    if g % 4 and g % 2 and rng.random() < 0.04:
+                        put(snr, band.snare.play(0.12, rng), at(t0, g * 0.25) + hum(0.001), pan=0.05)
                 if fill:
                     for i, pos in enumerate((3.25, 3.5, 3.75)):
-                        put(kit, band.snare.play(0.25 + 0.1 * i, rng), at(t0, pos) + hum(0.002), pan=0.05)
+                        put(snr, band.snare.play(0.25 + 0.08 * i, rng), at(t0, pos) + hum(0.001), pan=0.05)
                 for h in range(8):
                     pos = h * 0.5
                     if fill and pos > 3.2:
@@ -222,6 +222,7 @@ def compose(band, seed, bars):
             on[int(b * bar * SR): int((b + nbars) * bar * SR)] = 1.0
         b += nbars
     ramp = moving_avg(on, int(bar * SR))
+    kit += fft_filter(snr, lo=150, hi=5000)  # darker snare, the way lo-fi records sound
     kit *= ramp[:, None]
     low *= (0.4 + 0.6 * ramp)[:, None]
 
