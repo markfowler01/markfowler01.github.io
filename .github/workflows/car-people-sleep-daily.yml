@@ -8,8 +8,14 @@ name: PARKED FM daily video
 # and with the YT_* secrets uploads the full video and the Short to YouTube. With YT_API_KEY it also
 # refreshes the view-count scoreboard at absoluteadas.com/parked-fm/scoreboard.
 on:
+  # GitHub's free scheduler starts runs late (3-6 hours in October 2026) and sometimes drops them,
+  # so there are backup times: the first run that starts posts the day's video and the rest see it
+  # in published.json and stand down (the check job below).
   schedule:
-    - cron: '23 13 * * *'   # every day 13:23 UTC = 6:23 am Pacific (5:23 am in winter)
+    - cron: '23 13 * * *'   # 13:23 UTC = 6:23 am Pacific (5:23 am in winter)
+    - cron: '41 15 * * *'   # backup, 8:41 am Pacific
+    - cron: '7 17 * * *'    # backup, 10:07 am Pacific
+    - cron: '53 19 * * *'   # backup, 12:53 pm Pacific
   workflow_dispatch:         # "Run workflow" button for an extra video
     inputs:
       maker:
