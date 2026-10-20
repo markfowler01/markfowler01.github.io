@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-19 18:11 UTC",
+  "updated": "2026-10-20 14:26 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -13,8 +13,8 @@
         "avg_views": 2
       },
       "openai": {
-        "videos": 2,
-        "counted": 2,
+        "videos": 3,
+        "counted": 3,
         "avg_views": 2
       },
       "sora": {
@@ -47,8 +47,8 @@
         "avg_views": 2
       },
       "openai": {
-        "videos": 1,
-        "counted": 1,
+        "videos": 2,
+        "counted": 2,
         "avg_views": 0
       },
       "sora": {
@@ -60,14 +60,25 @@
   },
   "videos": [
     {
+      "date": "2026-10-20",
+      "title": "Ford GT in the Loft in Heavy Rain | Brown Noise for Sleep & Focus | 8 Hours",
+      "maker": "openai",
+      "kind": "soundscape",
+      "youtube": "mCOHInDELN0",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
       "date": "2026-10-19",
       "title": "Pagani Huayra in the Loft on a Snowy Evening | Brown Noise for Sleep & Focus | 8 Hours",
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "5VXE7LCN7D4",
-      "views": 0,
+      "views": 1,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 14,
       "public": true
     },
     {
@@ -78,7 +89,7 @@
       "youtube": "jswov9PNLTY",
       "views": 5,
       "likes": 0,
-      "short_views": 112,
+      "short_views": 121,
       "public": true
     },
     {
@@ -89,7 +100,7 @@
       "youtube": "CHey6IuHnKc",
       "views": 2,
       "likes": 0,
-      "short_views": 52,
+      "short_views": 55,
       "public": true
     }
   ]
