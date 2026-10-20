@@ -8,9 +8,10 @@ name: PARKED FM daily video
 # and with the YT_* secrets uploads the full video and the Short to YouTube. With YT_API_KEY it also
 # refreshes the view-count scoreboard at absoluteadas.com/parked-fm/scoreboard.
 on:
-  # GitHub's free scheduler starts runs late (3-6 hours in October 2026) and sometimes drops them,
-  # so there are backup times: the first run that starts posts the day's video and the rest see it
-  # in published.json and stand down (the check job below).
+  # The on-time start comes from a Claude scheduled task at 6:07 am Pacific, which runs this
+  # workflow with only_if_missing. GitHub's own free scheduler starts runs hours late (3-6 h in
+  # October 2026) and sometimes drops them, so these times are only backups: whichever run starts
+  # first posts the day's video and the rest see it in published.json and stand down.
   schedule:
     - cron: '23 13 * * *'   # 13:23 UTC = 6:23 am Pacific (5:23 am in winter)
     - cron: '41 15 * * *'   # backup, 8:41 am Pacific
@@ -27,6 +28,10 @@ on:
         description: "Preview only: paint the picture and attach it to a 'preview' release; build and post nothing"
         type: boolean
         default: false
+      only_if_missing:
+        description: "Skip if today's video is already up (the on-time starter sets this)"
+        type: boolean
+        default: false
 
 concurrency: car-people-sleep-daily
 
@@ -36,8 +41,9 @@ env:
   MUSIC_UNTIL: ${{ vars.MUSIC_UNTIL }}
 
 jobs:
-  # GitHub sometimes starts the scheduled run hours late (or not at all), so a video may already
-  # have been started by hand that day; the scheduled run then stands down instead of posting twice.
+  # Several starters can fire on one day (the on-time starter, GitHub's late schedule, a backup);
+  # the first posts the video and the rest stand down instead of posting twice. Plain manual runs
+  # always go ahead.
   check:
     runs-on: ubuntu-latest
     outputs:
@@ -50,12 +56,12 @@ jobs:
       - id: today
         run: |
           skip=false
-          if [ "${{ github.event_name }}" = schedule ] && python3 -c "
+          if { [ "${{ github.event_name }}" = schedule ] || [ "${{ inputs.only_if_missing }}" = true ]; } && python3 -c "
           import datetime, json, sys
           log = json.load(open('garage-tv/published.json'))
           sys.exit(0 if any(e.get('date') == datetime.date.today().isoformat() for e in log) else 1)"; then
             skip=true
-            echo "::notice::Today's video is already up (started by hand); the scheduled run stands down."
+            echo "::notice::Today's video is already up; this run stands down."
           fi
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
