@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-20 14:26 UTC",
+  "updated": "2026-10-21 13:29 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -13,8 +13,8 @@
         "avg_views": 2
       },
       "openai": {
-        "videos": 3,
-        "counted": 3,
+        "videos": 4,
+        "counted": 4,
         "avg_views": 2
       },
       "sora": {
@@ -47,8 +47,8 @@
         "avg_views": 2
       },
       "openai": {
-        "videos": 2,
-        "counted": 2,
+        "videos": 3,
+        "counted": 3,
         "avg_views": 0
       },
       "sora": {
@@ -60,6 +60,17 @@
   },
   "videos": [
     {
+      "date": "2026-10-21",
+      "title": "McLaren Senna in the Loft on a Foggy Morning | White Noise for Sleep & Focus | 8 Hours",
+      "maker": "openai",
+      "kind": "soundscape",
+      "youtube": "pobxPR1scLE",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
       "date": "2026-10-20",
       "title": "Ford GT in the Loft in Heavy Rain | Brown Noise for Sleep & Focus | 8 Hours",
       "maker": "openai",
@@ -67,7 +78,7 @@
       "youtube": "mCOHInDELN0",
       "views": 0,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 69,
       "public": true
     },
     {
@@ -78,7 +89,7 @@
       "youtube": "5VXE7LCN7D4",
       "views": 1,
       "likes": 0,
-      "short_views": 14,
+      "short_views": 27,
       "public": true
     },
     {
@@ -89,7 +100,7 @@
       "youtube": "jswov9PNLTY",
       "views": 5,
       "likes": 0,
-      "short_views": 121,
+      "short_views": 127,
       "public": true
     },
     {
@@ -100,7 +111,7 @@
       "youtube": "CHey6IuHnKc",
       "views": 2,
       "likes": 0,
-      "short_views": 55,
+      "short_views": 63,
       "public": true
     }
   ]
