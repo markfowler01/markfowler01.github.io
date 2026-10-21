@@ -166,5 +166,17 @@
     "songs": null,
     "youtube": "mCOHInDELN0",
     "short": "qeFFONQReVE"
+  },
+  {
+    "date": "2026-10-21",
+    "photo": "2026-10-21-mclaren-senna.webp",
+    "recipe": "white",
+    "grade": "none",
+    "title": "McLaren Senna in the Loft on a Foggy Morning | White Noise for Sleep & Focus | 8 Hours",
+    "tag": "daily-2026-10-21",
+    "car": "McLaren Senna",
+    "scene": "loft_fog_morning",
+    "maker": "openai",
+    "songs": null
   }
 ]
