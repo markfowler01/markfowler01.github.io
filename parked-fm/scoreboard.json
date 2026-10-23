@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22 13:36 UTC",
+  "updated": "2026-10-23 13:30 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -13,9 +13,9 @@
         "avg_views": 2
       },
       "openai": {
-        "videos": 5,
-        "counted": 5,
-        "avg_views": 1
+        "videos": 6,
+        "counted": 6,
+        "avg_views": 2
       },
       "sora": {
         "videos": 0,
@@ -47,9 +47,9 @@
         "avg_views": 2
       },
       "openai": {
-        "videos": 4,
-        "counted": 4,
-        "avg_views": 0
+        "videos": 5,
+        "counted": 5,
+        "avg_views": 1
       },
       "sora": {
         "videos": 0,
@@ -60,14 +60,25 @@
   },
   "videos": [
     {
+      "date": "2026-10-23",
+      "title": "911 GT3 RS in the Loft on a Snowy Evening | White Noise for Sleep & Focus | 8 Hours",
+      "maker": "openai",
+      "kind": "soundscape",
+      "youtube": "TUzsUEcyrUg",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
       "date": "2026-10-22",
       "title": "NSX Type S in the Loft on a Rainy Autumn Afternoon | Rain Sounds for Sleep & Focus | 8 Hours",
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "18Fds4Xq4Ac",
-      "views": 0,
+      "views": 2,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 70,
       "public": true
     },
     {
@@ -76,9 +87,9 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "pobxPR1scLE",
-      "views": 0,
+      "views": 1,
       "likes": 0,
-      "short_views": 37,
+      "short_views": 41,
       "public": true
     },
     {
@@ -89,7 +100,7 @@
       "youtube": "mCOHInDELN0",
       "views": 0,
       "likes": 0,
-      "short_views": 66,
+      "short_views": 67,
       "public": true
     },
     {
@@ -111,7 +122,7 @@
       "youtube": "jswov9PNLTY",
       "views": 5,
       "likes": 0,
-      "short_views": 128,
+      "short_views": 127,
       "public": true
     },
     {
@@ -122,7 +133,7 @@
       "youtube": "CHey6IuHnKc",
       "views": 2,
       "likes": 0,
-      "short_views": 63,
+      "short_views": 62,
       "public": true
     }
   ]
