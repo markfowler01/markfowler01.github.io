@@ -1,0 +1,37 @@
+{
+  "rotate": false,
+  "recipes": [
+    "brown"
+  ],
+  "daily_sound": "brown",
+  "bed": "brown",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "918 Spyder in the Loft Late at Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "918-spyder",
+  "car": "Porsche 918 Spyder",
+  "scene": "loft_late_night",
+  "minutes": 480,
+  "title_tail": "Brown Noise for Sleep & Focus",
+  "sound_name": "Brown Noise",
+  "tags": [
+    "brown noise",
+    "brown noise for sleeping",
+    "white noise",
+    "sleep sounds",
+    "no music",
+    "porsche 918 spyder",
+    "918 spyder",
+    "exotic cars",
+    "supercar"
+  ],
+  "description": "Midnight Garage: a satin black Porsche 918 Spyder in the loft late at night, the city asleep outside, a light drizzle on the glass and the radio glowing low. 8 hours of deep brown noise, no music, for sleeping, studying, or blocking out the world while you work.\n\nNo music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #brownnoise #sleepsounds #whitenoise #918spyder",
+  "maker": "gemini"
+}
