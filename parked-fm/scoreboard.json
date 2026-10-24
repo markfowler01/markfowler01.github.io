@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-23 13:30 UTC",
+  "updated": "2026-10-24 13:29 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,14 +8,14 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 1,
-        "counted": 1,
-        "avg_views": 2
+        "videos": 2,
+        "counted": 2,
+        "avg_views": 1
       },
       "openai": {
         "videos": 6,
         "counted": 6,
-        "avg_views": 2
+        "avg_views": 4
       },
       "sora": {
         "videos": 0,
@@ -42,14 +42,14 @@
     },
     "soundscape": {
       "gemini": {
-        "videos": 1,
-        "counted": 1,
-        "avg_views": 2
+        "videos": 2,
+        "counted": 2,
+        "avg_views": 1
       },
       "openai": {
         "videos": 5,
         "counted": 5,
-        "avg_views": 1
+        "avg_views": 3
       },
       "sora": {
         "videos": 0,
@@ -60,14 +60,25 @@
   },
   "videos": [
     {
+      "date": "2026-10-24",
+      "title": "918 Spyder in the Loft Late at Night | Brown Noise for Sleep & Focus | 8 Hours",
+      "maker": "gemini",
+      "kind": "soundscape",
+      "youtube": "V4DuhPr5I-I",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
       "date": "2026-10-23",
       "title": "911 GT3 RS in the Loft on a Snowy Evening | White Noise for Sleep & Focus | 8 Hours",
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "TUzsUEcyrUg",
-      "views": 0,
+      "views": 1,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 24,
       "public": true
     },
     {
@@ -76,9 +87,9 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "18Fds4Xq4Ac",
-      "views": 2,
+      "views": 13,
       "likes": 0,
-      "short_views": 70,
+      "short_views": 88,
       "public": true
     },
     {
@@ -89,7 +100,7 @@
       "youtube": "pobxPR1scLE",
       "views": 1,
       "likes": 0,
-      "short_views": 41,
+      "short_views": 43,
       "public": true
     },
     {
@@ -111,7 +122,7 @@
       "youtube": "5VXE7LCN7D4",
       "views": 1,
       "likes": 0,
-      "short_views": 32,
+      "short_views": 31,
       "public": true
     },
     {
