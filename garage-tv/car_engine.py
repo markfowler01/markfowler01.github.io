@@ -25,6 +25,9 @@ import urllib.request
 
 from PIL import Image
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import learn  # noqa: E402  (make more of what viewers like)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # Exotic cars only: supercars and hypercars, a different one every video.
@@ -54,7 +57,7 @@ SERIES = {
     "parked_peaceful": dict(name="Parked & Peaceful", minutes=240, tail="Calm Lo-Fi for Relaxing & Focus"),
 }
 
-# Music days rotate through the three styles of our own music creator (make_lofi_real.py), new
+# Music days pick one of the three styles of our own music creator (make_lofi_real.py), new
 # songs every video: name for titles and thumbnails, title words, description words.
 MUSIC_STYLES = {
     "lofi": dict(name="Chill Lo-Fi", words="slow, warm lo-fi hip hop on Rhodes, soft drums and round bass"),
@@ -149,13 +152,17 @@ def pick(day, published):
     recent_scenes = [e.get("scene") for e in published[-3:]]
     cars = [c for c in CARS if c[0] not in recent_cars] or CARS
     scenes = [s for s in SCENES if s["id"] not in recent_scenes] or SCENES
-    car, short = rng.choice(cars)
-    scene = rng.choice(scenes)
+    # each part of the video is picked with odds that follow how past videos did (learn.py);
+    # music and soundscape days still alternate, and the picture makers stay a fair test
+    history = learn.scored(published)
+    make = learn.choose(rng, [learn.brand(c[0]) for c in cars], lambda e: learn.brand(e.get("car")), history)
+    car, short = rng.choice([c for c in cars if learn.brand(c[0]) == make])
+    scene_id = learn.choose(rng, [s["id"] for s in scenes], lambda e: e.get("scene"), history)
+    scene = next(s for s in scenes if s["id"] == scene_id)
     last = published[-1].get("recipe") if published else None
-    soundscape = rng.choice([scene["bed"], scene["bed"], "brown", "white"])
+    soundscape = learn.choose(rng, [scene["bed"], "brown", "white"], lambda e: e.get("recipe"), history)
     sound = "lofi" if last != "lofi" else soundscape
-    styles = [e["music_style"] for e in published if e.get("music_style")]
-    style = MUSIC_ORDER[(MUSIC_ORDER.index(styles[-1]) + 1) % len(MUSIC_ORDER)] if styles else MUSIC_ORDER[0]
+    style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style)
 
 

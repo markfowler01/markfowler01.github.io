@@ -8,6 +8,9 @@ The daily job does both. View counts come from the YouTube Data API with a plain
 (videos.list, 1 quota unit per 50 videos), which only sees public videos, so private uploads
 show up with no numbers until they are made public. Music days and soundscape days are scored
 separately as well as together, since they draw different audiences.
+
+It also tracks the channel's road to the YouTube Partner Program: subscribers against the
+500 (fan funding) and 1,000 (ads) goals, with one history point per day.
 """
 import argparse
 import datetime as dt
@@ -47,23 +50,38 @@ def log_ids(tag, video_id, short_id=None):
     sys.exit(f"no published.json entry with tag {tag}")
 
 
+def api(endpoint, **params):
+    q = urllib.parse.urlencode(params)
+    with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/{endpoint}?{q}", timeout=60) as r:
+        return json.load(r).get("items", [])
+
+
 def stats(ids, key):
-    """{video id: (views, likes, privacy)} for the ids YouTube will show to an API key."""
-    out = {}
+    """({video id: (views, likes, privacy)} for the ids YouTube will show to an API key, channel id)."""
+    out, channel = {}, None
     for i in range(0, len(ids), 50):
-        q = urllib.parse.urlencode({"part": "statistics,status", "id": ",".join(ids[i:i + 50]), "key": key})
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q}", timeout=60) as r:
-            for item in json.load(r).get("items", []):
-                s = item.get("statistics", {})
-                out[item["id"]] = (int(s.get("viewCount", 0)), int(s.get("likeCount", 0)),
-                                   item.get("status", {}).get("privacyStatus"))
-    return out
+        for item in api("videos", part="snippet,statistics,status", id=",".join(ids[i:i + 50]), key=key):
+            s = item.get("statistics", {})
+            out[item["id"]] = (int(s.get("viewCount", 0)), int(s.get("likeCount", 0)),
+                               item.get("status", {}).get("privacyStatus"))
+            channel = channel or item.get("snippet", {}).get("channelId")
+    return out, channel
+
+
+def channel_stats(channel, key):
+    """Subscribers, total views and video count (YouTube rounds subscriber counts over 1,000)."""
+    items = api("channels", part="statistics", id=channel, key=key) if channel and key else []
+    if not items:
+        return None
+    s = items[0]["statistics"]
+    return dict(subscribers=None if s.get("hiddenSubscriberCount") else int(s.get("subscriberCount", 0)),
+                views=int(s.get("viewCount", 0)), videos=int(s.get("videoCount", 0)))
 
 
 def refresh(key):
     log = [e for e in load() if e.get("maker") in NAMES and e.get("youtube")]
     ids = [e["youtube"] for e in log] + [e["short"] for e in log if e.get("short")]
-    found = stats(ids, key) if key and ids else {}
+    found, channel = stats(ids, key) if key and ids else ({}, None)
     videos = []
     for e in log:
         views, likes, privacy = found.get(e["youtube"], (None, None, "private"))
@@ -82,13 +100,25 @@ def refresh(key):
     for kind in ("all", "music", "soundscape"):
         rows = [v for v in videos if kind == "all" or v["kind"] == kind]
         board[kind] = {m: score([v for v in rows if v["maker"] == m]) for m in NAMES}
-    data = dict(updated=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-                names=NAMES, board=board, videos=list(reversed(videos)))
+    now = dt.datetime.now(dt.timezone.utc)
+    try:
+        with open(OUT) as f:
+            history = json.load(f).get("history", [])
+    except (OSError, ValueError):
+        history = []
+    ch = channel_stats(channel, key)
+    if ch:
+        history = [h for h in history if h["date"] != now.date().isoformat()] + [dict(date=now.date().isoformat(), **ch)]
+    goals = dict(fan_funding=dict(subscribers=500, watch_hours=3000), ads=dict(subscribers=1000, watch_hours=4000))
+    data = dict(updated=now.strftime("%Y-%m-%d %H:%M UTC"), names=NAMES, board=board,
+                channel=history[-1] if history else None, goals=goals, history=history[-120:],
+                videos=list(reversed(videos)))
     with open(OUT, "w") as f:
         json.dump(data, f, indent=2)
         f.write("\n")
     for kind, row in board.items():
         print(kind, {NAMES[m]: s for m, s in row.items()})
+    print("channel", data["channel"])
 
 
 if __name__ == "__main__":
