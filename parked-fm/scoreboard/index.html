@@ -84,11 +84,14 @@
         return `<div class="goal"><div class="row"><span>${label}</span><b>${fmt(have)} / ${need.toLocaleString()}</b></div>
           <div class="bar"><i style="width:${pct.toFixed(1)}%"></i></div></div>`;
       };
+      const hours = c.watch_hours != null
+        ? goal('Watch hours (last 12 months) for fan funding', Math.round(c.watch_hours), g.fan_funding.watch_hours)
+          + goal('Watch hours (last 12 months) for ads money', Math.round(c.watch_hours), g.ads.watch_hours)
+        : `<p class="sub" style="margin-top:14px">Also needed: ${g.fan_funding.watch_hours.toLocaleString()} watch hours in 12 months
+           for fan funding, ${g.ads.watch_hours.toLocaleString()} for ads (see YouTube Studio &gt; Earn).</p>`;
       el.innerHTML = goal('Subscribers for fan funding (memberships, Super Thanks)', c.subscribers, g.fan_funding.subscribers)
-        + goal('Subscribers for ads money', c.subscribers, g.ads.subscribers)
-        + `<p class="sub" style="margin-top:14px">Also needed: ${g.fan_funding.watch_hours.toLocaleString()} watch hours in 12 months
-           for fan funding, ${g.ads.watch_hours.toLocaleString()} for ads (see YouTube Studio &gt; Earn).
-           Channel total: ${fmt(c.views)} views across ${fmt(c.videos)} videos, as of ${c.date}.</p>`;
+        + goal('Subscribers for ads money', c.subscribers, g.ads.subscribers) + hours
+        + `<p class="sub" style="margin-top:14px">Channel total: ${fmt(c.views)} views across ${fmt(c.videos)} videos, as of ${c.date}.</p>`;
     }
     fetch('/parked-fm/scoreboard.json', { cache: 'no-store' })
       .then(r => r.json())

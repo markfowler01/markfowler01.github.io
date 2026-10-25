@@ -46,7 +46,10 @@
     <h2>Authorization</h2>
     <div class="card">
       <p><strong>Who signs in:</strong> only the channel owner, once, with Google's standard OAuth 2.0 consent screen.</p>
-      <p><strong>Scope:</strong> <code>https://www.googleapis.com/auth/youtube.upload</code> (upload videos and set thumbnails, nothing else).</p>
+      <p><strong>Scopes:</strong> <code>https://www.googleapis.com/auth/youtube.upload</code> (upload videos and set
+        thumbnails), <code>https://www.googleapis.com/auth/youtube.force-ssl</code> (add the channel's own videos to its
+        playlists, pin a comment on its own videos) and <code>https://www.googleapis.com/auth/yt-analytics.readonly</code>
+        (the channel's own watch hours and subscribers gained per video, used to decide what to make next).</p>
       <p><strong>Token storage:</strong> an encrypted GitHub Actions secret; never logged.</p>
       <p><strong>Revoke:</strong> <a href="https://security.google.com/settings/security/permissions">Google Account &gt; Security &gt; Third-party access</a>.</p>
       <p><strong>Data kept:</strong> none beyond the new video's ID, used to link the Short.</p>

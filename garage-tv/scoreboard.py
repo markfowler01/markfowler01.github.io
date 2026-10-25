@@ -10,7 +10,9 @@ show up with no numbers until they are made public. Music days and soundscape da
 separately as well as together, since they draw different audiences.
 
 It also tracks the channel's road to the YouTube Partner Program: subscribers against the
-500 (fan funding) and 1,000 (ads) goals, with one history point per day.
+500 (fan funding) and 1,000 (ads) goals, with one history point per day. When the YouTube
+sign-in includes the analytics permission (get_youtube_token.py --renew), it adds watch hours
+over the last 12 months and the subscribers each video brought in, which learn.py counts.
 """
 import argparse
 import datetime as dt
@@ -68,6 +70,37 @@ def stats(ids, key):
     return out, channel
 
 
+ANALYTICS_SCOPE = "https://www.googleapis.com/auth/yt-analytics.readonly"
+
+
+def analytics():
+    """(watch hours in the last 365 days, {video id: subscribers gained}) from YouTube Analytics,
+    or None if the YouTube secrets or the analytics permission aren't there."""
+    if not all(os.environ.get(k) for k in ("YT_CLIENT_ID", "YT_CLIENT_SECRET", "YT_REFRESH_TOKEN")):
+        return None
+    data = urllib.parse.urlencode({k: os.environ[v] for k, v in (
+        ("client_id", "YT_CLIENT_ID"), ("client_secret", "YT_CLIENT_SECRET"), ("refresh_token", "YT_REFRESH_TOKEN"))}
+        | {"grant_type": "refresh_token"}).encode()
+    with urllib.request.urlopen("https://oauth2.googleapis.com/token", data, timeout=60) as r:
+        tok = json.load(r)
+    if ANALYTICS_SCOPE not in tok.get("scope", "").split():
+        return None
+    end = dt.date.today()
+    base = dict(ids="channel==MINE", startDate=(end - dt.timedelta(days=365)).isoformat(), endDate=end.isoformat())
+
+    def report(**extra):
+        q = urllib.parse.urlencode(base | extra)
+        req = urllib.request.Request(f"https://youtubeanalytics.googleapis.com/v2/reports?{q}")
+        req.add_header("Authorization", f"Bearer {tok['access_token']}")
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.load(r).get("rows") or []
+
+    total = report(metrics="estimatedMinutesWatched")
+    hours = round(total[0][0] / 60, 1) if total else 0.0
+    rows = report(metrics="subscribersGained", dimensions="video", sort="-subscribersGained", maxResults=200)
+    return hours, {r[0]: int(r[1]) for r in rows}
+
+
 def channel_stats(channel, key):
     """Subscribers, total views and video count (YouTube rounds subscriber counts over 1,000)."""
     items = api("channels", part="statistics", id=channel, key=key) if channel and key else []
@@ -82,6 +115,12 @@ def refresh(key):
     log = [e for e in load() if e.get("maker") in NAMES and e.get("youtube")]
     ids = [e["youtube"] for e in log] + [e["short"] for e in log if e.get("short")]
     found, channel = stats(ids, key) if key and ids else ({}, None)
+    try:
+        studio = analytics()
+    except Exception as e:  # numbers are a bonus; never fail the daily job over them
+        print("analytics unavailable:", e)
+        studio = None
+    subs = studio[1] if studio else {}
     videos = []
     for e in log:
         views, likes, privacy = found.get(e["youtube"], (None, None, "private"))
@@ -89,6 +128,7 @@ def refresh(key):
         videos.append(dict(date=e["date"], title=e["title"], maker=e["maker"],
                            kind="music" if e["recipe"] == "lofi" else "soundscape",
                            youtube=e["youtube"], views=views, likes=likes, short_views=short_views,
+                           subscribers=subs.get(e["youtube"]) if studio else None,
                            public=privacy == "public"))
 
     def score(rows):
@@ -107,6 +147,8 @@ def refresh(key):
     except (OSError, ValueError):
         history = []
     ch = channel_stats(channel, key)
+    if ch and studio:
+        ch["watch_hours"] = studio[0]
     if ch:
         history = [h for h in history if h["date"] != now.date().isoformat()] + [dict(date=now.date().isoformat(), **ch)]
     goals = dict(fan_funding=dict(subscribers=500, watch_hours=3000), ads=dict(subscribers=1000, watch_hours=4000))
