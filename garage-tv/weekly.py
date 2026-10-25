@@ -37,7 +37,6 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 import imageio_ffmpeg
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import make_playlist  # noqa: E402  (the real-song music library)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
@@ -124,9 +123,10 @@ def photo_meta(photo):
 
 
 PUBLISHED = os.path.join(HERE, "published.json")
-DAILY_SOUND = "lofi"  # continuous original lo-fi, music only (work / focus music)
-# Days alternate: lo-fi music only, then a soundscape only (no music). The car engine writes the
-# day's choice into the photo's settings as daily_sound; a photo without one follows the same rule.
+DAILY_SOUND = "lofi"  # our own original music (make_lofi_real.py), music only (work / focus music)
+# Days alternate: music only, then a soundscape only (no music). The car engine writes the day's
+# choice into the photo's settings as daily_sound (and music_style); a photo without one follows
+# the same rule.
 
 
 def load_published():
@@ -161,8 +161,7 @@ def plan_daily(day):
         uses = len(used[os.path.basename(photo)])
     meta = photo_meta(photo)
     last = published[-1].get("recipe") if published else None
-    recipe = meta.get("daily_sound") or (DAILY_SOUND if last != DAILY_SOUND and make_playlist.music_ready()
-                                         else meta.get("bed", "rain_road"))
+    recipe = meta.get("daily_sound") or (DAILY_SOUND if last != DAILY_SOUND else meta.get("bed", "rain_road"))
     vol = sum(1 for e in published if e.get("recipe") == recipe) + 1
     p = dict(
         index=(day - dt.date(2024, 1, 1)).days,
@@ -225,7 +224,7 @@ def title_for(p):
         return m["title_full"]
     h = hours_for(p)
     if p["recipe"] in ("lofi", "mix") or m.get("series"):
-        short = {"mix": "White Noise & Lo-Fi", "lofi": "Chill Lo-Fi"}.get(p["recipe"], sound_name(p))
+        short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else sound_name(p)
         options = [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
         return next(t for t in options if len(t) <= 100)
     options = [
@@ -239,7 +238,7 @@ def title_for(p):
 def sound_name(p):
     """What you hear, for titles and thumbnails: 'Chill Lo-Fi', 'Rain Sounds', 'Brown Noise', ..."""
     if p["recipe"] == "lofi":
-        return "Chill Lo-Fi"
+        return p.get("meta", {}).get("sound_name") or "Chill Lo-Fi"
     return p.get("meta", {}).get("sound_name") or BED_WORDS.get(p["recipe"], RECIPES[p["recipe"]]["title"])
 
 
@@ -272,6 +271,21 @@ def description_for(p):
         "Made by a mobile ADAS calibration tech. Absolute ADAS: https://absoluteadas.com\n\n"
         "#parkedfm #garageambience #whitenoise #sleepsounds #mechanic #shoplife"
     )
+
+
+def stamp(sec):
+    sec = int(sec)
+    return f"{sec // 3600}:{sec % 3600 // 60:02d}:{sec % 60:02d}" if sec >= 3600 else f"{sec // 60}:{sec % 60:02d}"
+
+
+def with_tracklist(desc, songs, album_minutes):
+    """Insert the album's tracklist after the first paragraph. The timestamps become YouTube
+    chapters; the album then repeats from the top for the rest of the video."""
+    lines = [f"{stamp(s['start'])} {s['name']}" for s in songs]
+    block = ("TRACKLIST\n" + "\n".join(lines) +
+             f"\n(The album plays again from the top every {round(album_minutes)} minutes.)")
+    head, sep, rest = desc.partition("\n\n")
+    return head + "\n\n" + block + (sep + rest if sep else "")
 
 
 def tags_for(p):
@@ -504,12 +518,13 @@ def main():
     album_songs = None
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
-        if p["recipe"] == "lofi" and make_playlist.library():
-            # real songs from garage-tv/music (YouTube Audio Library), shuffled; music only
-            run([sys.executable, os.path.join(HERE, "make_playlist.py"), "--seed", str(seed), "--out", wav])
+        if p["recipe"] == "lofi":
+            # new original songs every video, played on real recorded instruments; music only
+            run([sys.executable, os.path.join(HERE, "make_lofi_real.py"), "--minutes", str(audio_minutes),
+                 "--seed", str(seed), "--style", meta.get("music_style", "lofi"), "--out", wav])
             with open(os.path.splitext(wav)[0] + ".tracks.json") as f:
                 album = json.load(f)
-            audio_minutes, album_songs = album["minutes"], album["songs"]
+            album_songs = album["songs"]
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
@@ -529,6 +544,8 @@ def main():
     make_thumbnail(p, thumb)
 
     title, desc, tags = title_for(p), description_for(p), tags_for(p)
+    if album_songs:
+        desc = with_tracklist(desc, album_songs, audio_minutes)
     scene_line = title.split(" | ")[0]  # the car and scene, e.g. "Ferrari Roma on a Rainy Neon Night"
     trailer = os.path.join(stage, "trailer.mp4")
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
@@ -591,7 +608,8 @@ def main():
         log.append(dict(date=day.isoformat(), photo=os.path.basename(p["photo"]), recipe=p["recipe"],
                         grade=p["grade"], title=title, tag=p["tag"],
                         car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
-                        songs=album_songs))
+                        music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
+                        songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
             f.write("\n")

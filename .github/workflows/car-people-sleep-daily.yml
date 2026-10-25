@@ -111,6 +111,13 @@ jobs:
           gh release create "$tag" "$pic" "${pic%.*}.json" --prerelease --title "Preview: $(basename "$pic")" --notes "Picture preview only; nothing was posted."
           echo "https://github.com/${{ github.repository }}/releases/download/$tag/$(basename "$pic")"
 
+      - name: Keep the instrument recordings between runs
+        if: ${{ !inputs.preview }}
+        uses: actions/cache@v4
+        with:
+          path: garage-tv/out/instruments
+          key: sfz-instruments-v1
+
       - name: Build today's kit
         if: ${{ !inputs.preview }}
         env:
