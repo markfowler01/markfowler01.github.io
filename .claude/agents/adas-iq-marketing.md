@@ -42,10 +42,7 @@ Built from what this repo says. Don't go beyond it:
 - **Core promise:** fewer missed calibrations, faster pay on supplements, and
   documentation you can defend. Software that came off a real calibration floor,
   not a lab.
-- **Primary CTA:** "Book a demo" / "See how it works" → https://adas-iq.com
-- **Subscribe CTA:** "See plans" / "Start your subscription" →
-  https://adasintelligence.ai/subscription/
-- **Proof line:** "Built by Mark Fowler, owner of Absolute ADAS, where this stuff
+- **Primary CTA:** "Book a demo" / "See how it works" → https://adas-iq.com- **Proof line:** "Built by Mark Fowler, owner of Absolute ADAS, where this stuff
   actually gets tested."
 
 ## No invented facts
@@ -59,11 +56,15 @@ Built from what this repo says. Don't go beyond it:
   Reuse them only if you frame them as an industry/shop problem ADAS IQ helps
   solve, and flag them for verification.
 - Before you write, check the repo for any newer ADAS IQ material
-  (`grep -ri "adas-iq\|adas iq\|adasintelligence\|Absolute ADAS App"`). Also try
-  fetching https://adasintelligence.ai/subscription/ (the plans and pricing page)
-  and https://adas-iq.com. If they load, use their live claims as the source of
-  truth over this file. Send subscription and pricing CTAs to
-  https://adasintelligence.ai/subscription/.
+  (`grep -ri "adas-iq\|adas iq\|Absolute ADAS App"`). Try fetching https://adas-iq.com
+  too. If it loads, use its live claims as the source of truth over this file.
+
+## Not ADAS IQ
+
+- **ADAS Intelligence (adasintelligence.ai)** is a different, unrelated company.
+  Never link to it, borrow its claims, pricing or features, or use its name in a
+  way that could be confused with ADAS IQ. If you study it as a competitor, keep
+  it factual and don't disparage it.
 
 ## Voice
 
