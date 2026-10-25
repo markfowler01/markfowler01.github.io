@@ -375,6 +375,20 @@ def compose(band, seed, bars, style="lofi"):
                      keys="pads" if style == "garage" else "rhodes", lead=lead_name)
 
 
+# song titles: garage, road and night-time words, so the tracklist reads like a real album
+NAME_FIRST = ["Midnight", "Late", "Slow", "Quiet", "Low", "Warm", "Neon", "Rainy", "Amber", "Velvet", "Idle",
+              "Second", "Last", "Empty", "Wet", "Soft", "Night", "Open", "Long", "Winter", "Silver", "Hazy"]
+NAME_SECOND = ["Shift", "Garage", "Asphalt", "Lights", "Drive", "Exit", "Gear", "Lane", "Overpass", "Window",
+               "Engine", "Coffee", "Tires", "Signal", "Parking", "Mile", "Radio", "Detour", "Skyline", "Tunnel",
+               "Showroom", "Rev", "Glow", "Hour"]
+
+
+def song_names(n, seed):
+    rng = np.random.default_rng(seed + 77)
+    pairs = [(a, b) for a in NAME_FIRST for b in NAME_SECOND]
+    return [" ".join(pairs[i]) for i in rng.choice(len(pairs), n, replace=False)]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--minutes", type=float, default=35)
@@ -388,7 +402,7 @@ def main():
     rng = np.random.default_rng(args.seed)
     band = Band()
     target = int(args.minutes * 60 * SR)
-    tracks, used, i = [], 0, 0
+    tracks, infos, used, i = [], [], 0, 0
     while True:
         remaining = (target - used) / SR - args.gap
         if remaining < 70:
@@ -402,6 +416,7 @@ def main():
         if used + len(mix) + int(args.gap * SR) > target:
             break
         tracks.append(tape(mix, rng))
+        infos.append(info)
         used += len(mix) + int(args.gap * SR)
         print(f"  song {i + 1}: {info}  {len(mix) / SR / 60:.1f} min", flush=True)
         i += 1
@@ -418,7 +433,9 @@ def main():
     album = 0.9 * np.tanh(album / 0.9)  # music only: nothing else is mixed in
     write_audio(album, args.out, args.bitrate)
     with open(os.path.splitext(args.out)[0] + ".tracks.json", "w") as f:
-        json.dump(dict(minutes=args.minutes, track_starts=starts), f)
+        songs = [dict(name=n, start=t, style=inf["style"], bpm=inf["bpm"], key=inf["key"])
+                 for n, t, inf in zip(song_names(len(tracks), args.seed), starts, infos)]
+        json.dump(dict(minutes=args.minutes, track_starts=starts, songs=songs), f, indent=1)
     if ins.lead_trims:
         lt = np.array(ins.lead_trims) * 1000
         print(f"sample starts trimmed: {len(lt)} samples, median {np.median(lt):.1f} ms, max {lt.max():.1f} ms")

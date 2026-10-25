@@ -23,7 +23,9 @@ import urllib.parse
 import urllib.request
 import webbrowser
 
-SCOPE = "https://www.googleapis.com/auth/youtube.upload"
+# upload videos and thumbnails; manage playlists and pinned comments; read channel analytics
+SCOPE = " ".join("https://www.googleapis.com/auth/" + s for s in ("youtube.upload", "youtube.force-ssl",
+                                                                   "yt-analytics.readonly"))
 PORT = 8765
 REDIRECT = f"http://127.0.0.1:{PORT}/"
 NEW_SECRET = "https://github.com/markfowler01/markfowler01.github.io/settings/secrets/actions/new"

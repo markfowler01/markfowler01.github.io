@@ -24,6 +24,11 @@
     .pill.gemini { background: #23314f; color: #9fc0ff; }
     .pill.openai { background: #1f3a33; color: #8fe0c0; }
     .pill.sora { background: #3a2a1f; color: #f3c58f; }
+    .goal { margin: 14px 0 4px; }
+    .goal .row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+    .goal .row b { font-size: 15px; white-space: nowrap; }
+    .bar { height: 10px; border-radius: 999px; background: rgba(127, 127, 127, 0.25); overflow: hidden; margin-top: 6px; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--amber); border-radius: 999px; }
     @media (max-width: 560px) { .vs { grid-template-columns: 1fr; } .vs .big { font-size: 34px; } }
   </style>
   <script src="/meta-pixel.js" defer></script>
@@ -40,6 +45,9 @@
     <p class="updated" id="updated">Loading...</p>
     <p style="margin-top:14px">Same music, same sounds, same titles. The only difference is the picture: a Nano Banana photo, a ChatGPT photo, or a ChatGPT photo brought to life by Sora.
       Average views per video; private videos aren't counted until they're public.</p>
+
+    <h2>Road to monetization</h2>
+    <div class="card" id="road"><p class="sub">Loading...</p></div>
 
     <h2>Overall</h2>
     <div class="vs" id="all"></div>
@@ -68,10 +76,28 @@
           <div class="sub">avg views · ${row[m].counted} of ${row[m].videos} videos counted</div>
         </div>`).join('');
     }
+    function road(el, d) {
+      const c = d.channel, g = d.goals;
+      if (!c || !g) { el.innerHTML = '<p class="sub">Subscriber numbers appear after the next daily run.</p>'; return; }
+      const goal = (label, have, need) => {
+        const pct = have == null ? 0 : Math.min(100, 100 * have / need);
+        return `<div class="goal"><div class="row"><span>${label}</span><b>${fmt(have)} / ${need.toLocaleString()}</b></div>
+          <div class="bar"><i style="width:${pct.toFixed(1)}%"></i></div></div>`;
+      };
+      const hours = c.watch_hours != null
+        ? goal('Watch hours (last 12 months) for fan funding', Math.round(c.watch_hours), g.fan_funding.watch_hours)
+          + goal('Watch hours (last 12 months) for ads money', Math.round(c.watch_hours), g.ads.watch_hours)
+        : `<p class="sub" style="margin-top:14px">Also needed: ${g.fan_funding.watch_hours.toLocaleString()} watch hours in 12 months
+           for fan funding, ${g.ads.watch_hours.toLocaleString()} for ads (see YouTube Studio &gt; Earn).</p>`;
+      el.innerHTML = goal('Subscribers for fan funding (memberships, Super Thanks)', c.subscribers, g.fan_funding.subscribers)
+        + goal('Subscribers for ads money', c.subscribers, g.ads.subscribers) + hours
+        + `<p class="sub" style="margin-top:14px">Channel total: ${fmt(c.views)} views across ${fmt(c.videos)} videos, as of ${c.date}.</p>`;
+    }
     fetch('/parked-fm/scoreboard.json', { cache: 'no-store' })
       .then(r => r.json())
       .then(d => {
         document.getElementById('updated').textContent = 'Updated ' + d.updated;
+        road(document.getElementById('road'), d);
         ['all', 'music', 'soundscape'].forEach(k => vs(document.getElementById(k), d.board[k], d.names));
         const t = document.getElementById('list');
         d.videos.forEach(v => {

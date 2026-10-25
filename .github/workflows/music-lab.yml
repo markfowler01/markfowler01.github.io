@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted)"
         type: choice
-        options: [discover, inspect, explore, sample]
+        options: [discover, inspect, explore, sample, kit]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -83,7 +83,7 @@ jobs:
           bash -c "$CMD" 2>&1 | head -c 60000
 
       - uses: actions/setup-python@v5
-        if: ${{ inputs.task == 'sample' }}
+        if: ${{ inputs.task == 'sample' || inputs.task == 'kit' }}
         with:
           python-version: '3.12'
 
@@ -97,7 +97,31 @@ jobs:
           python garage-tv/make_lofi_real.py --minutes "${{ inputs.minutes }}" --seed "${{ inputs.seed }}" --style "${{ inputs.style }}" --out lab/sample.m4a
           FF=$(python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
           name="parked-fm-${{ inputs.style }}-seed${{ inputs.seed }}.mp3"
+          cat lab/sample.tracks.json
           "$FF" -y -loglevel error -i lab/sample.m4a -c:a libmp3lame -b:a 192k "lab/$name"
           tag="music-lab-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" "lab/$name" --prerelease --title "Music lab: ${{ inputs.style }}, seed ${{ inputs.seed }}" --notes "Test render only; nothing was posted."
           echo "https://github.com/${{ github.repository }}/releases/download/$tag/$name"
+
+      - name: Build a full music-day kit exactly like the daily job, without posting or logging it
+        if: ${{ inputs.task == 'kit' }}
+        env:
+          STYLE: ${{ inputs.style }}
+        run: |
+          pip install -q numpy Pillow imageio-ffmpeg
+          cd garage-tv
+          # tomorrow's pick, re-labelled as a music day in the chosen style, on the newest photo
+          python - <<'PY'
+          import datetime as dt, glob, json, os, shutil
+          import car_engine as ce
+          pub = json.load(open("published.json"))
+          choice = ce.pick(dt.date.today() + dt.timedelta(days=1), pub)
+          choice.update(sound="lofi", music_style=os.environ["STYLE"])
+          photo = max(glob.glob("stills/*.webp"), key=os.path.getmtime)
+          shutil.copy(photo, "stills/2099-01-01-lab-test.webp")
+          json.dump(ce.sidecar(choice), open("stills/2099-01-01-lab-test.json", "w"), indent=2)
+          PY
+          start=$(date +%s)
+          python weekly.py --daily --date 2099-01-01 --outdir ../kit
+          echo "build took $(( ($(date +%s) - start) / 60 )) minutes"
+          cat ../kit/details.txt

@@ -111,6 +111,13 @@ jobs:
           gh release create "$tag" "$pic" "${pic%.*}.json" --prerelease --title "Preview: $(basename "$pic")" --notes "Picture preview only; nothing was posted."
           echo "https://github.com/${{ github.repository }}/releases/download/$tag/$(basename "$pic")"
 
+      - name: Keep the instrument recordings between runs
+        if: ${{ !inputs.preview }}
+        uses: actions/cache@v4
+        with:
+          path: garage-tv/out/instruments
+          key: sfz-instruments-v1
+
       - name: Build today's kit
         if: ${{ !inputs.preview }}
         env:
@@ -164,6 +171,9 @@ jobs:
         if: ${{ !inputs.preview }}
         env:
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: |
           python garage-tv/scoreboard.py || echo "::warning::scoreboard refresh failed"
           git add garage-tv/published.json parked-fm/scoreboard.json

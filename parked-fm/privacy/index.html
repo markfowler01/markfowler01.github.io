@@ -42,12 +42,16 @@
 
     <h2>Information we access</h2>
     <ul>
-      <li>An OAuth 2.0 authorization for the scope <code>https://www.googleapis.com/auth/youtube.upload</code>, granted by the
-        channel owner. This scope only allows uploading videos and setting their thumbnails.</li>
+      <li>An OAuth 2.0 authorization granted by the channel owner for the scopes
+        <code>https://www.googleapis.com/auth/youtube.upload</code> (upload videos and set their thumbnails),
+        <code>https://www.googleapis.com/auth/youtube.force-ssl</code> (add the channel's own videos to its playlists and
+        post a pinned comment on its own videos) and <code>https://www.googleapis.com/auth/yt-analytics.readonly</code>
+        (read the channel's own totals: watch hours, and how many subscribers each of its videos brought in).</li>
       <li>The ID of each video the Uploader creates, returned by YouTube after an upload, so the matching Short can link to it.</li>
     </ul>
-    <p>The Uploader does <strong>not</strong> read, collect, or analyze any other YouTube data: no viewer data, comments,
-      analytics, subscriber lists, or other channels' content.</p>
+    <p>The Uploader does <strong>not</strong> read, collect, or analyze any other YouTube data: no information about
+      individual viewers, no subscriber lists, no other people's comments, and no other channels' content. Channel totals
+      are used only to decide what kind of video to make next.</p>
 
     <h2>How we use it</h2>
     <p>Only to publish PARKED FM's own videos, titles, descriptions, tags, and thumbnails to the PARKED FM channel, and to link each

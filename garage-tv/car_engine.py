@@ -26,7 +26,7 @@ import urllib.request
 from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import make_playlist  # noqa: E402
+import learn  # noqa: E402  (make more of what viewers like)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -57,7 +57,18 @@ SERIES = {
     "parked_peaceful": dict(name="Parked & Peaceful", minutes=240, tail="Calm Lo-Fi for Relaxing & Focus"),
 }
 
-# Videos alternate: one day lo-fi music only, the next day a soundscape only (no music), 8 hours
+# Music days pick one of the three styles of our own music creator (make_lofi_real.py), new
+# songs every video: name for titles and thumbnails, title words, description words.
+MUSIC_STYLES = {
+    "lofi": dict(name="Chill Lo-Fi", words="slow, warm lo-fi hip hop on Rhodes, soft drums and round bass"),
+    "garage": dict(name="Future Garage", tail="Chill Future Garage for Work & Focus",
+                   words="mellow future garage and chillstep: airy pads, deep bass, a soft half-time beat"),
+    "house": dict(name="Lo-Fi House", tail="Lo-Fi House for Work & Focus",
+                  words="gentle lo-fi house: warm Rhodes chords over a soft four-on-the-floor"),
+}
+MUSIC_ORDER = ["lofi", "garage", "house"]
+
+# Videos alternate: one day music only, the next day a soundscape only (no music), 8 hours
 # for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
 SOUND_MINUTES = 480
 SOUND_NAMES = {"rain_road": "Rain Sounds", "rain": "Rain Sounds", "wind": "Wind Sounds", "fan": "Fan Noise",
@@ -141,13 +152,18 @@ def pick(day, published):
     recent_scenes = [e.get("scene") for e in published[-3:]]
     cars = [c for c in CARS if c[0] not in recent_cars] or CARS
     scenes = [s for s in SCENES if s["id"] not in recent_scenes] or SCENES
-    car, short = rng.choice(cars)
-    scene = rng.choice(scenes)
+    # each part of the video is picked with odds that follow how past videos did (learn.py);
+    # music and soundscape days still alternate, and the picture makers stay a fair test
+    history = learn.scored(published)
+    make = learn.choose(rng, [learn.brand(c[0]) for c in cars], lambda e: learn.brand(e.get("car")), history)
+    car, short = rng.choice([c for c in cars if learn.brand(c[0]) == make])
+    scene_id = learn.choose(rng, [s["id"] for s in scenes], lambda e: e.get("scene"), history)
+    scene = next(s for s in scenes if s["id"] == scene_id)
     last = published[-1].get("recipe") if published else None
-    # music days alternate in only once the real-song library (garage-tv/music) is stocked
-    soundscape = rng.choice([scene["bed"], scene["bed"], "brown", "white"])
-    sound = "lofi" if last != "lofi" and make_playlist.music_ready() else soundscape
-    return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound)
+    soundscape = learn.choose(rng, [scene["bed"], "brown", "white"], lambda e: e.get("recipe"), history)
+    sound = "lofi" if last != "lofi" else soundscape
+    style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
+    return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style)
 
 
 def sidecar(choice):
@@ -175,18 +191,23 @@ def sidecar(choice):
     }
     if sound == "lofi":
         hours = series["minutes"] // 60
+        style = choice.get("music_style", "lofi")
+        ms = MUSIC_STYLES[style]
         meta.update(
             minutes=series["minutes"],
-            title_tail=series["tail"],
-            tags=[choice["car"].lower(), short.lower(), series["name"].lower(), "exotic cars", "supercar",
-                  "lofi for work", "focus music"],
+            music_style=style,
+            sound_name=ms["name"],
+            title_tail=ms.get("tail", series["tail"]),
+            tags=[choice["car"].lower(), short.lower(), series["name"].lower(), ms["name"].lower(), "exotic cars",
+                  "supercar", "lofi for work", "focus music"],
             description=(
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
-                f"{hours} hours of slow, chill lo-fi, music only, for working, studying, "
+                f"{hours} hours of {ms['words']}, music only, for working, studying, "
                 "relaxing or drifting off to sleep.\n\n"
-                "No talking. No lyrics. No sudden sounds. Music from the YouTube Audio Library.\n\n"
+                "No talking. No lyrics. No sudden sounds. Every song is original, written and played for "
+                "PARKED FM on real recorded instruments.\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n"
-                f"#parkedfm #lofi #musicforwork #focusmusic #{tag}"
+                f"#parkedfm #{ms['name'].lower().replace(' ', '').replace('-', '')} #musicforwork #focusmusic #{tag}"
             ),
         )
     else:
