@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted)"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics"
         type: choice
-        options: [discover, inspect, explore, sample, kit]
+        options: [discover, inspect, explore, sample, kit, youtube]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -125,3 +125,20 @@ jobs:
           python weekly.py --daily --date 2099-01-01 --outdir ../kit
           echo "build took $(( ($(date +%s) - start) / 60 )) minutes"
           cat ../kit/details.txt
+
+      - name: Check the YouTube sign-in can read the channel's analytics (nothing posted)
+        if: ${{ inputs.task == 'youtube' }}
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: |
+          cd garage-tv
+          python3 -c "
+          import scoreboard
+          r = scoreboard.analytics()
+          if not r:
+              raise SystemExit('analytics permission missing: run get_youtube_token.py --renew and tick both boxes')
+          hours, subs = r
+          print(f'analytics OK: {hours} watch hours in the last 12 months; subscribers gained by video: {subs}')
+          "
