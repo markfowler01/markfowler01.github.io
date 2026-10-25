@@ -222,5 +222,17 @@
     "songs": null,
     "youtube": "V4DuhPr5I-I",
     "short": "h_tp4x8RohE"
+  },
+  {
+    "date": "2026-10-25",
+    "photo": "2026-10-25-ferrari-roma.webp",
+    "recipe": "white",
+    "grade": "none",
+    "title": "Ferrari Roma in the Loft on a Rainy Night | White Noise for Sleep & Focus | 8 Hours",
+    "tag": "daily-2026-10-25",
+    "car": "Ferrari Roma",
+    "scene": "loft_rain_night",
+    "maker": "gemini",
+    "songs": null
   }
 ]

@@ -1,0 +1,37 @@
+{
+  "rotate": false,
+  "recipes": [
+    "white"
+  ],
+  "daily_sound": "white",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Ferrari Roma in the Loft on a Rainy Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "ferrari-roma",
+  "car": "Ferrari Roma",
+  "scene": "loft_rain_night",
+  "minutes": 480,
+  "title_tail": "White Noise for Sleep & Focus",
+  "sound_name": "White Noise",
+  "tags": [
+    "white noise",
+    "white noise for sleeping",
+    "white noise",
+    "sleep sounds",
+    "no music",
+    "ferrari roma",
+    "ferrari roma",
+    "exotic cars",
+    "supercar"
+  ],
+  "description": "Midnight Garage: a liquid silver Ferrari Roma in the loft on a rainy night, rain running down the big window, coffee steaming on the bench and the city glowing below. 8 hours of smooth white noise, no music, for sleeping, studying, or blocking out the world while you work.\n\nNo music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #whitenoise #sleepsounds #ferrariroma",
+  "maker": "gemini"
+}
