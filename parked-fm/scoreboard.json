@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-24 13:29 UTC",
+  "updated": "2026-10-25 13:32 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 2,
-        "counted": 2,
+        "videos": 3,
+        "counted": 3,
         "avg_views": 1
       },
       "openai": {
@@ -42,8 +42,8 @@
     },
     "soundscape": {
       "gemini": {
-        "videos": 2,
-        "counted": 2,
+        "videos": 3,
+        "counted": 3,
         "avg_views": 1
       },
       "openai": {
@@ -60,14 +60,25 @@
   },
   "videos": [
     {
+      "date": "2026-10-25",
+      "title": "Ferrari Roma in the Loft on a Rainy Night | White Noise for Sleep & Focus | 8 Hours",
+      "maker": "gemini",
+      "kind": "soundscape",
+      "youtube": "M5WLDvVRAAs",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "public": true
+    },
+    {
       "date": "2026-10-24",
       "title": "918 Spyder in the Loft Late at Night | Brown Noise for Sleep & Focus | 8 Hours",
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "V4DuhPr5I-I",
-      "views": 0,
+      "views": 1,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 54,
       "public": true
     },
     {
@@ -78,7 +89,7 @@
       "youtube": "TUzsUEcyrUg",
       "views": 1,
       "likes": 0,
-      "short_views": 24,
+      "short_views": 44,
       "public": true
     },
     {
@@ -87,9 +98,9 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "18Fds4Xq4Ac",
-      "views": 13,
+      "views": 14,
       "likes": 0,
-      "short_views": 88,
+      "short_views": 90,
       "public": true
     },
     {
