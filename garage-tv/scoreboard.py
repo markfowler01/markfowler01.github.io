@@ -128,7 +128,8 @@ def refresh(key):
         videos.append(dict(date=e["date"], title=e["title"], maker=e["maker"],
                            kind="music" if e["recipe"] == "lofi" else "soundscape",
                            youtube=e["youtube"], views=views, likes=likes, short_views=short_views,
-                           subscribers=subs.get(e["youtube"]) if studio else None,
+                           # subscribers the video and its Short brought in
+                           subscribers=subs.get(e["youtube"], 0) + subs.get(e.get("short"), 0) if studio else None,
                            public=privacy == "public"))
 
     def score(rows):
