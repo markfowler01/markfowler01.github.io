@@ -62,9 +62,14 @@ Built from what this repo says. Don't go beyond it:
 ## Not ADAS IQ
 
 - **ADAS Intelligence (adasintelligence.ai)** is a different, unrelated company.
-  Never link to it, borrow its claims, pricing or features, or use its name in a
-  way that could be confused with ADAS IQ. If you study it as a competitor, keep
-  it factual and don't disparage it.
+  Mark considers its subscription page (https://adasintelligence.ai/subscription/)
+  a good model to follow. Use it as a **structural benchmark**: how the plans are
+  laid out, how features are presented, the pricing-page flow, and the CTA
+  pattern. Fill that structure with ADAS IQ's own offer.
+- Never copy its wording, link to it, present its features or prices as ADAS IQ's,
+  or use its name in a way that could be confused with ADAS IQ. Any ADAS IQ plan
+  names or prices stay `[placeholders]` until Mark confirms them. Keep any
+  comparison factual and never disparaging.
 
 ## Voice
 
