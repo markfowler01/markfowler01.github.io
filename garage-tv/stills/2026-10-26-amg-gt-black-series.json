@@ -1,0 +1,40 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "wind",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "AMG GT Black Series in a Seaside Garage Late at Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "amg-gt-black-series",
+  "car": "Mercedes-AMG GT Black Series",
+  "scene": "seaside_night",
+  "room": "seaside",
+  "title_style": "use_first",
+  "thumb_style": "brand_first",
+  "minutes": 180,
+  "music_style": "house",
+  "sound_name": "Lo-Fi House",
+  "title_tail": "Lo-Fi House for Work & Focus",
+  "tags": [
+    "mercedes-amg gt black series",
+    "amg gt black series",
+    "midnight garage",
+    "lo-fi house",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "In the welcoming embrace of the Seaside Garage, a satin black Mercedes-AMG GT Black Series stands quietly, its sleek curves reflecting the soft glow of moonlight filtering through the open door. Outside, the calm waters shimmer like liquid silver, while the distant lighthouse casts a rhythmic beam across the night. Inside, the subtle warmth of lo-fi house music envelops you, with gentle Rhodes chords creating a serene atmosphere. As you settle in, feel the tranquil rhythm guide your focus, perfect for working, studying, or simply unwinding.\n\nNo talking. No lyrics. No sudden sounds. Every song is original, written and played for PARKED FM on real recorded instruments.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofihouse #musicforwork #focusmusic #amggtblackseries",
+  "maker": "gemini"
+}

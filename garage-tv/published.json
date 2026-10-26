@@ -236,5 +236,32 @@
     "songs": null,
     "youtube": "M5WLDvVRAAs",
     "short": "5HA8D9ETY18"
+  },
+  {
+    "date": "2026-10-26",
+    "photo": "2026-10-26-amg-gt-black-series.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Lo-Fi House for Work & Focus | AMG GT Black Series in a Seaside Garage Late at Night | 3 Hours",
+    "tag": "daily-2026-10-26",
+    "car": "Mercedes-AMG GT Black Series",
+    "scene": "seaside_night",
+    "maker": "gemini",
+    "music_style": "house",
+    "room": "seaside",
+    "title_style": "use_first",
+    "thumb_style": "brand_first",
+    "songs": [
+      "Low Coffee",
+      "Idle Overpass",
+      "Amber Window",
+      "Hazy Shift",
+      "Warm Drive",
+      "Winter Skyline",
+      "Rainy Engine",
+      "Empty Lane",
+      "Late Skyline",
+      "Open Shift"
+    ]
   }
 ]
