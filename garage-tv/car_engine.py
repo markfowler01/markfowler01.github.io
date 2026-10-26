@@ -232,6 +232,7 @@ OUTDOOR_PROMPT = (
     "width in the left two-thirds, beautifully lit with gentle reflections on its paint; nothing of the car is cut off. The right third of the image is open sky and landscape, calm and uncluttered so text can go there. "
     "The feeling is peaceful and breathtaking, a place you would want to stop and stay a while. "
     "Rich detail, natural light, soft depth of field. "
+    "One single continuous photograph, not a collage, diptych or split frame. "
     "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
     "No people, no text, no logos, no watermarks, no license plate numbers."
 )
@@ -243,6 +244,7 @@ PROMPT = (
     "{view}. The big window takes up the right third of the image and stays calm and uncluttered so text can go there. "
     "The feeling is cozy and peaceful, a place you would want to sit with a coffee and listen to music, not dark or gloomy. "
     "Rich detail, soft depth of field, natural light falloff. "
+    "One single continuous photograph, not a collage, diptych or split frame. "
     "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
     "No people, no text, no logos on the radio, no watermarks, no license plate numbers."
 )
@@ -255,6 +257,17 @@ def prompt_for(scene, color, car):
         return OUTDOOR_PROMPT.format(color=color, car=car, view=view)
     return PROMPT.format(room=room["desc"], floor=room["floor"], color=color, car=car,
                          view=view[0].upper() + view[1:])
+
+
+def looks_split(path):
+    """True if the picture came out as two photos side by side: some vertical line where, row after
+    row, the colour jumps sharply from one side to the other. Only meaningful outdoors; indoors the
+    window frames and wall edges look just like that."""
+    import numpy as np
+    g = np.asarray(Image.open(path).convert("RGB").resize((480, 270)), float)
+    jumps = [np.median(np.abs(g[:, x - 10:x - 2].mean(axis=1) - g[:, x + 2:x + 10].mean(axis=1)).sum(axis=1))
+             for x in range(96, 384)]
+    return max(jumps) > 150  # good outdoor pictures score about 40-60, a split one about 280
 
 
 def slug(s):
@@ -634,6 +647,11 @@ def main():
         return
     base = os.path.join(HERE, "stills", f"{day.isoformat()}-{slug(choice['short'])}")
     meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker)
+    for _ in range(2):  # an outdoor picture that came out as two side-by-side photos gets painted again
+        if not (ROOMS[choice["scene"]["room"]].get("outdoor") and looks_split(base + ".webp")):
+            break
+        print("the picture came out split in two; painting it again", file=sys.stderr)
+        meta["maker"] = generate(prompt, base + ".webp", meta["maker"])
     if maker == "sora" and meta["maker"] == "openai":
         clip = os.path.join(CLIPS, os.path.basename(base) + ".mp4")
         try:
