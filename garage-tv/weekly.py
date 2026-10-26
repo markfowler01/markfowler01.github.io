@@ -577,10 +577,17 @@ def main():
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
          "--title", scene_line, "--label", f"{label_for(p)}  ·  {sound_name(p).upper()}",
          "--hours", str(hours_for(p)), "--out", trailer])
+    # a second Short in the close-up style: the car full screen, a hook, a different song
+    trailer2 = os.path.join(stage, "trailer2.mp4")
+    run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "closeup", "--image", p["photo"],
+         "--audio", wav, "--title", scene_line, "--hook", f"{hours_for(p)} Hours of\n{sound_name(p)}",
+         "--hours", str(hours_for(p)), "--out", trailer2])
     short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]
+    question = "Would you work in here?" if lofi else "Could you sleep in here?"
+    short2_title = f"{question} {scene_line} #shorts"[:100]
     short_tags = "#parkedfm #lofi #shorts" if lofi else f"#parkedfm #{sound_name(p).lower().replace(' ', '')} #shorts"
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
-                   short_title=short_title,
+                   short_title=short_title, short2_title=short2_title,
                    short_description=f"The full {hours_for(p)}-hour video is on the channel. {short_tags}",
                    hours=hours_for(p),
                    madeForKids=False, alteredContent=True, recipe=p["recipe"], grade=p["grade"],
@@ -616,6 +623,7 @@ def main():
     Image.open(thumb).save(os.path.join(args.outdir, "thumbnail.jpg"), quality=90)
     import shutil
     shutil.copy(trailer, os.path.join(args.outdir, "trailer.mp4"))
+    shutil.copy(trailer2, os.path.join(args.outdir, "trailer2.mp4"))
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
