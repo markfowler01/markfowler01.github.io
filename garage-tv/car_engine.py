@@ -69,6 +69,8 @@ MUSIC_STYLES = {
 MUSIC_ORDER = ["lofi", "garage", "house"]
 # How the title is put together (weekly.title_for); never the same style two days running
 TITLE_STYLES = ["scene_first", "hours_first", "use_first"]
+# Thumbnail layouts (weekly.make_thumbnail): the brand big, or what you'll hear big; learned like the rest
+THUMB_STYLES = ["brand_first", "sound_first"]
 
 # Videos alternate: one day music only, the next day a soundscape only (no music), 8 hours
 # for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
@@ -228,8 +230,9 @@ def pick(day, published):
     style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
     last_title = published[-1].get("title_style") if published else None
     title_style = learn.choose(rng, [t for t in TITLE_STYLES if t != last_title], lambda e: e.get("title_style"), history)
+    thumb_style = learn.choose(rng, THUMB_STYLES, lambda e: e.get("thumb_style"), history)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
-                title_style=title_style)
+                title_style=title_style, thumb_style=thumb_style)
 
 
 def sidecar(choice):
@@ -256,6 +259,7 @@ def sidecar(choice):
         "scene": sc["id"],
         "room": sc["room"],
         "title_style": choice.get("title_style", "scene_first"),
+        "thumb_style": choice.get("thumb_style", "brand_first"),
     }
     if sound == "lofi":
         hours = series["minutes"] // 60

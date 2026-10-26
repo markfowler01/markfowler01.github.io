@@ -2,8 +2,8 @@
 
 Every published video gets a score from how it did in its first two weeks: views, likes (worth 10
 views) and, once the channel's analytics permission is in place, subscribers gained (worth 50),
-per day. The car engine then picks each part of the next video (scene, soundscape sound, music
-style, car brand) with odds that follow those scores:
+per day. The car engine then picks each part of the next video (room, scene, soundscape sound,
+music style, car brand, title style, thumbnail layout) with odds that follow those scores:
 
 - an option's score is shrunk toward the channel average until it has a few videos behind it,
   so one lucky video can't take over;
@@ -90,7 +90,10 @@ def report(published=None, board=None):
     dims = [("scene", lambda e: e.get("scene")),
             ("soundscape", lambda e: e.get("recipe") if e.get("recipe") != "lofi" else None),
             ("music style", lambda e: e.get("music_style")),
+            ("room", lambda e: e.get("room")),
             ("car brand", lambda e: brand(e.get("car"))),
+            ("title style", lambda e: e.get("title_style")),
+            ("thumbnail", lambda e: e.get("thumb_style")),
             ("picture maker", lambda e: e.get("maker"))]
     for name, key in dims:
         seen = [key(e) for e, _ in history if key(e)]

@@ -397,7 +397,13 @@ def make_thumbnail(p, out_path):
     meta = p.get("meta", {})
     side = meta.get("text_side") or auto_side(p["photo"])
     right_side = side == "right"
-    bg = cover(grade(Image.open(p["photo"]).convert("RGB"), p["grade"]), 1280, 720).convert("RGBA")
+    sound_first = meta.get("thumb_style") == "sound_first"
+    img = grade(Image.open(p["photo"]).convert("RGB"), p["grade"])
+    if sound_first:  # a little closer in on the car, which sits on the side away from the text
+        zw, zh = round(img.width / 1.1), round(img.height / 1.1)
+        x0 = 0 if right_side else img.width - zw
+        img = img.crop((x0, (img.height - zh) // 2, x0 + zw, (img.height - zh) // 2 + zh))
+    bg = cover(img, 1280, 720).convert("RGBA")
     shade = Image.new("L", (1280, 720))
     ramp = [int(210 * max(0.0, 1 - (x / 1280) * 1.7)) for x in range(1280)]
     if right_side:
@@ -409,14 +415,26 @@ def make_thumbnail(p, out_path):
     left = 70
     # draw the text block on its own layer so it can be scaled and moved per photo
     layer = Image.new("RGBA", bg.size, (0, 0, 0, 0))
-    mech = word(BRAND, 170, CREAM, distress=0.3, seed=p["index"])
-    mech = mech.resize((target, int(mech.height * target / mech.width)), Image.LANCZOS)
-    sleep = word(TAGLINE, 44, AMBER, squeeze=0.95)
-    if sleep.width > target:
-        sleep = sleep.resize((target, int(sleep.height * target / sleep.width)), Image.LANCZOS)
-    paste_shadowed(layer, mech, (left, 70))
-    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=5, offset=2, strength=255)
-    paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=12, offset=0, strength=230)
+    if sound_first:
+        # what you'll hear is the headline (it's what people choose by); the brand sits small above it
+        mech = word(BRAND, 90, AMBER, squeeze=0.95)
+        mech = mech.resize((int(target * 0.5), int(mech.height * target * 0.5 / mech.width)), Image.LANCZOS)
+        sleep = word(sound_name(p).upper(), 160, CREAM, squeeze=0.9, distress=0.25, seed=p["index"])
+        h = min(150, int(sleep.height * target / sleep.width))
+        sleep = sleep.resize((int(sleep.width * h / sleep.height), h), Image.LANCZOS)
+        paste_shadowed(layer, mech, (left + (target - mech.width) // 2, 70), blur=5, offset=2, strength=255)
+        paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 12))
+    else:
+        mech = word(BRAND, 170, CREAM, distress=0.3, seed=p["index"])
+        mech = mech.resize((target, int(mech.height * target / mech.width)), Image.LANCZOS)
+        sleep = word(TAGLINE, 44, AMBER, squeeze=0.95)
+        if sleep.width > target:
+            sleep = sleep.resize((target, int(sleep.height * target / sleep.width)), Image.LANCZOS)
+        paste_shadowed(layer, mech, (left, 70))
+        paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=5, offset=2,
+                       strength=255)
+        paste_shadowed(layer, sleep, (left + (target - sleep.width) // 2, 70 + mech.height + 14), blur=12, offset=0,
+                       strength=230)
 
     band_y = 70 + mech.height + sleep.height + 26
     band = brush_band(target + 40, 118, p["index"])
@@ -424,7 +442,9 @@ def make_thumbnail(p, out_path):
     hours = word(f"{hours_for(p)} HOURS", 92, NAVY, squeeze=0.95)
     layer.alpha_composite(hours, (left - 20 + (band.width - hours.width) // 2, band_y + (band.height - hours.height) // 2))
 
-    if meta.get("series"):
+    if sound_first:
+        line = f"{meta['title'].split(' in ')[0].upper()}   |   {label_for(p)}"
+    elif meta.get("series"):
         line = f"{label_for(p)}   |   {sound_name(p).upper()}"
     elif p["recipe"] == "mix":
         line = f"{label_for(p)}   |   NO TALKING"
@@ -615,6 +635,7 @@ def main():
                         car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
                         music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
                         room=meta.get("room"), title_style=meta.get("title_style"),
+                        thumb_style=meta.get("thumb_style"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
