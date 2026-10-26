@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; rooms = paint one picture in each room (nothing posted)"
         type: choice
-        options: [discover, inspect, explore, sample, kit, youtube]
+        options: [discover, inspect, explore, sample, kit, youtube, rooms]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -107,6 +107,8 @@ jobs:
         if: ${{ inputs.task == 'kit' }}
         env:
           STYLE: ${{ inputs.style }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           pip install -q numpy Pillow imageio-ffmpeg
           cd garage-tv
@@ -119,7 +121,7 @@ jobs:
           choice.update(sound="lofi", music_style=os.environ["STYLE"])
           photo = max(glob.glob("stills/*.webp"), key=os.path.getmtime)
           shutil.copy(photo, "stills/2099-01-01-lab-test.webp")
-          json.dump(ce.sidecar(choice), open("stills/2099-01-01-lab-test.json", "w"), indent=2)
+          json.dump(ce.with_written_intro(choice, ce.sidecar(choice)), open("stills/2099-01-01-lab-test.json", "w"), indent=2)
           PY
           start=$(date +%s)
           python weekly.py --daily --date 2099-01-01 --outdir ../kit
@@ -142,3 +144,35 @@ jobs:
           hours, subs = r
           print(f'analytics OK: {hours} watch hours in the last 12 months; subscribers gained by video: {subs}')
           "
+
+      - uses: actions/setup-python@v5
+        if: ${{ inputs.task == 'rooms' }}
+        with:
+          python-version: '3.12'
+
+      - name: Paint one picture in each room (nothing posted)
+        if: ${{ inputs.task == 'rooms' }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pip install -q Pillow numpy
+          mkdir -p lab
+          cd garage-tv
+          python - <<'PY'
+          import random
+          import car_engine as ce
+          rng = random.Random(7)
+          for room, r in ce.ROOMS.items():
+              sc = rng.choice([s for s in ce.SCENES if s["room"] == room])
+              car = rng.choice(ce.CARS)[0]
+              view = sc["view"]
+              prompt = ce.PROMPT.format(room=r["desc"], floor=r["floor"], color=rng.choice(ce.COLORS), car=car,
+                                        view=view[0].upper() + view[1:])
+              out = f"../lab/{sc['id']}.webp"
+              maker = ce.generate(prompt, out, "gemini")
+              print(room, sc["id"], car, "painted by", maker)
+          PY
+          tag="music-lab-rooms-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$tag" ../lab/*.webp --prerelease --title "Lab: the PARKED FM rooms" --notes "Test pictures only; nothing was posted."
