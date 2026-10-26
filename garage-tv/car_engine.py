@@ -228,8 +228,8 @@ ROOM_OF = {s["id"]: s["room"] for s in SCENES}
 
 OUTDOOR_PROMPT = (
     "Photorealistic, cinematic landscape photograph, 16:9 framing. A {color} {car} {view}. "
-    "The car sits in the left two-thirds of the frame, three-quarter view, beautifully lit with gentle reflections "
-    "on its paint. The right third of the image is open sky and landscape, calm and uncluttered so text can go there. "
+    "The whole car is in view, seen from a little distance, three-quarter view, filling about a third of the frame "
+    "width in the left two-thirds, beautifully lit with gentle reflections on its paint; nothing of the car is cut off. The right third of the image is open sky and landscape, calm and uncluttered so text can go there. "
     "The feeling is peaceful and breathtaking, a place you would want to stop and stay a while. "
     "Rich detail, natural light, soft depth of field. "
     "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
