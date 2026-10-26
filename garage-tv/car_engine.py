@@ -67,6 +67,8 @@ MUSIC_STYLES = {
                   words="gentle lo-fi house: warm Rhodes chords over a soft four-on-the-floor"),
 }
 MUSIC_ORDER = ["lofi", "garage", "house"]
+# How the title is put together (weekly.title_for); never the same style two days running
+TITLE_STYLES = ["scene_first", "hours_first", "use_first"]
 
 # Videos alternate: one day music only, the next day a soundscape only (no music), 8 hours
 # for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
@@ -77,62 +79,122 @@ SOUND_WORDS = {"rain_road": "steady rain", "rain": "soft rain on the roof", "win
                "fan": "a steady fan", "heater": "a low heater hum", "brown": "deep brown noise",
                "white": "smooth white noise"}
 
-# The PARKED FM loft: one signature room every video, so the channel feels like a place you
-# come back to. The car changes; the weather and time of day outside the big window change.
-LOFT = (
-    "a cozy, warm loft garage with exposed red-brick walls, a black steel-framed floor-to-ceiling window wall, "
-    "warm amber Edison-bulb pendant lights, a wooden workbench with a steaming mug of coffee and a small glowing "
-    "vintage radio, a worn brown leather armchair with a knit blanket, potted plants, and a polished concrete floor"
-)
+# The PARKED FM rooms: a few signature places the channel keeps coming back to, so it feels like
+# somewhere you know rather than random pictures. The car changes every video; so do the weather
+# and the time of day outside each room's big window.
+ROOMS = {
+    "loft": dict(name="the Loft", floor="polished concrete floor", desc=(
+        "a cozy, warm loft garage with exposed red-brick walls, a black steel-framed floor-to-ceiling window wall, "
+        "warm amber Edison-bulb pendant lights, a wooden workbench with a steaming mug of coffee and a small glowing "
+        "vintage radio, a worn brown leather armchair with a knit blanket, potted plants, and a polished concrete floor")),
+    "cabin": dict(name="the Mountain Cabin Garage", floor="wide wooden plank floor", desc=(
+        "a cozy timber mountain-cabin garage with honey-colored log walls, exposed wooden beams, a stone fireplace "
+        "with a low fire, a huge picture window looking out over pine forest and mountains, a wooden workbench with a "
+        "steaming mug of coffee and a small glowing vintage radio, a plaid wool blanket on a leather armchair, "
+        "and a wide wooden plank floor")),
+    "penthouse": dict(name="the Penthouse Garage", floor="dark polished stone floor", desc=(
+        "a quiet luxury penthouse garage high above the city, floor-to-ceiling glass wall with the skyline far below, "
+        "warm walnut wood panels, soft indirect lighting and a few brass floor lamps, a low leather lounge chair, a "
+        "side table with a coffee cup and a small glowing vintage radio, a tall plant, and a dark polished stone floor")),
+    "seaside": dict(name="the Seaside Garage", floor="weathered wooden floor", desc=(
+        "a calm seaside garage on the coast, whitewashed wooden walls, a wide glass wall looking out over the ocean "
+        "and rocky shore, a surfboard leaning on the wall, warm lantern lights, a wooden workbench with a steaming mug "
+        "of coffee and a small glowing vintage radio, a canvas armchair with a blanket, and a weathered wooden floor")),
+}
 
-# Scenes: the loft's mood, its series, the soundscape that suits it, the words for the description,
-# and the gentle motion Sora adds. rain=0 everywhere: the rain is on the window, not falling indoors.
 SCENES = [
-    dict(id="loft_rain_night", series="midnight_garage", bed="rain", rain=0,
+    dict(room="loft", id="loft_rain_night", series="midnight_garage", bed="rain", rain=0,
          title="in the Loft on a Rainy Night",
          view="outside the big window it is night and raining over the city skyline, rain streaks and droplets on the glass, city lights glowing softly through the wet window",
          words="rain running down the big window, coffee steaming on the bench and the city glowing below",
          motion="raindrops running down the window glass, steam curling up from the coffee mug, city lights twinkling softly"),
-    dict(id="loft_late_night", series="midnight_garage", bed="brown", rain=0,
+    dict(room="loft", id="loft_late_night", series="midnight_garage", bed="brown", rain=0,
          title="in the Loft Late at Night",
          view="outside the big window it is 2 am, a quiet city with scattered lit windows under a light drizzle, the room lit only by warm lamps and the radio's glow",
          words="the city asleep outside, a light drizzle on the glass and the radio glowing low",
          motion="a light drizzle on the window, the radio dial glowing gently, steam rising from the coffee"),
-    dict(id="loft_heavy_rain", series="rainy_drives", bed="rain", rain=0,
+    dict(room="loft", id="loft_heavy_rain", series="rainy_drives", bed="rain", rain=0,
          title="in the Loft in Heavy Rain",
          view="outside the big window heavy rain pours over the city at night, sheets of water running down the glass, blurred lights beyond",
          words="water pouring down the windows while it stays warm and dry inside",
          motion="heavy rain streaming down the window glass, blurred city lights shimmering through the water, steam from the coffee"),
-    dict(id="loft_rain_dusk", series="rainy_drives", bed="rain", rain=0,
+    dict(room="loft", id="loft_rain_dusk", series="rainy_drives", bed="rain", rain=0,
          title="in the Loft on a Rainy Evening",
          view="outside the big window it is blue-hour dusk in steady rain, the city lights just coming on, raindrops beading on the glass",
          words="the city lights coming on and raindrops beading on the glass",
          motion="raindrops sliding down the window, city lights flickering on one by one, steam from the coffee"),
-    dict(id="loft_autumn_rain", series="parked_peaceful", bed="rain", rain=0,
+    dict(room="loft", id="loft_autumn_rain", series="parked_peaceful", bed="rain", rain=0,
          title="in the Loft on a Rainy Autumn Afternoon",
          view="outside the big window it is a grey autumn afternoon with soft rain, orange and red trees along the street below, a few wet leaves stuck to the glass",
          words="red and orange trees outside and a warm lamp on",
          motion="soft rain running down the window, a leaf drifting past outside, steam from the coffee"),
-    dict(id="loft_snow", series="parked_peaceful", bed="heater", rain=0,
+    dict(room="loft", id="loft_snow", series="parked_peaceful", bed="heater", rain=0,
          title="in the Loft on a Snowy Evening",
          view="outside the big window snow is falling gently over the city rooftops at dusk, frost in the corners of the glass, a small wood stove glowing in the corner",
          words="snow on the rooftops, a wood stove glowing and the lamps on low",
          motion="snow drifting down outside the window, the wood stove's fire flickering, steam from the coffee"),
-    dict(id="loft_fog_morning", series="parked_peaceful", bed="white", rain=0,
+    dict(room="loft", id="loft_fog_morning", series="parked_peaceful", bed="white", rain=0,
          title="in the Loft on a Foggy Morning",
          view="outside the big window soft morning fog hides the city, only the nearest rooftops visible, pale cool light mixing with the warm lamps",
          words="the city hidden in mist and the first coffee of the day",
          motion="fog slowly drifting past the window, steam curling from the coffee, the lamps glowing softly"),
-    dict(id="loft_golden_rain", series="parked_peaceful", bed="rain", rain=0,
+    dict(room="loft", id="loft_golden_rain", series="parked_peaceful", bed="rain", rain=0,
          title="in the Loft as the Rain Clears at Sunset",
          view="outside the big window the rain is clearing at sunset, golden light breaking through the clouds over the wet city, the last raindrops on the glass catching the light",
          words="golden light on the wet city and the last drops on the glass",
          motion="the last raindrops sliding down the glowing window, clouds drifting, steam from the coffee"),
+    dict(room="cabin", id="cabin_snow_night", series="parked_peaceful", bed="heater", rain=0,
+         title="in a Mountain Cabin Garage on a Snowy Night",
+         view="outside the big window snow is falling softly over dark pine trees at night, the fireplace glowing warm inside",
+         words="snow falling on the pines, the fire crackling low and the coffee still hot",
+         motion="snow drifting down past the window, the fireplace flickering, steam rising from the coffee"),
+    dict(room="cabin", id="cabin_forest_rain", series="rainy_drives", bed="rain", rain=0,
+         title="in a Mountain Cabin Garage in the Rain",
+         view="outside the big window steady rain falls on a deep green pine forest, mist between the trees, droplets on the glass",
+         words="rain on the pines, mist in the trees and the fire keeping it warm",
+         motion="rain running down the window, mist drifting between the pines, the fire flickering"),
+    dict(room="cabin", id="cabin_misty_morning", series="parked_peaceful", bed="wind", rain=0,
+         title="in a Mountain Cabin Garage on a Misty Morning",
+         view="outside the big window morning mist rolls over the mountains and pine forest, soft pale light, the fire still glowing from the night",
+         words="mist rolling over the mountains and the first light of the morning",
+         motion="mist slowly rolling over the mountains, pine tops swaying gently, steam from the coffee"),
+    dict(room="penthouse", id="penthouse_city_night", series="midnight_garage", bed="brown", rain=0,
+         title="in a Penthouse Garage Above the City at Night",
+         view="outside the glass wall the city glitters far below at night, streets of light and quiet towers, the room lit by warm lamps",
+         words="the whole city glittering far below and the lamps turned low",
+         motion="city lights twinkling far below, a plane's lights crossing slowly, steam from the coffee"),
+    dict(room="penthouse", id="penthouse_rain", series="rainy_drives", bed="rain", rain=0,
+         title="in a Penthouse Garage on a Rainy Night",
+         view="outside the glass wall rain streaks across the glass high above a wet, glowing city at night, low clouds around the towers",
+         words="rain streaking the glass high above a glowing city",
+         motion="rain streaking across the glass, clouds drifting past the towers, city lights shimmering"),
+    dict(room="penthouse", id="penthouse_sunrise", series="parked_peaceful", bed="white", rain=0,
+         title="in a Penthouse Garage at Sunrise",
+         view="outside the glass wall the sun is rising over the city, soft gold and pink light across the towers and the haze below",
+         words="the sun coming up over the city and the first coffee of the day",
+         motion="soft sunrise light slowly brightening, haze drifting over the city, steam from the coffee"),
+    dict(room="seaside", id="seaside_rain_evening", series="rainy_drives", bed="rain", rain=0,
+         title="in a Seaside Garage on a Rainy Evening",
+         view="outside the glass wall a grey ocean meets the rocky shore in soft evening rain, waves rolling in slowly, raindrops on the glass",
+         words="rain on the glass and slow grey waves rolling in",
+         motion="raindrops sliding down the glass, waves rolling slowly onto the rocks, the lanterns glowing"),
+    dict(room="seaside", id="seaside_sunset", series="parked_peaceful", bed="wind", rain=0,
+         title="in a Seaside Garage at Sunset",
+         view="outside the glass wall the sun is setting over a calm ocean, warm orange light across the water and the rocks",
+         words="the sun going down over the ocean and a soft sea breeze",
+         motion="gentle waves catching the sunset light, clouds drifting slowly, steam from the coffee"),
+    dict(room="seaside", id="seaside_night", series="midnight_garage", bed="wind", rain=0,
+         title="in a Seaside Garage Late at Night",
+         view="outside the glass wall the ocean is dark under a moonlit sky, a distant lighthouse beam and moonlight on the waves",
+         words="moonlight on the water and a lighthouse turning in the distance",
+         motion="moonlight shimmering on the waves, the lighthouse beam turning slowly, the lanterns glowing"),
 ]
 
+ROOM_OF = {s["id"]: s["room"] for s in SCENES}
+
 PROMPT = (
-    "Photorealistic, warm and inviting cinematic interior photograph, 16:9 framing, inside {loft}. "
-    "A {color} {car} is parked inside on the polished concrete floor, in the left two-thirds of the frame, "
+    "Photorealistic, warm and inviting cinematic interior photograph, 16:9 framing, inside {room}. "
+    "A {color} {car} is parked inside on the {floor}, in the left two-thirds of the frame, "
     "three-quarter front view, softly lit by the warm lamps with gentle reflections on its paint. "
     "{view}. The big window takes up the right third of the image and stays calm and uncluttered so text can go there. "
     "The feeling is cozy and peaceful, a place you would want to sit with a coffee and listen to music, not dark or gloomy. "
@@ -157,13 +219,17 @@ def pick(day, published):
     history = learn.scored(published)
     make = learn.choose(rng, [learn.brand(c[0]) for c in cars], lambda e: learn.brand(e.get("car")), history)
     car, short = rng.choice([c for c in cars if learn.brand(c[0]) == make])
-    scene_id = learn.choose(rng, [s["id"] for s in scenes], lambda e: e.get("scene"), history)
+    room = learn.choose(rng, [s["room"] for s in scenes], lambda e: ROOM_OF.get(e.get("scene")), history)
+    scene_id = learn.choose(rng, [s["id"] for s in scenes if s["room"] == room], lambda e: e.get("scene"), history)
     scene = next(s for s in scenes if s["id"] == scene_id)
     last = published[-1].get("recipe") if published else None
     soundscape = learn.choose(rng, [scene["bed"], "brown", "white"], lambda e: e.get("recipe"), history)
     sound = "lofi" if last != "lofi" else soundscape
     style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
-    return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style)
+    last_title = published[-1].get("title_style") if published else None
+    title_style = learn.choose(rng, [t for t in TITLE_STYLES if t != last_title], lambda e: e.get("title_style"), history)
+    return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
+                title_style=title_style)
 
 
 def sidecar(choice):
@@ -188,6 +254,8 @@ def sidecar(choice):
         "slug": slug(short),
         "car": choice["car"],
         "scene": sc["id"],
+        "room": sc["room"],
+        "title_style": choice.get("title_style", "scene_first"),
     }
     if sound == "lofi":
         hours = series["minutes"] // 60
@@ -353,6 +421,75 @@ def generate_openai(prompt, out_path):
     return out_path
 
 
+WRITER_PROMPT = (
+    "Write the opening paragraph of a YouTube description for a relaxing video. One paragraph, 3 or 4 sentences, "
+    "50 to 90 words. Warm, simple and calm, like a person describing a place they love; talk to the viewer as 'you'. "
+    "Paint this scene in a fresh way: the car, the room, what's outside the window, then what you hear and what the "
+    "video is good for. No hashtags, no emojis, no links, no lists, no quotation marks, no made-up car facts or "
+    "numbers, and don't mention AI.\n\nThe video: {facts}"
+)
+
+
+def write_intro(choice, meta):
+    """A fresh opening paragraph for this video's description (Gemini text, then OpenAI), so no two
+    descriptions read like a template. None if neither answers; the template one is used then."""
+    sc, room = choice["scene"], ROOMS[choice["scene"]["room"]]
+    hear = (MUSIC_STYLES[meta["music_style"]]["words"] + ", music only" if choice["sound"] == "lofi"
+            else SOUND_WORDS[choice["sound"]] + ", no music")
+    facts = (f"a {choice['color']} {choice['car']} parked {sc['title']} ({room['name']}). Outside: {sc['words']}. "
+             f"You hear {hear}, for {meta['minutes'] // 60} hours. "
+             f"Good for {'working, studying and relaxing' if choice['sound'] == 'lofi' else 'sleeping and focus'}.")
+    prompt = WRITER_PROMPT.format(facts=facts)
+    for name, fn in (("gemini", gemini_text), ("openai", openai_text)):
+        if not os.environ.get(MAKERS[name]):
+            continue
+        try:
+            text = " ".join(fn(prompt).replace("#", "").split())
+        except (RuntimeError, OSError, KeyError, ValueError) as e:
+            print(f"{name} couldn't write the description:", e, file=sys.stderr)
+            continue
+        if 120 <= len(text) <= 900 and "http" not in text:
+            return text
+    return None
+
+
+def with_written_intro(choice, meta):
+    """Swap the template's first paragraph for a freshly written one, when the writer answers."""
+    text = write_intro(choice, meta)
+    if text:
+        meta["description"] = text + meta["description"][meta["description"].index("\n\n"):]
+    return meta
+
+
+def gemini_text(prompt):
+    model = os.environ.get("GEMINI_TEXT_MODEL", "gemini-2.5-flash")
+    body = json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode()
+    req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                                 data=body, method="POST")
+    req.add_header("x-goog-api-key", os.environ["GEMINI_API_KEY"])
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            data = json.load(r)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Gemini said {e.code}: {e.read()[:300]!r}")
+    return "".join(p.get("text", "") for p in data["candidates"][0]["content"]["parts"]).strip()
+
+
+def openai_text(prompt):
+    body = json.dumps({"model": os.environ.get("OPENAI_TEXT_MODEL", "gpt-4o-mini"),
+                       "messages": [{"role": "user", "content": prompt}]}).encode()
+    req = urllib.request.Request("https://api.openai.com/v1/chat/completions", data=body, method="POST")
+    req.add_header("Authorization", f"Bearer {os.environ['OPENAI_API_KEY']}")
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            data = json.load(r)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"OpenAI said {e.code}: {e.read()[:300]!r}")
+    return data["choices"][0]["message"]["content"].strip()
+
+
 SORA_PROMPT = (
     "Bring this photo to life as a calm, cinematic ambient shot. Locked-off tripod camera: the camera does not "
     "move, pan, zoom or cut at all. The {color} {car} stays perfectly still, parked. "
@@ -432,8 +569,12 @@ def main():
 
     choice = pick(day, published)
     view = choice["scene"]["view"]
-    prompt = PROMPT.format(loft=LOFT, color=choice["color"], car=choice["car"], view=view[0].upper() + view[1:])
+    room = ROOMS[choice["scene"]["room"]]
+    prompt = PROMPT.format(room=room["desc"], floor=room["floor"], color=choice["color"], car=choice["car"],
+                           view=view[0].upper() + view[1:])
     meta = sidecar(choice)
+    if not args.dry_run:
+        with_written_intro(choice, meta)
     maker = os.environ.get("MAKER") if os.environ.get("MAKER") in MAKERS else pick_maker(published, choice["sound"])
     print(json.dumps(dict(car=choice["car"], color=choice["color"], scene=choice["scene"]["id"],
                           sound=choice["sound"], maker=maker, title=meta["title"], prompt=prompt), indent=2))

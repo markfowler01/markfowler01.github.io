@@ -225,7 +225,12 @@ def title_for(p):
     h = hours_for(p)
     if p["recipe"] in ("lofi", "mix") or m.get("series"):
         short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else sound_name(p)
-        options = [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
+        use = "Work & Focus" if p["recipe"] in ("lofi", "mix") else "Deep Sleep"
+        # the car engine varies the title style day to day, so the channel doesn't read like a template
+        styled = {"hours_first": [f"{h} Hours of {short} | {mid}"],
+                  "use_first": [f"{short} for {use} | {mid} | {h} Hours", f"{short} for {use} | {mid}"],
+                  }.get(m.get("title_style"), [])
+        options = styled + [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
         return next(t for t in options if len(t) <= 100)
     options = [
         f"{mid}, No Music, No Talking | {tail} | {h} Hours",
@@ -609,6 +614,7 @@ def main():
                         grade=p["grade"], title=title, tag=p["tag"],
                         car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
                         music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
+                        room=meta.get("room"), title_style=meta.get("title_style"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
