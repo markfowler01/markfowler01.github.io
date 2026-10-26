@@ -571,7 +571,8 @@ def main():
     title, desc, tags = title_for(p), description_for(p), tags_for(p)
     if album_songs:
         desc = with_tracklist(desc, album_songs, audio_minutes)
-    scene_line = title.split(" | ")[0]  # the car and scene, e.g. "Ferrari Roma on a Rainy Neon Night"
+    # the car and scene, e.g. "Ferrari Roma on a Rainy Neon Night" (titles may put the sound or hours first)
+    scene_line = meta["title"] if meta.get("title") and not p.get("title_override") else title.split(" | ")[0]
     trailer = os.path.join(stage, "trailer.mp4")
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
          "--title", scene_line, "--label", f"{label_for(p)}  ·  {sound_name(p).upper()}",
