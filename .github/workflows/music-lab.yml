@@ -157,7 +157,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          pip install -q Pillow
+          pip install -q Pillow numpy
           mkdir -p lab
           cd garage-tv
           python - <<'PY'
