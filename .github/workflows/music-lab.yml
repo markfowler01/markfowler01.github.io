@@ -153,6 +153,8 @@ jobs:
       - name: Paint one picture in each room (nothing posted)
         if: ${{ inputs.task == 'rooms' }}
         env:
+          ROOMS: ${{ inputs.cmd != 'ls' && inputs.cmd || '' }}
+          SEED: ${{ inputs.seed }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GH_TOKEN: ${{ github.token }}
@@ -161,15 +163,15 @@ jobs:
           mkdir -p lab
           cd garage-tv
           python - <<'PY'
+          import os
           import random
           import car_engine as ce
-          rng = random.Random(7)
-          for room, r in ce.ROOMS.items():
+          rng = random.Random(int(os.environ.get("SEED", "7")))
+          rooms = os.environ.get("ROOMS", "").split() or list(ce.ROOMS)
+          for room in rooms:
               sc = rng.choice([s for s in ce.SCENES if s["room"] == room])
               car = rng.choice(ce.CARS)[0]
-              view = sc["view"]
-              prompt = ce.PROMPT.format(room=r["desc"], floor=r["floor"], color=rng.choice(ce.COLORS), car=car,
-                                        view=view[0].upper() + view[1:])
+              prompt = ce.prompt_for(sc, rng.choice(ce.COLORS), car)
               out = f"../lab/{sc['id']}.webp"
               maker = ce.generate(prompt, out, "gemini")
               print(room, sc["id"], car, "painted by", maker)
