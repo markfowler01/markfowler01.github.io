@@ -98,6 +98,8 @@ ROOMS = {
         "a quiet luxury penthouse garage high above the city, floor-to-ceiling glass wall with the skyline far below, "
         "warm walnut wood panels, soft indirect lighting and a few brass floor lamps, a low leather lounge chair, a "
         "side table with a coffee cup and a small glowing vintage radio, a tall plant, and a dark polished stone floor")),
+    # out on the road: the car parked at a beautiful spot, no garage
+    "outdoors": dict(name="Scenic Overlooks", outdoor=True),
     "seaside": dict(name="the Seaside Garage", floor="weathered wooden floor", desc=(
         "a calm seaside garage on the coast, whitewashed wooden walls, a wide glass wall looking out over the ocean "
         "and rocky shore, a surfboard leaning on the wall, warm lantern lights, a wooden workbench with a steaming mug "
@@ -175,6 +177,36 @@ SCENES = [
          view="outside the glass wall the sun is rising over the city, soft gold and pink light across the towers and the haze below",
          words="the sun coming up over the city and the first coffee of the day",
          motion="soft sunrise light slowly brightening, haze drifting over the city, steam from the coffee"),
+    dict(room="outdoors", id="out_cherry_blossom", series="parked_peaceful", bed="wind", rain=0,
+         title="at a Cherry Blossom Overlook in Spring",
+         view="parked on a gravel overlook under a blooming cherry tree, pink petals drifting in the air, rolling green hills and forest valleys stretching to the horizon under a soft blue sky with a few clouds",
+         words="pink petals drifting down and green valleys rolling out to the horizon",
+         motion="cherry blossom petals drifting down, branches swaying gently, clouds moving slowly over the valley"),
+    dict(room="outdoors", id="out_autumn_valley", series="parked_peaceful", bed="wind", rain=0,
+         title="at an Autumn Valley Overlook",
+         view="parked on a quiet mountain overlook in autumn, a valley of orange, red and gold trees below, soft late-afternoon light and a winding road in the distance",
+         words="a valley of red and gold trees and the late sun on the hills",
+         motion="autumn leaves drifting past, trees swaying gently in the valley, soft light shifting over the hills"),
+    dict(room="outdoors", id="out_alpine_lake", series="parked_peaceful", bed="wind", rain=0,
+         title="by an Alpine Lake at Sunrise",
+         view="parked on the shore of a calm alpine lake at sunrise, snow-capped mountains reflected in the still water, pine trees and a thin morning mist over the lake",
+         words="snowy peaks reflected in a still lake and morning mist on the water",
+         motion="mist drifting slowly over the lake, gentle ripples on the water, the sunrise light growing"),
+    dict(room="outdoors", id="out_coast_sunset", series="parked_peaceful", bed="wind", rain=0,
+         title="on a Coastal Cliff Road at Sunset",
+         view="parked at a pull-out on a winding coastal cliff road at sunset, the ocean far below glowing orange, waves on the rocks and the road curving away along the coast",
+         words="the ocean glowing below and the coast road curving away into the sunset",
+         motion="waves rolling onto the rocks far below, the sun sinking slowly, clouds drifting"),
+    dict(room="outdoors", id="out_forest_rain", series="rainy_drives", bed="rain_road", rain=700,
+         title="on a Forest Road in the Rain",
+         view="parked on the side of a wet two-lane road through a tall green forest in steady rain, the asphalt shining, mist between the trees and puddles reflecting the car",
+         words="steady rain on the forest road and mist between the tall trees",
+         motion="rain falling steadily, droplets splashing in the puddles, mist drifting between the trees"),
+    dict(room="outdoors", id="out_city_night", series="midnight_garage", bed="brown", rain=0,
+         title="at a City Overlook at Night",
+         view="parked at a hilltop overlook at night, the whole city spread out below in glittering lights, a clear dark sky with a few stars",
+         words="the city lights spread out below and a clear night sky",
+         motion="city lights twinkling far below, a few cars' lights moving on the roads, stars shimmering"),
     dict(room="seaside", id="seaside_rain_evening", series="rainy_drives", bed="rain", rain=0,
          title="in a Seaside Garage on a Rainy Evening",
          view="outside the glass wall a grey ocean meets the rocky shore in soft evening rain, waves rolling in slowly, raindrops on the glass",
@@ -194,6 +226,16 @@ SCENES = [
 
 ROOM_OF = {s["id"]: s["room"] for s in SCENES}
 
+OUTDOOR_PROMPT = (
+    "Photorealistic, cinematic landscape photograph, 16:9 framing. A {color} {car} {view}. "
+    "The car sits in the left two-thirds of the frame, three-quarter view, beautifully lit with gentle reflections "
+    "on its paint. The right third of the image is open sky and landscape, calm and uncluttered so text can go there. "
+    "The feeling is peaceful and breathtaking, a place you would want to stop and stay a while. "
+    "Rich detail, natural light, soft depth of field. "
+    "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
+    "No people, no text, no logos, no watermarks, no license plate numbers."
+)
+
 PROMPT = (
     "Photorealistic, warm and inviting cinematic interior photograph, 16:9 framing, inside {room}. "
     "A {color} {car} is parked inside on the {floor}, in the left two-thirds of the frame, "
@@ -204,6 +246,15 @@ PROMPT = (
     "Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
     "No people, no text, no logos on the radio, no watermarks, no license plate numbers."
 )
+
+
+def prompt_for(scene, color, car):
+    """The picture prompt: inside one of the rooms, or out at a scenic spot."""
+    room, view = ROOMS[scene["room"]], scene["view"]
+    if room.get("outdoor"):
+        return OUTDOOR_PROMPT.format(color=color, car=car, view=view)
+    return PROMPT.format(room=room["desc"], floor=room["floor"], color=color, car=car,
+                         view=view[0].upper() + view[1:])
 
 
 def slug(s):
@@ -572,10 +623,7 @@ def main():
     published = json.load(open(pub_path)) if os.path.exists(pub_path) else []
 
     choice = pick(day, published)
-    view = choice["scene"]["view"]
-    room = ROOMS[choice["scene"]["room"]]
-    prompt = PROMPT.format(room=room["desc"], floor=room["floor"], color=choice["color"], car=choice["car"],
-                           view=view[0].upper() + view[1:])
+    prompt = prompt_for(choice["scene"], choice["color"], choice["car"])
     meta = sidecar(choice)
     if not args.dry_run:
         with_written_intro(choice, meta)
