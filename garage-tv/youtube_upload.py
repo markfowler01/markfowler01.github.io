@@ -51,7 +51,7 @@ def upload(video, thumb, details, short=False, full_id=None):
     size = os.path.getsize(video)
     title, desc = details["title"], details["description"]
     if short:
-        title = details.get("short_title", title)[:100]
+        title = details.get(short if isinstance(short, str) else "short_title", title)[:100]
         h = details.get("hours", 8)
         desc = details.get("short_description", f"The full {h}-hour video is on the channel.")
         if full_id:
@@ -126,7 +126,8 @@ if __name__ == "__main__":
     ap.add_argument("video")
     ap.add_argument("thumb")
     ap.add_argument("details")
-    ap.add_argument("--short", action="store_true")
+    ap.add_argument("--short", nargs="?", const="short_title", default=None,
+                    help="upload as a Short, titled by this details.json key (default short_title)")
     ap.add_argument("--full-id")
     ap.add_argument("--id-file")
     a = ap.parse_args()

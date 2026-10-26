@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Scoreboard for the picture test: Nano Banana photo vs ChatGPT photo vs Sora moving video.
 
-  python3 scoreboard.py --log TAG VIDEO_ID [SHORT_ID]   # after an upload: remember the YouTube ids
+  python3 scoreboard.py --log TAG VIDEO_ID [SHORT_ID [SHORT2_ID]]   # after an upload: remember the ids
   YT_API_KEY=... python3 scoreboard.py                  # refresh view counts -> parked-fm/scoreboard.json
 
 The daily job does both. View counts come from the YouTube Data API with a plain API key
@@ -39,15 +39,18 @@ def save(log):
         f.write("\n")
 
 
-def log_ids(tag, video_id, short_id=None):
+def log_ids(tag, video_id, short_id=None, short2_id=None):
     log = load()
     for e in reversed(log):
         if e.get("tag") == tag:
             e["youtube"] = video_id
             if short_id:
                 e["short"] = short_id
+            if short2_id:
+                e["short2"] = short2_id
             save(log)
-            print(f"{tag}: youtube {video_id}" + (f", short {short_id}" if short_id else ""))
+            print(f"{tag}: youtube {video_id}" + (f", short {short_id}" if short_id else "")
+                  + (f", short2 {short2_id}" if short2_id else ""))
             return
     sys.exit(f"no published.json entry with tag {tag}")
 
@@ -113,7 +116,7 @@ def channel_stats(channel, key):
 
 def refresh(key):
     log = [e for e in load() if e.get("maker") in NAMES and e.get("youtube")]
-    ids = [e["youtube"] for e in log] + [e["short"] for e in log if e.get("short")]
+    ids = [e["youtube"] for e in log] + [e[k] for e in log for k in ("short", "short2") if e.get(k)]
     found, channel = stats(ids, key) if key and ids else ({}, None)
     try:
         studio = analytics()
@@ -124,12 +127,16 @@ def refresh(key):
     videos = []
     for e in log:
         views, likes, privacy = found.get(e["youtube"], (None, None, "private"))
-        short_views = found.get(e.get("short"), (None,))[0]
+        shorts = [found[e[k]][0] for k in ("short", "short2") if e.get(k) in found]
+        short_views = sum(shorts) if shorts else None  # both Shorts together
+        short2_views = found[e["short2"]][0] if e.get("short2") in found else None
         videos.append(dict(date=e["date"], title=e["title"], maker=e["maker"],
                            kind="music" if e["recipe"] == "lofi" else "soundscape",
                            youtube=e["youtube"], views=views, likes=likes, short_views=short_views,
+                           short2_views=short2_views,
                            # subscribers the video and its Short brought in
-                           subscribers=subs.get(e["youtube"], 0) + subs.get(e.get("short"), 0) if studio else None,
+                           subscribers=sum(subs.get(e.get(k), 0) for k in ("youtube", "short", "short2"))
+                           if studio else None,
                            public=privacy == "public"))
 
     def score(rows):
@@ -166,9 +173,9 @@ def refresh(key):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(usage=__doc__)
-    ap.add_argument("--log", nargs="+", metavar="TAG VIDEO_ID [SHORT_ID]")
+    ap.add_argument("--log", nargs="+", metavar="TAG VIDEO_ID [SHORT_ID [SHORT2_ID]]")
     a = ap.parse_args()
     if a.log:
-        log_ids(*a.log[:3])
+        log_ids(*[x for x in a.log[:4] if x])
     else:
         refresh(os.environ.get("YT_API_KEY"))

@@ -1,8 +1,8 @@
 """Learn as we go: make more of what viewers like.
 
-Every published video gets a score from how it did in its first two weeks: views, likes (worth 10
-views) and, once the channel's analytics permission is in place, subscribers gained (worth 50),
-per day. The car engine then picks each part of the next video (room, scene, soundscape sound,
+Every published video gets a score from how it did in its first two weeks: views, its Shorts'
+views (worth 0.3 each), likes (worth 10 views) and subscribers gained by the video and its Shorts
+(worth 50), per day. The car engine then picks each part of the next video (room, scene, soundscape sound,
 music style, car brand, title style, thumbnail layout) with odds that follow those scores:
 
 - an option's score is shrunk toward the channel average until it has a few videos behind it,
@@ -22,7 +22,9 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCOREBOARD = os.path.join(HERE, "..", "parked-fm", "scoreboard.json")
 PUBLISHED = os.path.join(HERE, "published.json")
-LIKE, SUBSCRIBER, SHORT_VIEW = 10, 50, 0.1  # what each counts for, in views
+# what each counts for, in views. Shorts get far more views than the long videos (about 20x in
+# October 2026), so a Short view counts for less, but enough that what works on Shorts gets made more
+LIKE, SUBSCRIBER, SHORT_VIEW = 10, 50, 0.3
 PRIOR = 3      # pretend every option already has this many average videos
 FLOOR = 0.35   # every option keeps at least 35% of an equal share of the odds
 WINDOW = 14    # score a video on its first two weeks

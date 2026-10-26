@@ -26,20 +26,20 @@
 
     <h2>What it does, once a day</h2>
     <ol>
-      <li>Creates an original lo-fi album and a car artwork, then renders the full video and a 30-second trailer.</li>
+      <li>Creates an original album or soundscape and a car artwork, then renders the full video and two 30-second trailers.</li>
       <li>Uploads the full video to the PARKED FM channel with its title, description, tags and
         <em>altered or synthetic content</em> label (<code>videos.insert</code>).</li>
       <li>Sets the video's custom thumbnail (<code>thumbnails.set</code>).</li>
-      <li>Uploads the trailer as a YouTube Short whose description links to the full video (<code>videos.insert</code>).</li>
+      <li>Uploads the two trailers as YouTube Shorts whose descriptions link to the full video (<code>videos.insert</code>).</li>
     </ol>
 
     <h2>YouTube API usage</h2>
     <div class="card scroll">
       <table>
         <tr><th>Method</th><th>Per day</th><th>Quota units</th></tr>
-        <tr><td><code>videos.insert</code></td><td>2</td><td>3,200</td></tr>
+        <tr><td><code>videos.insert</code></td><td>3</td><td>4,800</td></tr>
         <tr><td><code>thumbnails.set</code></td><td>1</td><td>50</td></tr>
-        <tr><td><strong>Total</strong></td><td></td><td><strong>3,250</strong> of the default 10,000</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td><strong>4,850</strong> of the default 10,000</td></tr>
       </table>
     </div>
 

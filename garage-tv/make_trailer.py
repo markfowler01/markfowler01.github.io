@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """Make a 30-second vertical trailer (YouTube Short) for a PARKED FM video.
 
-Layout (1080x1920): blurred photo fills the frame, the real photo sits in the middle with a
-slow push-in, PARKED FM / N HOURS on top, the scene title and a pointer to the full
-video below. Audio is taken from the album where the music is playing, with soft fades.
+Two styles, so each video gets two different Shorts:
+  card     (1080x1920) blurred photo fills the frame, the real photo sits in the middle with a
+           slow push-in, PARKED FM / N HOURS on top, the scene title and a pointer to the full
+           video below.
+  closeup  the photo fills the whole tall frame, close on the car, drifting slowly across the
+           room toward the window; a big hook line on top and the pointer to the full video.
+Both open on the hook straight away (no slow fade from black). Audio comes from the album
+where the music is playing (the closeup takes a later song), with soft fades.
 
   python3 make_trailer.py --image stills/x.webp --audio music.m4a --title "Supra in the Rain" --out trailer.mp4
 """
@@ -43,10 +48,14 @@ def main():
     ap.add_argument("--label", default="CHILL LO-FI")
     ap.add_argument("--hours", type=int, default=8)
     ap.add_argument("--seconds", type=float, default=30)
+    ap.add_argument("--style", choices=["card", "closeup"], default="card")
+    ap.add_argument("--hook", help="closeup: the big words on top; a newline splits the lines")
     ap.add_argument("--out", default="trailer.mp4")
     args = ap.parse_args()
 
     photo = Image.open(args.image).convert("RGB")
+    if args.style == "closeup":
+        return closeup(photo, args)
 
     # static layer: blurred, darkened background plus all the lettering
     bg = cover(photo, W, H).filter(ImageFilter.GaussianBlur(28))
@@ -81,23 +90,8 @@ def main():
     d.text((W // 2, H - 170), f"Full {args.hours}-hour video on the channel", font=f_small, fill=weekly.WHITE, anchor="ma")
     static = Image.alpha_composite(bg, Image.new("RGBA", (W, H), (0, 0, 0, 0)))
 
-    # audio: start where the music is playing, if the album says where its tracks are
-    start = 0.0
-    tracks = os.path.splitext(args.audio)[0] + ".tracks.json"
-    if os.path.exists(tracks):
-        st = json.load(open(tracks)).get("track_starts") or []
-        if st:
-            start = st[0] + 40  # past the intro, into the groove
-    ff = imageio_ffmpeg.get_ffmpeg_exe()
     n = int(args.seconds * FPS)
-    cmd = [ff, "-y", "-loglevel", "error",
-           "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-           "-ss", f"{start:.2f}", "-t", str(args.seconds), "-i", args.audio,
-           "-map", "0:v", "-map", "1:a",
-           "-af", f"afade=t=in:d=1.5,afade=t=out:st={args.seconds - 2.5}:d=2.5",
-           "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p",
-           "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", args.out]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    proc = encoder(args, audio_start(args.audio, 0))
     for i in range(n):
         t = i / max(1, n - 1)
         z = 1.0 + 0.08 * t  # slow push-in over the whole trailer
@@ -108,15 +102,93 @@ def main():
         frame = static.copy()
         frame.paste(fg, (0, photo_y))
         frame.alpha_composite(top)
-        alpha = min(1.0, i / (FPS * 0.8), (n - 1 - i) / (FPS * 1.5))  # fade in / out from black
-        rgb = frame.convert("RGB")
-        if alpha < 1:
-            rgb = Image.blend(Image.new("RGB", (W, H)), rgb, max(0.0, alpha))
-        proc.stdin.write(rgb.tobytes())
+        proc.stdin.write(faded(frame.convert("RGB"), i, n).tobytes())
+    finish(proc, args.out)
+
+
+def audio_start(audio, song):
+    """Where in the album to take the Short's sound: past the intro of song number `song`."""
+    tracks = os.path.splitext(audio)[0] + ".tracks.json"
+    if os.path.exists(tracks):
+        st = json.load(open(tracks)).get("track_starts") or []
+        if st:
+            return st[min(song, len(st) - 1)] + 40  # past the intro, into the groove
+    return 0.0
+
+
+def encoder(args, start):
+    ff = imageio_ffmpeg.get_ffmpeg_exe()
+    cmd = [ff, "-y", "-loglevel", "error",
+           "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
+           "-ss", f"{start:.2f}", "-t", str(args.seconds), "-i", args.audio,
+           "-map", "0:v", "-map", "1:a",
+           "-af", f"afade=t=in:d=0.6,afade=t=out:st={args.seconds - 2.5}:d=2.5",
+           "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p",
+           "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", args.out]
+    return subprocess.Popen(cmd, stdin=subprocess.PIPE)
+
+
+def faded(rgb, i, n):
+    """Open on the picture almost at once (the first two seconds decide a scroll); fade out at the end."""
+    alpha = min(1.0, i / (FPS * 0.2), (n - 1 - i) / (FPS * 1.5))
+    return rgb if alpha >= 1 else Image.blend(Image.new("RGB", (W, H)), rgb, max(0.0, alpha))
+
+
+def finish(proc, out):
     proc.stdin.close()
     if proc.wait() != 0:
         sys.exit("ffmpeg failed")
-    print("wrote", args.out)
+    print("wrote", out)
+
+
+def closeup(photo, args):
+    """The photo fills the tall frame, close on the car, drifting toward the window; a big hook on top."""
+    # a tall window onto the photo: start over the car (left part), end nearer the window (right part)
+    scale = H / photo.height * 1.12
+    big_w = photo.width * scale
+    x_from, x_to = 0.08 * big_w, min(big_w - W, 0.42 * big_w)
+    top = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    shade = Image.new("L", (1, H))
+    shade.putdata([int(170 * max(0.0, 1 - y / 620)) if y < 620 else int(150 * max(0.0, (y - H + 560) / 560))
+                   for y in range(H)])
+    top.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 0)] * 3, shade.resize((W, H)))))
+    brand = weekly.word(weekly.BRAND, 80, weekly.AMBER, squeeze=0.95)
+    brand = brand.resize((440, int(brand.height * 440 / brand.width)), Image.LANCZOS)
+    weekly.paste_shadowed(top, brand, ((W - brand.width) // 2, 120), blur=5, offset=2, strength=255)
+    y = 120 + brand.height + 24
+    hook = (args.hook or f"{args.hours} HOURS OF\n{args.label}").upper()
+    for line in hook.split("\n") if "\n" in hook else textwrap.wrap(hook, 16):
+        w = weekly.word(line, 120, weekly.CREAM, squeeze=0.9)
+        if w.width > 980:
+            w = w.resize((980, int(w.height * 980 / w.width)), Image.LANCZOS)
+        weekly.paste_shadowed(top, w, ((W - w.width) // 2, y))
+        y += w.height + 10
+    d = ImageDraw.Draw(top)
+    f_title = ImageFont.truetype(weekly.BOLD, 50)
+    ty = H - 420
+    for line in textwrap.wrap(args.title, 32):
+        d.text((W // 2 + 3, ty + 3), line, font=f_title, fill=(0, 0, 0, 200), anchor="ma")
+        d.text((W // 2, ty), line, font=f_title, fill=weekly.WHITE, anchor="ma")
+        ty += 66
+    band = weekly.brush_band(900, 110, 11)
+    top.alpha_composite(band, ((W - band.width) // 2, H - 250))
+    cta = weekly.word(f"FULL {args.hours}-HOUR VIDEO ON THE CHANNEL", 60, weekly.NAVY, squeeze=0.9)
+    if cta.width > 820:
+        cta = cta.resize((820, int(cta.height * 820 / cta.width)), Image.LANCZOS)
+    top.alpha_composite(cta, ((W - cta.width) // 2, H - 250 + (band.height - cta.height) // 2))
+
+    big = photo.resize((round(big_w), round(photo.height * scale)), Image.LANCZOS)
+    yoff = (big.height - H) // 2
+    n = int(args.seconds * FPS)
+    proc = encoder(args, audio_start(args.audio, 1))
+    for i in range(n):
+        t = i / max(1, n - 1)
+        ease = t * t * (3 - 2 * t)
+        x = x_from + (x_to - x_from) * ease
+        frame = big.crop((round(x), yoff, round(x) + W, yoff + H)).convert("RGBA")
+        frame.alpha_composite(top)
+        proc.stdin.write(faded(frame.convert("RGB"), i, n).tobytes())
+    finish(proc, args.out)
 
 
 if __name__ == "__main__":
