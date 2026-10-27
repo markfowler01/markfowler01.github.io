@@ -266,5 +266,21 @@
     "youtube": "w5GcF5gMOQk",
     "short": "AzucipZi8yg",
     "short2": "5_Md6yoSp-Q"
+  },
+  {
+    "date": "2026-10-27",
+    "photo": "2026-10-27-mclaren-720s.webp",
+    "recipe": "rain",
+    "grade": "none",
+    "title": "8 Hours of Rain Sounds | McLaren 720S in a Seaside Garage on a Rainy Evening",
+    "tag": "daily-2026-10-27",
+    "car": "McLaren 720S",
+    "scene": "seaside_rain_evening",
+    "maker": "gemini",
+    "music_style": null,
+    "room": "seaside",
+    "title_style": "hours_first",
+    "thumb_style": "sound_first",
+    "songs": null
   }
 ]

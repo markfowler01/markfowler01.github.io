@@ -1,0 +1,40 @@
+{
+  "rotate": false,
+  "recipes": [
+    "rain"
+  ],
+  "daily_sound": "rain",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Rainy Nights",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "McLaren 720S in a Seaside Garage on a Rainy Evening",
+  "label": "RAINY NIGHTS",
+  "slug": "mclaren-720s",
+  "car": "McLaren 720S",
+  "scene": "seaside_rain_evening",
+  "room": "seaside",
+  "title_style": "hours_first",
+  "thumb_style": "sound_first",
+  "minutes": 480,
+  "title_tail": "Rain Sounds for Sleep & Focus",
+  "sound_name": "Rain Sounds",
+  "tags": [
+    "rain sounds",
+    "rain sounds for sleeping",
+    "white noise",
+    "sleep sounds",
+    "no music",
+    "mclaren 720s",
+    "mclaren 720s",
+    "exotic cars",
+    "supercar"
+  ],
+  "description": "As you settle into this cozy retreat, imagine the gentle hum of a papaya orange McLaren 720S nestled in a seaside garage, casting a warm glow against the cool, rainy evening outside. Through the rain-speckled glass, you can see slow grey waves rolling rhythmically onto the shore, their soothing whispers blending with the soft patter of raindrops on the roof. This serene atmosphere invites you to unwind, whether you\u2019re seeking a peaceful night\u2019s sleep or a focused moment to reflect. Let the calm wash over you as you embrace this tranquil escape.\n\nNo music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #rainsounds #sleepsounds #whitenoise #mclaren720s",
+  "maker": "gemini"
+}
