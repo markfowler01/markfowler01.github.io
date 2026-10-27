@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26 13:57 UTC",
+  "updated": "2026-10-27 13:42 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 4,
-        "counted": 4,
+        "videos": 5,
+        "counted": 5,
         "avg_views": 1
       },
       "openai": {
@@ -27,7 +27,7 @@
       "gemini": {
         "videos": 1,
         "counted": 1,
-        "avg_views": 0
+        "avg_views": 2
       },
       "openai": {
         "videos": 1,
@@ -42,8 +42,8 @@
     },
     "soundscape": {
       "gemini": {
-        "videos": 3,
-        "counted": 3,
+        "videos": 4,
+        "counted": 4,
         "avg_views": 1
       },
       "openai": {
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-10-26",
+    "date": "2026-10-27",
     "subscribers": 1,
-    "views": 827,
-    "videos": 26,
-    "watch_hours": 12.2
+    "views": 843,
+    "videos": 29,
+    "watch_hours": 12.3
   },
   "goals": {
     "fan_funding": {
@@ -82,19 +82,39 @@
       "views": 827,
       "videos": 26,
       "watch_hours": 12.2
+    },
+    {
+      "date": "2026-10-27",
+      "subscribers": 1,
+      "views": 843,
+      "videos": 29,
+      "watch_hours": 12.3
     }
   ],
   "videos": [
+    {
+      "date": "2026-10-27",
+      "title": "8 Hours of Rain Sounds | McLaren 720S in a Seaside Garage on a Rainy Evening",
+      "maker": "gemini",
+      "kind": "soundscape",
+      "youtube": "XP9FU0gKab4",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
     {
       "date": "2026-10-26",
       "title": "Lo-Fi House for Work & Focus | AMG GT Black Series in a Seaside Garage Late at Night | 3 Hours",
       "maker": "gemini",
       "kind": "music",
       "youtube": "w5GcF5gMOQk",
-      "views": 0,
+      "views": 2,
       "likes": 0,
-      "short_views": 0,
-      "short2_views": 0,
+      "short_views": 7,
+      "short2_views": 4,
       "subscribers": 0,
       "public": true
     },
@@ -106,7 +126,7 @@
       "youtube": "M5WLDvVRAAs",
       "views": 0,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 3,
       "short2_views": null,
       "subscribers": 0,
       "public": true
@@ -119,7 +139,7 @@
       "youtube": "V4DuhPr5I-I",
       "views": 1,
       "likes": 0,
-      "short_views": 58,
+      "short_views": 61,
       "short2_views": null,
       "subscribers": 0,
       "public": true
