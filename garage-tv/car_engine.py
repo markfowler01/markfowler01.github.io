@@ -285,7 +285,10 @@ def pick(day, published):
     history = learn.scored(published)
     make = learn.choose(rng, [learn.brand(c[0]) for c in cars], lambda e: learn.brand(e.get("car")), history)
     car, short = rng.choice([c for c in cars if learn.brand(c[0]) == make])
-    room = learn.choose(rng, [s["room"] for s in scenes], lambda e: ROOM_OF.get(e.get("scene")), history)
+    # never the same room two days running, so the channel keeps moving around its places
+    last_room = ROOM_OF.get(published[-1].get("scene")) if published else None
+    rooms = [s["room"] for s in scenes if s["room"] != last_room] or [s["room"] for s in scenes]
+    room = learn.choose(rng, rooms, lambda e: ROOM_OF.get(e.get("scene")), history)
     scene_id = learn.choose(rng, [s["id"] for s in scenes if s["room"] == room], lambda e: e.get("scene"), history)
     scene = next(s for s in scenes if s["id"] == scene_id)
     last = published[-1].get("recipe") if published else None
