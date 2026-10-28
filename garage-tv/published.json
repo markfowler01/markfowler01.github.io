@@ -285,5 +285,32 @@
     "youtube": "XP9FU0gKab4",
     "short": "8jch0x09NKI",
     "short2": "4f7BFOsTYGk"
+  },
+  {
+    "date": "2026-10-28",
+    "photo": "2026-10-28-gt-r-nismo.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "GT-R Nismo in a Seaside Garage at Sunset | Calm Lo-Fi for Relaxing & Focus | 4 Hours",
+    "tag": "daily-2026-10-28",
+    "car": "Nissan GT-R Nismo",
+    "scene": "seaside_sunset",
+    "maker": "gemini",
+    "music_style": "lofi",
+    "room": "seaside",
+    "title_style": "scene_first",
+    "thumb_style": "brand_first",
+    "songs": [
+      "Soft Lane",
+      "Second Coffee",
+      "Last Asphalt",
+      "Warm Gear",
+      "Midnight Radio",
+      "Amber Window",
+      "Rainy Drive",
+      "Low Drive",
+      "Rainy Lane",
+      "Soft Lights"
+    ]
   }
 ]
