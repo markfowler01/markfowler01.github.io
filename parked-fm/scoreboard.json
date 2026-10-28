@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27 13:42 UTC",
+  "updated": "2026-10-28 14:01 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 5,
-        "counted": 5,
+        "videos": 6,
+        "counted": 6,
         "avg_views": 1
       },
       "openai": {
@@ -25,9 +25,9 @@
     },
     "music": {
       "gemini": {
-        "videos": 1,
-        "counted": 1,
-        "avg_views": 2
+        "videos": 2,
+        "counted": 2,
+        "avg_views": 1
       },
       "openai": {
         "videos": 1,
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-10-27",
+    "date": "2026-10-28",
     "subscribers": 1,
-    "views": 843,
-    "videos": 29,
-    "watch_hours": 12.3
+    "views": 855,
+    "videos": 32,
+    "watch_hours": 12.5
   },
   "goals": {
     "fan_funding": {
@@ -89,9 +89,29 @@
       "views": 843,
       "videos": 29,
       "watch_hours": 12.3
+    },
+    {
+      "date": "2026-10-28",
+      "subscribers": 1,
+      "views": 855,
+      "videos": 32,
+      "watch_hours": 12.5
     }
   ],
   "videos": [
+    {
+      "date": "2026-10-28",
+      "title": "GT-R Nismo in a Seaside Garage at Sunset | Calm Lo-Fi for Relaxing & Focus | 4 Hours",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "7_Kc_WvkAQQ",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
     {
       "date": "2026-10-27",
       "title": "8 Hours of Rain Sounds | McLaren 720S in a Seaside Garage on a Rainy Evening",
@@ -114,7 +134,7 @@
       "views": 2,
       "likes": 0,
       "short_views": 7,
-      "short2_views": 4,
+      "short2_views": 3,
       "subscribers": 0,
       "public": true
     },
