@@ -315,5 +315,21 @@
     "youtube": "7_Kc_WvkAQQ",
     "short": "XDWzZs4Fa1c",
     "short2": "fRLOsnJpSFM"
+  },
+  {
+    "date": "2026-10-29",
+    "photo": "2026-10-29-lamborghini-revuelto.webp",
+    "recipe": "brown",
+    "grade": "none",
+    "title": "Brown Noise for Deep Sleep | Lamborghini Revuelto in a Penthouse Garage Above the City at Night",
+    "tag": "daily-2026-10-29",
+    "car": "Lamborghini Revuelto",
+    "scene": "penthouse_city_night",
+    "maker": "gemini",
+    "music_style": null,
+    "room": "penthouse",
+    "title_style": "use_first",
+    "thumb_style": "sound_first",
+    "songs": null
   }
 ]
