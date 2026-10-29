@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28 14:01 UTC",
+  "updated": "2026-10-29 13:49 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 6,
-        "counted": 6,
+        "videos": 7,
+        "counted": 7,
         "avg_views": 1
       },
       "openai": {
@@ -42,8 +42,8 @@
     },
     "soundscape": {
       "gemini": {
-        "videos": 4,
-        "counted": 4,
+        "videos": 5,
+        "counted": 5,
         "avg_views": 1
       },
       "openai": {
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-10-28",
+    "date": "2026-10-29",
     "subscribers": 1,
-    "views": 855,
-    "videos": 32,
-    "watch_hours": 12.5
+    "views": 863,
+    "videos": 35,
+    "watch_hours": 14.7
   },
   "goals": {
     "fan_funding": {
@@ -96,9 +96,29 @@
       "views": 855,
       "videos": 32,
       "watch_hours": 12.5
+    },
+    {
+      "date": "2026-10-29",
+      "subscribers": 1,
+      "views": 863,
+      "videos": 35,
+      "watch_hours": 14.7
     }
   ],
   "videos": [
+    {
+      "date": "2026-10-29",
+      "title": "Brown Noise for Deep Sleep | Lamborghini Revuelto in a Penthouse Garage Above the City at Night",
+      "maker": "gemini",
+      "kind": "soundscape",
+      "youtube": "Yf8D_kMPhjA",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
     {
       "date": "2026-10-28",
       "title": "GT-R Nismo in a Seaside Garage at Sunset | Calm Lo-Fi for Relaxing & Focus | 4 Hours",
@@ -107,8 +127,8 @@
       "youtube": "7_Kc_WvkAQQ",
       "views": 0,
       "likes": 0,
-      "short_views": 0,
-      "short2_views": 0,
+      "short_views": 4,
+      "short2_views": 1,
       "subscribers": 0,
       "public": true
     },
@@ -120,8 +140,8 @@
       "youtube": "XP9FU0gKab4",
       "views": 0,
       "likes": 0,
-      "short_views": 0,
-      "short2_views": 0,
+      "short_views": 13,
+      "short2_views": 12,
       "subscribers": 0,
       "public": true
     },
@@ -133,7 +153,7 @@
       "youtube": "w5GcF5gMOQk",
       "views": 2,
       "likes": 0,
-      "short_views": 7,
+      "short_views": 9,
       "short2_views": 3,
       "subscribers": 0,
       "public": true
@@ -209,7 +229,7 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "mCOHInDELN0",
-      "views": 1,
+      "views": 3,
       "likes": 0,
       "short_views": 67,
       "short2_views": null,
