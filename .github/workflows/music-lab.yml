@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description)"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
         type: choice
         options: [discover, inspect, explore, sample, kit, youtube, rooms, models, lyria]
         default: discover
@@ -202,9 +202,14 @@ jobs:
           PROMPT: ${{ inputs.cmd }}
         run: |
           mkdir -p lab
-          for m in lyria-3.5 lyria-3-pro-preview; do
-            python3 garage-tv/lyria.py --model "$m" --prompt "$PROMPT" --out "lab/$m.mp3" || echo "$m failed"
-          done
+          if [ "$PROMPT" = flavors ]; then  # one sample song per flavour in make_lyria_album.py
+            pip install -q numpy imageio-ffmpeg
+            python3 garage-tv/make_lyria_album.py --samples lab --seed "${{ inputs.seed }}"
+          else
+            for m in lyria-3.5 lyria-3-pro-preview; do
+              python3 garage-tv/lyria.py --model "$m" --prompt "$PROMPT" --out "lab/$m.mp3" || echo "$m failed"
+            done
+          fi
           ls -la lab
           tag="music-lab-lyria-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" lab/* --prerelease --title "Lab: Lyria test tracks" --notes "$PROMPT"
