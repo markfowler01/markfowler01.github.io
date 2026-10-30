@@ -67,15 +67,20 @@ MUSIC_STYLES = {
                   words="gentle lo-fi house: warm Rhodes chords over a soft four-on-the-floor"),
 }
 MUSIC_ORDER = ["lofi", "garage", "house"]
+# Deep Work: one word sets the mood of each video (thumbnail and title); not repeated within 10 videos
+DEEP_WORDS = ["Locked In", "Night Shift", "Deep Focus", "Flow State", "2AM Drive", "No Days Off", "Build Mode",
+              "Clarity", "Momentum", "Quiet Power", "Discipline", "One More Hour", "Full Throttle", "Late Night",
+              "Head Down", "In The Zone", "Steady", "Grind Season", "Calm Mind", "Overtime"]
 # How the title is put together (weekly.title_for); never the same style two days running
-TITLE_STYLES = ["scene_first", "hours_first", "use_first"]
-# Rooms, title styles and thumbnails in use. Back to the week-one look (loft only, scene-first
-# titles, brand-first thumbnail) since Oct 30 after Short views fell; add names back to turn them on.
-ACTIVE_ROOMS = ["loft"]
-ACTIVE_TITLE_STYLES = ["scene_first"]
-ACTIVE_THUMB_STYLES = ["brand_first"]
+TITLE_STYLES = ["scene_first", "hours_first", "use_first", "deep_work"]
+# Rooms, title styles and thumbnails in use: the Deep Work look since Oct 30 (the Night Studio, a
+# "Deep Work Music – Locked In" title, one glowing word on the thumbnail). Add names back to bring
+# the other rooms and styles back into the rotation.
+ACTIVE_ROOMS = ["studio"]
+ACTIVE_TITLE_STYLES = ["deep_work"]
+ACTIVE_THUMB_STYLES = ["word"]
 # Thumbnail layouts (weekly.make_thumbnail): the brand big, or what you'll hear big; learned like the rest
-THUMB_STYLES = ["brand_first", "sound_first"]
+THUMB_STYLES = ["brand_first", "sound_first", "word"]
 
 # Videos alternate: one day music only, the next day a soundscape only (no music), 8 hours
 # for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
@@ -103,6 +108,9 @@ ROOMS = {
         "a quiet luxury penthouse garage high above the city, floor-to-ceiling glass wall with the skyline far below, "
         "warm walnut wood panels, soft indirect lighting and a few brass floor lamps, a low leather lounge chair, a "
         "side table with a coffee cup and a small glowing vintage radio, a tall plant, and a dark polished stone floor")),
+    # the Deep Work look (from Oct 30): a dark luxury private garage at night where the car is the
+    # star, with a desk and glowing screens beside it; 2-hour videos people leave running while they work
+    "studio": dict(name="the Night Studio", minutes=120, prompt="studio"),
     # out on the road: the car parked at a beautiful spot, no garage
     "outdoors": dict(name="Scenic Overlooks", outdoor=True),
     "seaside": dict(name="the Seaside Garage", floor="weathered wooden floor", desc=(
@@ -182,6 +190,36 @@ SCENES = [
          view="outside the glass wall the sun is rising over the city, soft gold and pink light across the towers and the haze below",
          words="the sun coming up over the city and the first coffee of the day",
          motion="soft sunrise light slowly brightening, haze drifting over the city, steam from the coffee"),
+    dict(room="studio", id="studio_city_night", series="midnight_garage", bed="brown", rain=0,
+         title="in the Night Studio Above the City",
+         view="outside the glass wall a city skyline glitters at night far below",
+         words="the city glittering far below and the screens glowing low",
+         motion="city lights twinkling beyond the glass, the screens' glow shifting softly, steam from the coffee"),
+    dict(room="studio", id="studio_rain_night", series="midnight_garage", bed="rain", rain=0,
+         title="in the Night Studio on a Rainy Night",
+         view="rain streaks down the glass wall, the city lights beyond blurred into soft colour",
+         words="rain streaking down the glass and the city lights blurred beyond",
+         motion="raindrops running down the glass wall, blurred lights shimmering, the screens glowing"),
+    dict(room="studio", id="studio_forest_night", series="midnight_garage", bed="wind", rain=0,
+         title="in the Night Studio in the Forest",
+         view="outside the glass wall a dark pine forest under moonlight, thin mist drifting between the trees",
+         words="a moonlit pine forest outside and mist between the trees",
+         motion="mist drifting between the pines, branches swaying slightly, the screens glowing"),
+    dict(room="studio", id="studio_snow_night", series="midnight_garage", bed="heater", rain=0,
+         title="in the Night Studio on a Snowy Night",
+         view="outside the glass wall snow is falling softly over a quiet courtyard lit by low lamps",
+         words="snow falling softly outside and the room warm and quiet",
+         motion="snow drifting down beyond the glass, the lamps glowing, steam from the coffee"),
+    dict(room="studio", id="studio_2am", series="midnight_garage", bed="brown", rain=0,
+         title="in the Night Studio at 2 AM",
+         view="outside the glass wall a quiet city at 2 am, only a few lit windows, a light drizzle on the glass",
+         words="the city asleep at 2 am and only your screens still on",
+         motion="a light drizzle on the glass, a few distant windows going dark, the screens glowing"),
+    dict(room="studio", id="studio_before_dawn", series="midnight_garage", bed="white", rain=0,
+         title="in the Night Studio Before Dawn",
+         view="outside the glass wall the first deep-blue light of dawn rises over dark hills",
+         words="the first blue light of dawn and a long night of work behind you",
+         motion="the dawn light slowly brightening over the hills, the screens glowing, steam from the coffee"),
     dict(room="outdoors", id="out_cherry_blossom", series="parked_peaceful", bed="wind", rain=0,
          title="at a Cherry Blossom Overlook in Spring",
          view="parked on a gravel overlook under a blooming cherry tree, pink petals drifting in the air, rolling green hills and forest valleys stretching to the horizon under a soft blue sky with a few clouds",
@@ -231,6 +269,19 @@ SCENES = [
 
 ROOM_OF = {s["id"]: s["room"] for s in SCENES}
 
+STUDIO_PROMPT = (
+    "Photorealistic, dark and moody cinematic photograph, 16:9 framing, inside a luxury private garage studio at "
+    "night: polished dark concrete floor, black walls with soft LED strip lights, a floor-to-ceiling glass wall; "
+    "{view}. A {color} {car} is the star of the image, parked in the middle of the frame, three-quarter front view, "
+    "large, sharp and beautifully lit by the soft strip lights and the glow of the screens, with crisp reflections on "
+    "its paint and on the floor. Beside the car, a minimalist black desk with two glowing monitors showing calm "
+    "abstract charts, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Deep shadows, cool "
+    "blue and teal tones with warm accent lights, rich detail, soft depth of field. The upper third of the image is "
+    "dark and calm so a word can be written there. One single continuous photograph, not a collage, diptych or split "
+    "frame. Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
+    "No people, no text, no readable writing on the screens, no logos, no watermarks, no license plate numbers."
+)
+
 OUTDOOR_PROMPT = (
     "Photorealistic, cinematic landscape photograph, 16:9 framing. A {color} {car} {view}. "
     "The whole car is in view, seen from a little distance, three-quarter view, filling about a third of the frame "
@@ -258,6 +309,8 @@ PROMPT = (
 def prompt_for(scene, color, car):
     """The picture prompt: inside one of the rooms, or out at a scenic spot."""
     room, view = ROOMS[scene["room"]], scene["view"]
+    if room.get("prompt") == "studio":
+        return STUDIO_PROMPT.format(color=color, car=car, view=view)
     if room.get("outdoor"):
         return OUTDOOR_PROMPT.format(color=color, car=car, view=view)
     return PROMPT.format(room=room["desc"], floor=room["floor"], color=color, car=car,
@@ -305,8 +358,10 @@ def pick(day, published):
     title_style = learn.choose(rng, [t for t in ACTIVE_TITLE_STYLES if t != last_title] or ACTIVE_TITLE_STYLES,
                                lambda e: e.get("title_style"), history)
     thumb_style = learn.choose(rng, ACTIVE_THUMB_STYLES, lambda e: e.get("thumb_style"), history)
+    recent_words = {e.get("word") for e in published[-10:]}
+    word = rng.choice([w for w in DEEP_WORDS if w not in recent_words] or DEEP_WORDS)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
-                title_style=title_style, thumb_style=thumb_style)
+                title_style=title_style, thumb_style=thumb_style, word=word)
 
 
 def sidecar(choice):
@@ -334,18 +389,24 @@ def sidecar(choice):
         "room": sc["room"],
         "title_style": choice.get("title_style", "scene_first"),
         "thumb_style": choice.get("thumb_style", "brand_first"),
+        "word": choice.get("word"),
     }
+    room = ROOMS[sc["room"]]
+    deep = room.get("prompt") == "studio"
+    deep_tags = ["deep work music", "focus music", "music for work", "concentration music", "study music",
+                 (choice.get("word") or "").lower()] if deep else []
     if sound == "lofi":
-        hours = series["minutes"] // 60
+        minutes = room.get("minutes") or series["minutes"]
+        hours = minutes // 60
         style = choice.get("music_style", "lofi")
         ms = MUSIC_STYLES[style]
         meta.update(
-            minutes=series["minutes"],
+            minutes=minutes,
             music_style=style,
             sound_name=ms["name"],
             title_tail=ms.get("tail", series["tail"]),
-            tags=[choice["car"].lower(), short.lower(), series["name"].lower(), ms["name"].lower(), "exotic cars",
-                  "supercar", "lofi for work", "focus music"],
+            tags=deep_tags + [choice["car"].lower(), short.lower(), series["name"].lower(), ms["name"].lower(),
+                              "exotic cars", "supercar", "lofi for work", "focus music"],
             description=(
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
                 f"{hours} hours of {ms['words']}, music only, for working, studying, "
@@ -359,15 +420,16 @@ def sidecar(choice):
     else:
         name = SOUND_NAMES[sound]
         hashtag = name.lower().replace(" ", "")
+        minutes = room.get("minutes") or SOUND_MINUTES
         meta.update(
-            minutes=SOUND_MINUTES,
+            minutes=minutes,
             title_tail=f"{name} for Sleep & Focus",
             sound_name=name,
-            tags=[name.lower(), f"{name.lower()} for sleeping", "white noise", "sleep sounds", "no music",
-                  choice["car"].lower(), short.lower(), "exotic cars", "supercar"],
+            tags=deep_tags + [name.lower(), f"{name.lower()} for sleeping", "white noise", "sleep sounds", "no music",
+                              choice["car"].lower(), short.lower(), "exotic cars", "supercar"],
             description=(
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
-                f"{SOUND_MINUTES // 60} hours of {SOUND_WORDS[sound]}, no music, for sleeping, studying, "
+                f"{minutes // 60} hours of {SOUND_WORDS[sound]}, no music, for sleeping, studying, "
                 "or blocking out the world while you work.\n\n"
                 "No music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\n"
                 "PARKED FM | Dream Cars. Easy Listening.\n\n"

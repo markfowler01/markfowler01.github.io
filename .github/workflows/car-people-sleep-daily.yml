@@ -122,6 +122,7 @@ jobs:
         if: ${{ !inputs.preview }}
         env:
           HAS_YT: ${{ secrets.YT_REFRESH_TOKEN != '' }}
+          SECOND_SHORT: "1"  # the close-up Short too (it did a little better than the card Short)
         run: |
           args="--daily --record --outdir kit"
           [ "$HAS_YT" = "true" ] && args="$args --full"

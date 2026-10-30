@@ -32,7 +32,7 @@ import subprocess
 import sys
 import zipfile
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 import imageio_ffmpeg
 
@@ -227,7 +227,12 @@ def title_for(p):
         short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else sound_name(p)
         use = "Work & Focus" if p["recipe"] in ("lofi", "mix") else "Deep Sleep"
         # the car engine varies the title style day to day, so the channel doesn't read like a template
-        styled = {"hours_first": [f"{h} Hours of {short} | {mid}"],
+        car = mid.split(" in ")[0]
+        kind = "Music" if p["recipe"] in ("lofi", "mix") else short
+        word = m.get("word") or "Deep Focus"
+        styled = {"deep_work": [f"Deep Work {kind} – {word} | {car} Night Studio | {h} Hours",
+                                f"Deep Work {kind} – {word} | {car} Night Studio"],
+                  "hours_first": [f"{h} Hours of {short} | {mid}"],
                   "use_first": [f"{short} for {use} | {mid} | {h} Hours", f"{short} for {use} | {mid}"],
                   }.get(m.get("title_style"), [])
         options = styled + [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
@@ -390,11 +395,46 @@ def auto_side(photo):
     return "right" if a[:, int(w * 0.55):].mean() < a[:, : int(w * 0.45)].mean() else "left"
 
 
+THIN = os.path.join(HERE, "fonts", "Montserrat.ttf")  # SIL Open Font License, fonts/Montserrat-OFL.txt
+
+
+def word_thumbnail(p, out_path):
+    """The Deep Work thumbnail: the picture, a touch darker, and one big thin glowing word across the
+    top (LOCKED IN, NIGHT SHIFT, ...). Nothing else."""
+    from make_still_loop import grade
+    word = (p["meta"].get("word") or "Deep Focus").upper()
+    bg = cover(grade(Image.open(p["photo"]).convert("RGB"), p["grade"]), 1280, 720)
+    bg = ImageEnhance.Brightness(bg).enhance(0.82).convert("RGBA")
+    shade = Image.new("L", (1, 720))
+    shade.putdata([int(150 * max(0.0, 1 - y / 330)) for y in range(720)])  # darker at the top, under the word
+    bg = Image.composite(Image.new("RGBA", bg.size, (0, 0, 0, 255)), bg, shade.resize((1280, 720)))
+    f = ImageFont.truetype(THIN, 150)
+    f.set_variation_by_name("Light")
+    spaced = " ".join(word) if len(word) <= 9 else word  # wide letter spacing, like a sign
+    text = Image.new("L", (1280, 260), 0)
+    d = ImageDraw.Draw(text)
+    l, t, r, b = d.textbbox((0, 0), spaced, font=f)
+    scale = min(1.0, 1120 / (r - l))
+    if scale < 1:
+        f = ImageFont.truetype(THIN, int(150 * scale))
+        f.set_variation_by_name("Light")
+        l, t, r, b = d.textbbox((0, 0), spaced, font=f)
+    d.text(((1280 - (r - l)) // 2 - l, (260 - (b - t)) // 2 - t), spaced, font=f, fill=255)
+    y0 = 70
+    for radius, strength, colour in ((26, 120, (120, 200, 255)), (9, 170, (200, 235, 255))):  # soft glow
+        glow = text.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
+        bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), c) for c in colour], glow)), (0, y0))
+    bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), 245)] * 3, text)), (0, y0))
+    bg.convert("RGB").save(out_path, quality=90, optimize=True)
+
+
 def make_thumbnail(p, out_path):
     sys.path.insert(0, HERE)
     from make_still_loop import grade  # same colour grade as the video
 
     meta = p.get("meta", {})
+    if meta.get("thumb_style") == "word":
+        return word_thumbnail(p, out_path)
     side = meta.get("text_side") or auto_side(p["photo"])
     right_side = side == "right"
     sound_first = meta.get("thumb_style") == "sound_first"
@@ -646,7 +686,7 @@ def main():
                         car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
                         music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
                         room=meta.get("room"), title_style=meta.get("title_style"),
-                        thumb_style=meta.get("thumb_style"),
+                        thumb_style=meta.get("thumb_style"), word=meta.get("word"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)

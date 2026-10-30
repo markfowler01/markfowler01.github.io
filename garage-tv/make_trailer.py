@@ -122,15 +122,15 @@ def encoder(args, start):
            "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
            "-ss", f"{start:.2f}", "-t", str(args.seconds), "-i", args.audio,
            "-map", "0:v", "-map", "1:a",
-           "-af", f"afade=t=in:d=1.5,afade=t=out:st={args.seconds - 2.5}:d=2.5",
+           "-af", f"afade=t=in:d=0.6,afade=t=out:st={args.seconds - 2.5}:d=2.5",
            "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p",
            "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", args.out]
     return subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
 
 def faded(rgb, i, n):
-    """Fade in from black (the week-one feel) and out at the end."""
-    alpha = min(1.0, i / (FPS * 0.8), (n - 1 - i) / (FPS * 1.5))
+    """Open on the picture almost at once (the first two seconds decide a scroll); fade out at the end."""
+    alpha = min(1.0, i / (FPS * 0.2), (n - 1 - i) / (FPS * 1.5))
     return rgb if alpha >= 1 else Image.blend(Image.new("RGB", (W, H)), rgb, max(0.0, alpha))
 
 
