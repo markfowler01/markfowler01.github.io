@@ -8,15 +8,17 @@ name: PARKED FM daily video
 # and with the YT_* secrets uploads the full video and the Short to YouTube. With YT_API_KEY it also
 # refreshes the view-count scoreboard at absoluteadas.com/parked-fm/scoreboard.
 on:
-  # The on-time start comes from a Claude scheduled task at 6:07 am Pacific, which runs this
-  # workflow with only_if_missing. GitHub's own free scheduler starts runs hours late (3-6 h in
+  # The video goes public at 8:00 am Eastern and the second Short at 4:00 pm Eastern (uploaded
+  # early and scheduled on YouTube). The build starts from a Claude scheduled task at 5:37 am
+  # Eastern with only_if_missing. GitHub's own free scheduler starts runs hours late (3-6 h in
   # October 2026) and sometimes drops them, so these times are only backups: whichever run starts
-  # first posts the day's video and the rest see it in published.json and stand down.
+  # first posts the day's video and the rest see it in published.json and stand down. A late run
+  # posts right away.
   schedule:
-    - cron: '23 13 * * *'   # 13:23 UTC = 6:23 am Pacific (5:23 am in winter)
-    - cron: '41 15 * * *'   # backup, 8:41 am Pacific
-    - cron: '7 17 * * *'    # backup, 10:07 am Pacific
-    - cron: '53 19 * * *'   # backup, 12:53 pm Pacific
+    - cron: '23 9 * * *'    # 9:23 UTC = 4:23 am Eastern in winter (5:23 in summer)
+    - cron: '41 11 * * *'   # backup
+    - cron: '7 14 * * *'    # backup
+    - cron: '53 17 * * *'   # backup
   workflow_dispatch:         # "Run workflow" button for an extra video
     inputs:
       maker:
@@ -171,11 +173,12 @@ jobs:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'public' }}
         run: |
-          python garage-tv/youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json --id-file kit/video_id.txt
-          python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id "$(cat kit/video_id.txt)" --id-file kit/short_id.txt
+          # the video and the first Short go public at 8:00 am Eastern, the second Short at 4:00 pm
+          python garage-tv/youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json --at 08:00 --id-file kit/video_id.txt
+          python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --at 08:00 --full-id "$(cat kit/video_id.txt)" --id-file kit/short_id.txt
           # a second Short in the close-up style, only when the build made one (SECOND_SHORT=1)
           if [ -f kit/trailer2.mp4 ]; then
-            python garage-tv/youtube_upload.py kit/trailer2.mp4 - kit/details.json --short short2_title --full-id "$(cat kit/video_id.txt)" --id-file kit/short2_id.txt \
+            python garage-tv/youtube_upload.py kit/trailer2.mp4 - kit/details.json --short short2_title --at 16:00 --full-id "$(cat kit/video_id.txt)" --id-file kit/short2_id.txt \
               || echo "::warning::second Short upload failed"
           fi
           python garage-tv/scoreboard.py --log "$(cat kit/TAG)" "$(cat kit/video_id.txt)" "$(cat kit/short_id.txt)" "$(cat kit/short2_id.txt 2>/dev/null)"
