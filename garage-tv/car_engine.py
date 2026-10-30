@@ -92,8 +92,8 @@ DEEP_WORDS = [
     "Embrace The Grind", "Wake Up Early", "Zero Excuses", "Prove It", "Stay Hard",
 ]
 # The opening statement, big on screen for the first seconds of the video and its Shorts (statement.py).
-# PARKED FM's own lines in a no-excuses voice, plus three old sayings Mark asked for ("Discipline equals
-# freedom", "Stay hungry", "Embrace the suck"); never a real person's name. Learned like the word.
+# PARKED FM's own lines in a no-excuses voice, plus three old sayings Mark asked for ("Discipline =
+# Freedom", "Stay hungry", "Embrace the suck"); never a real person's name. Learned like the word.
 STATEMENTS = [
     "Nobody is coming to do it for you.",
     "The work doesn't care how you feel. Start anyway.",
@@ -107,7 +107,7 @@ STATEMENTS = [
     "Show up. Do the work. Repeat.",
     "Earn the car. Earn the view.",
     "The grind is quiet. The results are loud.",
-    "Discipline equals freedom.",
+    "Discipline = Freedom.",
     "Stay hungry.",
     "Embrace the suck.",
     "Show up tonight. That's the whole plan.",
