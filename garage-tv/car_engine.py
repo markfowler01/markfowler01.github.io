@@ -87,6 +87,25 @@ DEEP_WORDS = [
     # calm focus
     "Locked In", "Deep Work", "Hyperfocus", "Flow State", "Laser Focus", "Dark Mode", "In The Zone", "Clarity",
     "Calm Mind", "Night Shift", "2AM Drive", "One More Hour",
+    # discipline (Mark kept "Stay Hard"; never put a real person's name in titles or descriptions)
+    "No Excuses", "Own It", "Earn It", "Do The Work", "Stay Ready", "Win The Morning", "No Shortcuts",
+    "Embrace The Grind", "Wake Up Early", "Zero Excuses", "Prove It", "Stay Hard",
+]
+# The opening statement, big on screen for the first seconds of the video and its Shorts (statement.py).
+# PARKED FM's own lines in a no-excuses voice; no quotes from real people. Learned like the word.
+STATEMENTS = [
+    "Nobody is coming to do it for you.",
+    "The work doesn't care how you feel. Start anyway.",
+    "Comfort is the enemy of progress.",
+    "Your future is built in the hours nobody sees.",
+    "Stay quiet. Work hard. Let the results talk.",
+    "Motivation fades. Habits drive.",
+    "Lock in. The world can wait.",
+    "Two hours. One task. No excuses.",
+    "Do the hard thing first.",
+    "Show up. Do the work. Repeat.",
+    "Earn the car. Earn the view.",
+    "The grind is quiet. The results are loud.",
 ]
 # How the title is put together (weekly.title_for); never the same style two days running
 TITLE_STYLES = ["scene_first", "hours_first", "use_first", "deep_work"]
@@ -381,8 +400,12 @@ def pick(day, published):
     # the word is learned like the rest: words that earn clicks come back more often
     word = learn.choose(rng, [w for w in DEEP_WORDS if w not in recent_words] or DEEP_WORDS,
                         lambda e: e.get("word"), history)
+    recent_lines = {e.get("statement") for e in published[-6:]}
+    line = learn.choose(rng, [x for x in STATEMENTS if x not in recent_lines] or STATEMENTS,
+                        lambda e: e.get("statement"), history)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
-                title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo)
+                title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo,
+                statement=line if ROOMS[scene["room"]].get("prompt") == "studio" else None)
 
 
 def sidecar(choice):
@@ -411,6 +434,7 @@ def sidecar(choice):
         "title_style": choice.get("title_style", "scene_first"),
         "thumb_style": choice.get("thumb_style", "brand_first"),
         "word": choice.get("word"),
+        "statement": choice.get("statement"),
     }
     room = ROOMS[sc["room"]]
     deep = room.get("prompt") == "studio"

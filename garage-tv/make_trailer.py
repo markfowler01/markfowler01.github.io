@@ -28,6 +28,7 @@ import imageio_ffmpeg
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import weekly  # noqa: E402  (shared lettering: word, brush_band, paste_shadowed, colours)
+import statement  # noqa: E402  (the opening statement over the first seconds)
 
 W, H, FPS = 1080, 1920, 30
 REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
@@ -50,10 +51,12 @@ def main():
     ap.add_argument("--seconds", type=float, default=30)
     ap.add_argument("--style", choices=["card", "closeup"], default="card")
     ap.add_argument("--hook", help="closeup: the big words on top; a newline splits the lines")
+    ap.add_argument("--statement", help="a short line shown big over the first seconds")
     ap.add_argument("--out", default="trailer.mp4")
     args = ap.parse_args()
 
     photo = Image.open(args.image).convert("RGB")
+    args._statement = statement.layer(args.statement, W, H) if args.statement else None
     if args.style == "closeup":
         return closeup(photo, args)
 
@@ -102,6 +105,8 @@ def main():
         frame = static.copy()
         frame.paste(fg, (0, photo_y))
         frame.alpha_composite(top)
+        if args.statement:
+            frame = statement.over(frame, args._statement, i / FPS)
         proc.stdin.write(faded(frame.convert("RGB"), i, n).tobytes())
     finish(proc, args.out)
 
@@ -187,6 +192,8 @@ def closeup(photo, args):
         x = x_from + (x_to - x_from) * ease
         frame = big.crop((round(x), yoff, round(x) + W, yoff + H)).convert("RGBA")
         frame.alpha_composite(top)
+        if args.statement:
+            frame = statement.over(frame, args._statement, i / FPS)
         proc.stdin.write(faded(frame.convert("RGB"), i, n).tobytes())
     finish(proc, args.out)
 

@@ -518,6 +518,27 @@ def make_thumbnail(p, out_path):
 
 # --------------------------------------------------------------------------- build
 
+def make_intro(loop, text, out, crf, seconds=6, fps=30):
+    """The opening seconds: the loop's first frame held still with the statement fading in and out,
+    encoded like the loop (make_still_loop.py) so the two join without re-encoding the whole video."""
+    import statement
+    ff = imageio_ffmpeg.get_ffmpeg_exe()
+    first = subprocess.run([ff, "-loglevel", "error", "-i", loop, "-frames:v", "1", "-f", "image2pipe",
+                            "-vcodec", "png", "-"], capture_output=True, check=True).stdout
+    still = Image.open(__import__("io").BytesIO(first)).convert("RGB")
+    lay = statement.layer(text, still.width, still.height)
+    enc = subprocess.Popen([ff, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
+                            "-s", f"{still.width}x{still.height}", "-r", str(fps), "-i", "-", "-an",
+                            "-c:v", "libx264", "-preset", "slow", "-crf", str(crf), "-g", str(fps * 10),
+                            "-keyint_min", str(fps * 10), "-sc_threshold", "0", "-pix_fmt", "yuv420p", out],
+                           stdin=subprocess.PIPE)
+    for i in range(seconds * fps):
+        enc.stdin.write(statement.over(still, lay, i / fps).tobytes())
+    enc.stdin.close()
+    if enc.wait() != 0:
+        sys.exit("intro encode failed")
+
+
 def run(cmd):
     print("+", " ".join(str(c) for c in cmd), flush=True)
     subprocess.run(cmd, check=True)
@@ -545,7 +566,7 @@ def main():
     ap.add_argument("--outdir", default=os.path.join(HERE, "out", "weekly"))
     ap.add_argument("--date", help="build the kit for the week containing this date (YYYY-MM-DD); default tomorrow")
     ap.add_argument("--full", action="store_true", help="also build the finished 8-hour MP4")
-    ap.add_argument("--crf", type=int, default=23)
+    ap.add_argument("--crf", type=int, default=20)  # 20 keeps the 1440p picture crisp (about 5 Mbps)
     ap.add_argument("--photo", help="use this photo instead of the rotation (path or a name in stills/)")
     ap.add_argument("--recipe", help="force a sound recipe (rain, fan, wind, heater, rain_road, lofi, mix)")
     ap.add_argument("--grade", help="force a colour grade (none, night, amber, cold)")
@@ -613,7 +634,10 @@ def main():
     if clip and os.path.exists(clip):  # Sora day: the moving clip, looped seamlessly
         run([sys.executable, os.path.join(HERE, "make_motion_loop.py"), "--clip", clip, "--out", loop])
     else:
+        # 1440p: YouTube streams 1440p uploads with a much better codec and bitrate than 1080p ones,
+        # so the picture stays sharp even for people watching in 1080p
         run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"],
+             "--width", "2560", "--height", "1440",
              "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
              "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
              "--seed", str(p["index"]), "--out", loop])
@@ -626,13 +650,14 @@ def main():
     # the car and scene, e.g. "Ferrari Roma on a Rainy Neon Night" (titles may put the sound or hours first)
     scene_line = meta["title"] if meta.get("title") and not p.get("title_override") else title.split(" | ")[0]
     trailer = os.path.join(stage, "trailer.mp4")
-    run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
+    said = ["--statement", meta["statement"]] if meta.get("statement") else []
+    run([sys.executable, os.path.join(HERE, "make_trailer.py"), *said, "--image", p["photo"], "--audio", wav,
          "--title", scene_line, "--label", f"{label_for(p)}  ·  {sound_name(p).upper()}",
          "--hours", str(hours_for(p)), "--out", trailer])
     # a second Short in the close-up style, only when SECOND_SHORT=1 (off since Oct 30, back to one Short)
     trailer2 = os.path.join(stage, "trailer2.mp4")
     if os.environ.get("SECOND_SHORT") == "1":
-        run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "closeup", "--image", p["photo"],
+        run([sys.executable, os.path.join(HERE, "make_trailer.py"), *said, "--style", "closeup", "--image", p["photo"],
              "--audio", wav, "--title", scene_line, "--hook", f"{hours_for(p)} Hours of\n{sound_name(p)}",
              "--hours", str(hours_for(p)), "--out", trailer2])
     short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]
@@ -686,7 +711,15 @@ def main():
 
     if args.full:
         ff = imageio_ffmpeg.get_ffmpeg_exe()
-        run([ff, "-y", "-loglevel", "error", "-stream_loop", str(vloops), "-i", loop,
+        video_in = ["-stream_loop", str(vloops), "-i", loop]
+        if meta.get("statement"):
+            intro = os.path.join(stage, "intro.mp4")
+            make_intro(loop, meta["statement"], intro, args.crf)
+            listing = os.path.join(stage, "video-parts.txt")
+            with open(listing, "w") as f:  # the intro, then the loop over and over
+                f.write("".join(f"file '{os.path.abspath(x)}'\n" for x in [intro] + [loop] * (vloops + 1)))
+            video_in = ["-f", "concat", "-safe", "0", "-i", listing]
+        run([ff, "-y", "-loglevel", "error", *video_in,
              "-stream_loop", str(aloops), "-i", wav, "-map", "0:v:0", "-map", "1:a:0",
              "-c:v", "copy", *acodec, "-t", str(total_minutes * 60),
              "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-full.mp4")])
@@ -700,7 +733,7 @@ def main():
                         music_lead=meta.get("music_lead") if p["recipe"] == "lofi" else None,
                         music_tempo=meta.get("music_tempo") if p["recipe"] == "lofi" else None,
                         room=meta.get("room"), title_style=meta.get("title_style"),
-                        thumb_style=meta.get("thumb_style"), word=meta.get("word"),
+                        thumb_style=meta.get("thumb_style"), word=meta.get("word"), statement=meta.get("statement"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)

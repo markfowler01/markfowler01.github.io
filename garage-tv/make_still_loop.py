@@ -126,7 +126,9 @@ def main():
         # crop window: at z=1 it shows the picture minus the margin, keeping the output aspect.
         # Everything stays in fractional pixels: rounding the window to whole pixels made the
         # slow drift sit still for several frames and then jump, which reads as choppy.
-        cw = min(BW, BW / margin / z)
+        # the biggest window of the output's shape that fits the picture (a picture wider than 16:9
+        # is limited by its height; sizing by width alone ran off the bottom and left a black band)
+        cw = min(BW, BH * W / H) / margin / z
         ch = cw * H / W
         ox = (BW - cw) / 2 + args.drift * BW * 0.5 * math.sin(2 * math.pi * t)
         oy = (BH - ch) / 2 + args.drift * BH * 0.25 * math.sin(2 * math.pi * t + math.pi / 2)
