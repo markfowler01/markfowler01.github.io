@@ -48,8 +48,13 @@ TEMPO = {"deep_focus": (74, 88), "night_drive": (86, 98), "lofi_beats": (70, 82)
 LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck", "mellow vibraphone", "airy synth lead"]
 
 
-def prompt_for(flavor, rng, mood=""):
-    text = FLAVORS[flavor].format(bpm=rng.randint(*TEMPO[flavor]), lead=rng.choice(LEADS))
+def prompt_for(flavor, rng, mood="", lead=None, tempo=None):
+    """One song's description. lead: the main instrument (else a random one); tempo: slow or upbeat
+    takes the lower or upper half of the flavour's tempo range."""
+    lo, hi = TEMPO[flavor]
+    mid = (lo + hi) // 2
+    lo, hi = {"slow": (lo, mid), "upbeat": (mid, hi)}.get(tempo, (lo, hi))
+    text = FLAVORS[flavor].format(bpm=rng.randint(lo, hi), lead=lead or rng.choice(LEADS))
     return f"{text} {mood} {COMMON}".replace("  ", " ")
 
 
@@ -61,9 +66,9 @@ def decode(raw):
     return np.frombuffer(out, np.float32).reshape(-1, 2).astype(np.float64)
 
 
-def one_song(flavor, seed, mood="", model="lyria-3.5"):
+def one_song(flavor, seed, mood="", lead=None, tempo=None, model="lyria-3.5"):
     rng = random.Random(seed)
-    prompt = prompt_for(flavor, rng, mood)
+    prompt = prompt_for(flavor, rng, mood, lead, tempo)
     audio, _, _ = lyria.generate(prompt, model)
     x = decode(audio[0][1])
     x = x / (np.sqrt((x ** 2).mean()) + 1e-9) * 0.1  # same loudness for every song
@@ -78,7 +83,9 @@ def main():
     ap.add_argument("--songs", type=int, default=int(os.environ.get("LYRIA_SONGS", "8")))
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--flavors", default=",".join(FLAVORS), help="comma-separated flavours to draw from")
-    ap.add_argument("--mood", default="", help="extra words for every song, e.g. 'rainy night, calm and steady'")
+    ap.add_argument("--mood", default="", help="extra words for every song, e.g. 'calm and steady'")
+    ap.add_argument("--lead", help="main instrument for every song (else each song picks one)")
+    ap.add_argument("--tempo", choices=["slow", "upbeat"], help="lower or upper half of the tempo range")
     ap.add_argument("--gap", type=float, default=3.0)
     ap.add_argument("--bitrate", default="192k")
     ap.add_argument("--out", default="music.m4a")
@@ -104,7 +111,7 @@ def main():
     plan = [(rng.choice(flavors), a.seed * 100 + i) for i in range(a.songs)]
     songs = [None] * len(plan)
     with cf.ThreadPoolExecutor(4) as pool:
-        futures = {pool.submit(one_song, fl, sd, a.mood): i for i, (fl, sd) in enumerate(plan)}
+        futures = {pool.submit(one_song, fl, sd, a.mood, a.lead, a.tempo): i for i, (fl, sd) in enumerate(plan)}
         for fut in cf.as_completed(futures):
             i = futures[fut]
             try:

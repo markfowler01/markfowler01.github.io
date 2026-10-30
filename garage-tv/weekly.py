@@ -592,8 +592,9 @@ def main():
             made = False
             if style in LYRIA_FALLBACK and os.environ.get("GEMINI_API_KEY"):
                 mood = f"Mood: {(meta.get('word') or 'deep focus').lower()}, calm and focused."
+                dials = [x for k in ("lead", "tempo") if meta.get(f"music_{k}") for x in (f"--{k}", meta[f"music_{k}"])]
                 made = subprocess.run([sys.executable, os.path.join(HERE, "make_lyria_album.py"), "--seed", str(seed),
-                                       "--flavors", style, "--mood", mood, "--out", wav]).returncode == 0
+                                       "--flavors", style, "--mood", mood, *dials, "--out", wav]).returncode == 0
             if not made:
                 run([sys.executable, os.path.join(HERE, "make_lofi_real.py"), "--minutes", str(audio_minutes),
                      "--seed", str(seed), "--style", LYRIA_FALLBACK.get(style, style), "--out", wav])
@@ -695,6 +696,8 @@ def main():
                         grade=p["grade"], title=title, tag=p["tag"],
                         car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
                         music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
+                        music_lead=meta.get("music_lead") if p["recipe"] == "lofi" else None,
+                        music_tempo=meta.get("music_tempo") if p["recipe"] == "lofi" else None,
                         room=meta.get("room"), title_style=meta.get("title_style"),
                         thumb_style=meta.get("thumb_style"), word=meta.get("word"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))

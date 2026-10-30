@@ -72,6 +72,9 @@ MUSIC_STYLES = {
                        words="mellow lo-fi hip hop: jazzy keys and a soft head-nod beat"),
 }
 MUSIC_ORDER = ["deep_focus", "lofi_beats"]  # music styles in use (lofi, garage, house: our own creator)
+# dials the learning tunes for Lyria albums: the main instrument and the tempo
+MUSIC_LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck"]
+MUSIC_TEMPOS = ["slow", "upbeat"]
 # Deep Work: one word sets the mood of each video (thumbnail and title); not repeated within 10 videos
 DEEP_WORDS = ["Locked In", "Night Shift", "Deep Focus", "Flow State", "2AM Drive", "No Days Off", "Build Mode",
               "Clarity", "Momentum", "Quiet Power", "Discipline", "One More Hour", "Full Throttle", "Late Night",
@@ -359,6 +362,8 @@ def pick(day, published):
     soundscape = learn.choose(rng, [scene["bed"], "brown", "white"], lambda e: e.get("recipe"), history)
     sound = "lofi" if last != "lofi" else soundscape
     style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
+    lead = learn.choose(rng, MUSIC_LEADS, lambda e: e.get("music_lead"), history)
+    tempo = learn.choose(rng, MUSIC_TEMPOS, lambda e: e.get("music_tempo"), history)
     last_title = published[-1].get("title_style") if published else None
     title_style = learn.choose(rng, [t for t in ACTIVE_TITLE_STYLES if t != last_title] or ACTIVE_TITLE_STYLES,
                                lambda e: e.get("title_style"), history)
@@ -366,7 +371,7 @@ def pick(day, published):
     recent_words = {e.get("word") for e in published[-10:]}
     word = rng.choice([w for w in DEEP_WORDS if w not in recent_words] or DEEP_WORDS)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
-                title_style=title_style, thumb_style=thumb_style, word=word)
+                title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo)
 
 
 def sidecar(choice):
@@ -408,6 +413,8 @@ def sidecar(choice):
         meta.update(
             minutes=minutes,
             music_style=style,
+            music_lead=choice.get("music_lead"),
+            music_tempo=choice.get("music_tempo"),
             sound_name=ms["name"],
             title_tail=ms.get("tail", series["tail"]),
             tags=deep_tags + [choice["car"].lower(), short.lower(), series["name"].lower(), ms["name"].lower(),
