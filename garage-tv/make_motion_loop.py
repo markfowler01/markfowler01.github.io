@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn a short moving clip (e.g. a 12 s Sora video) into a seamless 1080p loop.
+"""Turn a short moving clip (e.g. a 12 s Sora video) into a seamless 1440p loop.
 
 The last --blend seconds of the clip are cross-faded into its first seconds, so the loop's
 last frame runs straight into its first: a 12 s clip becomes a 10.5 s loop with no jump.
@@ -31,7 +31,7 @@ def main():
     if n < 3 * x:
         sys.exit(f"clip too short to loop: {secs:.1f} s")
     tail0 = (n - x) / FPS
-    vf = (f"[0:v]fps={FPS},scale=1920:1080:flags=lanczos,setsar=1,format=yuv420p,split[a][b];"
+    vf = (f"[0:v]fps={FPS},scale=2560:1440:flags=lanczos,setsar=1,format=yuv420p,split[a][b];"
           f"[a]trim=start={tail0}:end={n / FPS},setpts=PTS-STARTPTS,fps={FPS}[t];"
           f"[b]trim=start=0:end={tail0},setpts=PTS-STARTPTS,fps={FPS}[h];"
           f"[t][h]xfade=transition=fade:duration={args.blend}:offset=0,format=yuv420p[v]")
