@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; rooms = paint one picture in each room (nothing posted)"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first)"
         type: choice
-        options: [discover, inspect, explore, sample, kit, youtube, rooms]
+        options: [discover, inspect, explore, sample, kit, youtube, rooms, models]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -178,3 +178,18 @@ jobs:
           PY
           tag="music-lab-rooms-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" ../lab/*.webp --prerelease --title "Lab: the PARKED FM rooms" --notes "Test pictures only; nothing was posted."
+
+      - name: List the Gemini API models this key can use (music models first)
+        if: ${{ inputs.task == 'models' }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          curl -sS -H "x-goog-api-key: $GEMINI_API_KEY" "https://generativelanguage.googleapis.com/v1beta/models?pageSize=200" > /tmp/m.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open("/tmp/m.json"))
+          ms = d.get("models", [])
+          print(len(ms), "models;", d.get("error"))
+          for m in sorted(ms, key=lambda m: ("lyria" not in m["name"] and "music" not in m["name"] and "audio" not in m["name"], m["name"])):
+              print(m["name"], "|", ",".join(m.get("supportedGenerationMethods", [])), "|", m.get("displayName"))
+          PY
