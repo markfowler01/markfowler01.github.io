@@ -1,0 +1,49 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Aventador SVJ in the Night Studio on a Rainy Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "aventador-svj",
+  "car": "Lamborghini Aventador SVJ",
+  "scene": "studio_rain_night",
+  "room": "studio",
+  "title_style": "deep_work",
+  "thumb_style": "word",
+  "word": "2AM Drive",
+  "minutes": 120,
+  "music_style": "lofi_beats",
+  "music_lead": "felt piano",
+  "music_tempo": "upbeat",
+  "sound_name": "Lo-Fi Beats",
+  "title_tail": "Lo-Fi Beats for Work & Focus",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "2am drive",
+    "lamborghini aventador svj",
+    "aventador svj",
+    "midnight garage",
+    "lo-fi beats",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Step inside the quiet warmth of the Night Studio, where a bright giallo yellow Lamborghini Aventador SVJ rests under dim lights while cool rain streaks the glass and softens the city glow outside. Floating through the room are two hours of mellow, music-only lo-fi hip hop, blending dusty jazzy keys with a steady, head-nod beat. Let the calm atmosphere settle over you, making this your quiet haven for studying, working, or simply relaxing into the evening.\n\nNo talking. No lyrics. No sudden sounds. Every track is original, made for PARKED FM.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofibeats #musicforwork #focusmusic #aventadorsvj",
+  "maker": "gemini"
+}

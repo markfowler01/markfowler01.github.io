@@ -364,5 +364,33 @@
     "youtube": "sUB-YWbB9Bk",
     "short": "BBeon0--vIw",
     "short2": "d2EjxVJ-SSE"
+  },
+  {
+    "date": "2026-10-30",
+    "photo": "2026-10-30-aventador-svj.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 2AM Drive | Aventador SVJ Night Studio | 2 Hours",
+    "tag": "daily-2026-10-30-2",
+    "car": "Lamborghini Aventador SVJ",
+    "scene": "studio_rain_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "2AM Drive",
+    "songs": [
+      "Winter Glow",
+      "Warm Drive",
+      "Late Detour",
+      "Velvet Rev",
+      "Empty Exit",
+      "Wet Window",
+      "Winter Showroom",
+      "Open Signal"
+    ]
   }
 ]
