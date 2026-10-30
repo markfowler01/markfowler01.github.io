@@ -69,6 +69,11 @@ MUSIC_STYLES = {
 MUSIC_ORDER = ["lofi", "garage", "house"]
 # How the title is put together (weekly.title_for); never the same style two days running
 TITLE_STYLES = ["scene_first", "hours_first", "use_first"]
+# Rooms, title styles and thumbnails in use. Back to the week-one look (loft only, scene-first
+# titles, brand-first thumbnail) since Oct 30 after Short views fell; add names back to turn them on.
+ACTIVE_ROOMS = ["loft"]
+ACTIVE_TITLE_STYLES = ["scene_first"]
+ACTIVE_THUMB_STYLES = ["brand_first"]
 # Thumbnail layouts (weekly.make_thumbnail): the brand big, or what you'll hear big; learned like the rest
 THUMB_STYLES = ["brand_first", "sound_first"]
 
@@ -279,7 +284,8 @@ def pick(day, published):
     recent_cars = {e.get("car") for e in published[-20:]}
     recent_scenes = [e.get("scene") for e in published[-3:]]
     cars = [c for c in CARS if c[0] not in recent_cars] or CARS
-    scenes = [s for s in SCENES if s["id"] not in recent_scenes] or SCENES
+    active = [s for s in SCENES if s["room"] in ACTIVE_ROOMS]
+    scenes = [s for s in active if s["id"] not in recent_scenes] or active
     # each part of the video is picked with odds that follow how past videos did (learn.py);
     # music and soundscape days still alternate, and the picture makers stay a fair test
     history = learn.scored(published)
@@ -296,8 +302,9 @@ def pick(day, published):
     sound = "lofi" if last != "lofi" else soundscape
     style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
     last_title = published[-1].get("title_style") if published else None
-    title_style = learn.choose(rng, [t for t in TITLE_STYLES if t != last_title], lambda e: e.get("title_style"), history)
-    thumb_style = learn.choose(rng, THUMB_STYLES, lambda e: e.get("thumb_style"), history)
+    title_style = learn.choose(rng, [t for t in ACTIVE_TITLE_STYLES if t != last_title] or ACTIVE_TITLE_STYLES,
+                               lambda e: e.get("title_style"), history)
+    thumb_style = learn.choose(rng, ACTIVE_THUMB_STYLES, lambda e: e.get("thumb_style"), history)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
                 title_style=title_style, thumb_style=thumb_style)
 

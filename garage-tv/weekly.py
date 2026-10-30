@@ -577,11 +577,12 @@ def main():
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
          "--title", scene_line, "--label", f"{label_for(p)}  ·  {sound_name(p).upper()}",
          "--hours", str(hours_for(p)), "--out", trailer])
-    # a second Short in the close-up style: the car full screen, a hook, a different song
+    # a second Short in the close-up style, only when SECOND_SHORT=1 (off since Oct 30, back to one Short)
     trailer2 = os.path.join(stage, "trailer2.mp4")
-    run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "closeup", "--image", p["photo"],
-         "--audio", wav, "--title", scene_line, "--hook", f"{hours_for(p)} Hours of\n{sound_name(p)}",
-         "--hours", str(hours_for(p)), "--out", trailer2])
+    if os.environ.get("SECOND_SHORT") == "1":
+        run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "closeup", "--image", p["photo"],
+             "--audio", wav, "--title", scene_line, "--hook", f"{hours_for(p)} Hours of\n{sound_name(p)}",
+             "--hours", str(hours_for(p)), "--out", trailer2])
     short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]
     question = "Would you work in here?" if lofi else "Could you sleep in here?"
     short2_title = f"{question} {scene_line} #shorts"[:100]
@@ -623,7 +624,8 @@ def main():
     Image.open(thumb).save(os.path.join(args.outdir, "thumbnail.jpg"), quality=90)
     import shutil
     shutil.copy(trailer, os.path.join(args.outdir, "trailer.mp4"))
-    shutil.copy(trailer2, os.path.join(args.outdir, "trailer2.mp4"))
+    if os.path.exists(trailer2):
+        shutil.copy(trailer2, os.path.join(args.outdir, "trailer2.mp4"))
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
