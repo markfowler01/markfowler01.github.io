@@ -122,6 +122,8 @@ jobs:
         if: ${{ !inputs.preview }}
         env:
           HAS_YT: ${{ secrets.YT_REFRESH_TOKEN != '' }}
+          SECOND_SHORT: "1"  # the close-up Short too (it did a little better than the card Short)
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}  # Lyria music and the written descriptions
         run: |
           args="--daily --record --outdir kit"
           [ "$HAS_YT" = "true" ] && args="$args --full"
@@ -134,7 +136,7 @@ jobs:
         run: |
           tag=$(cat kit/TAG)
           gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
-          gh release create "$tag" kit/*.zip kit/thumbnail.jpg kit/trailer.mp4 kit/trailer2.mp4 \
+          gh release create "$tag" kit/*.zip kit/thumbnail.jpg kit/trailer*.mp4 \
             --title "$(cat kit/RELEASE_TITLE)" --notes-file kit/details.txt
 
       - name: Save today's photo and log it as used
@@ -165,9 +167,11 @@ jobs:
         run: |
           python garage-tv/youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json --id-file kit/video_id.txt
           python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id "$(cat kit/video_id.txt)" --id-file kit/short_id.txt
-          # a second Short in the close-up style; if it fails, the day's video and first Short still count
-          python garage-tv/youtube_upload.py kit/trailer2.mp4 - kit/details.json --short short2_title --full-id "$(cat kit/video_id.txt)" --id-file kit/short2_id.txt \
-            || echo "::warning::second Short upload failed"
+          # a second Short in the close-up style, only when the build made one (SECOND_SHORT=1)
+          if [ -f kit/trailer2.mp4 ]; then
+            python garage-tv/youtube_upload.py kit/trailer2.mp4 - kit/details.json --short short2_title --full-id "$(cat kit/video_id.txt)" --id-file kit/short2_id.txt \
+              || echo "::warning::second Short upload failed"
+          fi
           python garage-tv/scoreboard.py --log "$(cat kit/TAG)" "$(cat kit/video_id.txt)" "$(cat kit/short_id.txt)" "$(cat kit/short2_id.txt 2>/dev/null)"
 
       - name: Update the picture-test scoreboard

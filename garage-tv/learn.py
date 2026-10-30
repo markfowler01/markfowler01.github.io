@@ -92,6 +92,8 @@ def report(published=None, board=None):
     dims = [("scene", lambda e: e.get("scene")),
             ("soundscape", lambda e: e.get("recipe") if e.get("recipe") != "lofi" else None),
             ("music style", lambda e: e.get("music_style")),
+            ("main instrument", lambda e: e.get("music_lead")),
+            ("tempo", lambda e: e.get("music_tempo")),
             ("room", lambda e: e.get("room")),
             ("car brand", lambda e: brand(e.get("car"))),
             ("title style", lambda e: e.get("title_style")),

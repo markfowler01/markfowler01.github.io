@@ -32,7 +32,7 @@ import subprocess
 import sys
 import zipfile
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 import imageio_ffmpeg
 
@@ -123,6 +123,8 @@ def photo_meta(photo):
 
 
 PUBLISHED = os.path.join(HERE, "published.json")
+# Lyria music styles, and the style of our own creator to use if Lyria can't make the album
+LYRIA_FALLBACK = {"deep_focus": "garage", "lofi_beats": "lofi"}
 DAILY_SOUND = "lofi"  # our own original music (make_lofi_real.py), music only (work / focus music)
 # Days alternate: music only, then a soundscape only (no music). The car engine writes the day's
 # choice into the photo's settings as daily_sound (and music_style); a photo without one follows
@@ -227,7 +229,12 @@ def title_for(p):
         short = "White Noise & Lo-Fi" if p["recipe"] == "mix" else sound_name(p)
         use = "Work & Focus" if p["recipe"] in ("lofi", "mix") else "Deep Sleep"
         # the car engine varies the title style day to day, so the channel doesn't read like a template
-        styled = {"hours_first": [f"{h} Hours of {short} | {mid}"],
+        car = mid.split(" in ")[0]
+        kind = "Music" if p["recipe"] in ("lofi", "mix") else short
+        word = m.get("word") or "Deep Focus"
+        styled = {"deep_work": [f"Deep Work {kind} – {word} | {car} Night Studio | {h} Hours",
+                                f"Deep Work {kind} – {word} | {car} Night Studio"],
+                  "hours_first": [f"{h} Hours of {short} | {mid}"],
                   "use_first": [f"{short} for {use} | {mid} | {h} Hours", f"{short} for {use} | {mid}"],
                   }.get(m.get("title_style"), [])
         options = styled + [f"{mid} | {tail} | {h} Hours", f"{mid} | {short} | {h} Hours", f"{mid} | {h} Hours"]
@@ -296,6 +303,7 @@ def with_tracklist(desc, songs, album_minutes):
 def tags_for(p):
     tags, total = [], 0
     base = LOFI_TAGS if p["recipe"] in ("lofi", "mix") else BASE_TAGS
+    base = [t for t in base if t != "8 hours" or hours_for(p) == 8]
     for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + base:
         if t in tags:
             continue
@@ -390,11 +398,46 @@ def auto_side(photo):
     return "right" if a[:, int(w * 0.55):].mean() < a[:, : int(w * 0.45)].mean() else "left"
 
 
+THIN = os.path.join(HERE, "fonts", "Montserrat.ttf")  # SIL Open Font License, fonts/Montserrat-OFL.txt
+
+
+def word_thumbnail(p, out_path):
+    """The Deep Work thumbnail: the picture, a touch darker, and one big thin glowing word across the
+    top (LOCKED IN, NIGHT SHIFT, ...). Nothing else."""
+    from make_still_loop import grade
+    word = (p["meta"].get("word") or "Deep Focus").upper()
+    bg = cover(grade(Image.open(p["photo"]).convert("RGB"), p["grade"]), 1280, 720)
+    bg = ImageEnhance.Brightness(bg).enhance(0.82).convert("RGBA")
+    shade = Image.new("L", (1, 720))
+    shade.putdata([int(150 * max(0.0, 1 - y / 330)) for y in range(720)])  # darker at the top, under the word
+    bg = Image.composite(Image.new("RGBA", bg.size, (0, 0, 0, 255)), bg, shade.resize((1280, 720)))
+    f = ImageFont.truetype(THIN, 150)
+    f.set_variation_by_name("Light")
+    spaced = " ".join(word) if len(word) <= 9 else word  # wide letter spacing, like a sign
+    text = Image.new("L", (1280, 260), 0)
+    d = ImageDraw.Draw(text)
+    l, t, r, b = d.textbbox((0, 0), spaced, font=f)
+    scale = min(1.0, 1120 / (r - l))
+    if scale < 1:
+        f = ImageFont.truetype(THIN, int(150 * scale))
+        f.set_variation_by_name("Light")
+        l, t, r, b = d.textbbox((0, 0), spaced, font=f)
+    d.text(((1280 - (r - l)) // 2 - l, (260 - (b - t)) // 2 - t), spaced, font=f, fill=255)
+    y0 = 70
+    for radius, strength, colour in ((26, 120, (120, 200, 255)), (9, 170, (200, 235, 255))):  # soft glow
+        glow = text.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
+        bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), c) for c in colour], glow)), (0, y0))
+    bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), 245)] * 3, text)), (0, y0))
+    bg.convert("RGB").save(out_path, quality=90, optimize=True)
+
+
 def make_thumbnail(p, out_path):
     sys.path.insert(0, HERE)
     from make_still_loop import grade  # same colour grade as the video
 
     meta = p.get("meta", {})
+    if meta.get("thumb_style") == "word":
+        return word_thumbnail(p, out_path)
     side = meta.get("text_side") or auto_side(p["photo"])
     right_side = side == "right"
     sound_first = meta.get("thumb_style") == "sound_first"
@@ -544,12 +587,21 @@ def main():
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
         if p["recipe"] == "lofi":
-            # new original songs every video, played on real recorded instruments; music only
-            run([sys.executable, os.path.join(HERE, "make_lofi_real.py"), "--minutes", str(audio_minutes),
-                 "--seed", str(seed), "--style", meta.get("music_style", "lofi"), "--out", wav])
+            # new original songs every video, music only: Google's Lyria for its styles (deep_focus,
+            # lofi_beats), our own real-instrument creator for the rest or if Lyria fails
+            style = meta.get("music_style", "lofi")
+            made = False
+            if style in LYRIA_FALLBACK and os.environ.get("GEMINI_API_KEY"):
+                mood = f"Mood: {(meta.get('word') or 'deep focus').lower()}, calm and focused."
+                dials = [x for k in ("lead", "tempo") if meta.get(f"music_{k}") for x in (f"--{k}", meta[f"music_{k}"])]
+                made = subprocess.run([sys.executable, os.path.join(HERE, "make_lyria_album.py"), "--seed", str(seed),
+                                       "--flavors", style, "--mood", mood, *dials, "--out", wav]).returncode == 0
+            if not made:
+                run([sys.executable, os.path.join(HERE, "make_lofi_real.py"), "--minutes", str(audio_minutes),
+                     "--seed", str(seed), "--style", LYRIA_FALLBACK.get(style, style), "--out", wav])
             with open(os.path.splitext(wav)[0] + ".tracks.json") as f:
                 album = json.load(f)
-            album_songs = album["songs"]
+            album_songs, audio_minutes = album["songs"], album["minutes"]
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
@@ -577,11 +629,12 @@ def main():
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--image", p["photo"], "--audio", wav,
          "--title", scene_line, "--label", f"{label_for(p)}  ·  {sound_name(p).upper()}",
          "--hours", str(hours_for(p)), "--out", trailer])
-    # a second Short in the close-up style: the car full screen, a hook, a different song
+    # a second Short in the close-up style, only when SECOND_SHORT=1 (off since Oct 30, back to one Short)
     trailer2 = os.path.join(stage, "trailer2.mp4")
-    run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "closeup", "--image", p["photo"],
-         "--audio", wav, "--title", scene_line, "--hook", f"{hours_for(p)} Hours of\n{sound_name(p)}",
-         "--hours", str(hours_for(p)), "--out", trailer2])
+    if os.environ.get("SECOND_SHORT") == "1":
+        run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "closeup", "--image", p["photo"],
+             "--audio", wav, "--title", scene_line, "--hook", f"{hours_for(p)} Hours of\n{sound_name(p)}",
+             "--hours", str(hours_for(p)), "--out", trailer2])
     short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]
     question = "Would you work in here?" if lofi else "Could you sleep in here?"
     short2_title = f"{question} {scene_line} #shorts"[:100]
@@ -623,7 +676,8 @@ def main():
     Image.open(thumb).save(os.path.join(args.outdir, "thumbnail.jpg"), quality=90)
     import shutil
     shutil.copy(trailer, os.path.join(args.outdir, "trailer.mp4"))
-    shutil.copy(trailer2, os.path.join(args.outdir, "trailer2.mp4"))
+    if os.path.exists(trailer2):
+        shutil.copy(trailer2, os.path.join(args.outdir, "trailer2.mp4"))
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
@@ -643,8 +697,10 @@ def main():
                         grade=p["grade"], title=title, tag=p["tag"],
                         car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
                         music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
+                        music_lead=meta.get("music_lead") if p["recipe"] == "lofi" else None,
+                        music_tempo=meta.get("music_tempo") if p["recipe"] == "lofi" else None,
                         room=meta.get("room"), title_style=meta.get("title_style"),
-                        thumb_style=meta.get("thumb_style"),
+                        thumb_style=meta.get("thumb_style"), word=meta.get("word"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)
