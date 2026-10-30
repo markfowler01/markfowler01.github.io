@@ -30,7 +30,7 @@ on:
       style:
         description: "sample: lofi (lo-fi hip hop), garage (future garage / chillstep) or house (lo-fi house)"
         type: choice
-        options: [lofi, garage, house]
+        options: [lofi, garage, house, deep_focus, lofi_beats]
         default: lofi
 
 jobs:

@@ -123,6 +123,7 @@ jobs:
         env:
           HAS_YT: ${{ secrets.YT_REFRESH_TOKEN != '' }}
           SECOND_SHORT: "1"  # the close-up Short too (it did a little better than the card Short)
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}  # Lyria music and the written descriptions
         run: |
           args="--daily --record --outdir kit"
           [ "$HAS_YT" = "true" ] && args="$args --full"

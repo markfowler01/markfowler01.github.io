@@ -123,6 +123,8 @@ def photo_meta(photo):
 
 
 PUBLISHED = os.path.join(HERE, "published.json")
+# Lyria music styles, and the style of our own creator to use if Lyria can't make the album
+LYRIA_FALLBACK = {"deep_focus": "garage", "lofi_beats": "lofi"}
 DAILY_SOUND = "lofi"  # our own original music (make_lofi_real.py), music only (work / focus music)
 # Days alternate: music only, then a soundscape only (no music). The car engine writes the day's
 # choice into the photo's settings as daily_sound (and music_style); a photo without one follows
@@ -584,12 +586,20 @@ def main():
     if lofi:
         seed = 5000 + p["index"] if args.daily else meta.get("music_seed", 1000 + p["index"])
         if p["recipe"] == "lofi":
-            # new original songs every video, played on real recorded instruments; music only
-            run([sys.executable, os.path.join(HERE, "make_lofi_real.py"), "--minutes", str(audio_minutes),
-                 "--seed", str(seed), "--style", meta.get("music_style", "lofi"), "--out", wav])
+            # new original songs every video, music only: Google's Lyria for its styles (deep_focus,
+            # lofi_beats), our own real-instrument creator for the rest or if Lyria fails
+            style = meta.get("music_style", "lofi")
+            made = False
+            if style in LYRIA_FALLBACK and os.environ.get("GEMINI_API_KEY"):
+                mood = f"Mood: {(meta.get('word') or 'deep focus').lower()}, calm and focused."
+                made = subprocess.run([sys.executable, os.path.join(HERE, "make_lyria_album.py"), "--seed", str(seed),
+                                       "--flavors", style, "--mood", mood, "--out", wav]).returncode == 0
+            if not made:
+                run([sys.executable, os.path.join(HERE, "make_lofi_real.py"), "--minutes", str(audio_minutes),
+                     "--seed", str(seed), "--style", LYRIA_FALLBACK.get(style, style), "--out", wav])
             with open(os.path.splitext(wav)[0] + ".tracks.json") as f:
                 album = json.load(f)
-            album_songs = album["songs"]
+            album_songs, audio_minutes = album["songs"], album["minutes"]
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),

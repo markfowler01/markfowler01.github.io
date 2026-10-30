@@ -65,8 +65,13 @@ MUSIC_STYLES = {
                    words="mellow future garage and chillstep: airy pads, deep bass, a soft half-time beat"),
     "house": dict(name="Lo-Fi House", tail="Lo-Fi House for Work & Focus",
                   words="gentle lo-fi house: warm Rhodes chords over a soft four-on-the-floor"),
+    # made with Google's Lyria (make_lyria_album.py); the two most popular focus sounds, Mark's pick
+    "deep_focus": dict(name="Deep Focus", tail="Deep Focus Music for Work", lyria=True,
+                       words="calm ambient electronic: warm synth pads, a soft deep bass and a gentle beat"),
+    "lofi_beats": dict(name="Lo-Fi Beats", tail="Lo-Fi Beats for Work & Focus", lyria=True,
+                       words="mellow lo-fi hip hop: jazzy keys and a soft head-nod beat"),
 }
-MUSIC_ORDER = ["lofi", "garage", "house"]
+MUSIC_ORDER = ["deep_focus", "lofi_beats"]  # music styles in use (lofi, garage, house: our own creator)
 # Deep Work: one word sets the mood of each video (thumbnail and title); not repeated within 10 videos
 DEEP_WORDS = ["Locked In", "Night Shift", "Deep Focus", "Flow State", "2AM Drive", "No Days Off", "Build Mode",
               "Clarity", "Momentum", "Quiet Power", "Discipline", "One More Hour", "Full Throttle", "Late Night",
@@ -411,9 +416,10 @@ def sidecar(choice):
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
                 f"{hours} hours of {ms['words']}, music only, for working, studying, "
                 "relaxing or drifting off to sleep.\n\n"
-                "No talking. No lyrics. No sudden sounds. Every song is original, written and played for "
-                "PARKED FM on real recorded instruments.\n\n"
-                "PARKED FM | Dream Cars. Easy Listening.\n\n"
+                "No talking. No lyrics. No sudden sounds. "
+                + ("Every track is original, made for PARKED FM.\n\n" if ms.get("lyria") else
+                   "Every song is original, written and played for PARKED FM on real recorded instruments.\n\n")
+                + "PARKED FM | Dream Cars. Easy Listening.\n\n"
                 f"#parkedfm #{ms['name'].lower().replace(' ', '').replace('-', '')} #musicforwork #focusmusic #{tag}"
             ),
         )
