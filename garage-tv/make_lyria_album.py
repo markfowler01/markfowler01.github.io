@@ -66,10 +66,19 @@ def decode(raw):
     return np.frombuffer(out, np.float32).reshape(-1, 2).astype(np.float64)
 
 
-def one_song(flavor, seed, mood="", lead=None, tempo=None, model="lyria-3.5"):
-    rng = random.Random(seed)
-    prompt = prompt_for(flavor, rng, mood, lead, tempo)
-    audio, _, _ = lyria.generate(prompt, model)
+def one_song(flavor, seed, mood="", lead=None, tempo=None, model="lyria-3.5", tries=4):
+    """Lyria sometimes holds a song back because it may resemble an existing record; ask again with
+    a slightly different take (tempo, lead) up to `tries` times. Held-back songs aren't charged."""
+    for attempt in range(tries):
+        rng = random.Random(seed + 7919 * attempt)
+        prompt = prompt_for(flavor, rng, mood, lead if attempt < 2 else None, tempo)
+        try:
+            audio, _, _ = lyria.generate(prompt, model)
+            break
+        except RuntimeError as e:
+            if attempt == tries - 1:
+                raise
+            print(f"take {attempt + 1} held back ({str(e)[:90]}...), trying another", file=sys.stderr)
     x = decode(audio[0][1])
     x = x / (np.sqrt((x ** 2).mean()) + 1e-9) * 0.1  # same loudness for every song
     n = min(len(x) // 4, int(1.5 * SR))

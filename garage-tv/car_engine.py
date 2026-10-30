@@ -615,7 +615,7 @@ def with_written_intro(choice, meta):
 
 
 def gemini_text(prompt):
-    model = os.environ.get("GEMINI_TEXT_MODEL", "gemini-2.5-flash")
+    model = os.environ.get("GEMINI_TEXT_MODEL", "gemini-flash-latest")  # Google retires dated models
     body = json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode()
     req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                                  data=body, method="POST")

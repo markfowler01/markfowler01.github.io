@@ -303,6 +303,7 @@ def with_tracklist(desc, songs, album_minutes):
 def tags_for(p):
     tags, total = [], 0
     base = LOFI_TAGS if p["recipe"] in ("lofi", "mix") else BASE_TAGS
+    base = [t for t in base if t != "8 hours" or hours_for(p) == 8]
     for t in p.get("meta", {}).get("tags", []) + RECIPES[p["recipe"]]["tags"] + base:
         if t in tags:
             continue
