@@ -28,6 +28,11 @@ on:
         description: "Preview only: paint the picture and attach it to a 'preview' release; build and post nothing"
         type: boolean
         default: false
+      sound:
+        description: "auto = days alternate; music or soundscape forces one for this run"
+        type: choice
+        options: [auto, music, soundscape]
+        default: auto
       only_if_missing:
         description: "Skip if today's video is already up (the on-time starter sets this)"
         type: boolean
@@ -93,6 +98,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SORA_MODEL: ${{ vars.SORA_MODEL }}
           MAKER: ${{ inputs.maker }}
+          FORCE_SOUND: ${{ inputs.sound }}
         run: |
           if [ -n "$GEMINI_API_KEY" ] || [ -n "$OPENAI_API_KEY" ]; then
             python garage-tv/car_engine.py || echo "::warning::car engine failed; using the photo queue today"

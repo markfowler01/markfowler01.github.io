@@ -721,6 +721,10 @@ def main():
     published = json.load(open(pub_path)) if os.path.exists(pub_path) else []
 
     choice = pick(day, published)
+    if os.environ.get("FORCE_SOUND") == "music":  # a hand-started run can ask for a music day
+        choice["sound"] = "lofi"
+    elif os.environ.get("FORCE_SOUND") == "soundscape" and choice["sound"] == "lofi":
+        choice["sound"] = random.Random(day.toordinal()).choice([choice["scene"]["bed"], "brown", "white"])
     prompt = prompt_for(choice["scene"], choice["color"], choice["car"])
     meta = sidecar(choice)
     if not args.dry_run:
