@@ -98,6 +98,7 @@ def report(published=None, board=None):
             ("car brand", lambda e: brand(e.get("car"))),
             ("title style", lambda e: e.get("title_style")),
             ("thumbnail", lambda e: e.get("thumb_style")),
+            ("word", lambda e: e.get("word")),
             ("picture maker", lambda e: e.get("maker"))]
     for name, key in dims:
         seen = [key(e) for e, _ in history if key(e)]

@@ -75,10 +75,19 @@ MUSIC_ORDER = ["deep_focus", "lofi_beats"]  # music styles in use (lofi, garage,
 # dials the learning tunes for Lyria albums: the main instrument and the tempo
 MUSIC_LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck"]
 MUSIC_TEMPOS = ["slow", "upbeat"]
-# Deep Work: one word sets the mood of each video (thumbnail and title); not repeated within 10 videos
-DEEP_WORDS = ["Locked In", "Night Shift", "Deep Focus", "Flow State", "2AM Drive", "No Days Off", "Build Mode",
-              "Clarity", "Momentum", "Quiet Power", "Discipline", "One More Hour", "Full Throttle", "Late Night",
-              "Head Down", "In The Zone", "Steady", "Grind Season", "Calm Mind", "Overtime"]
+# Deep Work: one word sets the mood of each video (thumbnail and title); not repeated within 10 videos,
+# and learned (Mark's picks, Oct 30)
+DEEP_WORDS = [
+    # car + focus
+    "Launch Mode", "Overdrive", "Cruise Control", "Full Throttle", "Redline", "Apex", "Night Run", "Track Mode",
+    "Green Light", "Pole Position", "Torque", "Top Gear",
+    # grind and ambition
+    "CEO Mode", "Boss Mode", "Discipline", "No Days Off", "Built Different", "Silent Grind", "Grind Season",
+    "Empire", "Legacy", "Execute", "Unstoppable", "Mindset",
+    # calm focus
+    "Locked In", "Deep Work", "Hyperfocus", "Flow State", "Laser Focus", "Dark Mode", "In The Zone", "Clarity",
+    "Calm Mind", "Night Shift", "2AM Drive", "One More Hour",
+]
 # How the title is put together (weekly.title_for); never the same style two days running
 TITLE_STYLES = ["scene_first", "hours_first", "use_first", "deep_work"]
 # Rooms, title styles and thumbnails in use: the Deep Work look since Oct 30 (the Night Studio, a
@@ -369,7 +378,9 @@ def pick(day, published):
                                lambda e: e.get("title_style"), history)
     thumb_style = learn.choose(rng, ACTIVE_THUMB_STYLES, lambda e: e.get("thumb_style"), history)
     recent_words = {e.get("word") for e in published[-10:]}
-    word = rng.choice([w for w in DEEP_WORDS if w not in recent_words] or DEEP_WORDS)
+    # the word is learned like the rest: words that earn clicks come back more often
+    word = learn.choose(rng, [w for w in DEEP_WORDS if w not in recent_words] or DEEP_WORDS,
+                        lambda e: e.get("word"), history)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
                 title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo)
 
