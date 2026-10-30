@@ -6,8 +6,7 @@ Mark picked, joined with short silences, loudness-matched, music only.
   python3 make_lyria_album.py --samples lab/          # one test song per flavour, to choose from
 
 Writes music.m4a and music.tracks.json (minutes, track_starts, songs) like make_lofi_real.py.
-Every prompt forbids vocals, vinyl crackle, rain, hiss or any other noise: the channel never
-mixes noise into music. About $0.08 per song on the paid Gemini API (no free tier).
+Every prompt asks for an instrumental, clean studio mix: the channel never mixes noise into music. About $0.08 per song on the paid Gemini API (no free tier).
 """
 import argparse
 import concurrent.futures as cf
@@ -25,9 +24,9 @@ import lyria  # noqa: E402
 from make_lofi import SR, write_audio  # noqa: E402
 from make_lofi_real import song_names  # noqa: E402
 
-COMMON = ("Instrumental only, no vocals, no lyrics, no spoken words. Clean studio sound: no vinyl crackle, "
-          "no rain, no hiss, no noise or field recordings. Steady and unobtrusive for long work sessions: no "
-          "sudden drops, no loud hits, no long silences.")
+# Every prompt ends with this. Plain, positive wording: Lyria refused an earlier, longer list of
+# "no ..." phrases as prohibited content. "Clean studio mix" keeps rain, hiss and crackle out.
+COMMON = "Instrumental only, no vocals. A clean, smooth studio mix with a steady, gentle groove throughout."
 FLAVORS = {
     "deep_focus": "Deep work music for long focus sessions late at night. Calm, polished modern instrumental "
                   "electronic at about {bpm} BPM: warm analog synth pads, a soft deep sub bass, a gentle minimal "
@@ -90,7 +89,11 @@ def main():
         os.makedirs(a.samples, exist_ok=True)
         for i, fl in enumerate(FLAVORS):
             p = prompt_for(fl, random.Random(a.seed + i), a.mood)
-            audio, _, _ = lyria.generate(p)
+            try:
+                audio, _, _ = lyria.generate(p)
+            except RuntimeError as e:
+                print(f"{i + 1}-{fl} failed: {e}", file=sys.stderr)
+                continue
             with open(os.path.join(a.samples, f"{i + 1}-{fl}.mp3"), "wb") as f:
                 f.write(audio[0][1])
             print(f"{i + 1}-{fl}: {p}")
