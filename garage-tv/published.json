@@ -334,5 +334,32 @@
     "youtube": "Yf8D_kMPhjA",
     "short": "QexOPWxQUyU",
     "short2": "itB70GKf-HI"
+  },
+  {
+    "date": "2026-10-30",
+    "photo": "2026-10-30-countach.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "8 Hours of Chill Lo-Fi | Countach in the Loft on a Rainy Evening",
+    "tag": "daily-2026-10-30",
+    "car": "Lamborghini Countach LPI 800-4",
+    "scene": "loft_rain_dusk",
+    "maker": "gemini",
+    "music_style": "lofi",
+    "room": "loft",
+    "title_style": "hours_first",
+    "thumb_style": "brand_first",
+    "songs": [
+      "Wet Overpass",
+      "Winter Skyline",
+      "Winter Showroom",
+      "Empty Lights",
+      "Warm Drive",
+      "Open Showroom",
+      "Open Lights",
+      "Late Detour",
+      "Velvet Showroom",
+      "Open Coffee"
+    ]
   }
 ]
