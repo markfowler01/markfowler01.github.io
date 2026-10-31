@@ -194,6 +194,8 @@ THUMB_STYLES = ["brand_first", "sound_first", "word"]
 
 # Videos alternate: one day music only, the next day a soundscape only (no music), 8 hours
 # for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
+# Since Oct 31 every day is a music day (Mark: views dropped on noise days); False brings back alternating.
+MUSIC_EVERY_DAY = True
 SOUND_MINUTES = 480
 SOUND_NAMES = {"rain_road": "Rain Sounds", "rain": "Rain Sounds", "wind": "Wind Sounds", "fan": "Fan Noise",
                "heater": "Heater Hum", "brown": "Brown Noise", "white": "White Noise"}
@@ -450,7 +452,7 @@ def pick(day, published):
     active = [s for s in SCENES if s["room"] in ACTIVE_ROOMS]
     scenes = [s for s in active if s["id"] not in recent_scenes] or active
     # each part of the video is picked with odds that follow how past videos did (learn.py);
-    # music and soundscape days still alternate, and the picture makers stay a fair test
+    # every day is music for now (MUSIC_EVERY_DAY), and the picture makers stay a fair test
     history = learn.scored(published)
     make = learn.choose(rng, [learn.brand(c[0]) for c in cars], lambda e: learn.brand(e.get("car")), history)
     car, short = rng.choice([c for c in cars if learn.brand(c[0]) == make])
@@ -462,7 +464,7 @@ def pick(day, published):
     scene = next(s for s in scenes if s["id"] == scene_id)
     last = published[-1].get("recipe") if published else None
     soundscape = learn.choose(rng, [scene["bed"], "brown", "white"], lambda e: e.get("recipe"), history)
-    sound = "lofi" if last != "lofi" else soundscape
+    sound = "lofi" if MUSIC_EVERY_DAY or last != "lofi" else soundscape
     style = learn.choose(rng, MUSIC_ORDER, lambda e: e.get("music_style"), history)
     lead = learn.choose(rng, MUSIC_LEADS, lambda e: e.get("music_lead"), history)
     tempo = learn.choose(rng, MUSIC_TEMPOS, lambda e: e.get("music_tempo"), history)
