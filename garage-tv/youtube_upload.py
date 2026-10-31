@@ -5,6 +5,8 @@ Needs three environment variables (stored as GitHub Actions secrets):
   YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN   (get the token once with get_youtube_token.py)
 Optional:
   YT_PRIVACY   public | unlisted | private   (default public)
+  --at 08:00   go public at this time today, US Eastern (uploaded private and scheduled); if that time
+               has already passed, it goes public right away
 
   python3 youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json
   python3 youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id VIDEO_ID
@@ -16,6 +18,7 @@ The new video id is printed and, with --id-file, written to that file.
 Note: Google keeps API uploads from a brand-new, unaudited Google Cloud project
 locked to private until the project passes YouTube's free API compliance audit.
 """
+import datetime as dt
 import json
 import os
 import sys
@@ -46,7 +49,19 @@ def request(url, token, method="POST", body=None, headers=None):
     return urllib.request.urlopen(req, timeout=600)
 
 
-def upload(video, thumb, details, short=False, full_id=None):
+def publish_at(hhmm, tz="America/New_York"):
+    """Today's hhmm in US Eastern as a UTC timestamp for YouTube, or None if that time is (nearly) past."""
+    from zoneinfo import ZoneInfo
+    zone = ZoneInfo(tz)
+    now = dt.datetime.now(zone)
+    h, m = map(int, hhmm.split(":"))
+    when = now.replace(hour=h, minute=m, second=0, microsecond=0)
+    if when - now < dt.timedelta(minutes=5):
+        return None
+    return when.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def upload(video, thumb, details, short=False, full_id=None, at=None):
     token = access_token()
     size = os.path.getsize(video)
     title, desc = details["title"], details["description"]
@@ -69,6 +84,10 @@ def upload(video, thumb, details, short=False, full_id=None):
             "containsSyntheticMedia": bool(details.get("alteredContent", True)),
         },
     }
+    when = publish_at(at) if at and meta["status"]["privacyStatus"] == "public" else None
+    if when:  # YouTube makes a private video public at publishAt
+        meta["status"].update(privacyStatus="private", publishAt=when)
+        print("scheduled to go public at", when)
     with request(
         "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
         token, body=json.dumps(meta).encode(),
@@ -130,9 +149,10 @@ if __name__ == "__main__":
                     help="upload as a Short, titled by this details.json key (default short_title)")
     ap.add_argument("--full-id")
     ap.add_argument("--id-file")
+    ap.add_argument("--at", help="go public at HH:MM today, US Eastern")
     a = ap.parse_args()
     with open(a.details) as f:
-        vid = upload(a.video, a.thumb, json.load(f), short=a.short, full_id=a.full_id)
+        vid = upload(a.video, a.thumb, json.load(f), short=a.short, full_id=a.full_id, at=a.at)
     if a.id_file:
         with open(a.id_file, "w") as f:
             f.write(vid)
