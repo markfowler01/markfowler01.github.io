@@ -395,5 +395,25 @@
     "youtube": "RdUBBfpHW4A",
     "short": "HdT59xgwDwM",
     "short2": "GU1j01Q0tgU"
+  },
+  {
+    "date": "2026-10-31",
+    "photo": "2026-10-31-koenigsegg-jesko.webp",
+    "recipe": "brown",
+    "grade": "none",
+    "title": "Deep Work Brown Noise \u2013 Full Throttle | Koenigsegg Jesko Night Studio | 2 Hours",
+    "tag": "daily-2026-10-31",
+    "car": "Koenigsegg Jesko",
+    "scene": "studio_city_night",
+    "maker": "gemini",
+    "music_style": null,
+    "music_lead": null,
+    "music_tempo": null,
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Full Throttle",
+    "statement": "One more session. Then another.",
+    "songs": null
   }
 ]
