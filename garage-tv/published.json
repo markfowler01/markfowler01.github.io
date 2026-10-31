@@ -418,5 +418,34 @@
     "youtube": "lpZGT1qQW2w",
     "short": "T1MituHlBcg",
     "short2": "AJw0zDOcnF4"
+  },
+  {
+    "date": "2026-10-31",
+    "photo": "2026-10-31-lexus-lfa.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Own It | Lexus LFA Night Studio | 2 Hours",
+    "tag": "daily-2026-10-31-2",
+    "car": "Lexus LFA",
+    "scene": "studio_snow_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Own It",
+    "statement": "Silence the noise. Do the work.",
+    "songs": [
+      "Quiet Window",
+      "Amber Drive",
+      "Long Overpass",
+      "Midnight Parking",
+      "Last Parking",
+      "Warm Showroom",
+      "Warm Asphalt",
+      "Empty Asphalt"
+    ]
   }
 ]
