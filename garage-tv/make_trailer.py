@@ -95,7 +95,7 @@ def lettering(args, top_text):
     """The layer over the picture: soft shading top and bottom, brand, top text and the pointer."""
     top = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     shade = Image.new("L", (1, H))
-    shade.putdata([int(190 * max(0.0, 1 - y / 760)) if y < 760 else int(170 * max(0.0, (y - H + 620) / 620))
+    shade.putdata([int(150 * max(0.0, 1 - y / 700)) if y < 700 else int(150 * max(0.0, (y - H + 560) / 560))
                    for y in range(H)])
     top.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 0)] * 3, shade.resize((W, H)))))
     brand = weekly.word(weekly.BRAND, 70, weekly.AMBER, squeeze=0.95)
@@ -144,10 +144,12 @@ def main():
     ap.add_argument("--style", choices=["hook", "cuts"], default="hook")
     ap.add_argument("--hook", help="the words on top (hook style: the statement; cuts style: a question)")
     ap.add_argument("--statement", help="the day's statement; the hook style shows it on top")
+    ap.add_argument("--grade", default="none", help="colour grade, as in the video (make_still_loop.GRADES)")
     ap.add_argument("--out", default="trailer.mp4")
     args = ap.parse_args()
 
-    photo = Image.open(args.image).convert("RGB")
+    from make_still_loop import grade
+    photo = grade(Image.open(args.image).convert("RGB"), args.grade)
     bx0, by0, bx1, by1 = car_box(photo, args.image)
     pw, ph = photo.size
     car = dict(cx=(bx0 + bx1) / 2 * pw, cy=(by0 + by1) / 2 * ph, w=(bx1 - bx0) * pw, h=(by1 - by0) * ph,

@@ -25,8 +25,10 @@ from make_lofi import SR, write_audio  # noqa: E402
 from make_lofi_real import song_names  # noqa: E402
 
 # Every prompt ends with this. Plain, positive wording: Lyria refused an earlier, longer list of
-# "no ..." phrases as prohibited content. "Clean studio mix" keeps rain, hiss and crackle out.
-COMMON = "Instrumental only, no vocals. A clean, smooth studio mix with a steady, gentle groove throughout."
+# "no ..." phrases as prohibited content. "Clean studio mix" keeps rain, hiss and crackle out; naming the
+# only instruments keeps out the horns and saxophones Lyria likes to add to lo-fi (Mark, Nov 1).
+COMMON = ("Instrumental only, no vocals. The only instruments are piano or electric piano, guitar, soft synth pads, "
+          "bass and drums. A clean, smooth studio mix with a steady, gentle groove throughout.")
 FLAVORS = {
     "deep_focus": "Deep work music for long focus sessions late at night. Calm, polished modern instrumental "
                   "electronic at about {bpm} BPM: warm analog synth pads, a soft deep sub bass, a gentle minimal "
@@ -34,7 +36,7 @@ FLAVORS = {
     "night_drive": "Smooth night-drive chillwave at about {bpm} BPM: warm retro synths, a steady soft drum "
                    "machine groove, gentle arpeggios, a {lead} melody, the feeling of cruising through a city at "
                    "night, polished and relaxed.",
-    "lofi_beats": "Mellow lo-fi hip hop at about {bpm} BPM: jazzy Rhodes chords, a soft head-nodding boom-bap "
+    "lofi_beats": "Mellow lo-fi hip hop at about {bpm} BPM: warm Rhodes chords, a soft head-nodding boom-bap "
                   "beat, round warm bass, a laid-back {lead} melody, relaxed and cosy, clean modern mix.",
     "ambient_piano": "Calm cinematic ambient for deep concentration at about {bpm} BPM: soft {lead} over warm "
                      "evolving pads, a very light pulse, spacious and peaceful, slow and steady.",
@@ -45,7 +47,8 @@ FLAVORS = {
 }
 TEMPO = {"deep_focus": (74, 88), "night_drive": (86, 98), "lofi_beats": (70, 82), "ambient_piano": (60, 72),
          "future_garage": (130, 140), "deep_house": (116, 122)}
-LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck", "mellow vibraphone", "airy synth lead"]
+# no "synth lead" or vibraphone: Mark heard them (and jazzy wording) come out as a horn
+LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck"]
 
 
 def prompt_for(flavor, rng, mood="", lead=None, tempo=None):
