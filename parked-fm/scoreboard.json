@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31 15:25 UTC",
+  "updated": "2026-11-01 10:56 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,9 +8,9 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 11,
+        "videos": 12,
         "counted": 11,
-        "avg_views": 2
+        "avg_views": 3
       },
       "openai": {
         "videos": 6,
@@ -25,9 +25,9 @@
     },
     "music": {
       "gemini": {
-        "videos": 5,
+        "videos": 6,
         "counted": 5,
-        "avg_views": 3
+        "avg_views": 4
       },
       "openai": {
         "videos": 1,
@@ -44,7 +44,7 @@
       "gemini": {
         "videos": 6,
         "counted": 6,
-        "avg_views": 1
+        "avg_views": 2
       },
       "openai": {
         "videos": 5,
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-10-31",
+    "date": "2026-11-01",
     "subscribers": 1,
-    "views": 919,
-    "videos": 46,
-    "watch_hours": 14.8
+    "views": 961,
+    "videos": 50,
+    "watch_hours": 18.7
   },
   "goals": {
     "fan_funding": {
@@ -117,19 +117,39 @@
       "views": 919,
       "videos": 46,
       "watch_hours": 14.8
+    },
+    {
+      "date": "2026-11-01",
+      "subscribers": 1,
+      "views": 961,
+      "videos": 50,
+      "watch_hours": 18.7
     }
   ],
   "videos": [
+    {
+      "date": "2026-11-01",
+      "title": "Deep Work Music \u2013 Built Different | Ferrari SF90 Night Studio | 2 Hours",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "35C1uVs0jYU",
+      "views": null,
+      "likes": null,
+      "short_views": null,
+      "short2_views": null,
+      "subscribers": 0,
+      "public": false
+    },
     {
       "date": "2026-10-31",
       "title": "Deep Work Music \u2013 Own It | Lexus LFA Night Studio | 2 Hours",
       "maker": "gemini",
       "kind": "music",
       "youtube": "WwOg3Ezqdbk",
-      "views": 0,
+      "views": 1,
       "likes": 0,
-      "short_views": 0,
-      "short2_views": null,
+      "short_views": 11,
+      "short2_views": 5,
       "subscribers": 0,
       "public": true
     },
@@ -139,10 +159,10 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "lpZGT1qQW2w",
-      "views": 0,
+      "views": 3,
       "likes": 0,
-      "short_views": 0,
-      "short2_views": null,
+      "short_views": 17,
+      "short2_views": 3,
       "subscribers": 0,
       "public": true
     },
@@ -152,9 +172,9 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "RdUBBfpHW4A",
-      "views": 12,
+      "views": 13,
       "likes": 1,
-      "short_views": 9,
+      "short_views": 10,
       "short2_views": 3,
       "subscribers": 0,
       "public": true
@@ -168,7 +188,7 @@
       "views": 0,
       "likes": 0,
       "short_views": 3,
-      "short2_views": 0,
+      "short2_views": 1,
       "subscribers": 0,
       "public": true
     },
@@ -193,7 +213,7 @@
       "youtube": "7_Kc_WvkAQQ",
       "views": 1,
       "likes": 0,
-      "short_views": 7,
+      "short_views": 8,
       "short2_views": 2,
       "subscribers": 0,
       "public": true
@@ -206,7 +226,7 @@
       "youtube": "XP9FU0gKab4",
       "views": 1,
       "likes": 0,
-      "short_views": 12,
+      "short_views": 13,
       "short2_views": 11,
       "subscribers": 0,
       "public": true
@@ -219,8 +239,8 @@
       "youtube": "w5GcF5gMOQk",
       "views": 3,
       "likes": 0,
-      "short_views": 10,
-      "short2_views": 3,
+      "short_views": 13,
+      "short2_views": 5,
       "subscribers": 0,
       "public": true
     },
