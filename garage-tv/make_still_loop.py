@@ -53,6 +53,8 @@ def main():
     ap.add_argument("--rain-angle", type=float, default=8, help="rain slant in degrees")
     ap.add_argument("--grade", choices=GRADES, default="none", help="colour grade applied to the photo")
     ap.add_argument("--crf", type=int, default=22, help="x264 quality (higher = smaller file; above ~24 slow motion starts to stutter)")
+    ap.add_argument("--monitors", action="store_true",
+                    help="make the glow of the picture's monitors pulse slowly, like live charts (Gemini finds them)")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -106,6 +108,17 @@ def main():
                              bright=bright * rng.uniform(0.6, 1.0, m), slant=slant))
     rain_tint = np.array([0.82, 0.88, 1.0], np.float32)
 
+    # glowing monitors (boxes.py): a soft-edged mask per screen in the big picture's coordinates; each
+    # pulses a little brighter and back, a whole number of times per loop so the loop stays seamless
+    screens = []
+    if args.monitors:
+        import boxes
+        for k, (x0, y0, x1, y1) in enumerate(boxes.find(args.image, "monitors")[:4]):
+            m = Image.new("L", (BW, BH), 0)
+            pad = 0.15 * (x1 - x0) * BW
+            ImageDraw.Draw(m).rectangle([x0 * BW - pad, y0 * BH - pad, x1 * BW + pad, y1 * BH + pad], fill=255)
+            screens.append((m.filter(ImageFilter.GaussianBlur(pad * 0.8)), rng.uniform(0, 2 * math.pi), 6 + 2 * k))
+
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     cmd = [
         ffmpeg, "-y", "-f", "rawvideo", "-vcodec", "rawvideo", "-s", f"{W}x{H}",
@@ -143,6 +156,10 @@ def main():
 
         # very gentle light breathe (fluorescent tubes never sit perfectly still)
         frame *= 1 + 0.015 * math.sin(2 * math.pi * 3 * t)
+        for mask, phase, cycles in screens:
+            m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
+                                          resample=Image.BILINEAR), np.float32) / 255
+            frame *= 1 + 0.14 * math.sin(2 * math.pi * cycles * t + phase) * m[..., None]
 
         if n_dust:
             # each mote is a soft dot drawn at its exact fractional position, so it glides
