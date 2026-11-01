@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-01 10:56 UTC",
+  "updated": "2026-11-01 16:57 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,9 +8,9 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 12,
-        "counted": 11,
-        "avg_views": 3
+        "videos": 13,
+        "counted": 13,
+        "avg_views": 2
       },
       "openai": {
         "videos": 6,
@@ -25,9 +25,9 @@
     },
     "music": {
       "gemini": {
-        "videos": 6,
-        "counted": 5,
-        "avg_views": 4
+        "videos": 7,
+        "counted": 7,
+        "avg_views": 3
       },
       "openai": {
         "videos": 1,
@@ -61,8 +61,8 @@
   "channel": {
     "date": "2026-11-01",
     "subscribers": 1,
-    "views": 961,
-    "videos": 50,
+    "views": 974,
+    "videos": 52,
     "watch_hours": 18.7
   },
   "goals": {
@@ -121,24 +121,37 @@
     {
       "date": "2026-11-01",
       "subscribers": 1,
-      "views": 961,
-      "videos": 50,
+      "views": 974,
+      "videos": 52,
       "watch_hours": 18.7
     }
   ],
   "videos": [
     {
       "date": "2026-11-01",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | AMG One",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "aesx30DKoXY",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": null,
+      "subscribers": 0,
+      "public": true
+    },
+    {
+      "date": "2026-11-01",
       "title": "Deep Work Music \u2013 Built Different | Ferrari SF90 Night Studio | 2 Hours",
       "maker": "gemini",
       "kind": "music",
       "youtube": "35C1uVs0jYU",
-      "views": null,
-      "likes": null,
-      "short_views": null,
+      "views": 0,
+      "likes": 0,
+      "short_views": 7,
       "short2_views": null,
       "subscribers": 0,
-      "public": false
+      "public": true
     },
     {
       "date": "2026-10-31",
@@ -149,7 +162,7 @@
       "views": 1,
       "likes": 0,
       "short_views": 11,
-      "short2_views": 5,
+      "short2_views": 6,
       "subscribers": 0,
       "public": true
     },
@@ -161,8 +174,8 @@
       "youtube": "lpZGT1qQW2w",
       "views": 3,
       "likes": 0,
-      "short_views": 17,
-      "short2_views": 3,
+      "short_views": 24,
+      "short2_views": 9,
       "subscribers": 0,
       "public": true
     },
