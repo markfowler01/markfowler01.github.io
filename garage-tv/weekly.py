@@ -750,10 +750,13 @@ def main():
         # so the picture stays sharp even for people watching in 1080p
         # the Night Studio (Mark's brief): no camera sway in the minute-long loop, the monitors' glow
         # pulses, and the ultra-slow zoom is added over ten minutes below
-        studio = ["--zoom", "0", "--drift", "0", "--monitors", "--fire"] if meta.get("room") == "studio" else []
+        studio = ["--zoom", "0", "--drift", "0", "--monitors", "--fire", "--rain-on-windows"] \
+            if meta.get("room") == "studio" else []
         still_args = [*studio, "--width", "2560", "--height", "1440",
                       "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
-                      "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)), "--seed", str(p["index"])]
+                      "--dust", str(meta.get("dust", 60)),
+                      # the studio: light rain falling on its windows (Mark's brief), elsewhere the scene's own rain
+                      "--rain", str(350 if meta.get("room") == "studio" else meta.get("rain", 0)), "--seed", str(p["index"])]
         run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"], *still_args,
              "--out", loop])
         # the same first seconds with the car's lights off (car_engine.lights_off), for the start-up intro

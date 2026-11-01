@@ -62,6 +62,8 @@ def main():
                                                       "everything stays that of the full --seconds loop")
     ap.add_argument("--film", action="store_true",
                     help="look like a real camera: fine moving grain, slightly darker corners, a touch less colour")
+    ap.add_argument("--rain-on-windows", action="store_true",
+                    help="keep the falling rain to the picture's windows (Gemini finds them), for indoor scenes")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -150,6 +152,18 @@ def main():
             fire["glow"] = glow.filter(ImageFilter.GaussianBlur(r * 0.6))
             fire["cycles"] = [(rng.integers(30, 45), rng.uniform(0, 6.3), 0.5), (rng.integers(70, 90), rng.uniform(0, 6.3), 0.3),
                               (rng.integers(150, 190), rng.uniform(0, 6.3), 0.2)]
+    window_mask = None
+    if args.rain and args.rain_on_windows:
+        import boxes
+        found = boxes.find(args.boxes_from or args.image, "windows")
+        if found:
+            m = Image.new("L", (BW, BH), 0)
+            for x0, y0, x1, y1 in found:
+                ImageDraw.Draw(m).rectangle([x0 * BW, y0 * BH, x1 * BW, y1 * BH], fill=255)
+            window_mask = m.filter(ImageFilter.GaussianBlur(BW * 0.004))
+        else:
+            rain = []  # no windows found: no rain indoors rather than rain across the room
+
     film = None
     if args.film:
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -254,7 +268,11 @@ def main():
                     xa = x0 + L["slant"] * y
                     sd.line([(xa, y), (xa + L["slant"] * ln, y + ln)], fill=int(b * 255), width=L["width"])
             sheet = sheet.filter(ImageFilter.GaussianBlur(0.8))
-            frame += (np.asarray(sheet, np.float32) / 255)[..., None] * rain_tint
+            streaks = np.asarray(sheet, np.float32) / 255
+            if window_mask is not None:
+                streaks *= np.asarray(window_mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
+                                                            resample=Image.BILINEAR), np.float32) / 255
+            frame += streaks[..., None] * rain_tint
 
         if film is not None:
             # a real camera at ISO 1600: corners a little darker, colour a little softer, and fine grain a

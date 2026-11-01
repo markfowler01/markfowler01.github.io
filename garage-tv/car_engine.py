@@ -418,8 +418,9 @@ ILLUSTRATED_PROMPT = (
     "with crisp clean line work, cel shading and soft painterly lighting. A sleek, high-end night garage workspace at "
     "twilight. {view_line}A {color} {car} is the star, parked in the middle of the frame, three-quarter front view, "
     "drawn large and with care, its headlights and taillights glowing, soft highlights on its metallic paint and a "
-    "reflection on the polished floor. Beside it, a tidy, minimalist desk with a dual-monitor trading setup: the screens "
-    "glow soft blue with simple, minimal chart lines (nothing readable), a desk lamp and a coffee mug, no clutter. Built "
+    "reflection on the polished floor. Beside it, a tidy, minimalist desk with a dual-monitor trading setup: both screens "
+    "are switched on and glow bright soft blue with simple, minimal chart lines (nothing readable), lighting the desk; "
+    "a desk lamp and a coffee mug, no clutter. Built "
     "into the wall, a cozy modern fireplace with a warm, glowing fire that balances the tech with a relaxing, inviting "
     "feel. Floor-to-ceiling windows with light rain on the glass, thin LED light strips along the ceiling. Palette: deep "
     "twilight blues and violets with warm orange firelight and the red of the car. Calm, premium, focused, late-night "
@@ -929,8 +930,9 @@ def main():
 
 LIGHTS_OFF_PROMPT = (
     "Edit this picture: the garage before the lights come on. Switch the car's lights off (headlights, daytime "
-    "running lights, parking lights and taillights all dark, as if the engine is off) and dim the ceiling and LED "
-    "strip lights; the fire and the screens keep glowing. Change nothing else at all: the same art style, the same "
+    "running lights, parking lights and taillights all dark, as if the engine is off), switch the LED light strips "
+    "and any ceiling lights fully off, and make the whole room much darker, lit only by the fire, the screens and the "
+    "twilight through the windows. Change nothing else at all: the same art style, the same "
     "car, the same position and camera angle, the same room, fire, screens and reflections.")
 
 
