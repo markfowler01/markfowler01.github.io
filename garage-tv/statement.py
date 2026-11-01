@@ -14,6 +14,8 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 THIN = os.path.join(HERE, "fonts", "Montserrat.ttf")  # SIL Open Font License
 FADE_IN, HOLD_UNTIL, GONE_AT = 0.6, 4.2, 5.2  # seconds
+# the glow: PARKED FM orange (#CD4419) outside, a lighter orange close to the letters (Mark, Nov 1)
+GLOW_OUTER, GLOW_INNER = (205, 68, 25), (255, 160, 100)
 
 
 def layer(text, w, h, center_y=None, size=None, wrap=None):
@@ -44,7 +46,7 @@ def layer(text, w, h, center_y=None, size=None, wrap=None):
     ImageDraw.Draw(band).rectangle([0, top, w, top + line_h * len(lines) + 2 * size], fill=120)
     out.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (w, h), 0)] * 3,
                                              band.filter(ImageFilter.GaussianBlur(size)))))
-    for radius, strength, colour in ((size // 3, 110, (120, 200, 255)), (size // 10, 160, (210, 238, 255))):
+    for radius, strength, colour in ((size // 3, 130, GLOW_OUTER), (size // 10, 170, GLOW_INNER)):
         glow = mask.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
         out.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (w, h), c) for c in colour], glow)))
     out.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (w, h), 248)] * 3, mask)))

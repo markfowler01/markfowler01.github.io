@@ -425,7 +425,7 @@ def word_thumbnail(p, out_path):
         l, t, r, b = d.textbbox((0, 0), spaced, font=f)
     d.text(((1280 - (r - l)) // 2 - l, (260 - (b - t)) // 2 - t), spaced, font=f, fill=255)
     y0 = 70
-    for radius, strength, colour in ((26, 120, (120, 200, 255)), (9, 170, (200, 235, 255))):  # soft glow
+    for radius, strength, colour in ((26, 140, (205, 68, 25)), (9, 180, (255, 160, 100))):  # soft orange glow (#CD4419)
         glow = text.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
         bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), c) for c in colour], glow)), (0, y0))
     bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), 245)] * 3, text)), (0, y0))
