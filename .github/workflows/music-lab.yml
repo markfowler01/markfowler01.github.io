@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; traffic = where the views come from (YouTube Analytics); rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; traffic = where the views come from (YouTube Analytics); sfx = fetch Freesound sounds to listen to (cmd = sound page URLs, space-separated); rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
         type: choice
-        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria]
+        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria, sfx]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -144,6 +144,27 @@ jobs:
           hours, subs = r
           print(f'analytics OK: {hours} watch hours in the last 12 months; subscribers gained by video: {subs}')
           "
+
+      - name: Fetch Freesound sounds to listen to (cmd = sound page URLs; nothing posted)
+        if: ${{ inputs.task == 'sfx' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          URLS: ${{ inputs.cmd }}
+        run: |
+          mkdir -p sfx && cd sfx
+          for u in $URLS; do
+            id=$(echo "$u" | grep -oE '[0-9]+/?$' | tr -d /)
+            page=$(curl -sSL -A 'PARKED-FM/1.0 (absoluteadas.com)' "$u")
+            lic=$(echo "$page" | grep -oE 'creativecommons.org/(publicdomain/zero|licenses/[a-z-]+)/[0-9.]+' | head -1)
+            mp3=$(echo "$page" | grep -oE 'https://cdn.freesound.org/previews/[^"]+-hq\.mp3' | head -1)
+            name=$(echo "$page" | grep -oE '<title>[^<]*' | head -1 | sed 's/<title>Freesound - //')
+            echo "$id | $lic | $name | $mp3"
+            [ -n "$mp3" ] && curl -sSL -o "fs-$id.mp3" "$mp3"
+          done
+          ls -la
+          tag="sfx-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$tag" *.mp3 --prerelease --title "Sound check: Freesound candidates" --notes "Candidates to listen to; nothing was posted."
+          for f in *.mp3; do echo "https://github.com/${{ github.repository }}/releases/download/$tag/$f"; done
 
       - name: Where the views come from (YouTube Analytics, last 28 days; nothing posted)
         if: ${{ inputs.task == 'traffic' }}

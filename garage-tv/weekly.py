@@ -561,6 +561,11 @@ def make_intro(loop, text, out, crf, seconds=6, fps=30):
         sys.exit("intro encode failed")
 
 
+# the engine-start sound under the start-up intro; off (False) since Mark heard the made-up one (Nov 1)
+# and is choosing a real recording
+ENGINE_SOUND = False
+
+
 def make_start_intro(full_loop, off_loop, text, out, crf, seconds=10, start_at=3.0, fps=30):
     """The opening of a Night Studio video (Mark, Nov 1): the car sits with its lights off (off_loop, the
     lights-off picture with the same dust, fire and screens), the engine starts at `start_at` and when it
@@ -849,14 +854,17 @@ def main():
             with open(listing, "w") as f:
                 f.write("".join(f"file '{os.path.abspath(x)}'\n" for x in [intro, rest] + [full_loop] * (full_loops + 1)))
             video_in = ["-f", "concat", "-safe", "0", "-i", listing]
-            start = os.path.join(stage, "engine-start.wav")
-            run([sys.executable, os.path.join(HERE, "engine_start.py"), "--out", start])
-            audio_in += ["-i", start]
-            audio_mix = ["-filter_complex",
-                         f"[1:a]aformat=channel_layouts=stereo,afade=t=in:st={t_on - 0.3:.2f}:d=3[m];"
-                         "[2:a]aformat=channel_layouts=stereo,adelay=3000|3000,volume=0.8[e];"
-                         "[m][e]amix=inputs=2:duration=first:normalize=0[a]",
-                         "-map", "[a]", "-c:a", "aac", "-b:a", "192k"]
+            fade_in = f"[1:a]aformat=channel_layouts=stereo,afade=t=in:st={t_on - 0.3:.2f}:d=3"
+            if ENGINE_SOUND:
+                start = os.path.join(stage, "engine-start.wav")
+                run([sys.executable, os.path.join(HERE, "engine_start.py"), "--out", start])
+                audio_in += ["-i", start]
+                audio_mix = ["-filter_complex", fade_in + "[m];"
+                             "[2:a]aformat=channel_layouts=stereo,adelay=3000|3000,volume=0.8[e];"
+                             "[m][e]amix=inputs=2:duration=first:normalize=0[a]",
+                             "-map", "[a]", "-c:a", "aac", "-b:a", "192k"]
+            else:  # no engine sound until Mark picks a real recording: the music fades in with the lights
+                audio_mix = ["-filter_complex", fade_in + "[a]", "-map", "[a]", "-c:a", "aac", "-b:a", "192k"]
         elif meta.get("statement"):
             intro = os.path.join(stage, "intro.mp4")
             make_intro(full_loop, meta["statement"], intro, args.crf)
