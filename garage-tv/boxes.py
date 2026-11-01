@@ -21,6 +21,9 @@ ASK = {
            '[{"box_2d": [ymin, xmin, ymax, xmax]}] on a 0-1000 scale, tight around the whole car.',
     "fire": "Find the flames of the fire in the fireplace in this picture (just the fire, not the whole fireplace). "
             'Reply with JSON only: [{"box_2d": [ymin, xmin, ymax, xmax]}] on a 0-1000 scale. Reply [] if there is no fire.',
+    "windows": "Find the large glass windows in this picture (the glass, not the wall). Reply with JSON only: "
+               '[{"box_2d": [ymin, xmin, ymax, xmax]}, ...] on a 0-1000 scale, one box per window or glass wall. '
+               "Reply [] if there are none.",
     "monitors": "Find every glowing computer monitor or screen in this picture (not windows). Reply with JSON "
                 'only: [{"box_2d": [ymin, xmin, ymax, xmax]}, ...] on a 0-1000 scale, tight around each screen. '
                 "Reply [] if there are none.",

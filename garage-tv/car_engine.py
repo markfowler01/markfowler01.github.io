@@ -390,20 +390,43 @@ SCENES = [
 ROOM_OF = {s["id"]: s["room"] for s in SCENES}
 
 STUDIO_PROMPT = (
-    "Photorealistic, moody but well-exposed cinematic photograph, 16:9 framing, inside a luxury private garage studio at "
-    "night: polished dark concrete floor, black walls with soft LED strip lights, a floor-to-ceiling glass wall; "
-    "{view}. A {color} {car} is the star of the image, parked in the middle of the frame, three-quarter front view, "
-    "with its headlights' daytime running lights and parking lights switched on and glowing. The car is large, sharp "
-    "and brightly lit from above by recessed ceiling spotlights shining down on it, plus the strip lights and the glow "
-    "of the screens and the warm firelight, so the whole car and its colour are clearly visible, with crisp reflections on "
-    "its paint and on the floor. Beside the car, a minimalist black desk with a dual-monitor trading setup: two "
-    "glowing monitors showing financial candlestick charts in green and red, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Balanced exposure with "
-    "visible detail in the floor and walls (not underexposed). Built into the black wall behind the car, a long modern "
-    "linear fireplace with a real wood fire burning brightly, its orange glow reflecting on the floor and the paint. Cool "
-    "blue and teal tones with warm accent lights, rich detail, soft depth of field. The upper third of the image is "
-    "calm and uncluttered so a word can be written there. One single continuous photograph, not a collage, diptych or split "
-    "frame. Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
-    "No people, no text, no readable writing on the screens, no logos, no watermarks, no license plate numbers."
+    # Mark's son said the pictures looked AI (Nov 1): this asks for a real, slightly imperfect camera photo
+    # instead of a polished render ("cinematic", "luxury", "beautifully lit" pushed it toward CGI)
+    "A real, unedited photograph taken at night with a full-frame camera and a 35mm lens on a tripod (f/4, ISO 1600, "
+    "1/30 s), 16:9 framing. Not a 3D render, not CGI, not an illustration, no HDR look. Inside someone's private "
+    "garage that doubles as a home office: a sealed concrete floor with faint tyre marks and a little dust, dark "
+    "painted walls, LED strip lights, a floor-to-ceiling glass wall; {view}. A {color} {car} is parked in the middle "
+    "of the frame, three-quarter front view, the main subject, with its daytime running lights and parking lights on. "
+    "It is lit from above by recessed ceiling spotlights, by the screens and by the firelight, so the car and its "
+    "colour are clearly visible, with natural reflections on its paint and on the floor. Beside the car, a black desk "
+    "with a dual-monitor trading setup (green and red candlestick charts), a desk lamp, a half-drunk coffee mug, a "
+    "phone, car keys, a notebook and a few cables running to the floor, and an office chair with a jacket over it. "
+    "Built into the wall behind the car, a long modern linear fireplace with a real wood fire, its orange light falling "
+    "on the floor and the paint. Realistic exposure with natural falloff into darker corners, true-to-life slightly "
+    "muted colours, a little real-world mess, nothing perfectly symmetrical. The upper third of the image is calm and "
+    "uncluttered. One single continuous photograph, not a collage, diptych or split frame. Full-bleed image filling "
+    "the entire frame edge to edge: no black bars, no letterboxing, no borders. No people, no text, no readable writing "
+    "on the screens, no logos, no watermarks, no license plate numbers."
+)
+
+# The Night Studio's look (Mark, Nov 1): "illustrated" (a premium hand-drawn anime look, the brand from now
+# on; photoreal AI read as fake) or "photo" (STUDIO_PROMPT above)
+STUDIO_LOOK = "illustrated"
+ILLUSTRATED_COLOR = "metallic red"  # the brand's car colour in the illustrated look
+ILLUSTRATED_PROMPT = (
+    "A high-end, clean, stylized hand-drawn anime illustration, 16:9: a single still frame from a premium anime film, "
+    "with crisp clean line work, cel shading and soft painterly lighting. A sleek, high-end night garage workspace at "
+    "twilight. {view_line}A {color} {car} is the star, parked in the middle of the frame, three-quarter front view, "
+    "drawn large and with care, its headlights and taillights glowing, soft highlights on its metallic paint and a "
+    "reflection on the polished floor. Beside it, a tidy, minimalist desk with a dual-monitor trading setup: both screens "
+    "are switched on and glow bright soft blue with simple, minimal chart lines (nothing readable), lighting the desk; "
+    "a desk lamp and a coffee mug, no clutter. Built "
+    "into the wall, a cozy modern fireplace with a warm, glowing fire that balances the tech with a relaxing, inviting "
+    "feel. Floor-to-ceiling windows with light rain on the glass, thin LED light strips along the ceiling. Palette: deep "
+    "twilight blues and violets with warm orange firelight and the red of the car. Calm, premium, focused, late-night "
+    "mood. The upper third of the image is calm and uncluttered. One single continuous image, not a collage or split "
+    "frame. Full-bleed, edge to edge: no black bars, no borders. No people, no characters, no text, no logos, no "
+    "watermarks, no license plate numbers."
 )
 
 OUTDOOR_PROMPT = (
@@ -433,6 +456,8 @@ PROMPT = (
 def prompt_for(scene, color, car):
     """The picture prompt: inside one of the rooms, or out at a scenic spot."""
     room, view = ROOMS[scene["room"]], scene["view"]
+    if room.get("prompt") == "studio" and STUDIO_LOOK == "illustrated":
+        return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ")
     if room.get("prompt") == "studio":
         return STUDIO_PROMPT.format(color=color, car=car, view=view)
     if room.get("outdoor"):
@@ -491,7 +516,9 @@ def pick(day, published):
     recent_lines = {e.get("statement") for e in published[-6:]}
     line = learn.choose(rng, [x for x in STATEMENTS if x not in recent_lines] or STATEMENTS,
                         lambda e: e.get("statement"), history)
-    return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
+    color = ILLUSTRATED_COLOR if STUDIO_LOOK == "illustrated" and ROOMS[scene["room"]].get("prompt") == "studio" \
+        else rng.choice(COLORS)
+    return dict(car=car, short=short, color=color, scene=scene, sound=sound, music_style=style,
                 title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo,
                 music_key=rng.choice(MUSIC_KEYS),
                 statement=line if ROOMS[scene["room"]].get("prompt") == "studio" else None)
@@ -902,9 +929,11 @@ def main():
 
 
 LIGHTS_OFF_PROMPT = (
-    "Edit this photograph: switch the car's lights off. Its headlights, daytime running lights, parking lights and "
-    "tail lights are dark, as if the car is parked with the engine off. Change nothing else at all: the same car, "
-    "the same position and camera angle, the same room, the same fire, screens, lamps and reflections.")
+    "Edit this picture: the garage before the lights come on. Switch the car's lights off (headlights, daytime "
+    "running lights, parking lights and taillights all dark, as if the engine is off), switch the LED light strips "
+    "and any ceiling lights fully off, and make the whole room much darker, lit only by the fire, the screens and the "
+    "twilight through the windows. Change nothing else at all: the same art style, the same "
+    "car, the same position and camera angle, the same room, fire, screens and reflections.")
 
 
 def lights_off(photo):
