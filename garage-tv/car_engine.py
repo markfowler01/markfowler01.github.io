@@ -70,8 +70,16 @@ MUSIC_STYLES = {
                        words="calm ambient electronic: warm synth pads, a soft deep bass and a gentle beat"),
     "lofi_beats": dict(name="Lo-Fi Beats", tail="Lo-Fi Beats for Work & Focus", lyria=True,
                        words="mellow lo-fi hip hop: jazzy keys and a soft head-nod beat"),
+    # Mark's brief (Nov 1): three packages, made with Lyria from the brief's own prompts
+    "grinder": dict(name="Late-Night Grinder", tail="Dark Synthwave for Coding & Trading", lyria=True, package="A",
+                    words="dark synthwave: atmospheric retro pads over a minimalist driving bassline"),
+    "deep_work": dict(name="Deep Work", tail="Deep Ambient Focus Music", lyria=True, package="B",
+                      words="deep ambient drone with cinematic pads and a 40Hz binaural feel"),
+    "chill_trader": dict(name="Chill Trader", tail="Dark Lofi Beats for Grinding", lyria=True, package="C",
+                         words="dark minimal lo-fi: late-night jazz chords and a mellow beat"),
 }
-MUSIC_ORDER = ["deep_focus", "lofi_beats"]  # music styles in use (lofi, garage, house: our own creator)
+MUSIC_ORDER = ["grinder", "deep_work", "chill_trader"]  # music styles in use: the brief's three packages
+MUSIC_KEYS = ["A minor", "E minor"]  # one key per video so the songs flow into each other
 # dials the learning tunes for Lyria albums: the main instrument and the tempo
 MUSIC_LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck"]
 MUSIC_TEMPOS = ["slow", "upbeat"]
@@ -182,15 +190,15 @@ STATEMENTS = [
     "The garage is quiet. Your goals aren't.",
 ]
 # How the title is put together (weekly.title_for); never the same style two days running
-TITLE_STYLES = ["scene_first", "hours_first", "use_first", "deep_work"]
+TITLE_STYLES = ["scene_first", "hours_first", "use_first", "deep_work", "seo"]
 # Rooms, title styles and thumbnails in use: the Deep Work look since Oct 30 (the Night Studio, a
 # "Deep Work Music – Locked In" title, one glowing word on the thumbnail). Add names back to bring
 # the other rooms and styles back into the rotation.
 ACTIVE_ROOMS = ["studio"]
-ACTIVE_TITLE_STYLES = ["deep_work"]
-ACTIVE_THUMB_STYLES = ["word"]
+ACTIVE_TITLE_STYLES = ["seo"]  # the brief's search titles (Nov 1)
+ACTIVE_THUMB_STYLES = ["clean"]  # the brief: the photo alone, punched up, no text
 # Thumbnail layouts (weekly.make_thumbnail): the brand big, or what you'll hear big; learned like the rest
-THUMB_STYLES = ["brand_first", "sound_first", "word"]
+THUMB_STYLES = ["brand_first", "sound_first", "word", "clean"]
 
 # Videos alternate: one day music only, the next day a soundscape only (no music), 8 hours
 # for sleep. A soundscape day plays the scene's own sound or, now and then, plain brown or white noise.
@@ -222,7 +230,7 @@ ROOMS = {
         "side table with a coffee cup and a small glowing vintage radio, a tall plant, and a dark polished stone floor")),
     # the Deep Work look (from Oct 30): a dark luxury private garage at night where the car is the
     # star, with a desk and glowing screens beside it; 2-hour videos people leave running while they work
-    "studio": dict(name="the Night Studio", minutes=120, prompt="studio"),
+    "studio": dict(name="the Night Studio", minutes=180, prompt="studio"),  # 3 hours (the brief)
     # out on the road: the car parked at a beautiful spot, no garage
     "outdoors": dict(name="Scenic Overlooks", outdoor=True),
     "seaside": dict(name="the Seaside Garage", floor="weathered wooden floor", desc=(
@@ -388,8 +396,8 @@ STUDIO_PROMPT = (
     "with its headlights' daytime running lights and parking lights switched on and glowing. The car is large, sharp "
     "and brightly lit from above by recessed ceiling spotlights shining down on it, plus the strip lights and the glow "
     "of the screens, so the whole car and its colour are clearly visible, with crisp reflections on "
-    "its paint and on the floor. Beside the car, a minimalist black desk with two glowing monitors showing calm "
-    "abstract charts, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Balanced exposure with "
+    "its paint and on the floor. Beside the car, a minimalist black desk with a dual-monitor trading setup: two "
+    "glowing monitors showing financial candlestick charts in green and red, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Balanced exposure with "
     "visible detail in the floor and walls (not underexposed), cool "
     "blue and teal tones with warm accent lights, rich detail, soft depth of field. The upper third of the image is "
     "calm and uncluttered so a word can be written there. One single continuous photograph, not a collage, diptych or split "
@@ -484,6 +492,7 @@ def pick(day, published):
                         lambda e: e.get("statement"), history)
     return dict(car=car, short=short, color=rng.choice(COLORS), scene=scene, sound=sound, music_style=style,
                 title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo,
+                music_key=rng.choice(MUSIC_KEYS),
                 statement=line if ROOMS[scene["room"]].get("prompt") == "studio" else None)
 
 
@@ -529,11 +538,20 @@ def sidecar(choice):
             music_style=style,
             music_lead=choice.get("music_lead"),
             music_tempo=choice.get("music_tempo"),
+            music_key=choice.get("music_key"),
             sound_name=ms["name"],
             title_tail=ms.get("tail", series["tail"]),
             tags=deep_tags + [choice["car"].lower(), short.lower(), series["name"].lower(), ms["name"].lower(),
                               "exotic cars", "supercar", "lofi for work", "focus music"],
             description=(
+                # the brief's description, word for word, for the Night Studio
+                (f"A {hours}-hour deep focus ambient mix specifically curated for day traders, software developers, "
+                 "and late-night grinders who need to lock in maximum concentration. Perfect background audio loop "
+                 "for chart analysis, coding, and deep workspace productivity.\n\n"
+                 f"On screen: a {choice['color']} {choice['car']} in the Night Studio beside a dual-monitor trading "
+                 f"setup. Sound: {ms['words']}, with soft rain on the glass. No talking, no lyrics.\n\n"
+                 "Every track is original, made for PARKED FM.\n\n"
+                 f"#deepfocus #tradingmusic #codingmusic #studymusic #lofi #{tag}") if deep else
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
                 f"{hours} hours of {ms['words']}, music only, for working, studying, "
                 "relaxing or drifting off to sleep.\n\n"
@@ -721,7 +739,10 @@ def write_intro(choice, meta):
 
 
 def with_written_intro(choice, meta):
-    """Swap the template's first paragraph for a freshly written one, when the writer answers."""
+    """Swap the template's first paragraph for a freshly written one, when the writer answers. The
+    Night Studio keeps the brief's own description."""
+    if ROOMS[choice["scene"]["room"]].get("prompt") == "studio":
+        return meta
     text = write_intro(choice, meta)
     if text:
         meta["description"] = text + meta["description"][meta["description"].index("\n\n"):]

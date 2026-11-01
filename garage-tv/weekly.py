@@ -125,7 +125,8 @@ def photo_meta(photo):
 
 PUBLISHED = os.path.join(HERE, "published.json")
 # Lyria music styles, and the style of our own creator to use if Lyria can't make the album
-LYRIA_FALLBACK = {"deep_focus": "garage", "lofi_beats": "lofi"}
+LYRIA_FALLBACK = {"deep_focus": "garage", "lofi_beats": "lofi", "grinder": "garage", "deep_work": "garage",
+                  "chill_trader": "lofi"}
 DAILY_SOUND = "lofi"  # our own original music (make_lofi_real.py), music only (work / focus music)
 # Days alternate: music only, then a soundscape only (no music). The car engine writes the day's
 # choice into the photo's settings as daily_sound (and music_style); a photo without one follows
@@ -233,7 +234,13 @@ def title_for(p):
         car = mid.split(" in ")[0]
         kind = "Music" if p["recipe"] in ("lofi", "mix") else short
         word = m.get("word") or "Deep Focus"
-        styled = {"deep_work": [f"Deep Work {kind} – {word} | {car} Night Studio | {h} Hours",
+        # the brief's search titles (Nov 1), one per music package, the car at the end when it fits
+        seo = {"grinder": "Late Night Crypto Trading Music 📊 Deep Focus Beats for Coding & Stock Analysis",
+               "deep_work": f"40Hz Deep Work Ambience 📊 {h}-Hour Focus Music for Coding & Stock Analysis",
+               "chill_trader": f"Millionaire Mindset Study Ambience 🏎️ {h}-Hour Lofi Beats for Grinding & Deep Work",
+               }.get(m.get("music_style"), f"Late Night Deep Focus Music 📊 {h}-Hour Beats for Coding & Trading")
+        styled = {"seo": [f"{seo} | {car}", seo],
+                  "deep_work": [f"Deep Work {kind} – {word} | {car} Night Studio | {h} Hours",
                                 f"Deep Work {kind} – {word} | {car} Night Studio"],
                   "hours_first": [f"{h} Hours of {short} | {mid}"],
                   "use_first": [f"{short} for {use} | {mid} | {h} Hours", f"{short} for {use} | {mid}"],
@@ -432,6 +439,18 @@ def word_thumbnail(p, out_path):
     bg.convert("RGB").save(out_path, quality=90, optimize=True)
 
 
+def clean_thumbnail(p, out_path):
+    """The brief's thumbnail: the photo alone, no text, with exposure and contrast boosted so the car's
+    paint and the glowing monitors stand out on a small phone screen."""
+    from make_still_loop import grade
+    img = grade(Image.open(p["photo"]).convert("RGB"), p["grade"])
+    img = ImageEnhance.Brightness(img).enhance(1.08)
+    img = ImageEnhance.Contrast(img).enhance(1.18)
+    img = ImageEnhance.Color(img).enhance(1.15)
+    cover(img, 1280, 720).filter(ImageFilter.UnsharpMask(radius=1.5, percent=60, threshold=2)).save(
+        out_path, quality=92)
+
+
 def make_thumbnail(p, out_path):
     sys.path.insert(0, HERE)
     from make_still_loop import grade  # same colour grade as the video
@@ -439,6 +458,8 @@ def make_thumbnail(p, out_path):
     meta = p.get("meta", {})
     if meta.get("thumb_style") == "word":
         return word_thumbnail(p, out_path)
+    if meta.get("thumb_style") == "clean":
+        return clean_thumbnail(p, out_path)
     side = meta.get("text_side") or auto_side(p["photo"])
     right_side = side == "right"
     sound_first = meta.get("thumb_style") == "sound_first"
@@ -540,6 +561,47 @@ def make_intro(loop, text, out, crf, seconds=6, fps=30):
         sys.exit("intro encode failed")
 
 
+def slow_zoom(loop, out, crf, minutes=10, zoom=0.04, fps=30):
+    """The brief's "living still": the minute-long loop repeated for `minutes`, with an ultra-slow zoom
+    in by `zoom` (4%) and back out across that time, so it loops seamlessly through the whole video.
+    A smooth sub-pixel zoom (ffmpeg's perspective filter); about 2x real time to make."""
+    ff = imageio_ffmpeg.get_ffmpeg_exe()
+    secs = minutes * 60
+    loop_secs = imageio_ffmpeg.count_frames_and_secs(loop)[1]
+    n = int(secs * fps)
+    d = f"({zoom / 2}*W*(1-cos(2*PI*in/{n})))"  # inset of each corner, in output pixels
+    dy = f"{d}*H/W"
+    vf = (f"perspective=x0='{d}':y0='{dy}':x1='W-{d}':y1='{dy}':x2='{d}':y2='H-{dy}':x3='W-{d}':y3='H-{dy}'"
+          ":interpolation=linear:eval=frame")
+    run([ff, "-y", "-loglevel", "error", "-stream_loop", str(math.ceil(secs / loop_secs) - 1), "-i", loop,
+         "-t", str(secs), "-vf", vf, "-an", "-c:v", "libx264", "-preset", "fast", "-crf", str(crf),
+         "-x264-params", "no-fast-pskip=1:aq-mode=3", "-g", str(fps * 10), "-keyint_min", str(fps * 10),
+         "-sc_threshold", "0", "-pix_fmt", "yuv420p", "-movflags", "+faststart", out])
+
+
+def add_bed(music, minutes, bed, seed, below_db=18):
+    """Mix a quiet, seamless rain (or wind) bed under the album, `below_db` dB under the music, so the
+    album still loops without a seam (Mark's brief, Nov 1)."""
+    ff = imageio_ffmpeg.get_ffmpeg_exe()
+    bed_wav = os.path.splitext(music)[0] + ".bed.wav"
+    run([sys.executable, os.path.join(HERE, "make_ambience.py"), "--minutes", f"{minutes:.4f}", "--recipe", bed,
+         "--rumble", "0.08", "--hum", "0", "--hiss", "0.03", "--seamless", "--seed", str(seed), "--out", bed_wav])
+
+    def mean_db(path):
+        out = subprocess.run([ff, "-hide_banner", "-i", path, "-af", "volumedetect", "-f", "null", "-"],
+                             capture_output=True, text=True).stderr
+        return float(out.split("mean_volume:")[1].split("dB")[0])
+
+    gain = mean_db(music) - below_db - mean_db(bed_wav)
+    mixed = os.path.splitext(music)[0] + ".mixed.m4a"
+    run([ff, "-y", "-loglevel", "error", "-i", music, "-i", bed_wav, "-filter_complex",
+         f"[1:a]volume={gain:.2f}dB[b];[0:a][b]amix=inputs=2:duration=first:normalize=0[a]",
+         "-map", "[a]", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", mixed])
+    os.replace(mixed, music)
+    os.remove(bed_wav)
+    print(f"added a {bed} bed {below_db} dB under the music")
+
+
 def run(cmd):
     print("+", " ".join(str(c) for c in cmd), flush=True)
     subprocess.run(cmd, check=True)
@@ -615,7 +677,7 @@ def main():
             made = False
             if style in LYRIA_FALLBACK and os.environ.get("GEMINI_API_KEY"):
                 mood = f"Mood: {(meta.get('word') or 'deep focus').lower()}, calm and focused."
-                dials = [x for k in ("lead", "tempo") if meta.get(f"music_{k}") for x in (f"--{k}", meta[f"music_{k}"])]
+                dials = [x for k in ("lead", "tempo", "key") if meta.get(f"music_{k}") for x in (f"--{k}", meta[f"music_{k}"])]
                 made = subprocess.run([sys.executable, os.path.join(HERE, "make_lyria_album.py"), "--seed", str(seed),
                                        "--flavors", style, "--mood", mood, *dials, "--out", wav]).returncode == 0
             if not made:
@@ -624,6 +686,8 @@ def main():
             with open(os.path.splitext(wav)[0] + ".tracks.json") as f:
                 album = json.load(f)
             album_songs, audio_minutes = album["songs"], album["minutes"]
+            if meta.get("room") == "studio":  # the brief: soft rain or wind on the glass under the music
+                add_bed(wav, audio_minutes, "wind" if meta.get("bed") == "wind" else "rain", seed)
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
@@ -637,12 +701,20 @@ def main():
     else:
         # 1440p: YouTube streams 1440p uploads with a much better codec and bitrate than 1080p ones,
         # so the picture stays sharp even for people watching in 1080p
-        run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"],
+        # the Night Studio (Mark's brief): no camera sway in the minute-long loop, the monitors' glow
+        # pulses, and the ultra-slow zoom is added over ten minutes below
+        studio = ["--zoom", "0", "--drift", "0", "--monitors"] if meta.get("room") == "studio" else []
+        run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"], *studio,
              "--width", "2560", "--height", "1440",
              "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
              "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
              "--seed", str(p["index"]), "--out", loop])
     loop_seconds = imageio_ffmpeg.count_frames_and_secs(loop)[1]
+    full_loop = loop
+    if meta.get("room") == "studio" and not (clip and os.path.exists(clip)):
+        full_loop = os.path.join(stage, "loop-slow-zoom.mp4")
+        slow_zoom(loop, full_loop, args.crf)
+    full_loop_seconds = imageio_ffmpeg.count_frames_and_secs(full_loop)[1]
     make_thumbnail(p, thumb)
 
     title, desc, tags = title_for(p), description_for(p), tags_for(p)
@@ -713,13 +785,14 @@ def main():
 
     if args.full:
         ff = imageio_ffmpeg.get_ffmpeg_exe()
-        video_in = ["-stream_loop", str(vloops), "-i", loop]
+        full_loops = math.ceil(total_minutes * 60 / full_loop_seconds) - 1
+        video_in = ["-stream_loop", str(full_loops), "-i", full_loop]
         if meta.get("statement"):
             intro = os.path.join(stage, "intro.mp4")
-            make_intro(loop, meta["statement"], intro, args.crf)
+            make_intro(full_loop, meta["statement"], intro, args.crf)
             listing = os.path.join(stage, "video-parts.txt")
             with open(listing, "w") as f:  # the intro, then the loop over and over
-                f.write("".join(f"file '{os.path.abspath(x)}'\n" for x in [intro] + [loop] * (vloops + 1)))
+                f.write("".join(f"file '{os.path.abspath(x)}'\n" for x in [intro] + [full_loop] * (full_loops + 1)))
             video_in = ["-f", "concat", "-safe", "0", "-i", listing]
         run([ff, "-y", "-loglevel", "error", *video_in,
              "-stream_loop", str(aloops), "-i", wav, "-map", "0:v:0", "-map", "1:a:0",

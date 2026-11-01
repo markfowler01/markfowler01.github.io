@@ -45,19 +45,34 @@ FLAVORS = {
     "deep_house": "Smooth late-night deep house at about {bpm} BPM: warm jazzy chords, a soft four-on-the-floor "
                   "groove, a rolling bassline, a {lead} hook, lounge-like and polished.",
 }
-TEMPO = {"deep_focus": (74, 88), "night_drive": (86, 98), "lofi_beats": (70, 82), "ambient_piano": (60, 72),
+# The three packages from Mark's brief (Nov 1), its generator prompts word for word, plus the tempo and
+# the video's key so the songs flow into each other (all 70-90 BPM, no vocals)
+PACKAGES = {
+    "grinder": "Dark synthwave, slow tempo, {bpm} BPM, atmospheric retro pads, minimalist driving bassline, "
+               "no vocals, focus music.",
+    "deep_work": "40Hz binaural beats, deep ambient drone, science focus soundscape, low cognitive load, space "
+                 "ambient, cinematic pads, a slow pulse around {bpm} BPM.",
+    "chill_trader": "Dark lofi hip hop, late night jazz chords, mellow aesthetic beat, {bpm} BPM, vinyl crackle, "
+                    "cozy midnight vibe.",
+}
+PACKAGE_COMMON = "Instrumental only, no vocals. In {key}, steady and seamless from start to end."
+FLAVORS.update(PACKAGES)
+TEMPO = {"grinder": (80, 90), "deep_work": (70, 80), "chill_trader": (70, 74), "deep_focus": (74, 88), "night_drive": (86, 98), "lofi_beats": (70, 82), "ambient_piano": (60, 72),
          "future_garage": (130, 140), "deep_house": (116, 122)}
 # no "synth lead" or vibraphone: Mark heard them (and jazzy wording) come out as a horn
 LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck"]
 
 
-def prompt_for(flavor, rng, mood="", lead=None, tempo=None):
+def prompt_for(flavor, rng, mood="", lead=None, tempo=None, key="A minor"):
     """One song's description. lead: the main instrument (else a random one); tempo: slow or upbeat
-    takes the lower or upper half of the flavour's tempo range."""
+    takes the lower or upper half of the flavour's tempo range. The brief's packages use its prompts
+    as written (no mood or instrument words added), in the video's key."""
     lo, hi = TEMPO[flavor]
     mid = (lo + hi) // 2
     lo, hi = {"slow": (lo, mid), "upbeat": (mid, hi)}.get(tempo, (lo, hi))
     text = FLAVORS[flavor].format(bpm=rng.randint(lo, hi), lead=lead or rng.choice(LEADS))
+    if flavor in PACKAGES:
+        return f"{text} {PACKAGE_COMMON.format(key=key)}"
     return f"{text} {mood} {COMMON}".replace("  ", " ")
 
 
@@ -69,12 +84,12 @@ def decode(raw):
     return np.frombuffer(out, np.float32).reshape(-1, 2).astype(np.float64)
 
 
-def one_song(flavor, seed, mood="", lead=None, tempo=None, model="lyria-3.5", tries=4):
+def one_song(flavor, seed, mood="", lead=None, tempo=None, model="lyria-3.5", tries=4, key="A minor"):
     """Lyria sometimes holds a song back because it may resemble an existing record; ask again with
     a slightly different take (tempo, lead) up to `tries` times. Held-back songs aren't charged."""
     for attempt in range(tries):
         rng = random.Random(seed + 7919 * attempt)
-        prompt = prompt_for(flavor, rng, mood, lead if attempt < 2 else None, tempo)
+        prompt = prompt_for(flavor, rng, mood, lead if attempt < 2 else None, tempo, key)
         try:
             audio, _, _ = lyria.generate(prompt, model)
             break
@@ -98,6 +113,7 @@ def main():
     ap.add_argument("--mood", default="", help="extra words for every song, e.g. 'calm and steady'")
     ap.add_argument("--lead", help="main instrument for every song (else each song picks one)")
     ap.add_argument("--tempo", choices=["slow", "upbeat"], help="lower or upper half of the tempo range")
+    ap.add_argument("--key", default="A minor", help="every song in this key, so they flow (A minor or E minor)")
     ap.add_argument("--gap", type=float, default=3.0)
     ap.add_argument("--bitrate", default="192k")
     ap.add_argument("--out", default="music.m4a")
@@ -123,7 +139,8 @@ def main():
     plan = [(rng.choice(flavors), a.seed * 100 + i) for i in range(a.songs)]
     songs = [None] * len(plan)
     with cf.ThreadPoolExecutor(4) as pool:
-        futures = {pool.submit(one_song, fl, sd, a.mood, a.lead, a.tempo): i for i, (fl, sd) in enumerate(plan)}
+        futures = {pool.submit(one_song, fl, sd, a.mood, a.lead, a.tempo, key=a.key): i
+                   for i, (fl, sd) in enumerate(plan)}
         for fut in cf.as_completed(futures):
             i = futures[fut]
             try:

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Make a 15-second vertical Short for a PARKED FM video.
+"""Make a ~15-second vertical Short for a PARKED FM video. Its sound is cut on whole bars and its end
+blended into its start, so the Short loops without a seam (Mark's brief, Nov 1).
 
 Two styles, so each video gets two Shorts that do different jobs:
   hook  (1080x1920) the car big from the very first frame, a slow push-in that comes back to where it
         started (so the Short loops seamlessly) and a soft light sweeping across the car; the day's
         statement glows at the top the whole time, the full-session pointer at the bottom.
-  cuts  quick close shots of the car (the whole car, one end, the other end, the room, the car again)
+  cuts  quick close shots of the car (the whole car, one end, the other end, the trading monitors, the car again)
         cut every 3 seconds with a slow push-in on each; a question on top, the pointer at the bottom.
 Both are fully lit from frame 0 (the first frame is what people see before they swipe), and the car
 is framed with a box Gemini finds in the picture (centre of the frame if that fails).
@@ -13,18 +14,13 @@ is framed with a box Gemini finds in the picture (centre of the frame if that fa
   python3 make_trailer.py --image stills/x.webp --audio music.m4a --title "Supra in the Night Studio" --out trailer.mp4
 """
 import argparse
-import base64
-import hashlib
-import io
 import json
 import math
 import os
-import re
 import subprocess
 import sys
 import tempfile
 import textwrap
-import urllib.request
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
@@ -35,6 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import weekly  # noqa: E402  (shared lettering: word, brush_band, paste_shadowed, colours)
 import statement  # noqa: E402  (the glowing statement lettering)
+import boxes  # noqa: E402  (where the car and monitors are, from Gemini)
 
 W, H, FPS = 1080, 1920, 30
 REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
@@ -48,38 +45,10 @@ def cover(img, w, h):
     return r.crop((x, y, x + w, y + h))
 
 
-def car_box(photo, path):
-    """(x0, y0, x1, y1) of the car as fractions of the picture, from Gemini; cached per picture."""
-    cache = os.path.join(tempfile.gettempdir(), "carbox-" + hashlib.md5(open(path, "rb").read()).hexdigest() + ".json")
-    if os.path.exists(cache):
-        return tuple(json.load(open(cache)))
-    box = FALLBACK_BOX
-    if os.environ.get("GEMINI_API_KEY"):
-        try:
-            small = photo.copy()
-            small.thumbnail((1024, 1024))
-            buf = io.BytesIO()
-            small.save(buf, "JPEG", quality=85)
-            body = {"contents": [{"parts": [
-                {"inline_data": {"mime_type": "image/jpeg", "data": base64.b64encode(buf.getvalue()).decode()}},
-                {"text": "Find the main car in this picture. Reply with JSON only: "
-                         '{"box_2d": [ymin, xmin, ymax, xmax]} on a 0-1000 scale, tight around the whole car.'}]}]}
-            model = os.environ.get("GEMINI_TEXT_MODEL", "gemini-flash-latest")
-            req = urllib.request.Request(
-                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                data=json.dumps(body).encode(), method="POST")
-            req.add_header("x-goog-api-key", os.environ["GEMINI_API_KEY"])
-            req.add_header("Content-Type", "application/json")
-            with urllib.request.urlopen(req, timeout=90) as r:
-                text = "".join(p.get("text", "") for p in json.load(r)["candidates"][0]["content"]["parts"])
-            y0, x0, y1, x1 = [v / 1000 for v in json.loads(re.search(r"\{.*?\}", text, re.S).group(0))["box_2d"]]
-            if 0.03 < (x1 - x0) * (y1 - y0) < 0.9 and x1 > x0 and y1 > y0:
-                box = (x0, y0, x1, y1)
-            print("car box from Gemini:", [round(v, 3) for v in box])
-        except Exception as e:  # any failure: frame the usual spot
-            print("car box: using the default spot", repr(e)[:160])
-    json.dump(box, open(cache, "w"))
-    return box
+def car_box(path):
+    """(x0, y0, x1, y1) of the car as fractions of the picture (boxes.py), the usual spot if not found."""
+    found = boxes.find(path, "car")
+    return max(found, key=lambda b: (b[2] - b[0]) * (b[3] - b[1])) if found else FALLBACK_BOX
 
 
 def view(photo, cx, cy, cw, ch, out_w, out_h):
@@ -105,14 +74,16 @@ def lettering(args, top_text):
     d = ImageDraw.Draw(top)
     f_small = ImageFont.truetype(weekly.BOLD, 44)
     line = f"{args.hours} HOURS  ·  {args.label}"
-    d.text((W // 2 + 2, H - 372), line, font=f_small, fill=(0, 0, 0, 200), anchor="ma")
-    d.text((W // 2, H - 374), line, font=f_small, fill=weekly.CREAM, anchor="ma")
-    band = weekly.brush_band(900, 110, 11)
-    top.alpha_composite(band, ((W - band.width) // 2, H - 280))
-    cta = weekly.word("FULL SESSION ON THE CHANNEL", 60, weekly.NAVY, squeeze=0.9)
-    if cta.width > 820:
-        cta = cta.resize((820, int(cta.height * 820 / cta.width)), Image.LANCZOS)
-    top.alpha_composite(cta, ((W - cta.width) // 2, H - 280 + (band.height - cta.height) // 2))
+    d.text((W // 2 + 2, H - 392), line, font=f_small, fill=(0, 0, 0, 200), anchor="ma")
+    d.text((W // 2, H - 394), line, font=f_small, fill=weekly.CREAM, anchor="ma")
+    # the brief's clean, crisp text box at the bottom
+    f_cta = ImageFont.truetype(weekly.BOLD, 40)
+    lines = ["The ultimate aesthetic to lock in your focus.", f"Full {args.hours}-hour session linked below \u2193"]
+    box_h, box_y = 150, H - 300
+    d.rounded_rectangle([60, box_y, W - 60, box_y + box_h], radius=22, fill=(10, 12, 18, 200),
+                        outline=(*weekly.AMBER, 255), width=3)
+    for k, line in enumerate(lines):
+        d.text((W // 2, box_y + 28 + k * 54), line, font=f_cta, fill=(255, 255, 255, 255), anchor="ma")
     return top
 
 
@@ -150,10 +121,12 @@ def main():
 
     from make_still_loop import grade
     photo = grade(Image.open(args.image).convert("RGB"), args.grade)
-    bx0, by0, bx1, by1 = car_box(photo, args.image)
+    bx0, by0, bx1, by1 = car_box(args.image)
     pw, ph = photo.size
     car = dict(cx=(bx0 + bx1) / 2 * pw, cy=(by0 + by1) / 2 * ph, w=(bx1 - bx0) * pw, h=(by1 - by0) * ph,
                x0=bx0 * pw, x1=bx1 * pw)
+    args.loop_wav, args.seconds = loop_audio(args.audio, audio_start(args.audio, 1 if args.style == "cuts" else 0),
+                                             args.seconds)
     if args.style == "cuts":
         return cuts(photo, car, args)
 
@@ -165,7 +138,7 @@ def main():
     band_y = max(0, min(H - band_h, 1060 - band_h // 2))
     bg = ImageEnhance.Brightness(cover(photo, W, H).filter(ImageFilter.GaussianBlur(30))).enhance(0.5)
     n = int(args.seconds * FPS)
-    proc = encoder(args, audio_start(args.audio, 0))
+    proc = encoder(args)
     for i in range(n):
         t = i / n
         z = 1 + 0.07 * (0.5 - 0.5 * math.cos(2 * math.pi * t))  # in and back out: loops seamlessly
@@ -192,9 +165,15 @@ def cuts(photo, car, args):
         (pw / 2, ph / 2, *tall(ph)),
         (car["cx"], car["cy"], *tall(min(ph, car["h"] * 2.1))),
     ]
+    screens = boxes.find(args.image, "monitors")
+    if screens:  # the brief's shot: tight on the glowing trading monitors and the desk
+        mx0, my0 = min(b[0] for b in screens) * pw, min(b[1] for b in screens) * ph
+        mx1, my1 = max(b[2] for b in screens) * pw, max(b[3] for b in screens) * ph
+        shots[3] = ((mx0 + mx1) / 2, (my0 + my1) / 2 + (my1 - my0) * 0.6,
+                    *tall(min(ph, max((my1 - my0) * 3.2, (mx1 - mx0) * 1.15 * H / W))))
     per = int(3 * FPS)
     n = int(args.seconds * FPS)
-    proc = encoder(args, audio_start(args.audio, 1))
+    proc = encoder(args)
     for i in range(n):
         cx, cy, cw, ch = shots[min(i // per, len(shots) - 1)]
         z = 1 + 0.08 * (i % per) / per
@@ -214,15 +193,52 @@ def audio_start(audio, song):
     return 0.0
 
 
-def encoder(args, start):
+def loop_audio(audio, start, target):
+    """A stretch of the music that loops without a seam: its length is a whole number of bars (beat
+    found from the music itself) near `target` seconds, and its last half second is blended into the
+    first, so when YouTube or TikTok replays the Short you can't hear where it starts.
+    Returns (wav path, seconds)."""
+    ff = imageio_ffmpeg.get_ffmpeg_exe()
+    sr = 44100
+    raw = subprocess.run([ff, "-loglevel", "error", "-ss", f"{start:.2f}", "-t", f"{target * 2 + 4:.2f}", "-i", audio,
+                          "-f", "f32le", "-ac", "2", "-ar", str(sr), "-"], capture_output=True, check=True).stdout
+    x = np.frombuffer(raw, np.float32).reshape(-1, 2).astype(np.float64)
+    hop = 512
+    mono = x.mean(axis=1)
+    energy = np.sqrt(np.convolve(mono ** 2, np.ones(hop) / hop, "same")[::hop])
+    onset = np.maximum(0, np.diff(energy))
+    onset -= onset.mean()
+    fps = sr / hop
+    lags = np.arange(int(fps * 60 / 180), int(fps * 60 / 60) + 1)  # 60-180 BPM
+    ac = [float(np.dot(onset[:-lag], onset[lag:])) for lag in lags]
+    beat = lags[int(np.argmax(ac))] / fps if len(onset) > lags[-1] * 2 else 60 / 80
+    bar = 4 * beat
+    seconds = bar * max(1, round(target / bar))
+    while seconds > 30:
+        seconds -= bar
+    while seconds < 10:
+        seconds += bar
+    n, xf = int(seconds * sr), int(0.5 * sr)
+    if len(x) < n + xf:
+        n = len(x) - xf
+        seconds = n / sr
+    out = x[:n].copy()
+    ramp = np.sin(np.linspace(0, np.pi / 2, xf))[:, None]  # equal-power blend of the tail into the head
+    out[:xf] = x[:xf] * ramp + x[n:n + xf] * np.cos(np.linspace(0, np.pi / 2, xf))[:, None]
+    path = tempfile.mktemp(suffix=".wav")
+    subprocess.run([ff, "-loglevel", "error", "-y", "-f", "f32le", "-ac", "2", "-ar", str(sr), "-i", "-",
+                    "-c:a", "pcm_s16le", path], input=out.astype(np.float32).tobytes(), check=True)
+    print(f"seamless sound: beat {60 / beat:.0f} BPM, {seconds:.2f} s ({round(seconds / bar)} bars)")
+    return path, seconds
+
+
+def encoder(args):
     ff = imageio_ffmpeg.get_ffmpeg_exe()
     cmd = [ff, "-y", "-loglevel", "error",
            "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-           "-ss", f"{start:.2f}", "-t", str(args.seconds), "-i", args.audio,
-           "-map", "0:v", "-map", "1:a",
-           "-af", f"afade=t=in:d=0.15,afade=t=out:st={args.seconds - 1.5}:d=1.5",
+           "-i", args.loop_wav, "-map", "0:v", "-map", "1:a",
            "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p",
-           "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", args.out]
+           "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", args.out]
     return subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
 
