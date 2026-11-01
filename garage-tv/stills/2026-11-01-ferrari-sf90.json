@@ -1,0 +1,50 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "white",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "none"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Ferrari SF90 in the Night Studio Before Dawn",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "ferrari-sf90",
+  "car": "Ferrari SF90 Stradale",
+  "scene": "studio_before_dawn",
+  "room": "studio",
+  "title_style": "deep_work",
+  "thumb_style": "word",
+  "word": "Built Different",
+  "statement": "Your future self is watching this hour.",
+  "minutes": 120,
+  "music_style": "lofi_beats",
+  "music_lead": "soft guitar",
+  "music_tempo": "upbeat",
+  "sound_name": "Lo-Fi Beats",
+  "title_tail": "Lo-Fi Beats for Work & Focus",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "built different",
+    "ferrari sf90 stradale",
+    "ferrari sf90",
+    "midnight garage",
+    "lo-fi beats",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Inside the quiet stillness of the Night Studio, a rosso red Ferrari SF90 Stradale rests as the first blue light of dawn gently fills the windows, leaving a long night of hard work behind you. Around you, mellow lo-fi hip hop drifts through the air, layering jazzy keys over a soft, steady head-nod beat for two peaceful hours of music only. It is an easy space to catch your breath, let your mind settle, and ease into working, studying, or simply relaxing.\n\nNo talking. No lyrics. No sudden sounds. Every track is original, made for PARKED FM.\n\nPARKED FM | Dream Cars. Easy Listening.\n\n#parkedfm #lofibeats #musicforwork #focusmusic #ferrarisf90",
+  "maker": "gemini"
+}

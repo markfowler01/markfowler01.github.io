@@ -450,5 +450,34 @@
     "youtube": "WwOg3Ezqdbk",
     "short": "SOAOtvU4RpQ",
     "short2": "hA-N5fF-GCE"
+  },
+  {
+    "date": "2026-11-01",
+    "photo": "2026-11-01-ferrari-sf90.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Built Different | Ferrari SF90 Night Studio | 2 Hours",
+    "tag": "daily-2026-11-01",
+    "car": "Ferrari SF90 Stradale",
+    "scene": "studio_before_dawn",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Built Different",
+    "statement": "Your future self is watching this hour.",
+    "songs": [
+      "Last Tunnel",
+      "Velvet Skyline",
+      "Rainy Skyline",
+      "Idle Skyline",
+      "Second Shift",
+      "Velvet Coffee",
+      "Rainy Lane",
+      "Quiet Engine"
+    ]
   }
 ]
