@@ -382,14 +382,17 @@ SCENES = [
 ROOM_OF = {s["id"]: s["room"] for s in SCENES}
 
 STUDIO_PROMPT = (
-    "Photorealistic, dark and moody cinematic photograph, 16:9 framing, inside a luxury private garage studio at "
+    "Photorealistic, moody but well-exposed cinematic photograph, 16:9 framing, inside a luxury private garage studio at "
     "night: polished dark concrete floor, black walls with soft LED strip lights, a floor-to-ceiling glass wall; "
     "{view}. A {color} {car} is the star of the image, parked in the middle of the frame, three-quarter front view, "
-    "large, sharp and beautifully lit by the soft strip lights and the glow of the screens, with crisp reflections on "
+    "with its headlights' daytime running lights and parking lights switched on and glowing. The car is large, sharp "
+    "and brightly lit from above by recessed ceiling spotlights shining down on it, plus the strip lights and the glow "
+    "of the screens, so the whole car and its colour are clearly visible, with crisp reflections on "
     "its paint and on the floor. Beside the car, a minimalist black desk with two glowing monitors showing calm "
-    "abstract charts, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Deep shadows, cool "
+    "abstract charts, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Balanced exposure with "
+    "visible detail in the floor and walls (not underexposed), cool "
     "blue and teal tones with warm accent lights, rich detail, soft depth of field. The upper third of the image is "
-    "dark and calm so a word can be written there. One single continuous photograph, not a collage, diptych or split "
+    "calm and uncluttered so a word can be written there. One single continuous photograph, not a collage, diptych or split "
     "frame. Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
     "No people, no text, no readable writing on the screens, no logos, no watermarks, no license plate numbers."
 )
@@ -497,7 +500,7 @@ def sidecar(choice):
         "bed": sc["bed"],
         "rain": sc["rain"],
         "dust": 0 if sc["rain"] else 40,
-        "grades": ["none"],
+        "grades": ["bright"] if ROOMS[sc["room"]].get("prompt") == "studio" else ["none"],  # lift the dark studio
         "series": series["name"],
         "text_side": "right",
         "text_scale": 0.66,

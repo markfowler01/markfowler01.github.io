@@ -80,6 +80,7 @@ GRADES = {
     "night": "deep into the night, long after the last tech clocked out",
     "amber": "with just the work lights still glowing",
     "cold": "on a winter night, frost on the glass",
+    "bright": "late at night, the studio lights still on",
 }
 BED_WORDS = {"rain_road": "Rain Sounds", "rain": "Rain on the Roof", "fan": "Shop Fan Noise",
              "wind": "Wind Sounds", "heater": "Heater Hum", "brown": "Brown Noise", "white": "White Noise"}
@@ -424,7 +425,7 @@ def word_thumbnail(p, out_path):
         l, t, r, b = d.textbbox((0, 0), spaced, font=f)
     d.text(((1280 - (r - l)) // 2 - l, (260 - (b - t)) // 2 - t), spaced, font=f, fill=255)
     y0 = 70
-    for radius, strength, colour in ((26, 120, (120, 200, 255)), (9, 170, (200, 235, 255))):  # soft glow
+    for radius, strength, colour in ((26, 140, (205, 68, 25)), (9, 180, (255, 160, 100))):  # soft orange glow (#CD4419)
         glow = text.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
         bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), c) for c in colour], glow)), (0, y0))
     bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), 245)] * 3, text)), (0, y0))
@@ -652,13 +653,13 @@ def main():
     trailer = os.path.join(stage, "trailer.mp4")
     said = ["--statement", meta["statement"]] if meta.get("statement") else []
     run([sys.executable, os.path.join(HERE, "make_trailer.py"), *said, "--image", p["photo"], "--audio", wav,
-         "--title", scene_line, "--label", sound_name(p).upper(),
+         "--title", scene_line, "--label", sound_name(p).upper(), "--grade", p["grade"],
          "--hours", str(hours_for(p)), "--out", trailer])
     # a second Short in the close-up style, only when SECOND_SHORT=1 (off since Oct 30, back to one Short)
     trailer2 = os.path.join(stage, "trailer2.mp4")
     if os.environ.get("SECOND_SHORT") == "1":
         run([sys.executable, os.path.join(HERE, "make_trailer.py"), "--style", "cuts", "--image", p["photo"],
-             "--audio", wav, "--title", scene_line, "--label", sound_name(p).upper(),
+             "--audio", wav, "--title", scene_line, "--label", sound_name(p).upper(), "--grade", p["grade"],
              "--hook", "Would you work in here?" if lofi else "Could you sleep in here?",
              "--hours", str(hours_for(p)), "--out", trailer2])
     short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]

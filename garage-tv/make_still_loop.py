@@ -24,6 +24,7 @@ GRADES = {
     "night": (0.78, 0.86, 0.93, 1.10),   # later, bluer, darker
     "amber": (0.95, 1.08, 1.00, 0.84),   # warm work-light glow
     "cold":  (0.88, 0.92, 0.98, 1.06),   # winter night
+    "bright": (1.06, 1.00, 1.00, 1.00),  # lifts the shadows (see grade) for the dark night-studio pictures
 }
 
 
@@ -31,8 +32,10 @@ def grade(img, name):
     b, r, g, bl = GRADES[name]
     if name == "none":
         return img
-    a = np.asarray(img, np.float32) / 255 * b
-    a *= np.array([r, g, bl], np.float32)
+    a = np.asarray(img, np.float32) / 255
+    if name == "bright":
+        a = a ** 0.78  # gamma: opens up the shadows much more than the highlights
+    a = a * b * np.array([r, g, bl], np.float32)
     return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
 
 
