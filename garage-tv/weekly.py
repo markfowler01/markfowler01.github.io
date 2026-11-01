@@ -561,6 +561,47 @@ def make_intro(loop, text, out, crf, seconds=6, fps=30):
         sys.exit("intro encode failed")
 
 
+def make_start_intro(full_loop, off_loop, text, out, crf, seconds=10, start_at=3.0, fps=30):
+    """The opening of a Night Studio video (Mark, Nov 1): the car sits with its lights off (off_loop, the
+    lights-off picture with the same dust, fire and screens), the engine starts at `start_at` and when it
+    catches the lights flicker on and the video carries on from full_loop. The statement glows over it.
+    `seconds` is a whole number of keyframe spans, so the rest of full_loop joins it without re-encoding."""
+    import numpy as np
+    import statement
+    from engine_start import CATCH_AT
+    ff = imageio_ffmpeg.get_ffmpeg_exe()
+    on_frames = imageio_ffmpeg.read_frames(full_loop)
+    off_frames = imageio_ffmpeg.read_frames(off_loop)
+    size = next(on_frames)["size"]
+    next(off_frames)
+    w, h = size
+    lay = statement.layer(text, w, h) if text else None
+    t_on = start_at + CATCH_AT
+    flicker = [(0.0, 1.0), (0.06, 0.25), (0.12, 1.0), (0.19, 0.55), (0.28, 1.0)]  # lights catching
+    enc = subprocess.Popen([ff, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
+                            "-s", f"{w}x{h}", "-r", str(fps), "-i", "-", "-an",
+                            "-c:v", "libx264", "-preset", "slow", "-crf", str(crf), "-g", str(fps * 10),
+                            "-keyint_min", str(fps * 10), "-sc_threshold", "0", "-pix_fmt", "yuv420p", out],
+                           stdin=subprocess.PIPE)
+    for i in range(seconds * fps):
+        t = i / fps
+        on = np.frombuffer(next(on_frames), np.uint8).reshape(h, w, 3)
+        off = np.frombuffer(next(off_frames), np.uint8).reshape(h, w, 3)
+        if t < t_on:
+            lit = 0.0
+        else:
+            lit = [a for at, a in flicker if t - t_on >= at][-1]
+        frame = off if lit == 0 else on if lit == 1 else (on * lit + off * (1 - lit)).astype(np.uint8)
+        img = Image.fromarray(frame)
+        if lay is not None:
+            img = statement.over(img, lay, t)
+        enc.stdin.write(img.tobytes())
+    enc.stdin.close()
+    if enc.wait() != 0:
+        sys.exit("intro encode failed")
+    return t_on
+
+
 def slow_zoom(loop, out, crf, minutes=10, zoom=0.04, fps=30):
     """The brief's "living still": the minute-long loop repeated for `minutes`, with an ultra-slow zoom
     in by `zoom` (4%) and back out across that time, so it loops seamlessly through the whole video.
@@ -688,6 +729,7 @@ def main():
             album_songs, audio_minutes = album["songs"], album["minutes"]
             if meta.get("room") == "studio":  # the brief: soft rain or wind on the glass under the music
                 add_bed(wav, audio_minutes, "wind" if meta.get("bed") == "wind" else "rain", seed)
+                add_bed(wav, audio_minutes, "fire", seed + 1, below_db=20)  # and the fireplace (Mark, Nov 1)
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
@@ -703,12 +745,18 @@ def main():
         # so the picture stays sharp even for people watching in 1080p
         # the Night Studio (Mark's brief): no camera sway in the minute-long loop, the monitors' glow
         # pulses, and the ultra-slow zoom is added over ten minutes below
-        studio = ["--zoom", "0", "--drift", "0", "--monitors"] if meta.get("room") == "studio" else []
-        run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"], *studio,
-             "--width", "2560", "--height", "1440",
-             "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
-             "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)),
-             "--seed", str(p["index"]), "--out", loop])
+        studio = ["--zoom", "0", "--drift", "0", "--monitors", "--fire"] if meta.get("room") == "studio" else []
+        still_args = [*studio, "--width", "2560", "--height", "1440",
+                      "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
+                      "--dust", str(meta.get("dust", 60)), "--rain", str(meta.get("rain", 0)), "--seed", str(p["index"])]
+        run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"], *still_args,
+             "--out", loop])
+        # the same first seconds with the car's lights off (car_engine.lights_off), for the start-up intro
+        off_photo = os.path.join(HERE, "stills", meta["photo_off"]) if meta.get("photo_off") else None
+        if off_photo and os.path.exists(off_photo) and args.full:
+            off_loop = os.path.join(stage, "loop-lights-off.mp4")
+            run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", off_photo, *still_args,
+                 "--boxes-from", p["photo"], "--max-seconds", "10", "--out", off_loop])
     loop_seconds = imageio_ffmpeg.count_frames_and_secs(loop)[1]
     full_loop = loop
     if meta.get("room") == "studio" and not (clip and os.path.exists(clip)):
@@ -789,16 +837,35 @@ def main():
         ff = imageio_ffmpeg.get_ffmpeg_exe()
         full_loops = math.ceil(total_minutes * 60 / full_loop_seconds) - 1
         video_in = ["-stream_loop", str(full_loops), "-i", full_loop]
-        if meta.get("statement"):
+        audio_in, audio_mix = ["-stream_loop", str(aloops), "-i", wav], ["-map", "1:a:0", *acodec]
+        off_loop = os.path.join(stage, "loop-lights-off.mp4")
+        if os.path.exists(off_loop):
+            # start-up intro: lights off, the engine starts, the lights come on, the music comes in
+            intro = os.path.join(stage, "intro.mp4")
+            t_on = make_start_intro(full_loop, off_loop, meta.get("statement"), intro, args.crf)
+            rest = os.path.join(stage, "loop-rest.mp4")  # the first stretch, picking up where the intro ends
+            run([ff, "-y", "-loglevel", "error", "-ss", "10", "-i", full_loop, "-c", "copy", rest])
+            listing = os.path.join(stage, "video-parts.txt")
+            with open(listing, "w") as f:
+                f.write("".join(f"file '{os.path.abspath(x)}'\n" for x in [intro, rest] + [full_loop] * (full_loops + 1)))
+            video_in = ["-f", "concat", "-safe", "0", "-i", listing]
+            start = os.path.join(stage, "engine-start.wav")
+            run([sys.executable, os.path.join(HERE, "engine_start.py"), "--out", start])
+            audio_in += ["-i", start]
+            audio_mix = ["-filter_complex",
+                         f"[1:a]aformat=channel_layouts=stereo,afade=t=in:st={t_on - 0.3:.2f}:d=3[m];"
+                         "[2:a]aformat=channel_layouts=stereo,adelay=3000|3000,volume=0.8[e];"
+                         "[m][e]amix=inputs=2:duration=first:normalize=0[a]",
+                         "-map", "[a]", "-c:a", "aac", "-b:a", "192k"]
+        elif meta.get("statement"):
             intro = os.path.join(stage, "intro.mp4")
             make_intro(full_loop, meta["statement"], intro, args.crf)
             listing = os.path.join(stage, "video-parts.txt")
             with open(listing, "w") as f:  # the intro, then the loop over and over
                 f.write("".join(f"file '{os.path.abspath(x)}'\n" for x in [intro] + [full_loop] * (full_loops + 1)))
             video_in = ["-f", "concat", "-safe", "0", "-i", listing]
-        run([ff, "-y", "-loglevel", "error", *video_in,
-             "-stream_loop", str(aloops), "-i", wav, "-map", "0:v:0", "-map", "1:a:0",
-             "-c:v", "copy", *acodec, "-t", str(total_minutes * 60),
+        run([ff, "-y", "-loglevel", "error", *video_in, *audio_in, "-map", "0:v:0", *audio_mix,
+             "-c:v", "copy", "-t", str(total_minutes * 60),
              "-movflags", "+faststart", os.path.join(args.outdir, f"{BRAND_SLUG}-full.mp4")])
 
     if args.record:

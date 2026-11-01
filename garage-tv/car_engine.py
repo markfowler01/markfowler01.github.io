@@ -395,10 +395,11 @@ STUDIO_PROMPT = (
     "{view}. A {color} {car} is the star of the image, parked in the middle of the frame, three-quarter front view, "
     "with its headlights' daytime running lights and parking lights switched on and glowing. The car is large, sharp "
     "and brightly lit from above by recessed ceiling spotlights shining down on it, plus the strip lights and the glow "
-    "of the screens, so the whole car and its colour are clearly visible, with crisp reflections on "
+    "of the screens and the warm firelight, so the whole car and its colour are clearly visible, with crisp reflections on "
     "its paint and on the floor. Beside the car, a minimalist black desk with a dual-monitor trading setup: two "
     "glowing monitors showing financial candlestick charts in green and red, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Balanced exposure with "
-    "visible detail in the floor and walls (not underexposed), cool "
+    "visible detail in the floor and walls (not underexposed). Built into the black wall behind the car, a long modern "
+    "linear fireplace with a real wood fire burning brightly, its orange glow reflecting on the floor and the paint. Cool "
     "blue and teal tones with warm accent lights, rich detail, soft depth of field. The upper third of the image is "
     "calm and uncluttered so a word can be written there. One single continuous photograph, not a collage, diptych or split "
     "frame. Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
@@ -653,13 +654,19 @@ def generate_gemini(prompt, out_path):
             print(f"{model} failed, trying {models[i + 1]}:", e, file=sys.stderr)
 
 
-def gemini_image(model, prompt, out_path):
+def gemini_image(model, prompt, out_path, source=None):
+    """Paint `prompt`, or with `source` (a picture's path) edit that picture as the prompt says."""
     key = os.environ["GEMINI_API_KEY"]
     image_config = {"aspectRatio": "16:9"}
     if "pro" in model:
         image_config["imageSize"] = "2K"
+    parts = [{"text": prompt}]
+    if source:
+        buf = io.BytesIO()
+        Image.open(source).convert("RGB").save(buf, "PNG")
+        parts.insert(0, {"inline_data": {"mime_type": "image/png", "data": base64.b64encode(buf.getvalue()).decode()}})
     body = json.dumps({
-        "contents": [{"parts": [{"text": prompt}]}],
+        "contents": [{"parts": parts}],
         "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": image_config},
     }).encode()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
@@ -884,10 +891,39 @@ def main():
             meta["maker"], meta["motion_clip"] = "sora", os.path.relpath(clip, HERE)
         except RuntimeError as e:
             print("Sora failed; using the still photo today:", e, file=sys.stderr)
+    if ROOMS[choice["scene"]["room"]].get("prompt") == "studio" and meta["maker"] != "sora":
+        off = lights_off(base + ".webp")
+        if off:
+            meta["photo_off"] = os.path.relpath(off, os.path.join(HERE, "stills"))
     with open(base + ".json", "w") as f:
         json.dump(meta, f, indent=2)
         f.write("\n")
     print("wrote", base + ".webp", "painted by", meta["maker"])
+
+
+LIGHTS_OFF_PROMPT = (
+    "Edit this photograph: switch the car's lights off. Its headlights, daytime running lights, parking lights and "
+    "tail lights are dark, as if the car is parked with the engine off. Change nothing else at all: the same car, "
+    "the same position and camera angle, the same room, the same fire, screens, lamps and reflections.")
+
+
+def lights_off(photo):
+    """A copy of the picture with the car's lights off, for the start of the video (it then starts up
+    and the lights come on). Saved in stills/off/ so it's never picked as a day's photo. None if it fails."""
+    if not os.environ.get("GEMINI_API_KEY"):
+        return None
+    out = os.path.join(os.path.dirname(photo), "off", os.path.basename(photo))
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    for model in ("gemini-3-pro-image-preview", "gemini-2.5-flash-image"):
+        try:
+            gemini_image(model, LIGHTS_OFF_PROMPT, out, source=photo)
+            # same size as the original so the two line up frame for frame
+            Image.open(out).convert("RGB").resize(Image.open(photo).size, Image.LANCZOS).save(out, quality=92)
+            print("wrote the lights-off copy", out)
+            return out
+        except RuntimeError as e:
+            print(f"lights-off copy with {model} failed:", e, file=sys.stderr)
+    return None
 
 
 if __name__ == "__main__":

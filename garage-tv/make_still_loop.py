@@ -55,6 +55,11 @@ def main():
     ap.add_argument("--crf", type=int, default=22, help="x264 quality (higher = smaller file; above ~24 slow motion starts to stutter)")
     ap.add_argument("--monitors", action="store_true",
                     help="make the glow of the picture's monitors pulse slowly, like live charts (Gemini finds them)")
+    ap.add_argument("--fire", action="store_true", help="make the fireplace's flames move and flicker (Gemini finds them)")
+    ap.add_argument("--boxes-from", help="find the monitors and fire in this picture instead (the lights-off copy "
+                                         "uses the original's boxes so both line up)")
+    ap.add_argument("--max-seconds", type=float, help="stop after this many seconds (the intro); the timing of "
+                                                      "everything stays that of the full --seconds loop")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -113,11 +118,40 @@ def main():
     screens = []
     if args.monitors:
         import boxes
-        for k, (x0, y0, x1, y1) in enumerate(boxes.find(args.image, "monitors")[:4]):
+        for k, (x0, y0, x1, y1) in enumerate(boxes.find(args.boxes_from or args.image, "monitors")[:4]):
             m = Image.new("L", (BW, BH), 0)
             pad = 0.15 * (x1 - x0) * BW
             ImageDraw.Draw(m).rectangle([x0 * BW - pad, y0 * BH - pad, x1 * BW + pad, y1 * BH + pad], fill=255)
             screens.append((m.filter(ImageFilter.GaussianBlur(pad * 0.8)), rng.uniform(0, 2 * math.pi), 6 + 2 * k))
+
+    # the fire (boxes.py): flames that rise and waver (each pixel in the fire is pulled from a little
+    # below it by a noise pattern that scrolls upward a whole number of times per loop) and a warm
+    # flicker of firelight over the room around it
+    fire = None
+    if args.fire:
+        import boxes
+        found = boxes.find(args.boxes_from or args.image, "fire")
+        if found:
+            fx0, fy0, fx1, fy1 = max(found, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))
+            pad_x, pad_y = 0.08 * (fx1 - fx0), 0.25 * (fy1 - fy0)
+            fire = dict(box=(fx0 - pad_x, fy0 - pad_y, fx1 + pad_x, fy1 + 0.05 * (fy1 - fy0)))
+            period = 96  # px: the noise pattern repeats every `period` px down, so scrolling stays seamless
+            tile = rng.standard_normal((period, 64)).astype(np.float32)
+            for _ in range(3):  # soften into blobs (wraps around, so the tile stays periodic)
+                tile = (tile + np.roll(tile, 1, 0) + np.roll(tile, -1, 0) + np.roll(tile, 1, 1) + np.roll(tile, -1, 1)) / 5
+            fire["tile"] = tile / (np.abs(tile).max() + 1e-6)
+            fire["period"] = period
+            glow = Image.new("L", (BW, BH), 0)
+            cxb, cyb = (fx0 + fx1) / 2 * BW, (fy0 + fy1) / 2 * BH
+            r = max(fx1 - fx0, fy1 - fy0) * BW
+            ImageDraw.Draw(glow).ellipse([cxb - 1.6 * r, cyb - 1.0 * r, cxb + 1.6 * r, cyb + 1.4 * r], fill=255)
+            fire["glow"] = glow.filter(ImageFilter.GaussianBlur(r * 0.6))
+            fire["cycles"] = [(rng.integers(30, 45), rng.uniform(0, 6.3), 0.5), (rng.integers(70, 90), rng.uniform(0, 6.3), 0.3),
+                              (rng.integers(150, 190), rng.uniform(0, 6.3), 0.2)]
+    if args.max_seconds:
+        n_frames_out = min(n_frames, int(args.max_seconds * args.fps))
+    else:
+        n_frames_out = n_frames
 
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     cmd = [
@@ -135,7 +169,7 @@ def main():
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
     print(f"rendering {n_frames} frames at {W}x{H} from {args.image}...")
-    for i in range(n_frames):
+    for i in range(n_frames_out):
         t = i / n_frames
         # closed camera path: zoom breathes once per loop, drift traces a small ellipse
         z = 1 + args.zoom * (0.5 - 0.5 * math.cos(2 * math.pi * t))
@@ -156,6 +190,31 @@ def main():
 
         # very gentle light breathe (fluorescent tubes never sit perfectly still)
         frame *= 1 + 0.015 * math.sin(2 * math.pi * 3 * t)
+        if fire:
+            flick = sum(a * math.sin(2 * math.pi * c * t + ph) for c, ph, a in fire["cycles"])  # -1..1
+            g = np.asarray(fire["glow"].transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
+                                                  resample=Image.BILINEAR), np.float32) / 255
+            frame *= 1 + 0.05 * flick * g[..., None] * np.array([1.0, 0.85, 0.6], np.float32)
+            bx0, by0, bx1, by1 = fire["box"]
+            X0 = int(max(0, (bx0 * BW - ox) * W / cw)); X1 = int(min(W, (bx1 * BW - ox) * W / cw))
+            Y0 = int(max(0, (by0 * BH - oy) * H / ch)); Y1 = int(min(H, (by1 * BH - oy) * H / ch))
+            if X1 - X0 > 8 and Y1 - Y0 > 8:
+                hgt, wid = Y1 - Y0, X1 - X0
+                P = fire["period"]
+                shift = int(round(t * 6 * P))  # 6 whole pattern lengths per loop: seamless
+                rows = (np.arange(hgt)[:, None] + shift) % P
+                cols = (np.arange(wid)[None, :] * 64 // max(1, wid)) % 64
+                noise = fire["tile"][rows, cols]
+                ramp = np.linspace(1.0, 0.25, hgt)[:, None]  # flames move most at the top, little at the base
+                dy = np.clip((np.arange(hgt)[:, None] + 3 + noise * 5 * ramp).astype(int), 0, hgt - 1)
+                dx = np.clip((np.arange(wid)[None, :] + noise * 2 * ramp).astype(int), 0, wid - 1)
+                region = frame[Y0:Y1, X0:X1].copy()
+                warped = region[dy, dx]
+                # feather the edges of the area so the movement fades out instead of showing a box
+                fy_ = np.minimum(np.arange(hgt), hgt - 1 - np.arange(hgt))[:, None] / max(1, hgt * 0.2)
+                fx_ = np.minimum(np.arange(wid), wid - 1 - np.arange(wid))[None, :] / max(1, wid * 0.15)
+                mix = np.clip(np.minimum(fy_, fx_), 0, 1)[..., None]
+                frame[Y0:Y1, X0:X1] = region * (1 - mix) + warped * (1 + 0.08 * flick) * mix
         for mask, phase, cycles in screens:
             m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
                                           resample=Image.BILINEAR), np.float32) / 255
