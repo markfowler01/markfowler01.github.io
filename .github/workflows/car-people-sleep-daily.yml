@@ -116,7 +116,8 @@ jobs:
           pic=$(git ls-files --others --exclude-standard garage-tv/stills | grep -E '\.(webp|png|jpg)$' | head -1)
           [ -n "$pic" ] || { echo "::error::no new picture was painted"; exit 1; }
           tag="preview-$(date -u +%Y%m%d-%H%M%S)"
-          gh release create "$tag" "$pic" "${pic%.*}.json" --prerelease --title "Preview: $(basename "$pic")" --notes "Picture preview only; nothing was posted."
+          extra=(); off="garage-tv/stills/off/$(basename "$pic")"; [ -f "$off" ] && cp "$off" "lights-off-$(basename "$pic")" && extra=("lights-off-$(basename "$pic")")
+          gh release create "$tag" "$pic" "${pic%.*}.json" "${extra[@]}" --prerelease --title "Preview: $(basename "$pic")" --notes "Picture preview only; nothing was posted."
           echo "https://github.com/${{ github.repository }}/releases/download/$tag/$(basename "$pic")"
 
       - name: Keep the instrument recordings between runs

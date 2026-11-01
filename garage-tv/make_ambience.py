@@ -168,6 +168,25 @@ def wind_layer(n, rng):
     return 0.8 * dark * (0.5 + 0.5 * g) + 0.5 * bright * g
 
 
+def fire_layer(n, rng):
+    """A log fire in a fireplace: a soft low roar that breathes, small crackles all the time and the
+    odd louder pop, all dulled a little so nothing is harsh (Mark, Nov 1)."""
+    roar = lowpass_fast(brown_noise(n, rng), 300) * slow_lfo(n, 5, rng, 0.35)
+    hiss = bandpass_fast(rng.standard_normal(n), 900, 3500) * slow_lfo(n, 3, rng, 0.5)
+
+    def bursts(per_sec, size, decay_ms, lo, hi):
+        imp = np.zeros(n)
+        k = int(n / SR * per_sec)
+        imp[rng.integers(0, n, k)] = rng.pareto(2.5, k) * size * rng.choice([-1, 1], k)
+        klen = int(decay_ms * 6 / 1000 * SR)
+        kern = rng.standard_normal(klen) * np.exp(-np.arange(klen) / (decay_ms / 1000 * SR))
+        return bandpass_fast(np.fft.irfft(np.fft.rfft(imp) * np.fft.rfft(kern, n=n), n=n), lo, hi)
+
+    crackle = bursts(14, 1.0, 1.5, 1200, 6000)   # the constant small crackle
+    pops = bursts(0.4, 3.0, 4.0, 400, 4000)       # now and then a louder pop of a log
+    return 0.55 * norm(roar) + 0.15 * norm(hiss) + 0.5 * norm(crackle) + 0.35 * norm(pops)
+
+
 # Each recipe sets the base levels and an extra layer. Flags still override the levels.
 RECIPES = {
     "fan":    dict(rumble=0.55, hiss=0.18, hum=0.06, extra=None, extra_level=0.0),
@@ -177,6 +196,7 @@ RECIPES = {
     "wind":   dict(rumble=0.35, hiss=0.06, hum=0.03, extra=wind_layer, extra_level=0.50),
     "brown":  dict(rumble=1.00, hiss=0.00, hum=0.0, extra=None, extra_level=0.0),
     "white":  dict(rumble=0.20, hiss=1.00, hum=0.0, extra=None, extra_level=0.0),
+    "fire":   dict(rumble=0.05, hiss=0.0, hum=0.0, extra=fire_layer, extra_level=0.9),
 }
 
 
