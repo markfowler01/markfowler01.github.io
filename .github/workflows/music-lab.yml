@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; traffic = where the views come from (YouTube Analytics); rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
         type: choice
-        options: [discover, inspect, explore, sample, kit, youtube, rooms, models, lyria]
+        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -144,6 +144,14 @@ jobs:
           hours, subs = r
           print(f'analytics OK: {hours} watch hours in the last 12 months; subscribers gained by video: {subs}')
           "
+
+      - name: Where the views come from (YouTube Analytics, last 28 days; nothing posted)
+        if: ${{ inputs.task == 'traffic' }}
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python3 garage-tv/traffic.py
 
       - uses: actions/setup-python@v5
         if: ${{ inputs.task == 'rooms' }}
