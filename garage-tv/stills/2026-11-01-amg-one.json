@@ -1,0 +1,51 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "wind",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "AMG One in the Night Studio in the Forest",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "amg-one",
+  "car": "Mercedes-AMG One",
+  "scene": "studio_forest_night",
+  "room": "studio",
+  "title_style": "seo",
+  "thumb_style": "clean",
+  "word": "Clarity",
+  "statement": "Progress you can't see is still progress.",
+  "minutes": 180,
+  "music_style": "chill_trader",
+  "music_lead": "electric piano",
+  "music_tempo": "slow",
+  "music_key": "A minor",
+  "sound_name": "Chill Trader",
+  "title_tail": "Dark Lofi Beats for Grinding",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "clarity",
+    "mercedes-amg one",
+    "amg one",
+    "midnight garage",
+    "chill trader",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "A 3-hour deep focus ambient mix specifically curated for day traders, software developers, and late-night grinders who need to lock in maximum concentration. Perfect background audio loop for chart analysis, coding, and deep workspace productivity.\n\nOn screen: a gunmetal grey Mercedes-AMG One in the Night Studio beside a dual-monitor trading setup. Sound: dark minimal lo-fi: late-night jazz chords and a mellow beat, with soft rain on the glass. No talking, no lyrics.\n\nEvery track is original, made for PARKED FM.\n\n#deepfocus #tradingmusic #codingmusic #studymusic #lofi #amgone",
+  "maker": "gemini"
+}
