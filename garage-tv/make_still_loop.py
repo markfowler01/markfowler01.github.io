@@ -60,6 +60,8 @@ def main():
                                          "uses the original's boxes so both line up)")
     ap.add_argument("--max-seconds", type=float, help="stop after this many seconds (the intro); the timing of "
                                                       "everything stays that of the full --seconds loop")
+    ap.add_argument("--film", action="store_true",
+                    help="look like a real camera: fine moving grain, slightly darker corners, a touch less colour")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -148,6 +150,11 @@ def main():
             fire["glow"] = glow.filter(ImageFilter.GaussianBlur(r * 0.6))
             fire["cycles"] = [(rng.integers(30, 45), rng.uniform(0, 6.3), 0.5), (rng.integers(70, 90), rng.uniform(0, 6.3), 0.3),
                               (rng.integers(150, 190), rng.uniform(0, 6.3), 0.2)]
+    film = None
+    if args.film:
+        yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+        r2 = ((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2
+        film = dict(vignette=(1 - 0.16 * r2 / 2)[..., None], rng=np.random.default_rng(args.seed + 99))
     if args.max_seconds:
         n_frames_out = min(n_frames, int(args.max_seconds * args.fps))
     else:
@@ -249,6 +256,16 @@ def main():
             sheet = sheet.filter(ImageFilter.GaussianBlur(0.8))
             frame += (np.asarray(sheet, np.float32) / 255)[..., None] * rain_tint
 
+        if film is not None:
+            # a real camera at ISO 1600: corners a little darker, colour a little softer, and fine grain a
+            # little coarser than a pixel
+            frame *= film["vignette"]
+            luma = frame.mean(axis=2, keepdims=True)
+            frame = frame * 0.9 + luma * 0.1
+            if "grain" not in film:  # one fixed grain pattern: grain that changes every frame made the video 40x bigger
+                g = film["rng"].standard_normal((H // 2, W // 2)).astype(np.float32)
+                film["grain"] = np.asarray(Image.fromarray(g, "F").resize((W, H), Image.BILINEAR), np.float32)[..., None]
+            frame += 0.014 * film["grain"] * (0.35 + np.sqrt(np.clip(luma * (1 - luma), 0, 0.25)) * 1.3)
         img = Image.fromarray((np.clip(frame, 0, 1) * 255).astype(np.uint8))
         proc.stdin.write(img.tobytes())
         if i % (args.fps * 10) == 0:
