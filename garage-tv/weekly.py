@@ -777,6 +777,8 @@ def main():
     shutil.copy(trailer, os.path.join(args.outdir, "trailer.mp4"))
     if os.path.exists(trailer2):
         shutil.copy(trailer2, os.path.join(args.outdir, "trailer2.mp4"))
+    if lofi and wav.endswith(".m4a"):  # the album on its own in the release, so Mark keeps every day's music
+        shutil.copy(wav, os.path.join(args.outdir, "music.m4a"))
     with open(os.path.join(args.outdir, "TAG"), "w") as f:
         f.write(p["tag"])
     with open(os.path.join(args.outdir, "RELEASE_TITLE"), "w") as f:
