@@ -16,13 +16,13 @@ THIN = os.path.join(HERE, "fonts", "Montserrat.ttf")  # SIL Open Font License
 FADE_IN, HOLD_UNTIL, GONE_AT = 0.6, 4.2, 5.2  # seconds
 
 
-def layer(text, w, h):
-    """The statement centred on a transparent layer: thin white letters with a soft glow, over a
-    gentle dark band so it reads on any picture."""
-    size = int(h * 0.1)
+def layer(text, w, h, center_y=None, size=None, wrap=None):
+    """The statement on a transparent layer, centred (or around center_y): thin white letters with a
+    soft glow, over a gentle dark band so it reads on any picture."""
+    size = size or int(h * 0.1)
     f = ImageFont.truetype(THIN, size)
     f.set_variation_by_name("Light")
-    lines = textwrap.wrap(text.upper(), 16 if w < h else 22)
+    lines = textwrap.wrap(text.upper(), wrap or (16 if w < h else 22))
     d = ImageDraw.Draw(Image.new("L", (1, 1)))
     line_h = int(size * 1.35)
     widest = max(d.textlength(line, font=f) for line in lines)
@@ -33,13 +33,14 @@ def layer(text, w, h):
         line_h = int(size * 1.35)
     mask = Image.new("L", (w, h), 0)
     md = ImageDraw.Draw(mask)
-    y = (h - line_h * len(lines)) // 2
+    mid = h // 2 if center_y is None else center_y
+    y = mid - line_h * len(lines) // 2
     for line in lines:
         md.text((w // 2, y), line, font=f, fill=255, anchor="ma")
         y += line_h
     out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     band = Image.new("L", (w, h), 0)
-    top = (h - line_h * len(lines)) // 2 - size
+    top = mid - line_h * len(lines) // 2 - size
     ImageDraw.Draw(band).rectangle([0, top, w, top + line_h * len(lines) + 2 * size], fill=120)
     out.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (w, h), 0)] * 3,
                                              band.filter(ImageFilter.GaussianBlur(size)))))
