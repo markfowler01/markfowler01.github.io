@@ -1,0 +1,53 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "McLaren P1 in the Night Studio on a Rainy Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "mclaren-p1",
+  "car": "McLaren P1",
+  "scene": "studio_rain_night",
+  "room": "studio",
+  "title_style": "seo",
+  "thumb_style": "clean",
+  "word": "Launch Mode",
+  "statement": "Don't plan the whole night. Plan the next hour.",
+  "character": "kyleighanne",
+  "minutes": 180,
+  "music_style": "grinder",
+  "music_lead": "felt piano",
+  "music_tempo": "upbeat",
+  "music_key": "A minor",
+  "sound_name": "Late-Night Grinder",
+  "title_tail": "Dark Synthwave for Coding & Trading",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "launch mode",
+    "mclaren p1",
+    "mclaren p1",
+    "midnight garage",
+    "late-night grinder",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "A 3-hour deep focus ambient mix specifically curated for day traders, software developers, and late-night grinders who need to lock in maximum concentration. Perfect background audio loop for chart analysis, coding, and deep workspace productivity.\n\nOn screen: a metallic red McLaren P1 in the Night Studio beside a dual-monitor trading setup. Sound: dark synthwave: atmospheric retro pads over a minimalist driving bassline, with soft rain on the glass. No talking, no lyrics.\n\nEvery track is original, made for PARKED FM.\n\n#deepfocus #tradingmusic #codingmusic #studymusic #lofi #mclarenp1",
+  "maker": "gemini",
+  "photo_off": "off/2026-11-02-mclaren-p1.webp"
+}
