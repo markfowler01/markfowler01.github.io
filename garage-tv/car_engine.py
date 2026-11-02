@@ -489,7 +489,9 @@ def prompt_for(scene, color, car, character=None):
     if room.get("prompt") == "studio" and STUDIO_LOOK == "illustrated":
         # Mark (Nov 2): both seated like Kai's sample, the side of the face showing
         person = (f"Sitting in an office chair at the desk, seen from behind and to the side so the side of the face "
-                  f"shows in profile, is {CHARACTERS[character]}, one hand on the keyboard, leaning in slightly towards "
+                  f"shows in profile, is {CHARACTERS[character]}, one hand on the keyboard; the other hand, the one "
+                  "nearest the viewer, rests on a computer mouse on a mouse pad beside the keyboard, hand and mouse "
+                  "clearly visible and not hidden by the body, leaning in slightly towards "
                   "the glowing trading screens, calm and focused, lit by the screens; drawn in proportion to the room, "
                   "smaller than the car. " if character in CHARACTERS else "")
         return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ",
@@ -730,8 +732,9 @@ def generate_gemini(prompt, out_path, reference=None):
         try:
             if reference:  # the approved character picture, so the same person shows up every day
                 return gemini_image(model, "The person at the desk must be the same character as in this reference "
-                                    "picture (same hair, same hoodie, same headphones, same art style), but draw a new "
-                                    "picture exactly as described: " + prompt, out_path, source=reference)
+                                    "picture (same hair, same hoodie, same headphones, same art style). Only the "
+                                    "person's look comes from the reference: their pose, hands, position and the whole "
+                                    "room follow this description: " + prompt, out_path, source=reference)
             return gemini_image(model, prompt, out_path)
         except RuntimeError as e:
             if i == len(models) - 1:
