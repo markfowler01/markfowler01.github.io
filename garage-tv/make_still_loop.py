@@ -341,8 +341,8 @@ def main():
             X0 = (bx0 * BW - ox) * W / cw; X1 = (bx1 * BW - ox) * W / cw
             Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
             mw_, mh_ = X1 - X0, Y1 - Y0
-            ax0, ax1 = int(max(0, X0 - 0.4 * mw_)), int(min(W, X1 + 0.4 * mw_))
-            ay0, ay1 = int(max(0, Y0 - 0.4 * mh_)), int(min(H, Y1 + 0.4 * mh_))
+            ax0, ax1 = int(max(0, X0 - 0.25 * mw_)), int(min(W, X1 + 0.25 * mw_))
+            ay0, ay1 = int(max(0, Y0 - 0.25 * mh_)), int(min(H, Y1 + 0.25 * mh_))
             if ax1 - ax0 > 8 and ay1 - ay0 > 8:
                 (c1, p1), (c2, p2) = mouse["cycles"]
                 # short moves with still moments between them: a sine pushed through a soft "step"
@@ -358,9 +358,10 @@ def main():
                 fy, fx = (sy - y0i)[:, None, None], (sx - x0i)[None, :, None]
                 moved = (region[y0i][:, x0i] * (1 - fx) + region[y0i][:, x1i] * fx) * (1 - fy) + \
                         (region[y1i][:, x0i] * (1 - fx) + region[y1i][:, x1i] * fx) * fy
-                yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (mh_ * 0.75)
-                xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (mw_ * 0.75)
-                m = np.clip(1.5 - np.sqrt(xx ** 2 + yy ** 2), 0, 1)[..., None]
+                # only the hand and mouse move, fading out before the mouse pad's edges
+                yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (mh_ * 0.55)
+                xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (mw_ * 0.55)
+                m = np.clip(1.6 - np.sqrt(xx ** 2 + yy ** 2), 0, 1)[..., None]
                 frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
         for mask, phase, cycles in screens:
             m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
