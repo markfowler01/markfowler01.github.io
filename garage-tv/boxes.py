@@ -26,6 +26,8 @@ ASK = {
                "Reply [] if there are none.",
     "mug": "Find the coffee mug or cup in this picture. Reply with JSON only: "
            '[{"box_2d": [ymin, xmin, ymax, xmax]}] on a 0-1000 scale, tight around the mug. Reply [] if there is none.',
+    "head": "Find the head of the person sitting at the desk (hair, face and headphones together). Reply with JSON "
+            'only: [{"box_2d": [ymin, xmin, ymax, xmax]}] on a 0-1000 scale. Reply [] if there is no person.',
     "monitors": "Find every glowing computer monitor or screen in this picture (not windows). Reply with JSON "
                 'only: [{"box_2d": [ymin, xmin, ymax, xmax]}, ...] on a 0-1000 scale, tight around each screen. '
                 "Reply [] if there are none.",
