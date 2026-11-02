@@ -84,6 +84,8 @@ def main():
     ap.add_argument("--steam", action="store_true", help="wisps of steam rising from the coffee mug (Gemini finds it)")
     ap.add_argument("--bob", type=float, default=0,
                     help="the person at the desk nods gently at this many beats a minute (0 = still); Gemini finds the head")
+    ap.add_argument("--mouse", action="store_true",
+                    help="the person's hand moves the mouse a little now and then (Gemini finds hand and mouse)")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -209,6 +211,16 @@ def main():
             nods = max(1, round(args.bob / 2 * args.seconds / 60))  # one nod every other beat: calmer
             bob = dict(box=(hx0, hy0, hx1, hy1), nods=nods)
 
+    # the hand on the mouse (Mark, Nov 2): hand and mouse glide a few pixels around the desk, with pauses,
+    # on a closed path (whole numbers of cycles per loop) so the loop stays seamless
+    mouse = None
+    if args.mouse:
+        import boxes
+        found = boxes.find(args.boxes_from or args.image, "mouse")
+        if found:
+            mouse = dict(box=found[0], cycles=[(int(rng.integers(5, 9)), rng.uniform(0, 6.3)),
+                                               (int(rng.integers(11, 17)), rng.uniform(0, 6.3))])
+
     film = None
     if args.film:
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -323,6 +335,32 @@ def main():
                 xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (hw * 0.85)
                 # full movement on the head, fading out down the neck so the shoulders stay put
                 m = np.clip(1.6 - np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 2.2 + np.minimum(yy, 0) ** 2), 0, 1)[..., None]
+                frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
+        if mouse:
+            bx0, by0, bx1, by1 = mouse["box"]
+            X0 = (bx0 * BW - ox) * W / cw; X1 = (bx1 * BW - ox) * W / cw
+            Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
+            mw_, mh_ = X1 - X0, Y1 - Y0
+            ax0, ax1 = int(max(0, X0 - 0.4 * mw_)), int(min(W, X1 + 0.4 * mw_))
+            ay0, ay1 = int(max(0, Y0 - 0.4 * mh_)), int(min(H, Y1 + 0.4 * mh_))
+            if ax1 - ax0 > 8 and ay1 - ay0 > 8:
+                (c1, p1), (c2, p2) = mouse["cycles"]
+                # short moves with still moments between them: a sine pushed through a soft "step"
+                step = lambda v: math.copysign(abs(v) ** 0.35, v)  # noqa: E731
+                dx = mw_ * 0.10 * (0.7 * step(math.sin(2 * math.pi * c1 * t + p1)) + 0.3 * math.sin(2 * math.pi * c2 * t + p2))
+                dy = mh_ * 0.06 * step(math.sin(2 * math.pi * c2 * t + p1 + 1.0))
+                region = frame[ay0:ay1, ax0:ax1]
+                hh_, ww_ = ay1 - ay0, ax1 - ax0
+                sy = np.clip(np.arange(hh_, dtype=np.float32) - dy, 0, hh_ - 1)
+                sx = np.clip(np.arange(ww_, dtype=np.float32) - dx, 0, ww_ - 1)
+                y0i, x0i = np.floor(sy).astype(int), np.floor(sx).astype(int)
+                y1i, x1i = np.minimum(y0i + 1, hh_ - 1), np.minimum(x0i + 1, ww_ - 1)
+                fy, fx = (sy - y0i)[:, None, None], (sx - x0i)[None, :, None]
+                moved = (region[y0i][:, x0i] * (1 - fx) + region[y0i][:, x1i] * fx) * (1 - fy) + \
+                        (region[y1i][:, x0i] * (1 - fx) + region[y1i][:, x1i] * fx) * fy
+                yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (mh_ * 0.75)
+                xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (mw_ * 0.75)
+                m = np.clip(1.5 - np.sqrt(xx ** 2 + yy ** 2), 0, 1)[..., None]
                 frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
         for mask, phase, cycles in screens:
             m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),

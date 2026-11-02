@@ -489,7 +489,8 @@ def prompt_for(scene, color, car, character=None):
     if room.get("prompt") == "studio" and STUDIO_LOOK == "illustrated":
         # Mark (Nov 2): both seated like Kai's sample, the side of the face showing
         person = (f"Sitting in an office chair at the desk, seen from behind and to the side so the side of the face "
-                  f"shows in profile, is {CHARACTERS[character]}, one hand on the keyboard, leaning in slightly towards "
+                  f"shows in profile, is {CHARACTERS[character]}, one hand on the keyboard and the other resting on a "
+                  "computer mouse beside it, clearly visible, leaning in slightly towards "
                   "the glowing trading screens, calm and focused, lit by the screens; drawn in proportion to the room, "
                   "smaller than the car. " if character in CHARACTERS else "")
         return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ",
