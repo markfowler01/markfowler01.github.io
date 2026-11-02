@@ -24,6 +24,8 @@ ASK = {
     "windows": "Find the large glass windows in this picture (the glass, not the wall). Reply with JSON only: "
                '[{"box_2d": [ymin, xmin, ymax, xmax]}, ...] on a 0-1000 scale, one box per window or glass wall. '
                "Reply [] if there are none.",
+    "mug": "Find the coffee mug or cup in this picture. Reply with JSON only: "
+           '[{"box_2d": [ymin, xmin, ymax, xmax]}] on a 0-1000 scale, tight around the mug. Reply [] if there is none.',
     "monitors": "Find every glowing computer monitor or screen in this picture (not windows). Reply with JSON "
                 'only: [{"box_2d": [ymin, xmin, ymax, xmax]}, ...] on a 0-1000 scale, tight around each screen. '
                 "Reply [] if there are none.",

@@ -39,6 +39,23 @@ def grade(img, name):
     return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
 
 
+def blob(frame, cx, cy, sx, sy, color, strength, add=True):
+    """A soft oval of light (add) or of mist laid over the picture (not add), drawn only near its centre."""
+    H, W = frame.shape[:2]
+    x0, x1 = max(0, int(cx - 3 * sx)), min(W, int(cx + 3 * sx) + 1)
+    y0, y1 = max(0, int(cy - 3 * sy)), min(H, int(cy + 3 * sy) + 1)
+    if x0 >= x1 or y0 >= y1 or strength <= 0:
+        return
+    gx = (np.arange(x0, x1, dtype=np.float32) - cx) / sx
+    gy = (np.arange(y0, y1, dtype=np.float32)[:, None] - cy) / sy
+    a = (strength * np.exp(-(gx ** 2 + gy ** 2) / 2))[..., None]
+    col = np.asarray(color, np.float32)
+    if add:
+        frame[y0:y1, x0:x1] += a * col
+    else:
+        frame[y0:y1, x0:x1] = frame[y0:y1, x0:x1] * (1 - a) + col * a
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True)
@@ -64,6 +81,7 @@ def main():
                     help="look like a real camera: fine moving grain, slightly darker corners, a touch less colour")
     ap.add_argument("--rain-on-windows", action="store_true",
                     help="keep the falling rain to the picture's windows (Gemini finds them), for indoor scenes")
+    ap.add_argument("--steam", action="store_true", help="wisps of steam rising from the coffee mug (Gemini finds it)")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -152,6 +170,20 @@ def main():
             fire["glow"] = glow.filter(ImageFilter.GaussianBlur(r * 0.6))
             fire["cycles"] = [(rng.integers(30, 45), rng.uniform(0, 6.3), 0.5), (rng.integers(70, 90), rng.uniform(0, 6.3), 0.3),
                               (rng.integers(150, 190), rng.uniform(0, 6.3), 0.2)]
+            # flame tongues (Mark, Nov 2: "moving flames"): each one licks up from the logs, sways, shrinks
+            # and fades, over and over, a whole number of times per loop so the loop stays seamless
+            fire["tongues"] = [dict(x=rng.uniform(0.12, 0.88), cycles=int(rng.integers(42, 80)), ph=rng.uniform(0, 1),
+                                    sway=rng.uniform(0, 1), w=rng.uniform(0.06, 0.12), h=rng.uniform(0.6, 1.0))
+                               for _ in range(max(6, int(14 * (fx1 - fx0) / 0.1)))]
+    steam = None
+    if args.steam:
+        import boxes
+        found = boxes.find(args.boxes_from or args.image, "mug")
+        if found:
+            mx0, my0, mx1, my1 = found[0]
+            steam = dict(box=(mx0, my0, mx1, my1),
+                         wisps=[dict(cycles=int(rng.integers(14, 22)), ph=rng.uniform(0, 1), sway=rng.uniform(0, 1),
+                                     side=rng.uniform(-0.2, 0.2)) for _ in range(9)])
     window_mask = None
     if args.rain and args.rain_on_windows:
         import boxes
@@ -222,13 +254,13 @@ def main():
             if X1 - X0 > 8 and Y1 - Y0 > 8:
                 hgt, wid = Y1 - Y0, X1 - X0
                 P = fire["period"]
-                shift = int(round(t * 6 * P))  # 6 whole pattern lengths per loop: seamless
+                shift = int(round(t * 10 * P))  # 10 whole pattern lengths per loop: seamless
                 rows = (np.arange(hgt)[:, None] + shift) % P
                 cols = (np.arange(wid)[None, :] * 64 // max(1, wid)) % 64
                 noise = fire["tile"][rows, cols]
                 ramp = np.linspace(1.0, 0.25, hgt)[:, None]  # flames move most at the top, little at the base
-                dy = np.clip((np.arange(hgt)[:, None] + 3 + noise * 5 * ramp).astype(int), 0, hgt - 1)
-                dx = np.clip((np.arange(wid)[None, :] + noise * 2 * ramp).astype(int), 0, wid - 1)
+                dy = np.clip((np.arange(hgt)[:, None] + 4 + noise * 9 * ramp).astype(int), 0, hgt - 1)
+                dx = np.clip((np.arange(wid)[None, :] + noise * 4 * ramp).astype(int), 0, wid - 1)
                 region = frame[Y0:Y1, X0:X1].copy()
                 warped = region[dy, dx]
                 # feather the edges of the area so the movement fades out instead of showing a box
@@ -236,6 +268,29 @@ def main():
                 fx_ = np.minimum(np.arange(wid), wid - 1 - np.arange(wid))[None, :] / max(1, wid * 0.15)
                 mix = np.clip(np.minimum(fy_, fx_), 0, 1)[..., None]
                 frame[Y0:Y1, X0:X1] = region * (1 - mix) + warped * (1 + 0.08 * flick) * mix
+                # the tongues of flame, from the logs (bottom of the fire) up past its top
+                fw, fh = X1 - X0, Y1 - Y0
+                for tg in fire["tongues"]:
+                    u = (tg["cycles"] * t + tg["ph"]) % 1.0
+                    life = math.sin(math.pi * u)
+                    cx = X0 + fw * (tg["x"] + 0.05 * math.sin(2 * math.pi * (1.5 * u + tg["sway"])))
+                    cy = Y1 - fh * 0.12 - fh * tg["h"] * 0.75 * u
+                    sx = fw * tg["w"] * (1 - 0.6 * u) + 1
+                    sy = sx * 2.2
+                    blob(frame, cx, cy, sx, sy, (1.0, 0.45, 0.12), 0.45 * life)
+                    blob(frame, cx, cy + sy * 0.3, sx * 0.45, sy * 0.45, (1.0, 0.85, 0.45), 0.35 * life)
+        if steam:
+            sx0, sy0, sx1, sy1 = steam["box"]
+            mxc = ((sx0 + sx1) / 2 * BW - ox) * W / cw
+            mtop = (sy0 * BH - oy) * H / ch
+            mw = max(4.0, (sx1 - sx0) * BW * W / cw)
+            for wp in steam["wisps"]:
+                u = (wp["cycles"] * t + wp["ph"]) % 1.0
+                fade = min(1.0, 6.75 * u * (1 - u) ** 2)  # strongest just above the mug, then thinning out
+                x = mxc + mw * (wp["side"] + 0.35 * u * math.sin(2 * math.pi * (1.3 * u + wp["sway"])))
+                y = mtop - mw * 0.05 - mw * 2.2 * u
+                r = mw * (0.10 + 0.30 * u)
+                blob(frame, x, y, r, r * 2.2, (0.96, 0.96, 0.98), 0.42 * fade, add=False)
         for mask, phase, cycles in screens:
             m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
                                           resample=Image.BILINEAR), np.float32) / 255
