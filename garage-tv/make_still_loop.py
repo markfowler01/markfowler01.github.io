@@ -82,6 +82,8 @@ def main():
     ap.add_argument("--rain-on-windows", action="store_true",
                     help="keep the falling rain to the picture's windows (Gemini finds them), for indoor scenes")
     ap.add_argument("--steam", action="store_true", help="wisps of steam rising from the coffee mug (Gemini finds it)")
+    ap.add_argument("--bob", type=float, default=0,
+                    help="the person at the desk nods gently at this many beats a minute (0 = still); Gemini finds the head")
     ap.add_argument("--out", default="loop.mp4")
     ap.add_argument("--seed", type=int, default=5)
     args = ap.parse_args()
@@ -196,6 +198,17 @@ def main():
         else:
             rain = []  # no windows found: no rain indoors rather than rain across the room
 
+    # the person's gentle head bob to the music (Mark, Nov 2): the head and a little of the neck, inside a
+    # soft-edged area, dip a few pixels on the beat and come back up; a whole number of nods per loop
+    bob = None
+    if args.bob:
+        import boxes
+        found = boxes.find(args.boxes_from or args.image, "head")
+        if found:
+            hx0, hy0, hx1, hy1 = found[0]
+            nods = max(1, round(args.bob / 2 * args.seconds / 60))  # one nod every other beat: calmer
+            bob = dict(box=(hx0, hy0, hx1, hy1), nods=nods)
+
     film = None
     if args.film:
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -291,6 +304,26 @@ def main():
                 y = mtop - mw * 0.05 - mw * 2.2 * u
                 r = mw * (0.10 + 0.30 * u)
                 blob(frame, x, y, r, r * 2.2, (0.96, 0.96, 0.98), 0.42 * fade, add=False)
+        if bob:
+            bx0, by0, bx1, by1 = bob["box"]
+            X0 = (bx0 * BW - ox) * W / cw; X1 = (bx1 * BW - ox) * W / cw
+            Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
+            hw, hh = X1 - X0, Y1 - Y0
+            ax0, ax1 = int(max(0, X0 - 0.35 * hw)), int(min(W, X1 + 0.35 * hw))
+            ay0, ay1 = int(max(0, Y0 - 0.3 * hh)), int(min(H, Y1 + 0.3 * hh))
+            if ax1 - ax0 > 8 and ay1 - ay0 > 8:
+                dip = max(0.0, math.sin(2 * math.pi * bob["nods"] * t)) ** 2 * hh * 0.028  # px down on the beat
+                region = frame[ay0:ay1, ax0:ax1]
+                src = np.arange(ay1 - ay0, dtype=np.float32) - dip  # each row takes the row `dip` above it
+                lo = np.clip(np.floor(src).astype(int), 0, ay1 - ay0 - 1)
+                hi = np.clip(lo + 1, 0, ay1 - ay0 - 1)
+                fr = (src - np.floor(src))[:, None, None]
+                moved = region[lo] * (1 - fr) + region[hi] * fr
+                yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (hh * 0.75)
+                xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (hw * 0.85)
+                # full movement on the head, fading out down the neck so the shoulders stay put
+                m = np.clip(1.6 - np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 2.2 + np.minimum(yy, 0) ** 2), 0, 1)[..., None]
+                frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
         for mask, phase, cycles in screens:
             m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
                                           resample=Image.BILINEAR), np.float32) / 255

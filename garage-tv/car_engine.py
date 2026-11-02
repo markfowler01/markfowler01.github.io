@@ -413,6 +413,18 @@ STUDIO_PROMPT = (
 # on; photoreal AI read as fake) or "photo" (STUDIO_PROMPT above)
 STUDIO_LOOK = "illustrated"
 ILLUSTRATED_COLOR = "metallic red"  # the brand's car colour in the illustrated look
+# The person at the desk (Mark, Nov 2): two original characters, alternating day by day while the
+# channel learns which one gets more clicks. Seen from behind, so faces never give the art away. Once
+# a sample is approved, characters/<id>.webp holds the picture used as the character reference.
+# Named after Mark's kids (Nov 2).
+CHARACTERS = {
+    "kyleighanne": "a young woman in her twenties with dirty blond hair tied in a loose messy bun, an oversized "
+                   "charcoal-grey hoodie with a thin orange stripe down one sleeve, and large matte-black over-ear "
+                   "headphones",
+    "wyatt": "a young man in his twenties with short, dark, slightly messy hair, a black hoodie with a thin orange "
+             "stripe down one sleeve, and large matte-black over-ear headphones",
+}
+ACTIVE_CHARACTERS = ["kyleighanne", "wyatt"]
 ILLUSTRATED_PROMPT = (
     "A high-end, clean, stylized hand-drawn anime illustration, 16:9: a single still frame from a premium anime film, "
     "with crisp clean line work, cel shading and soft painterly lighting. A sleek, high-end night garage workspace at "
@@ -420,12 +432,12 @@ ILLUSTRATED_PROMPT = (
     "drawn large and with care, its headlights and taillights glowing, soft highlights on its metallic paint and a "
     "reflection on the polished floor. Beside it, a tidy, minimalist desk with a dual-monitor trading setup: both screens "
     "are switched on and glow bright soft blue with simple, minimal chart lines (nothing readable), lighting the desk; "
-    "a desk lamp and a coffee mug, no clutter. Built "
+    "a desk lamp and a coffee mug, no clutter. {person_line}Built "
     "into the wall, a cozy modern fireplace with a warm, glowing fire that balances the tech with a relaxing, inviting "
     "feel. Floor-to-ceiling windows with light rain on the glass, thin LED light strips along the ceiling. Palette: deep "
     "twilight blues and violets with warm orange firelight and the red of the car. Calm, premium, focused, late-night "
     "mood. The upper third of the image is calm and uncluttered. One single continuous image, not a collage or split "
-    "frame. Full-bleed, edge to edge: no black bars, no borders. No people, no characters, no text, no logos, no "
+    "frame. Full-bleed, edge to edge: no black bars, no borders. {people_rule}No text, no logos, no "
     "watermarks, no license plate numbers."
 )
 
@@ -453,11 +465,18 @@ PROMPT = (
 )
 
 
-def prompt_for(scene, color, car):
+def prompt_for(scene, color, car, character=None):
     """The picture prompt: inside one of the rooms, or out at a scenic spot."""
     room, view = ROOMS[scene["room"]], scene["view"]
     if room.get("prompt") == "studio" and STUDIO_LOOK == "illustrated":
-        return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ")
+        # Mark (Nov 2): both seated like Kai's sample, the side of the face showing
+        person = (f"Sitting in an office chair at the desk, seen from behind and to the side so the side of the face "
+                  f"shows in profile, is {CHARACTERS[character]}, one hand on the keyboard, leaning in slightly towards "
+                  "the glowing trading screens, calm and focused, lit by the screens; drawn in proportion to the room, "
+                  "smaller than the car. " if character in CHARACTERS else "")
+        return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ",
+                                         person_line=person,
+                                         people_rule="Only that one person, no one else. " if person else "No people, no characters. ")
     if room.get("prompt") == "studio":
         return STUDIO_PROMPT.format(color=color, car=car, view=view)
     if room.get("outdoor"):
@@ -521,7 +540,18 @@ def pick(day, published):
     return dict(car=car, short=short, color=color, scene=scene, sound=sound, music_style=style,
                 title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo,
                 music_key=rng.choice(MUSIC_KEYS),
-                statement=line if ROOMS[scene["room"]].get("prompt") == "studio" else None)
+                statement=line if ROOMS[scene["room"]].get("prompt") == "studio" else None,
+                character=pick_character(published) if STUDIO_LOOK == "illustrated" and
+                ROOMS[scene["room"]].get("prompt") == "studio" else None)
+
+
+def pick_character(published):
+    """The two characters take turns: the one who didn't appear last time (or as forced for a test)."""
+    if os.environ.get("FORCE_CHARACTER") in CHARACTERS:
+        return os.environ["FORCE_CHARACTER"]
+    last = next((e.get("character") for e in reversed(published) if e.get("character")), None)
+    others = [c for c in ACTIVE_CHARACTERS if c != last]
+    return (others or ACTIVE_CHARACTERS)[0]
 
 
 def sidecar(choice):
@@ -551,6 +581,7 @@ def sidecar(choice):
         "thumb_style": choice.get("thumb_style", "brand_first"),
         "word": choice.get("word"),
         "statement": choice.get("statement"),
+        "character": choice.get("character"),
     }
     room = ROOMS[sc["room"]]
     deep = room.get("prompt") == "studio"
@@ -650,7 +681,7 @@ def pick_maker(published, sound):
     return tied[0]
 
 
-def generate(prompt, out_path, maker="gemini"):
+def generate(prompt, out_path, maker="gemini", reference=None):
     """Paint the picture with the chosen maker (Google's Nano Banana, GEMINI_API_KEY, or OpenAI's
     image model behind ChatGPT, OPENAI_API_KEY), falling back to the other one if it fails.
     Returns the maker that actually painted it."""
@@ -659,7 +690,10 @@ def generate(prompt, out_path, maker="gemini"):
     order = [m for m in order if os.environ.get(MAKERS[m])] or ["openai"]
     for i, m in enumerate(order):
         try:
-            (generate_gemini if m == "gemini" else generate_openai)(prompt, out_path)
+            if m == "gemini":
+                generate_gemini(prompt, out_path, reference)
+            else:
+                generate_openai(prompt, out_path)
             return m
         except RuntimeError as e:
             if i == len(order) - 1:
@@ -667,13 +701,17 @@ def generate(prompt, out_path, maker="gemini"):
             print(f"{m} failed, trying {order[i + 1]}:", e, file=sys.stderr)
 
 
-def generate_gemini(prompt, out_path):
+def generate_gemini(prompt, out_path, reference=None):
     """Nano Banana Pro at 2K (about 2752x1536, sharp at 1080p after the zoom), falling back to the
     original Nano Banana (about 1344x768) if Pro is unavailable."""
     models = [os.environ["GEMINI_IMAGE_MODEL"]] if os.environ.get("GEMINI_IMAGE_MODEL") else \
         ["gemini-3-pro-image-preview", "gemini-2.5-flash-image"]
     for i, model in enumerate(models):
         try:
+            if reference:  # the approved character picture, so the same person shows up every day
+                return gemini_image(model, "The person at the desk must be the same character as in this reference "
+                                    "picture (same hair, same hoodie, same headphones, same art style), but draw a new "
+                                    "picture exactly as described: " + prompt, out_path, source=reference)
             return gemini_image(model, prompt, out_path)
         except RuntimeError as e:
             if i == len(models) - 1:
@@ -894,7 +932,7 @@ def main():
         choice["sound"] = "lofi"
     elif os.environ.get("FORCE_SOUND") == "soundscape" and choice["sound"] == "lofi":
         choice["sound"] = random.Random(day.toordinal()).choice([choice["scene"]["bed"], "brown", "white"])
-    prompt = prompt_for(choice["scene"], choice["color"], choice["car"])
+    prompt = prompt_for(choice["scene"], choice["color"], choice["car"], choice.get("character"))
     meta = sidecar(choice)
     if not args.dry_run:
         with_written_intro(choice, meta)
@@ -904,7 +942,9 @@ def main():
     if args.dry_run:
         return
     base = os.path.join(HERE, "stills", f"{day.isoformat()}-{slug(choice['short'])}")
-    meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker)
+    ref = os.path.join(HERE, "characters", f"{choice.get('character')}.webp") if choice.get("character") else None
+    ref = ref if ref and os.path.exists(ref) else None
+    meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker, ref)
     for _ in range(2):  # an outdoor picture that came out as two side-by-side photos gets painted again
         if not (ROOMS[choice["scene"]["room"]].get("outdoor") and looks_split(base + ".webp")):
             break
