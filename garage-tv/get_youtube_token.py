@@ -12,6 +12,8 @@ one at a time, so you only paste (Cmd+V).
 
   python3 get_youtube_token.py --renew   replaces only YT_REFRESH_TOKEN (if uploads stop with
                                          invalid_grant, or after publishing the consent screen)
+  python3 get_youtube_token.py --ceo     signs in the CEO Focus channel: pick CEO Focus in the
+                                         browser; it adds one secret, YT_REFRESH_TOKEN_CEO
 """
 import glob
 import http.server
@@ -57,6 +59,9 @@ def main():
     renew = "--renew" in sys.argv  # only replace YT_REFRESH_TOKEN (the other two never change)
     if renew:
         sys.argv.remove("--renew")
+    ceo = "--ceo" in sys.argv  # the CEO Focus channel: same Google client, its own sign-in
+    if ceo:
+        sys.argv.remove("--ceo")
     if len(sys.argv) == 3:
         client_id, client_secret = sys.argv[1], sys.argv[2]
     elif len(sys.argv) == 1:
@@ -100,6 +105,19 @@ def main():
 
     secrets = [("YT_CLIENT_ID", client_id), ("YT_CLIENT_SECRET", client_secret),
                ("YT_REFRESH_TOKEN", tok["refresh_token"])]
+    if ceo:
+        name = "YT_REFRESH_TOKEN_CEO"
+        if not copy(name):
+            print(f"Add this in GitHub > Settings > Secrets and variables > Actions > New repository secret:\n\n"
+                  f"{name} = {tok['refresh_token']}")
+            return
+        webbrowser.open(NEW_SECRET)
+        input(f"Name copied ({name}). Click the Name box, press Cmd+V, then press Enter here...")
+        copy(tok["refresh_token"])
+        input("Value copied. Click the Secret box, press Cmd+V, click Add secret, then press Enter here...")
+        copy("")
+        print("\nDone. CEO Focus uploads itself from now on.")
+        return
     if renew and copy(tok["refresh_token"]):
         webbrowser.open(EDIT_TOKEN)
         input("\nNew token copied. On the GitHub page, click in the Value box, press Cmd+V, click "

@@ -21,7 +21,8 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCOREBOARD = os.path.join(HERE, "..", "parked-fm", "scoreboard.json")
-PUBLISHED = os.path.join(HERE, "published.json")
+from channel import C  # noqa: E402
+PUBLISHED = os.path.join(HERE, C["log"])  # this channel's log (PARKED FM or CEO Focus)
 # what each counts for, in views. Shorts get far more views than the long videos (about 20x in
 # October 2026), so a Short view counts for less, but enough that what works on Shorts gets made more
 LIKE, SUBSCRIBER, SHORT_VIEW = 10, 50, 0.3

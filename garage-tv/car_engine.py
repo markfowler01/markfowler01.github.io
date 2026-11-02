@@ -27,6 +27,7 @@ from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import learn  # noqa: E402  (make more of what viewers like)
+from channel import C  # noqa: E402  (PARKED FM or CEO Focus: each has its own look, log and pictures)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -78,7 +79,7 @@ MUSIC_STYLES = {
     "chill_trader": dict(name="Chill Trader", tail="Dark Lofi Beats for Grinding", lyria=True, package="C",
                          words="dark minimal lo-fi: late-night jazz chords and a mellow beat"),
 }
-MUSIC_ORDER = ["grinder", "deep_work", "chill_trader"]  # music styles in use: the brief's three packages
+MUSIC_ORDER = C["music"]  # PARKED FM: the brief's three packages; CEO Focus: deep focus and lo-fi beats
 MUSIC_KEYS = ["A minor", "E minor"]  # one key per video so the songs flow into each other
 # dials the learning tunes for Lyria albums: the main instrument and the tempo
 MUSIC_LEADS = ["felt piano", "electric piano", "soft guitar", "warm synth pluck"]
@@ -195,8 +196,8 @@ TITLE_STYLES = ["scene_first", "hours_first", "use_first", "deep_work", "seo"]
 # "Deep Work Music – Locked In" title, one glowing word on the thumbnail). Add names back to bring
 # the other rooms and styles back into the rotation.
 ACTIVE_ROOMS = ["studio"]
-ACTIVE_TITLE_STYLES = ["seo"]  # the brief's search titles (Nov 1)
-ACTIVE_THUMB_STYLES = ["clean"]  # the brief: the photo alone, punched up, no text
+ACTIVE_TITLE_STYLES = C["title_styles"]  # PARKED FM: the brief's search titles; CEO Focus: "Deep Work Music – Word"
+ACTIVE_THUMB_STYLES = C["thumb_styles"]  # PARKED FM: the clean photo; CEO Focus: one glowing word
 # Thumbnail layouts (weekly.make_thumbnail): the brand big, or what you'll hear big; learned like the rest
 THUMB_STYLES = ["brand_first", "sound_first", "word", "clean"]
 
@@ -230,7 +231,7 @@ ROOMS = {
         "side table with a coffee cup and a small glowing vintage radio, a tall plant, and a dark polished stone floor")),
     # the Deep Work look (from Oct 30): a dark luxury private garage at night where the car is the
     # star, with a desk and glowing screens beside it; 2-hour videos people leave running while they work
-    "studio": dict(name="the Night Studio", minutes=180, prompt="studio"),  # 3 hours (the brief)
+    "studio": dict(name="the Night Studio", minutes=C["minutes"], prompt="studio"),  # PARKED FM 3 h, CEO Focus 2 h
     # out on the road: the car parked at a beautiful spot, no garage
     "outdoors": dict(name="Scenic Overlooks", outdoor=True),
     "seaside": dict(name="the Seaside Garage", floor="weathered wooden floor", desc=(
@@ -411,7 +412,7 @@ STUDIO_PROMPT = (
 
 # The Night Studio's look (Mark, Nov 1): "illustrated" (a premium hand-drawn anime look, the brand from now
 # on; photoreal AI read as fake) or "photo" (STUDIO_PROMPT above)
-STUDIO_LOOK = "illustrated"
+STUDIO_LOOK = C["look"]  # "illustrated" (PARKED FM), "photo_polished" (CEO Focus) or "photo"
 ILLUSTRATED_COLOR = "metallic red"  # the brand's car colour in the illustrated look
 # The person at the desk (Mark, Nov 2): two original characters, alternating day by day while the
 # channel learns which one gets more clicks. Seen from behind, so faces never give the art away. Once
@@ -439,6 +440,23 @@ ILLUSTRATED_PROMPT = (
     "mood. The upper third of the image is calm and uncluttered. One single continuous image, not a collage or split "
     "frame. Full-bleed, edge to edge: no black bars, no borders. {people_rule}No text, no logos, no "
     "watermarks, no license plate numbers."
+)
+
+STUDIO_PROMPT_POLISHED = (  # the Oct 30 look, brightened: CEO Focus
+    "Photorealistic, moody but well-exposed cinematic photograph, 16:9 framing, inside a luxury private garage studio at "
+    "night: polished dark concrete floor, black walls with soft LED strip lights, a floor-to-ceiling glass wall; "
+    "{view}. A {color} {car} is the star of the image, parked in the middle of the frame, three-quarter front view, "
+    "with its headlights' daytime running lights and parking lights switched on and glowing. The car is large, sharp "
+    "and brightly lit from above by recessed ceiling spotlights shining down on it, plus the strip lights and the glow "
+    "of the screens and the warm firelight, so the whole car and its colour are clearly visible, with crisp reflections on "
+    "its paint and on the floor. Beside the car, a minimalist black desk with a dual-monitor trading setup: two "
+    "glowing monitors showing financial candlestick charts in green and red, a small desk lamp and a coffee cup: part of the scene, smaller than the car. Balanced exposure with "
+    "visible detail in the floor and walls (not underexposed). Built into the black wall behind the car, a long modern "
+    "linear fireplace with a real wood fire burning brightly, its orange glow reflecting on the floor and the paint. Cool "
+    "blue and teal tones with warm accent lights, rich detail, soft depth of field. The upper third of the image is "
+    "calm and uncluttered so a word can be written there. One single continuous photograph, not a collage, diptych or split "
+    "frame. Full-bleed image filling the entire frame edge to edge: no black bars, no letterboxing, no borders. "
+    "No people, no text, no readable writing on the screens, no logos, no watermarks, no license plate numbers."
 )
 
 OUTDOOR_PROMPT = (
@@ -477,6 +495,8 @@ def prompt_for(scene, color, car, character=None):
         return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ",
                                          person_line=person,
                                          people_rule="Only that one person, no one else. " if person else "No people, no characters. ")
+    if room.get("prompt") == "studio" and STUDIO_LOOK == "photo_polished":
+        return STUDIO_PROMPT_POLISHED.format(color=color, car=car, view=view)
     if room.get("prompt") == "studio":
         return STUDIO_PROMPT.format(color=color, car=car, view=view)
     if room.get("outdoor"):
@@ -541,7 +561,7 @@ def pick(day, published):
                 title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo,
                 music_key=rng.choice(MUSIC_KEYS),
                 statement=line if ROOMS[scene["room"]].get("prompt") == "studio" else None,
-                character=pick_character(published) if STUDIO_LOOK == "illustrated" and
+                character=pick_character(published) if C["characters"] and STUDIO_LOOK == "illustrated" and
                 ROOMS[scene["room"]].get("prompt") == "studio" else None)
 
 
@@ -609,16 +629,16 @@ def sidecar(choice):
                  "for chart analysis, coding, and deep workspace productivity.\n\n"
                  f"On screen: a {choice['color']} {choice['car']} in the Night Studio beside a dual-monitor trading "
                  f"setup. Sound: {ms['words']}, with soft rain on the glass. No talking, no lyrics.\n\n"
-                 "Every track is original, made for PARKED FM.\n\n"
-                 f"#deepfocus #tradingmusic #codingmusic #studymusic #lofi #{tag}") if deep else
+                 f"Every track is original, made for {C['name']}.\n\n"
+                 f"#deepfocus #tradingmusic #codingmusic #studymusic #lofi #{tag}") if deep and C["brief"] else
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
                 f"{hours} hours of {ms['words']}, music only, for working, studying, "
                 "relaxing or drifting off to sleep.\n\n"
                 "No talking. No lyrics. No sudden sounds. "
-                + ("Every track is original, made for PARKED FM.\n\n" if ms.get("lyria") else
-                   "Every song is original, written and played for PARKED FM on real recorded instruments.\n\n")
-                + "PARKED FM | Dream Cars. Easy Listening.\n\n"
-                f"#parkedfm #{ms['name'].lower().replace(' ', '').replace('-', '')} #musicforwork #focusmusic #{tag}"
+                + (f"Every track is original, made for {C['name']}.\n\n" if ms.get("lyria") else
+                   f"Every song is original, written and played for {C['name']} on real recorded instruments.\n\n")
+                + f"{C['name']} | Dream Cars. Easy Listening.\n\n"
+                f"#{C['hashtag']} #{ms['name'].lower().replace(' ', '').replace('-', '')} #musicforwork #focusmusic #{tag}"
             ),
         )
     else:
@@ -636,8 +656,8 @@ def sidecar(choice):
                 f"{minutes // 60} hours of {SOUND_WORDS[sound]}, no music, for sleeping, studying, "
                 "or blocking out the world while you work.\n\n"
                 "No music. No talking. No sudden sounds. Seamless from start to finish, so nothing wakes you up.\n\n"
-                "PARKED FM | Dream Cars. Easy Listening.\n\n"
-                + " ".join(dict.fromkeys(f"#{h}" for h in ("parkedfm", hashtag, "sleepsounds", "whitenoise", tag)))
+                f"{C['name']} | Dream Cars. Easy Listening.\n\n"
+                + " ".join(dict.fromkeys(f"#{h}" for h in (C["hashtag"], hashtag, "sleepsounds", "whitenoise", tag)))
             ),
         )
     return meta
@@ -813,7 +833,7 @@ def write_intro(choice, meta):
 def with_written_intro(choice, meta):
     """Swap the template's first paragraph for a freshly written one, when the writer answers. The
     Night Studio keeps the brief's own description."""
-    if ROOMS[choice["scene"]["room"]].get("prompt") == "studio":
+    if ROOMS[choice["scene"]["room"]].get("prompt") == "studio" and C["brief"]:
         return meta
     text = write_intro(choice, meta)
     if text:
@@ -924,7 +944,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="print the pick and prompt, call nothing")
     args = ap.parse_args()
     day = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
-    pub_path = os.path.join(HERE, "published.json")
+    pub_path = os.path.join(HERE, C["log"])
     published = json.load(open(pub_path)) if os.path.exists(pub_path) else []
 
     choice = pick(day, published)
@@ -941,7 +961,8 @@ def main():
                           sound=choice["sound"], maker=maker, title=meta["title"], prompt=prompt), indent=2))
     if args.dry_run:
         return
-    base = os.path.join(HERE, "stills", f"{day.isoformat()}-{slug(choice['short'])}")
+    os.makedirs(os.path.join(HERE, C["stills"]), exist_ok=True)
+    base = os.path.join(HERE, C["stills"], f"{day.isoformat()}-{slug(choice['short'])}")
     ref = os.path.join(HERE, "characters", f"{choice.get('character')}.webp") if choice.get("character") else None
     ref = ref if ref and os.path.exists(ref) else None
     meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker, ref)
@@ -961,7 +982,7 @@ def main():
     if ROOMS[choice["scene"]["room"]].get("prompt") == "studio" and meta["maker"] != "sora":
         off = lights_off(base + ".webp")
         if off:
-            meta["photo_off"] = os.path.relpath(off, os.path.join(HERE, "stills"))
+            meta["photo_off"] = os.path.relpath(off, os.path.join(HERE, C["stills"]))
     with open(base + ".json", "w") as f:
         json.dump(meta, f, indent=2)
         f.write("\n")

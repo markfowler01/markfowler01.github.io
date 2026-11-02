@@ -23,7 +23,8 @@ import urllib.parse
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PUBLISHED = os.path.join(HERE, "published.json")
+from channel import C  # noqa: E402
+PUBLISHED = os.path.join(HERE, C["log"])  # this channel's log (PARKED FM or CEO Focus)
 OUT = os.path.join(HERE, "..", "parked-fm", "scoreboard.json")
 NAMES = {"gemini": "Nano Banana", "openai": "ChatGPT", "sora": "Sora (moving)"}
 
