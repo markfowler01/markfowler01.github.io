@@ -889,7 +889,7 @@ def main():
                         music_lead=meta.get("music_lead") if p["recipe"] == "lofi" else None,
                         music_tempo=meta.get("music_tempo") if p["recipe"] == "lofi" else None,
                         room=meta.get("room"), title_style=meta.get("title_style"),
-                        thumb_style=meta.get("thumb_style"), word=meta.get("word"), statement=meta.get("statement"),
+                        thumb_style=meta.get("thumb_style"), word=meta.get("word"), statement=meta.get("statement"), character=meta.get("character"),
                         songs=[s["name"] for s in album_songs] if album_songs else None))
         with open(PUBLISHED, "w") as f:
             json.dump(log, f, indent=2)

@@ -35,6 +35,11 @@ on:
         type: choice
         options: [auto, music, soundscape]
         default: auto
+      character:
+        description: "Who sits at the desk (auto = they take turns)"
+        type: choice
+        options: [auto, nova, kai]
+        default: auto
       only_if_missing:
         description: "Skip if today's video is already up (the on-time starter sets this)"
         type: boolean
@@ -101,6 +106,7 @@ jobs:
           SORA_MODEL: ${{ vars.SORA_MODEL }}
           MAKER: ${{ inputs.maker }}
           FORCE_SOUND: ${{ inputs.sound }}
+          FORCE_CHARACTER: ${{ inputs.character }}
         run: |
           if [ -n "$GEMINI_API_KEY" ] || [ -n "$OPENAI_API_KEY" ]; then
             python garage-tv/car_engine.py || echo "::warning::car engine failed; using the photo queue today"
