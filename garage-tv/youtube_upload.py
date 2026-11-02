@@ -130,11 +130,17 @@ def upload(video, thumb, details, short=False, full_id=None, at=None):
 
     print("video id:", video_id)
     if thumb and thumb != "-":
-        with open(thumb, "rb") as f:
-            with request(f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={video_id}",
-                         token, body=f.read(), headers={"Content-Type": "image/jpeg"}):
-                pass
-        print("thumbnail set")
+        try:
+            with open(thumb, "rb") as f:
+                with request(f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={video_id}",
+                             token, body=f.read(), headers={"Content-Type": "image/jpeg"}):
+                    pass
+            print("thumbnail set")
+        except urllib.error.HTTPError as e:
+            # a new channel can't set custom thumbnails until it's phone-verified (YouTube Studio >
+            # Settings > Channel > Feature eligibility); the video still posts, with YouTube's own frame
+            print(f"::warning::thumbnail not set ({e.code}): verify the channel's phone number in YouTube Studio "
+                  "to allow custom thumbnails")
     print(f"https://youtu.be/{video_id}")
     return video_id
 
