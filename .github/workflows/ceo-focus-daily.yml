@@ -24,6 +24,10 @@ on:
         type: choice
         options: [auto, music, soundscape]
         default: auto
+      shorts_tag:
+        description: "Only post the two Shorts of this earlier release (e.g. ceo-2026-11-02) whose video is already up"
+        type: string
+        default: ""
       only_if_missing:
         description: "Skip if today's video is already up (the on-time starter sets this)"
         type: boolean
@@ -62,9 +66,51 @@ jobs:
           fi
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
+  # posts the Shorts of a video that went up without them (the first CEO Focus video, Nov 2)
+  shorts:
+    if: ${{ inputs.shorts_tag != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Post the two Shorts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.shorts_tag }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN_CEO }}
+        run: |
+          mkdir -p kit && gh release download "$TAG" -p 'trailer*.mp4' -D kit
+          python3 - <<'PY'
+          import json
+          log = json.load(open("garage-tv/published-ceo.json"))
+          e = next(x for x in reversed(log) if x["tag"] == __import__("os").environ["TAG"])
+          meta = json.load(open("garage-tv/stills-ceo/" + e["photo"].rsplit(".", 1)[0] + ".json"))
+          scene = meta["title"]
+          name = meta.get("sound_name", "Deep Focus")
+          json.dump(dict(title=e["title"], description="", tags=meta.get("tags", [])[:15], hours=2,
+                         short_title=f"{scene} | 2 Hours of {name} #shorts"[:100],
+                         short2_title=f"Would you work in here? {scene} #shorts"[:100],
+                         short_description="The full 2-hour video is on the channel. #ceofocus #lofi #shorts"),
+                    open("kit/details.json", "w"))
+          open("kit/video_id.txt", "w").write(e["youtube"])
+          PY
+          python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --full-id "$(cat kit/video_id.txt)" --id-file kit/short_id.txt
+          [ -f kit/trailer2.mp4 ] && python garage-tv/youtube_upload.py kit/trailer2.mp4 - kit/details.json --short short2_title --at 16:00 --full-id "$(cat kit/video_id.txt)" --id-file kit/short2_id.txt
+          python garage-tv/scoreboard.py --log "$TAG" "$(cat kit/video_id.txt)" "$(cat kit/short_id.txt)" "$(cat kit/short2_id.txt 2>/dev/null)"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add garage-tv/published-ceo.json
+          git diff --staged --quiet || (git commit -m "CEO Focus: Shorts for $TAG" && git pull --rebase && git push)
+
   build:
     needs: check
-    if: needs.check.outputs.skip != 'true'
+    if: needs.check.outputs.skip != 'true' && inputs.shorts_tag == ''
     runs-on: ubuntu-latest
     timeout-minutes: 150
     permissions:
