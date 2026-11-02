@@ -9,7 +9,7 @@ on:
       task:
         description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; traffic = where the views come from (YouTube Analytics); sfx = fetch Freesound sounds to listen to (cmd = sound page URLs, space-separated); rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
         type: choice
-        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria, sfx]
+        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria, sfx, refs]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -144,6 +144,34 @@ jobs:
           hours, subs = r
           print(f'analytics OK: {hours} watch hours in the last 12 months; subscribers gained by video: {subs}')
           "
+
+      - name: Redraw the character references (cmd = the change to make; nothing posted)
+        if: ${{ inputs.task == 'refs' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CHANGE: ${{ inputs.cmd }}
+        run: |
+          pip install -q Pillow numpy
+          mkdir -p refs
+          python3 - <<'PY'
+          import os, sys
+          sys.path.insert(0, "garage-tv")
+          import car_engine as ce
+          for c in ce.CHARACTERS:
+              src = f"garage-tv/characters/{c}.webp"
+              for model in ("gemini-3-pro-image-preview", "gemini-2.5-flash-image"):
+                  try:
+                      ce.gemini_image(model, "Edit this picture: " + os.environ["CHANGE"] + " Keep everything else the same: "
+                                      "the same person, hair, hoodie, headphones, art style and room.", f"refs/{c}.webp", source=src)
+                      print("redrew", c, "with", model)
+                      break
+                  except RuntimeError as e:
+                      print(model, "failed:", e)
+          PY
+          tag="refs-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$tag" refs/*.webp --prerelease --title "Character references, redrawn" --notes "$CHANGE"
+          echo "release $tag"
 
       - name: Fetch Freesound sounds to listen to (cmd = sound page URLs; nothing posted)
         if: ${{ inputs.task == 'sfx' }}
