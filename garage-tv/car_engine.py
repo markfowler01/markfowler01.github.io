@@ -421,8 +421,8 @@ CHARACTERS = {
     "kyleighanne": "a young woman in her twenties with dirty blond hair tied in a loose messy bun, an oversized "
                    "charcoal-grey hoodie with a thin orange stripe down one sleeve, and large matte-black over-ear "
                    "headphones",
-    "wyatt": "a young man in his twenties with dark brown hair that is short on the sides and full and puffy on top, "
-             "a black hoodie with a thin orange stripe down one sleeve, and large matte-black over-ear headphones",
+    "wyatt": "a young man in his twenties with short, dark, slightly messy hair, a black hoodie with a thin orange "
+             "stripe down one sleeve, and large matte-black over-ear headphones",
 }
 ACTIVE_CHARACTERS = ["kyleighanne", "wyatt"]
 ILLUSTRATED_PROMPT = (
