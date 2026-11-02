@@ -751,7 +751,8 @@ def main():
         # so the picture stays sharp even for people watching in 1080p
         # the Night Studio (Mark's brief): no camera sway in the minute-long loop, the monitors' glow
         # pulses, and the ultra-slow zoom is added over ten minutes below
-        studio = ["--zoom", "0", "--drift", "0", "--monitors", "--fire", "--steam", "--rain-on-windows"] \
+        studio = ["--zoom", "0", "--drift", "0", "--monitors", "--fire", "--steam", "--rain-on-windows",
+                  *(["--bob", "76"] if meta.get("character") else [])] \
             if meta.get("room") == "studio" else []
         still_args = [*studio, "--width", "2560", "--height", "1440",
                       "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
