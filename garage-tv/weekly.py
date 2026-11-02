@@ -47,9 +47,10 @@ LOFI_MINUTES = 30  # lo-fi album length; 16 plays fill 8 hours
 TOTAL_MINUTES = 480
 
 # Channel branding: the series name in titles, the two thumbnail lines, file names.
-BRAND = "PARKED FM"
+from channel import C  # noqa: E402  (PARKED FM or CEO Focus)
+BRAND = C["brand"]
 TAGLINE = "DREAM CARS. EASY LISTENING."
-BRAND_SLUG = "parked-fm"
+BRAND_SLUG = C["slug"]
 
 RECIPE_ORDER = ["rain", "fan", "wind", "heater"]
 GRADE_ORDER = ["none", "night", "amber", "cold"]
@@ -105,7 +106,7 @@ def week_index(day):
 
 def photos():
     exts = ("*.jpg", "*.jpeg", "*.png", "*.webp")
-    found = sorted(p for e in exts for p in glob.glob(os.path.join(HERE, "stills", e)))
+    found = sorted(p for e in exts for p in glob.glob(os.path.join(HERE, C["stills"], e)))
     # one-off photos ("rotate": false in their .json) are built on request, never on the Sunday schedule
     found = [p for p in found if photo_meta(p).get("rotate", True)]
     if not found:
@@ -123,7 +124,7 @@ def photo_meta(photo):
     return {}
 
 
-PUBLISHED = os.path.join(HERE, "published.json")
+PUBLISHED = os.path.join(HERE, C["log"])
 # Lyria music styles, and the style of our own creator to use if Lyria can't make the album
 LYRIA_FALLBACK = {"deep_focus": "garage", "lofi_beats": "lofi", "grinder": "garage", "deep_work": "garage",
                   "chill_trader": "lofi"}
@@ -142,7 +143,7 @@ def load_published():
 
 def all_photos():
     exts = ("*.jpg", "*.jpeg", "*.png", "*.webp")
-    return sorted(p for e in exts for p in glob.glob(os.path.join(HERE, "stills", e)))
+    return sorted(p for e in exts for p in glob.glob(os.path.join(HERE, C["stills"], e)))
 
 
 def plan_daily(day):
@@ -170,7 +171,7 @@ def plan_daily(day):
     p = dict(
         index=(day - dt.date(2024, 1, 1)).days,
         # a second run on the same day (e.g. a manual one) gets its own release instead of replacing the first
-        tag=f"daily-{day.isoformat()}" + (f"-{same_day + 1}" if (same_day := sum(e["date"] == day.isoformat() for e in published)) else ""),
+        tag=f"{C['tag']}-{day.isoformat()}" + (f"-{same_day + 1}" if (same_day := sum(e["date"] == day.isoformat() for e in published)) else ""),
         recipe=recipe,
         grade=meta.get("grades", GRADE_ORDER)[uses % len(meta.get("grades", GRADE_ORDER))] if uses else "none",
         photo=photo,
@@ -693,7 +694,7 @@ def main():
         day = dt.date.fromisoformat(args.date) if args.date else dt.date.today() + dt.timedelta(days=1)
         photo = args.photo
         if photo and not os.path.exists(photo):
-            photo = os.path.join(HERE, "stills", photo)
+            photo = os.path.join(HERE, C["stills"], photo)
         p = plan(day, photo=photo, recipe=args.recipe, grade=args.grade)
     if args.name:
         p["tag"] = args.name
@@ -762,7 +763,7 @@ def main():
         run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"], *still_args,
              "--out", loop])
         # the same first seconds with the car's lights off (car_engine.lights_off), for the start-up intro
-        off_photo = os.path.join(HERE, "stills", meta["photo_off"]) if meta.get("photo_off") else None
+        off_photo = os.path.join(HERE, C["stills"], meta["photo_off"]) if meta.get("photo_off") else None
         if off_photo and os.path.exists(off_photo) and args.full:
             off_loop = os.path.join(stage, "loop-lights-off.mp4")
             run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", off_photo, *still_args,
@@ -795,7 +796,7 @@ def main():
     short_title = f"{scene_line} | {hours_for(p)} Hours of {sound_name(p)} #shorts"[:100]
     question = "Would you work in here?" if lofi else "Could you sleep in here?"
     short2_title = f"{question} {scene_line} #shorts"[:100]
-    short_tags = "#parkedfm #lofi #shorts" if lofi else f"#parkedfm #{sound_name(p).lower().replace(' ', '')} #shorts"
+    short_tags = f"#{C['hashtag']} #lofi #shorts" if lofi else f"#{C['hashtag']} #{sound_name(p).lower().replace(' ', '')} #shorts"
     details = dict(title=title, description=desc, tags=tags, categoryId="2",
                    short_title=short_title, short2_title=short2_title,
                    short_description=f"The full {hours_for(p)}-hour video is on the channel. {short_tags}",
