@@ -310,9 +310,9 @@ def main():
             Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
             hw, hh = X1 - X0, Y1 - Y0
             ax0, ax1 = int(max(0, X0 - 0.35 * hw)), int(min(W, X1 + 0.35 * hw))
-            ay0, ay1 = int(max(0, Y0 - 0.3 * hh)), int(min(H, Y1 + 0.55 * hh))
+            ay0, ay1 = int(max(0, Y0 - 0.3 * hh)), int(min(H, Y1 + 0.3 * hh))
             if ax1 - ax0 > 8 and ay1 - ay0 > 8:
-                dip = max(0.0, math.sin(2 * math.pi * bob["nods"] * t)) ** 2 * hh * 0.045  # px down on the beat
+                dip = max(0.0, math.sin(2 * math.pi * bob["nods"] * t)) ** 2 * hh * 0.028  # px down on the beat
                 region = frame[ay0:ay1, ax0:ax1]
                 src = np.arange(ay1 - ay0, dtype=np.float32) - dip  # each row takes the row `dip` above it
                 lo = np.clip(np.floor(src).astype(int), 0, ay1 - ay0 - 1)
@@ -321,7 +321,8 @@ def main():
                 moved = region[lo] * (1 - fr) + region[hi] * fr
                 yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (hh * 0.75)
                 xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (hw * 0.85)
-                m = np.clip(1.6 - np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 0.8 + np.minimum(yy, 0) ** 2), 0, 1)[..., None]
+                # full movement on the head, fading out down the neck so the shoulders stay put
+                m = np.clip(1.6 - np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 2.2 + np.minimum(yy, 0) ** 2), 0, 1)[..., None]
                 frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
         for mask, phase, cycles in screens:
             m = np.asarray(mask.transform((W, H), Image.AFFINE, (cw / W, 0, ox, 0, ch / H, oy),
