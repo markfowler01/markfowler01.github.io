@@ -416,14 +416,15 @@ ILLUSTRATED_COLOR = "metallic red"  # the brand's car colour in the illustrated 
 # The person at the desk (Mark, Nov 2): two original characters, alternating day by day while the
 # channel learns which one gets more clicks. Seen from behind, so faces never give the art away. Once
 # a sample is approved, characters/<id>.webp holds the picture used as the character reference.
+# Named after Mark's kids (Nov 2).
 CHARACTERS = {
-    "nova": "a young woman in her twenties with shoulder-length dark brown hair tied in a loose low bun, an "
-            "oversized charcoal-grey hoodie with a thin orange stripe down one sleeve, and large matte-black "
-            "over-ear headphones",
-    "kai": "a young man in his twenties with short, dark, slightly messy hair, a black hoodie with a thin orange "
-           "stripe down one sleeve, and large matte-black over-ear headphones",
+    "kyleighanne": "a young woman in her twenties with dirty blond hair tied in a loose messy bun, an oversized "
+                   "charcoal-grey hoodie with a thin orange stripe down one sleeve, and large matte-black over-ear "
+                   "headphones",
+    "wyatt": "a young man in his twenties with dark brown hair that is short on the sides and full and puffy on top, "
+             "a black hoodie with a thin orange stripe down one sleeve, and large matte-black over-ear headphones",
 }
-ACTIVE_CHARACTERS = ["nova", "kai"]
+ACTIVE_CHARACTERS = ["kyleighanne", "wyatt"]
 ILLUSTRATED_PROMPT = (
     "A high-end, clean, stylized hand-drawn anime illustration, 16:9: a single still frame from a premium anime film, "
     "with crisp clean line work, cel shading and soft painterly lighting. A sleek, high-end night garage workspace at "

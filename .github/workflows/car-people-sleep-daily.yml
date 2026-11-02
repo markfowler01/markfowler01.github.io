@@ -38,7 +38,7 @@ on:
       character:
         description: "Who sits at the desk (auto = they take turns)"
         type: choice
-        options: [auto, nova, kai]
+        options: [auto, kyleighanne, wyatt]
         default: auto
       only_if_missing:
         description: "Skip if today's video is already up (the on-time starter sets this)"
