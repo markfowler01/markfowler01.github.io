@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2026-11-02",
+    "photo": "2026-11-02-rimac-nevera.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Overdrive | Rimac Nevera Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-02",
+    "car": "Rimac Nevera",
+    "scene": "studio_rain_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Overdrive",
+    "statement": "Small work, done daily, gets loud over time.",
+    "character": null,
+    "songs": [
+      "Idle Parking",
+      "Last Shift",
+      "Long Window",
+      "Wet Glow",
+      "Last Engine",
+      "Neon Lights",
+      "Rainy Gear",
+      "Second Rev"
+    ]
+  }
+]

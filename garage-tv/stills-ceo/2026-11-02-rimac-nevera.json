@@ -1,0 +1,53 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Rimac Nevera in the Night Studio on a Rainy Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "rimac-nevera",
+  "car": "Rimac Nevera",
+  "scene": "studio_rain_night",
+  "room": "studio",
+  "title_style": "deep_work",
+  "thumb_style": "word",
+  "word": "Overdrive",
+  "statement": "Small work, done daily, gets loud over time.",
+  "character": null,
+  "minutes": 120,
+  "music_style": "deep_focus",
+  "music_lead": "warm synth pluck",
+  "music_tempo": "upbeat",
+  "music_key": "A minor",
+  "sound_name": "Deep Focus",
+  "title_tail": "Deep Focus Music for Work",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "overdrive",
+    "rimac nevera",
+    "rimac nevera",
+    "midnight garage",
+    "deep focus",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Step inside the quiet calm of the Night Studio, where a striking giallo yellow Rimac Nevera rests peacefully under the dim lights. Just past the glass, evening rain streaks downward, softening the distant city skyline into a dreamy, blurred glow. All you will hear is two hours of calm ambient electronic music, layered with warm synth pads, a soft deep bass, and a gentle beat. Settle in and let this space keep you company while you work, study, or simply relax.\n\nNo talking. No lyrics. No sudden sounds. Every track is original, made for CEO Focus.\n\nCEO Focus | Dream Cars. Easy Listening.\n\n#ceofocus #deepfocus #musicforwork #focusmusic #rimacnevera",
+  "maker": "gemini",
+  "photo_off": "off/2026-11-02-rimac-nevera.webp"
+}
