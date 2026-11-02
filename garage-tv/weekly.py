@@ -733,8 +733,9 @@ def main():
                 album = json.load(f)
             album_songs, audio_minutes = album["songs"], album["minutes"]
             if meta.get("room") == "studio":  # the brief: soft rain or wind on the glass under the music
-                add_bed(wav, audio_minutes, "wind" if meta.get("bed") == "wind" else "rain", seed)
-                add_bed(wav, audio_minutes, "fire", seed + 1, below_db=20)  # and the fireplace (Mark, Nov 1)
+                # Mark (Nov 2): the rain was way too loud at 18 dB under; now just a faint texture
+                add_bed(wav, audio_minutes, "wind" if meta.get("bed") == "wind" else "rain", seed, below_db=30)
+                add_bed(wav, audio_minutes, "fire", seed + 1, below_db=26)  # and the fireplace (Mark, Nov 1)
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
             run([sys.executable, os.path.join(HERE, "make_lofi.py"), "--minutes", str(audio_minutes),
