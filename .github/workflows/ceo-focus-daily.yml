@@ -149,7 +149,7 @@ jobs:
           git diff --staged --quiet || (git commit -m "CEO Focus: log $(cat kit/TAG)" && git pull --rebase && git push)
 
       - name: Upload to YouTube
-        if: ${{ !inputs.preview && hashFiles('kit/parked-fm-full.mp4') != '' }}
+        if: ${{ !inputs.preview && hashFiles('kit/ceo-focus-full.mp4') != '' }}
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
@@ -157,7 +157,7 @@ jobs:
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'public' }}
         run: |
           # the video and the first Short go public at 8:00 am Eastern, the second Short at 4:00 pm
-          python garage-tv/youtube_upload.py kit/parked-fm-full.mp4 kit/thumbnail.jpg kit/details.json --at 08:00 --id-file kit/video_id.txt
+          python garage-tv/youtube_upload.py kit/ceo-focus-full.mp4 kit/thumbnail.jpg kit/details.json --at 08:00 --id-file kit/video_id.txt
           python garage-tv/youtube_upload.py kit/trailer.mp4 - kit/details.json --short --at 08:00 --full-id "$(cat kit/video_id.txt)" --id-file kit/short_id.txt
           # a second Short in the close-up style, only when the build made one (SECOND_SHORT=1)
           if [ -f kit/trailer2.mp4 ]; then
