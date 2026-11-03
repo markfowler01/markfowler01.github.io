@@ -440,16 +440,54 @@ def word_thumbnail(p, out_path):
     bg.convert("RGB").save(out_path, quality=90, optimize=True)
 
 
+def subject_crop(photo, most=1.15, margin=0.03):
+    """Up to `most` times closer, so the car and the person fill more of a small thumbnail, but never
+    cutting into the car, the person, the fire or the monitors (Gemini's boxes). The whole picture when
+    there are no boxes."""
+    W, H = Image.open(photo).size
+    try:
+        import boxes
+        keep = [b for what in ("car", "head", "fire", "monitors") for b in boxes.find(photo, what)]
+    except Exception:
+        keep = []
+    if not keep:
+        return (0, 0, W, H)
+    x0, y0 = min(b[0] for b in keep) - margin, min(b[1] for b in keep) - margin
+    x1, y1 = max(b[2] for b in keep) + margin, max(b[3] for b in keep) + margin
+    zoom = max(1.0, min(most, 1 / max(x1 - x0, 1e-3), 1 / max(y1 - y0, 1e-3)))
+    w, h = 1 / zoom, 1 / zoom
+    left = min(max((x0 + x1) / 2 - w / 2, 0), 1 - w)
+    top = min(max((y0 + y1) / 2 - h / 2, 0), 1 - h)
+    return (round(left * W), round(top * H), round((left + w) * W), round((top + h) * H))
+
+
 def clean_thumbnail(p, out_path):
-    """The brief's thumbnail: the photo alone, no text, with exposure and contrast boosted so the car's
-    paint and the glowing monitors stand out on a small phone screen."""
+    """The brief's thumbnail: the picture alone, no text, made to pop on a small phone screen (Mark,
+    Nov 3: "make these better"): a little closer in on the car and the person, deep night blacks instead
+    of the grey haze, the lights (monitors, fire, headlights, LED strip) blooming, warm highlights and
+    cool shadows, richer paint, and darker edges that pull the eye to the middle."""
+    import numpy as np
     from make_still_loop import grade
     img = grade(Image.open(p["photo"]).convert("RGB"), p["grade"])
-    img = ImageEnhance.Brightness(img).enhance(1.08)
-    img = ImageEnhance.Contrast(img).enhance(1.18)
-    img = ImageEnhance.Color(img).enhance(1.15)
-    cover(img, 1280, 720).filter(ImageFilter.UnsharpMask(radius=1.5, percent=60, threshold=2)).save(
-        out_path, quality=92)
+    img = cover(img.crop(subject_crop(p["photo"])), 1280, 720)
+    a = np.asarray(img, np.float32) / 255
+    a = np.clip((a - 0.045) / 0.93, 0, 1)                      # blacks to black, whites to white
+    a = a + 0.35 * (a - a * a) * (2 * a - 1) * 2               # S-curve: more contrast in the mid-tones
+    lum = a @ np.array([0.299, 0.587, 0.114], np.float32)
+    a = lum[..., None] + 1.28 * (a - lum[..., None])           # richer colour
+    shadows = np.clip(1 - lum / 0.45, 0, 1)[..., None]
+    highs = np.clip((lum - 0.55) / 0.45, 0, 1)[..., None]
+    a = a + shadows * np.array([-0.012, 0.004, 0.035]) + highs * np.array([0.035, 0.012, -0.025])
+    a = np.clip(a, 0, 1)
+    bright = Image.fromarray((np.clip((a - 0.62) / 0.38, 0, 1) * 255).astype(np.uint8))
+    bloom = np.asarray(bright.filter(ImageFilter.GaussianBlur(18)), np.float32) / 255
+    bloom2 = np.asarray(bright.filter(ImageFilter.GaussianBlur(60)), np.float32) / 255
+    a = 1 - (1 - a) * (1 - 0.55 * bloom) * (1 - 0.35 * bloom2)  # glow around the lights (screen blend)
+    yy, xx = np.mgrid[0:720, 0:1280].astype(np.float32)
+    r = np.sqrt(((xx - 640) / 640) ** 2 + ((yy - 380) / 400) ** 2)
+    a = a * (1 - 0.32 * np.clip((r - 0.55) / 0.75, 0, 1) ** 1.6)[..., None]  # darker edges
+    out = Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
+    out.filter(ImageFilter.UnsharpMask(radius=2, percent=70, threshold=2)).save(out_path, quality=92)
 
 
 def make_thumbnail(p, out_path):
