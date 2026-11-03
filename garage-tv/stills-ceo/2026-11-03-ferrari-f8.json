@@ -1,0 +1,53 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "wind",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Ferrari F8 in the Night Studio in the Forest",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "ferrari-f8",
+  "car": "Ferrari F8 Tributo",
+  "scene": "studio_forest_night",
+  "room": "studio",
+  "title_style": "deep_work",
+  "thumb_style": "word",
+  "word": "2AM Drive",
+  "statement": "The work doesn't care how you feel. Start anyway.",
+  "character": null,
+  "minutes": 120,
+  "music_style": "lofi_beats",
+  "music_lead": "felt piano",
+  "music_tempo": "slow",
+  "music_key": "E minor",
+  "sound_name": "Lo-Fi Beats",
+  "title_tail": "Lo-Fi Beats for Work & Focus",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "2am drive",
+    "ferrari f8 tributo",
+    "ferrari f8",
+    "midnight garage",
+    "lo-fi beats",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Step inside the Night Studio, where a papaya orange Ferrari F8 Tributo rests quietly under the soft indoor glow. Through the glass, a moonlit pine forest breathes in the quiet night, with cool mist drifting gently between the trees. Two hours of mellow lo-fi hip hop fill the room, weaving jazzy keys over a soft head-nod beat. It is a warm space made for you to settle into, perfect for studying, working, or simply relaxing.\n\nNo talking. No lyrics. No sudden sounds. Every track is original, made for CEO Focus.\n\nCEO Focus | Dream Cars. Easy Listening.\n\n#ceofocus #lofibeats #musicforwork #focusmusic #ferrarif8",
+  "maker": "gemini",
+  "photo_off": "off/2026-11-03-ferrari-f8.webp"
+}

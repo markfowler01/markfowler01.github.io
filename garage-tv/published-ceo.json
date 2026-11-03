@@ -31,5 +31,35 @@
     "youtube": "ZXJnMHF4p0Q",
     "short": "oYJ2xd4BXqs",
     "short2": "t5x1jm8uc_Y"
+  },
+  {
+    "date": "2026-11-03",
+    "photo": "2026-11-03-ferrari-f8.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 2AM Drive | Ferrari F8 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-03",
+    "car": "Ferrari F8 Tributo",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "felt piano",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "2AM Drive",
+    "statement": "The work doesn't care how you feel. Start anyway.",
+    "character": null,
+    "songs": [
+      "Hazy Detour",
+      "Slow Parking",
+      "Late Signal",
+      "Amber Radio",
+      "Amber Asphalt",
+      "Open Detour",
+      "Slow Exit",
+      "Velvet Mile"
+    ]
   }
 ]
