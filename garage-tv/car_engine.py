@@ -487,11 +487,13 @@ def prompt_for(scene, color, car, character=None):
     """The picture prompt: inside one of the rooms, or out at a scenic spot."""
     room, view = ROOMS[scene["room"]], scene["view"]
     if room.get("prompt") == "studio" and STUDIO_LOOK == "illustrated":
-        # Mark (Nov 2): both seated like Kai's sample, the side of the face showing
+        # Mark (Nov 2): both seated like Kai's sample, the side of the face showing; the mouse on the
+        # right, under the right hand, like a right-handed person (Mark, Nov 4)
         person = (f"Sitting in an office chair at the desk, seen from behind and to the side so the side of the face "
-                  f"shows in profile, is {CHARACTERS[character]}, one hand on the keyboard; the other hand, the one "
-                  "nearest the viewer, rests on a computer mouse on a mouse pad beside the keyboard, hand and mouse "
-                  "clearly visible and not hidden by the body, leaning in slightly towards "
+                  f"shows in profile, is {CHARACTERS[character]}, right-handed: the left hand on the keyboard and "
+                  "the right hand resting on a computer mouse on a mouse pad to the RIGHT of the keyboard (on the "
+                  "person's right side, never the left), hand and mouse clearly visible and not hidden by the body, "
+                  "leaning in slightly towards "
                   "the glowing trading screens, calm and focused, lit by the screens; drawn in proportion to the room, "
                   "smaller than the car. " if character in CHARACTERS else "")
         return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ",

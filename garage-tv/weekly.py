@@ -788,7 +788,9 @@ def main():
             album_songs, audio_minutes = album["songs"], album["minutes"]
             if meta.get("room") == "studio":  # the brief: soft rain or wind on the glass under the music
                 # Mark (Nov 2): the rain was way too loud at 18 dB under; now just a faint texture
-                add_bed(wav, audio_minutes, "wind" if meta.get("bed") == "wind" else "rain", seed, below_db=30)
+                # a snowy night gets soft wind, not rain (Mark, Nov 4: rain in a snow scene looked odd)
+                quiet = "wind" if meta.get("bed") == "wind" or "snow" in meta.get("scene", "") else "rain"
+                add_bed(wav, audio_minutes, quiet, seed, below_db=30)
                 add_bed(wav, audio_minutes, "fire", seed + 1, below_db=26)  # and the fireplace (Mark, Nov 1)
         else:
             bed = ["--bed", meta.get("bed", "rain_road")] if p["recipe"] == "mix" else []
@@ -812,7 +814,9 @@ def main():
                       "--seconds", str(LOOP_SECONDS), "--grade", p["grade"], "--crf", str(args.crf),
                       "--dust", str(meta.get("dust", 60)),
                       # the studio: light rain falling on its windows (Mark's brief), elsewhere the scene's own rain
-                      "--rain", str(350 if meta.get("room") == "studio" else meta.get("rain", 0)), "--seed", str(p["index"])]
+                      # (but no rain on a snowy night: the snow outside is in the picture already)
+                      "--rain", str(350 if meta.get("room") == "studio" and "snow" not in meta.get("scene", "")
+                                    else meta.get("rain", 0)), "--seed", str(p["index"])]
         run([sys.executable, os.path.join(HERE, "make_still_loop.py"), "--image", p["photo"], *still_args,
              "--out", loop])
         # the same first seconds with the car's lights off (car_engine.lights_off), for the start-up intro
