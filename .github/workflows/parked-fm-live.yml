@@ -1,0 +1,48 @@
+name: PARKED FM live stream
+
+# The evening live stream (Mark, Nov 4): the newest Night Studio scene looping with the last ten days'
+# albums underneath, live on YouTube from about 6 pm to midnight Eastern. Nothing new is made; it all
+# comes from the daily releases (garage-tv/live.py). One block a day keeps GitHub use light; 24/7 would
+# move to a small rented server. Needs the channel's stream key as the YT_STREAM_KEY secret, with
+# Auto-start and Auto-stop on in YouTube's Live Control Room; without the key it stands down.
+on:
+  schedule:
+    - cron: '47 22 * * *'   # 5:47 pm Eastern in winter (6:47 pm in summer)
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "How long to stay live, in minutes (348 = the evening block; 5 for a test)"
+        type: string
+        default: "348"
+
+concurrency: parked-fm-live
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the stream key
+        id: key
+        env:
+          KEY: ${{ secrets.YT_STREAM_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::notice::No YT_STREAM_KEY secret yet; not going live."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install ffmpeg
+        if: steps.key.outputs.ok == 'true'
+        run: command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null)
+
+      - name: Go live
+        if: steps.key.outputs.ok == 'true'
+        env:
+          YT_STREAM_KEY: ${{ secrets.YT_STREAM_KEY }}
+          MINUTES: ${{ inputs.minutes || '348' }}
+        run: python3 garage-tv/live.py --seconds "$(( MINUTES * 60 ))"
