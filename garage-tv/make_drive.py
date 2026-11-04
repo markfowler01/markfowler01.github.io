@@ -2,14 +2,13 @@
 """Night Drive (Mark, Nov 4: "a looping video of a car driving in various areas, very relaxing"):
 a supercar cruising through different places, joined with soft crossfades, under our lofi music.
 
-Each scene: Nano Banana paints the first frame in the PARKED FM drawn style, then a video model
-(Google's Veo with the Gemini key, or OpenAI's Sora as a fallback) brings it to life as a steady
-cruise. The clips are joined with crossfades; a long video repeats the set.
+Each scene: Nano Banana paints the first frame in the PARKED FM drawn style, then Gemini Omni Flash
+(the Gemini key) brings it to life as a steady cruise. The clips are joined with crossfades; a long video repeats the set.
 
   python3 make_drive.py --out drive --music music.m4a            # the sample: four scenes, two views
   python3 make_drive.py --out drive --scenes city_chase,rain_pov  # only some scenes
 
-Needs GEMINI_API_KEY (pictures, Veo) and/or OPENAI_API_KEY (Sora). Nothing is posted.
+Needs GEMINI_API_KEY (pictures and video). Nothing is posted.
 """
 import argparse
 import base64
@@ -106,12 +105,16 @@ def paint(name, out_path):
     raise RuntimeError(f"{name}: no picture")
 
 
-# ----------------------------------------------------------------------------- Veo (Gemini API)
+# ----------------------------------------------------------------------------- Gemini Omni Flash
+# Google retired Veo for Gemini Omni Flash (Interactions API), and OpenAI shut the Sora API down
+# (Sept 2026), so Omni is the video maker. One call returns the finished clip (3-10 s, with sound we
+# don't use: the music goes on top).
 
 API = "https://generativelanguage.googleapis.com/v1beta"
+OMNI = os.environ.get("OMNI_MODEL") or "gemini-omni-1.1-flash"
 
 
-def gcall(url, body=None, raw=False, timeout=120):
+def gcall(url, body=None, timeout=120):
     req = urllib.request.Request(url, data=json.dumps(body).encode() if body else None,
                                  method="POST" if body else "GET")
     req.add_header("x-goog-api-key", os.environ["GEMINI_API_KEY"])
@@ -119,74 +122,57 @@ def gcall(url, body=None, raw=False, timeout=120):
         req.add_header("Content-Type", "application/json")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            return r.read() if raw else json.load(r)
+            return json.load(r)
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"Gemini said {e.code}: {e.read()[:400]!r}")
 
 
-def veo_models():
-    """Veo models this key can see, the fast ones first (cheaper), newest first."""
-    if os.environ.get("VEO_MODEL"):
-        return [os.environ["VEO_MODEL"]]
-    try:
-        names = [m["name"].split("/")[-1] for m in gcall(f"{API}/models?pageSize=1000").get("models", [])
-                 if "veo" in m["name"] and "predictLongRunning" in m.get("supportedGenerationMethods", [])]
-    except RuntimeError as e:
-        print("couldn't list models:", e, file=sys.stderr)
-        names = []
-    names = names or ["veo-3.1-fast-generate-preview", "veo-3.0-fast-generate-001", "veo-3.0-generate-001",
-                      "veo-2.0-generate-001"]
-    def version(n):
-        try:
-            return float(n.split("-")[1])
-        except (IndexError, ValueError):
-            return 0.0
-    names.sort(key=lambda n: ("fast" not in n, -version(n)))
-    print("Veo models:", names, file=sys.stderr)
-    return names
+def omni_video(interaction):
+    """The base64 video in a finished interaction (REST: in the model_output step), or None."""
+    for step in interaction.get("steps") or []:
+        for c in step.get("content") or []:
+            if c.get("type") == "video" and c.get("data"):
+                return base64.b64decode(c["data"])
+    out = interaction.get("output_video") or {}
+    return base64.b64decode(out["data"]) if out.get("data") else None
 
 
-def veo(frame, prompt, out_clip, model):
+def omni(frame, prompt, out_clip, model=OMNI):
     buf = io.BytesIO()
-    Image.open(frame).convert("RGB").save(buf, "PNG")
-    image = {"bytesBase64Encoded": base64.b64encode(buf.getvalue()).decode(), "mimeType": "image/png"}
-    body = {"instances": [{"prompt": prompt, "image": image}], "parameters": {"aspectRatio": "16:9"}}
-    op = gcall(f"{API}/models/{model}:predictLongRunning", body)
+    Image.open(frame).convert("RGB").save(buf, "JPEG", quality=95)
+    body = {
+        "model": model,
+        "input": [{"type": "image", "data": base64.b64encode(buf.getvalue()).decode(), "mime_type": "image/jpeg"},
+                  {"type": "text", "text": prompt}],
+        "response_format": {"type": "video", "aspect_ratio": "16:9", "resolution": "1080p"},
+        "generation_config": {"video_config": {"task": "image_to_video"}},
+    }
+    it = gcall(f"{API}/interactions", body, timeout=1200)
     deadline = time.time() + 20 * 60
-    while not op.get("done"):
+    while it.get("status") in ("queued", "in_progress", "pending", "running") and not omni_video(it):
         if time.time() > deadline:
-            raise RuntimeError("Veo took longer than 20 minutes")
+            raise RuntimeError("Omni took longer than 20 minutes")
         time.sleep(10)
-        op = gcall(f"{API}/{op['name']}")
-    if op.get("error"):
-        raise RuntimeError(f"Veo error: {json.dumps(op['error'])[:300]}")
-    resp = op.get("response", {})
-    samples = (resp.get("generateVideoResponse") or resp).get("generatedSamples") or []
-    if not samples:
-        raise RuntimeError(f"Veo returned no video (maybe filtered): {json.dumps(resp)[:300]}")
-    uri = samples[0]["video"]["uri"]
+        it = gcall(f"{API}/interactions/{it['id']}")
+    data = omni_video(it)
+    if not data:
+        raise RuntimeError(f"Omni returned no video (status {it.get('status')}): {json.dumps(it)[:400]}")
     with open(out_clip, "wb") as f:
-        f.write(gcall(uri, raw=True, timeout=600))
+        f.write(data)
     return out_clip
 
 
-def animate(name, frame, out_clip, makers):
+def animate(name, frame, out_clip, tries=2):
     prompt = MOTION[SCENES[name]["view"]] + MOTION_RULES
-    errors = []
-    for maker in makers:
+    for attempt in range(1, tries + 1):
         try:
-            if maker == "sora":
-                import car_engine as ce
-                os.environ.setdefault("SORA_SECONDS", "12")
-                ce.generate_sora(frame, prompt, out_clip)
-            else:
-                veo(frame, prompt, out_clip, maker)
-            print(f"{name}: animated with {maker}", file=sys.stderr)
-            return maker
-        except Exception as e:  # try the next model
-            errors.append(f"{maker}: {e}")
-            print(f"{name}: {maker} failed:", e, file=sys.stderr)
-    raise RuntimeError(f"{name}: no clip ({'; '.join(errors)[:600]})")
+            omni(frame, prompt, out_clip)
+            print(f"{name}: animated with {OMNI}", file=sys.stderr)
+            return OMNI
+        except Exception as e:  # one retry: a busy service or a filtered clip
+            print(f"{name}: try {attempt} failed:", e, file=sys.stderr)
+            if attempt == tries:
+                raise
 
 
 # ----------------------------------------------------------------------------- joining
@@ -226,20 +212,15 @@ def main():
     ap.add_argument("--out", default="drive")
     ap.add_argument("--scenes", default=",".join(SAMPLE))
     ap.add_argument("--music")
-    ap.add_argument("--makers", default="", help="comma list: Veo model names and/or 'sora' (default: Veo, then Sora)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     names = [n for n in a.scenes.split(",") if n]
-    makers = [m for m in a.makers.split(",") if m]
-    if not makers:
-        makers = (veo_models() if os.environ.get("GEMINI_API_KEY") else []) + \
-                 (["sora"] if os.environ.get("OPENAI_API_KEY") else [])
 
     def one(name):
         frame = os.path.join(a.out, f"{name}.png")
         clip = os.path.join(a.out, f"{name}.mp4")
         paint(name, frame)
-        return name, clip, animate(name, frame, clip, makers)
+        return name, clip, animate(name, frame, clip)
 
     done = []
     with ThreadPoolExecutor(len(names)) as pool:
