@@ -410,6 +410,32 @@ def auto_side(photo):
 THIN = os.path.join(HERE, "fonts", "Montserrat.ttf")  # SIL Open Font License, fonts/Montserrat-OFL.txt
 
 
+def glow_word(bg, word, size, centre_y, shadow=False):
+    """One big thin word, letter-spaced like a sign, glowing soft orange (#CD4419), centred across an
+    RGBA picture at height centre_y; long words shrink to fit. shadow: a soft dark halo under the word
+    so it reads on a bright sky."""
+    W = bg.width
+    word = word.upper()
+    spaced = " ".join(word) if len(word) <= 9 else word
+    f = ImageFont.truetype(THIN, size)
+    f.set_variation_by_name("Light")
+    text = Image.new("L", (W, 2 * size + 60), 0)
+    d = ImageDraw.Draw(text)
+    l, t, r, b = d.textbbox((0, 0), spaced, font=f)
+    if r - l > W - 160:
+        f = ImageFont.truetype(THIN, int(size * (W - 160) / (r - l)))
+        f.set_variation_by_name("Light")
+        l, t, r, b = d.textbbox((0, 0), spaced, font=f)
+    d.text(((W - (r - l)) // 2 - l, (text.height - (b - t)) // 2 - t), spaced, font=f, fill=255)
+    y0 = centre_y - text.height // 2
+    layers = [(10, 200, (0, 0, 0))] if shadow else []
+    for radius, strength, colour in layers + [(26, 140, (205, 68, 25)), (9, 180, (255, 160, 100))]:
+        glow = text.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
+        bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", text.size, c) for c in colour], glow)), (0, y0))
+    bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", text.size, 248)] * 3, text)), (0, y0))
+    return bg
+
+
 def word_thumbnail(p, out_path):
     """The Deep Work thumbnail: the picture, a touch darker, and one big thin glowing word across the
     top (LOCKED IN, NIGHT SHIFT, ...). Nothing else."""
@@ -420,36 +446,63 @@ def word_thumbnail(p, out_path):
     shade = Image.new("L", (1, 720))
     shade.putdata([int(150 * max(0.0, 1 - y / 330)) for y in range(720)])  # darker at the top, under the word
     bg = Image.composite(Image.new("RGBA", bg.size, (0, 0, 0, 255)), bg, shade.resize((1280, 720)))
-    f = ImageFont.truetype(THIN, 150)
-    f.set_variation_by_name("Light")
-    spaced = " ".join(word) if len(word) <= 9 else word  # wide letter spacing, like a sign
-    text = Image.new("L", (1280, 260), 0)
-    d = ImageDraw.Draw(text)
-    l, t, r, b = d.textbbox((0, 0), spaced, font=f)
-    scale = min(1.0, 1120 / (r - l))
-    if scale < 1:
-        f = ImageFont.truetype(THIN, int(150 * scale))
-        f.set_variation_by_name("Light")
-        l, t, r, b = d.textbbox((0, 0), spaced, font=f)
-    d.text(((1280 - (r - l)) // 2 - l, (260 - (b - t)) // 2 - t), spaced, font=f, fill=255)
-    y0 = 70
-    for radius, strength, colour in ((26, 140, (205, 68, 25)), (9, 180, (255, 160, 100))):  # soft orange glow (#CD4419)
-        glow = text.filter(ImageFilter.GaussianBlur(radius)).point(lambda v: min(255, v * strength // 100))
-        bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), c) for c in colour], glow)), (0, y0))
-    bg.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (1280, 260), 245)] * 3, text)), (0, y0))
+    glow_word(bg, word, 150, 200)
     bg.convert("RGB").save(out_path, quality=90, optimize=True)
 
 
+def subject_crop(photo, most=1.15, margin=0.03):
+    """Up to `most` times closer, so the car and the person fill more of a small thumbnail, but never
+    cutting into the car, the person, the fire or the monitors (Gemini's boxes). The whole picture when
+    there are no boxes."""
+    W, H = Image.open(photo).size
+    try:
+        import boxes
+        keep = [b for what in ("car", "head", "fire", "monitors") for b in boxes.find(photo, what)]
+    except Exception:
+        keep = []
+    if not keep:
+        return (0, 0, W, H)
+    x0, y0 = min(b[0] for b in keep) - margin, min(b[1] for b in keep) - margin
+    x1, y1 = max(b[2] for b in keep) + margin, max(b[3] for b in keep) + margin
+    zoom = max(1.0, min(most, 1 / max(x1 - x0, 1e-3), 1 / max(y1 - y0, 1e-3)))
+    w, h = 1 / zoom, 1 / zoom
+    left = min(max((x0 + x1) / 2 - w / 2, 0), 1 - w)
+    top = min(max((y0 + y1) / 2 - h / 2, 0), 1 - h)
+    return (round(left * W), round(top * H), round((left + w) * W), round((top + h) * H))
+
+
 def clean_thumbnail(p, out_path):
-    """The brief's thumbnail: the photo alone, no text, with exposure and contrast boosted so the car's
-    paint and the glowing monitors stand out on a small phone screen."""
+    """The Night Studio thumbnail, made to pop on a small phone screen (Mark, Nov 3: "make these
+    better"): a little closer in on the car and the person, deep night blacks instead of the grey haze,
+    the lights (monitors, fire, headlights, LED strip) blooming, warm highlights and cool shadows,
+    richer paint, and darker edges that pull the eye to the middle. Plus the hook Mark picked (option A,
+    Nov 4): the day's word (LOCKED IN, NIGHT SHIFT, ...) glowing across the top."""
+    import numpy as np
     from make_still_loop import grade
     img = grade(Image.open(p["photo"]).convert("RGB"), p["grade"])
-    img = ImageEnhance.Brightness(img).enhance(1.08)
-    img = ImageEnhance.Contrast(img).enhance(1.18)
-    img = ImageEnhance.Color(img).enhance(1.15)
-    cover(img, 1280, 720).filter(ImageFilter.UnsharpMask(radius=1.5, percent=60, threshold=2)).save(
-        out_path, quality=92)
+    img = cover(img.crop(subject_crop(p["photo"])), 1280, 720)
+    a = np.asarray(img, np.float32) / 255
+    a = np.clip((a - 0.045) / 0.93, 0, 1)                      # blacks to black, whites to white
+    a = a + 0.35 * (a - a * a) * (2 * a - 1) * 2               # S-curve: more contrast in the mid-tones
+    lum = a @ np.array([0.299, 0.587, 0.114], np.float32)
+    a = lum[..., None] + 1.28 * (a - lum[..., None])           # richer colour
+    shadows = np.clip(1 - lum / 0.45, 0, 1)[..., None]
+    highs = np.clip((lum - 0.55) / 0.45, 0, 1)[..., None]
+    a = a + shadows * np.array([-0.012, 0.004, 0.035]) + highs * np.array([0.035, 0.012, -0.025])
+    a = np.clip(a, 0, 1)
+    bright = Image.fromarray((np.clip((a - 0.62) / 0.38, 0, 1) * 255).astype(np.uint8))
+    bloom = np.asarray(bright.filter(ImageFilter.GaussianBlur(18)), np.float32) / 255
+    bloom2 = np.asarray(bright.filter(ImageFilter.GaussianBlur(60)), np.float32) / 255
+    a = 1 - (1 - a) * (1 - 0.55 * bloom) * (1 - 0.35 * bloom2)  # glow around the lights (screen blend)
+    yy, xx = np.mgrid[0:720, 0:1280].astype(np.float32)
+    r = np.sqrt(((xx - 640) / 640) ** 2 + ((yy - 380) / 400) ** 2)
+    a = a * (1 - 0.32 * np.clip((r - 0.55) / 0.75, 0, 1) ** 1.6)[..., None]  # darker edges
+    out = Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
+    out = out.filter(ImageFilter.UnsharpMask(radius=2, percent=70, threshold=2)).convert("RGBA")
+    word = p.get("meta", {}).get("word")
+    if word:
+        glow_word(out, word, 118, 92, shadow=True)
+    out.convert("RGB").save(out_path, quality=92)
 
 
 def make_thumbnail(p, out_path):
