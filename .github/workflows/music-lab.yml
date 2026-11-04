@@ -188,7 +188,7 @@ jobs:
           tag=$(python3 -c "import json; print(json.load(open('garage-tv/published.json'))[-1]['tag'])")
           gh release download "$tag" -p music.m4a -D drive-music || echo "no music in $tag"
           args=(--out drive); [ -f drive-music/music.m4a ] && args+=(--music drive-music/music.m4a)
-          [ -n "$SCENES" ] && args+=(--scenes "$SCENES")
+          [ -n "$SCENES" ] && [ "$SCENES" != ls ] && args+=(--scenes "$SCENES")
           python3 garage-tv/make_drive.py "${args[@]}"
           rel="drive-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$rel" drive/*.mp4 drive/*.png drive/makers.json --prerelease \

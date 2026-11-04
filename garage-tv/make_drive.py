@@ -37,40 +37,61 @@ STYLE = ("A high-end, clean, stylized hand-drawn anime illustration, 16:9: a sin
 RULES = (" Calm, premium, relaxing late-night mood. One single continuous image, full-bleed, no black bars, no "
          "borders. No people visible, no text, no logos, no watermarks, no license plate numbers.")
 
-# view: "chase" = the camera follows the car from outside; "pov" = from the driver's seat
+# The car is the star (Mark, Nov 4: "it's also about the cars"): every scene shows it big and in view.
+# view: "side" = the camera rolls alongside the car; "front" = the camera leads, the car follows it with
+# its headlights on; "chase" = the camera follows behind and a little above; "pov" = the driver's seat
+# with the car's real controls drawn faithfully (Mark: cool "if we get the controls for the cars right")
 SCENES = {
-    "city_chase": dict(view="chase", place=(
-        "a {color} {car} cruising down a wide rain-soaked city avenue at night, seen from behind and slightly to one "
-        "side, its red taillights glowing; neon signs in soft pink, violet and blue reflect on the wet road; tall "
-        "glass towers with lit windows, gentle rain")),
-    "rain_pov": dict(view="pov", place=(
-        "the view from the driver's seat of a {color} {car} on an empty highway at night in gentle rain: the "
-        "dashboard glowing softly in warm orange at the bottom of the frame, the steering wheel partly visible, rain "
-        "drops on the windshield, the road ahead lit by the headlights, distant city lights on the horizon")),
+    "city_side": dict(view="side", place=(
+        "a {color} {car} cruising down a wide rain-soaked city avenue at night, seen from the side at the car's "
+        "height, the whole car large in the frame and in sharp focus, glossy paint reflecting neon signs in pink, "
+        "violet and blue, the city lights behind it softly blurred, wet road, gentle rain")),
+    "highway_front": dict(view="front", place=(
+        "a {color} {car} driving toward the camera on an empty highway at night in gentle rain, seen from the front "
+        "three-quarter at a low angle, the car large in the frame, its headlights glowing and light bouncing off the "
+        "wet road, highway lamps and distant city lights behind it")),
     "coast_chase": dict(view="chase", place=(
-        "a {color} {car} cruising along a coastal highway at dusk, seen from behind and slightly above, the ocean on "
-        "one side glowing with the last purple and orange light of sunset, street lamps just switching on, calm sea")),
-    "snow_pov": dict(view="pov", place=(
-        "the view from the driver's seat of a {color} {car} on a quiet mountain road at night with soft snow "
-        "falling: the dashboard glowing softly in warm orange at the bottom of the frame, snowflakes drifting toward "
-        "the windshield, snowy pine trees lit by the headlights, a calm deep-blue night sky")),
+        "a {color} {car} cruising along a coastal highway at dusk, seen from behind three-quarter and slightly above, "
+        "the car large in the frame with its taillights glowing, the ocean beside the road shining with the last "
+        "purple and orange light of sunset, street lamps just switching on")),
+    "snow_front": dict(view="front", place=(
+        "a {color} {car} driving toward the camera on a quiet mountain road at night with soft snow falling, seen "
+        "from the front three-quarter, the car large in the frame, headlights glowing through the snowflakes, snowy "
+        "pine trees and a calm deep-blue night sky")),
     "neon_chase": dict(view="chase", place=(
         "a {color} {car} driving slowly through a narrow neon-lit downtown street at night after the rain, seen from "
-        "behind, glowing signs in pink, cyan and amber above small shops, wet reflections on the road")),
-    "desert_chase": dict(view="chase", place=(
-        "a {color} {car} cruising on a straight desert highway at twilight, seen from behind and slightly to one "
-        "side, red rock mesas in silhouette, the sky fading from orange to deep violet, the first stars")),
+        "behind three-quarter, the car large in the frame, glowing signs in pink, cyan and amber reflecting on its "
+        "paint and on the wet road")),
+    "desert_side": dict(view="side", place=(
+        "a {color} {car} cruising on a straight desert highway at twilight, seen from the side at the car's height, "
+        "the car large in the frame, red rock mesas in silhouette behind it, the sky fading from orange to deep "
+        "violet")),
+    "rain_pov": dict(view="pov", place=(
+        "the view from the driver's seat of a {color} {car} on an empty highway at night in gentle rain, showing the "
+        "real {car} interior faithfully: its own steering wheel design and badge-free hub, its own instrument "
+        "cluster with softly glowing gauges, its own centre console and air vents, leather and stitching true to "
+        "the real car, the dashboard glowing softly; rain drops on the windshield, the road ahead lit by the "
+        "headlights, distant city lights on the horizon; no hands, no people")),
 }
-SAMPLE = ["city_chase", "rain_pov", "coast_chase", "snow_pov"]
+SAMPLE = ["city_side", "highway_front", "rain_pov", "coast_chase", "snow_front"]
 
 MOTION = {
-    "chase": ("Bring this picture to life as one continuous, calm tracking shot: the camera glides smoothly behind "
-              "the car at the same steady speed as it cruises forward, the scenery and lights flowing past slowly. "),
+    "side": ("Bring this picture to life as one continuous, calm rolling shot: the camera travels alongside the car "
+             "at exactly its speed, so the car stays in the same place in the frame, wheels turning, while the "
+             "background and lights glide past behind it. "),
+    "front": ("Bring this picture to life as one continuous, calm tracking shot: the camera moves backward ahead of "
+              "the car at exactly its speed, so the car stays the same size in the frame as it cruises toward the "
+              "camera, wheels turning, the road and lights flowing past. "),
+    "chase": ("Bring this picture to life as one continuous, calm tracking shot: the camera glides behind the car at "
+              "exactly its speed, so the car stays the same size in the frame as it cruises forward, the scenery and "
+              "lights flowing past slowly. "),
     "pov": ("Bring this picture to life as one continuous, calm shot from the driver's seat: the car cruises forward "
-            "at a steady, relaxed speed, the road and lights flowing gently toward the camera. "),
+            "at a steady, relaxed speed, the road and lights flowing gently toward the camera. The steering wheel, "
+            "gauges and dashboard stay exactly as they are, steady and sharp; the wipers sweep slowly. "),
 }
-MOTION_RULES = ("No cuts, no sudden moves, no other cars cutting in, no people, no hands, no text. Keep the same "
-                "drawn anime style throughout. Peaceful and relaxing, like a late-night drive with music on.")
+MOTION_RULES = ("The car keeps exactly the same shape, colour and details throughout. No cuts, no sudden moves, no "
+                "other cars cutting in, no people, no hands, no text. Keep the same drawn anime style throughout. "
+                "Peaceful and relaxing, like a late-night drive with music on.")
 
 
 def paint(name, out_path):
