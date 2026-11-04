@@ -321,8 +321,8 @@ def main():
             X0 = (bx0 * BW - ox) * W / cw; X1 = (bx1 * BW - ox) * W / cw
             Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
             hw, hh = X1 - X0, Y1 - Y0
-            ax0, ax1 = int(max(0, X0 - 0.35 * hw)), int(min(W, X1 + 0.35 * hw))
-            ay0, ay1 = int(max(0, Y0 - 0.3 * hh)), int(min(H, Y1 + 0.3 * hh))
+            ax0, ax1 = int(max(0, X0 - 0.15 * hw)), int(min(W, X1 + 0.15 * hw))
+            ay0, ay1 = int(max(0, Y0 - 0.15 * hh)), int(min(H, Y1 + 0.15 * hh))
             if ax1 - ax0 > 8 and ay1 - ay0 > 8:
                 dip = max(0.0, math.sin(2 * math.pi * bob["nods"] * t)) ** 2 * hh * 0.028  # px down on the beat
                 region = frame[ay0:ay1, ax0:ax1]
@@ -331,10 +331,13 @@ def main():
                 hi = np.clip(lo + 1, 0, ay1 - ay0 - 1)
                 fr = (src - np.floor(src))[:, None, None]
                 moved = region[lo] * (1 - fr) + region[hi] * fr
-                yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (hh * 0.75)
-                xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (hw * 0.85)
-                # full movement on the head, fading out down the neck so the shoulders stay put
-                m = np.clip(1.6 - np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 2.2 + np.minimum(yy, 0) ** 2), 0, 1)[..., None]
+                yy = (np.arange(ay0, ay1) - (Y0 + Y1) / 2)[:, None] / (hh / 2)
+                xx = (np.arange(ax0, ax1) - (X0 + X1) / 2)[None, :] / (hw / 2)
+                # full movement on the head only (an oval just inside its box), fading out in a thin rim and
+                # down the neck, so the monitors and wall behind the head stay still (Mark, Nov 4: the
+                # wider oval dragged the screen along with the nod)
+                r = np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 1.8 + np.minimum(yy, 0) ** 2)
+                m = np.clip((1.12 - r) / 0.22, 0, 1)[..., None]
                 frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
         if mouse:
             bx0, by0, bx1, by1 = mouse["box"]
