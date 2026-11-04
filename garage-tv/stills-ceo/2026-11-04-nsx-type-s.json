@@ -1,0 +1,53 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "brown",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "NSX Type S in the Night Studio at 2 AM",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "nsx-type-s",
+  "car": "Acura NSX Type S",
+  "scene": "studio_2am",
+  "room": "studio",
+  "title_style": "deep_work",
+  "thumb_style": "word",
+  "word": "Execute",
+  "statement": "Earn the car. Earn the view.",
+  "character": null,
+  "minutes": 120,
+  "music_style": "lofi_beats",
+  "music_lead": "soft guitar",
+  "music_tempo": "slow",
+  "music_key": "E minor",
+  "sound_name": "Lo-Fi Beats",
+  "title_tail": "Lo-Fi Beats for Work & Focus",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "execute",
+    "acura nsx type s",
+    "nsx type s",
+    "midnight garage",
+    "lo-fi beats",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Step inside the quiet warmth of the Night Studio at two in the morning, where a gunmetal grey Acura NSX Type S rests under low lights while the city sleeps outside your window. High above the streets, only your glowing screens keep you company in the stillness. Let these two hours of mellow, music-only lo-fi hip hop carry you forward with jazzy keys and a soft head-nod beat, creating the perfect space for you to work, study, and relax.\n\nNo talking. No lyrics. No sudden sounds. Every track is original, made for CEO Focus.\n\nCEO Focus | Dream Cars. Easy Listening.\n\n#ceofocus #lofibeats #musicforwork #focusmusic #nsxtypes",
+  "maker": "gemini",
+  "photo_off": "off/2026-11-04-nsx-type-s.webp"
+}

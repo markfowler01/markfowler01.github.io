@@ -64,5 +64,35 @@
     "youtube": "eTmyL9TjfIw",
     "short": "HtCbpCrOdws",
     "short2": "ealMWn4VN6s"
+  },
+  {
+    "date": "2026-11-04",
+    "photo": "2026-11-04-nsx-type-s.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Execute | NSX Type S Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-04",
+    "car": "Acura NSX Type S",
+    "scene": "studio_2am",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Execute",
+    "statement": "Earn the car. Earn the view.",
+    "character": null,
+    "songs": [
+      "Wet Shift",
+      "Long Tunnel",
+      "Long Skyline",
+      "Open Lane",
+      "Quiet Glow",
+      "Hazy Tunnel",
+      "Low Tires",
+      "Neon Coffee"
+    ]
   }
 ]
