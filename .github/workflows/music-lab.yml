@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; traffic = where the views come from (YouTube Analytics); sfx = fetch Freesound sounds to listen to (cmd = sound page URLs, space-separated); rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour)"
+        description: "discover = list instrument libraries and their licences; sample = render a test song; kit = build a full music-day kit (nothing posted); youtube = check the YouTube sign-in can read analytics; traffic = where the views come from (YouTube Analytics); sfx = fetch Freesound sounds to listen to (cmd = sound page URLs, space-separated); rooms = paint one picture in each room (nothing posted); models = list the Gemini API models (music ones first); lyria = make test tracks with Google's Lyria (cmd = the music description, or 'flavors' for one per flavour); drive = a Night Drive sample: AI driving clips joined under lofi music (cmd = scene names, comma-separated, or empty for the sample)"
         type: choice
-        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria, sfx, refs]
+        options: [discover, inspect, explore, sample, kit, youtube, traffic, rooms, models, lyria, sfx, refs, drive]
         default: discover
       repos:
         description: "inspect: sfzinstruments repo names, space-separated"
@@ -172,6 +172,28 @@ jobs:
           tag="refs-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" refs/*.webp --prerelease --title "Character references, redrawn" --notes "$CHANGE"
           echo "release $tag"
+
+      - name: Night Drive sample (cmd = scene names; nothing posted)
+        if: ${{ inputs.task == 'drive' }}
+        timeout-minutes: 60
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SORA_MODEL: ${{ vars.SORA_MODEL }}
+          SCENES: ${{ inputs.cmd }}
+        run: |
+          pip install -q Pillow numpy imageio-ffmpeg
+          # the newest PARKED FM album to drive to
+          tag=$(python3 -c "import json; print(json.load(open('garage-tv/published.json'))[-1]['tag'])")
+          gh release download "$tag" -p music.m4a -D drive-music || echo "no music in $tag"
+          args=(--out drive); [ -f drive-music/music.m4a ] && args+=(--music drive-music/music.m4a)
+          [ -n "$SCENES" ] && args+=(--scenes "$SCENES")
+          python3 garage-tv/make_drive.py "${args[@]}"
+          rel="drive-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$rel" drive/*.mp4 drive/*.png drive/makers.json --prerelease \
+            --title "Night Drive sample" --notes "A Night Drive sample (drawn style); nothing was posted."
+          for f in drive/*; do echo "https://github.com/${{ github.repository }}/releases/download/$rel/$(basename "$f")"; done
 
       - name: Fetch Freesound sounds to listen to (cmd = sound page URLs; nothing posted)
         if: ${{ inputs.task == 'sfx' }}
