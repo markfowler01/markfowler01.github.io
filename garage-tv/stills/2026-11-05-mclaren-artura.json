@@ -1,0 +1,53 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "wind",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "McLaren Artura in the Night Studio in the Forest",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "mclaren-artura",
+  "car": "McLaren Artura",
+  "scene": "studio_forest_night",
+  "room": "studio",
+  "title_style": "seo",
+  "thumb_style": "clean",
+  "word": "Night Run",
+  "statement": "The garage is quiet. Your goals aren't.",
+  "character": "wyatt",
+  "minutes": 180,
+  "music_style": "deep_work",
+  "music_lead": "felt piano",
+  "music_tempo": "upbeat",
+  "music_key": "A minor",
+  "sound_name": "Deep Work",
+  "title_tail": "Deep Ambient Focus Music",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "night run",
+    "mclaren artura",
+    "mclaren artura",
+    "midnight garage",
+    "deep work",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "A 3-hour deep focus ambient mix specifically curated for day traders, software developers, and late-night grinders who need to lock in maximum concentration. Perfect background audio loop for chart analysis, coding, and deep workspace productivity.\n\nOn screen: a metallic red McLaren Artura in the Night Studio beside a dual-monitor trading setup. Sound: deep ambient drone with cinematic pads and a 40Hz binaural feel, with soft rain on the glass. No talking, no lyrics.\n\nEvery track is original, made for PARKED FM.\n\n#deepfocus #tradingmusic #codingmusic #studymusic #lofi #mclarenartura",
+  "maker": "gemini",
+  "photo_off": "off/2026-11-05-mclaren-artura.webp"
+}

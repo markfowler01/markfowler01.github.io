@@ -645,5 +645,35 @@
     "youtube": "bus3LXO72iM",
     "short": "nnEvJ6G8Yas",
     "short2": "d4YZpoqTUXg"
+  },
+  {
+    "date": "2026-11-05",
+    "photo": "2026-11-05-mclaren-artura.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | McLaren Artura",
+    "tag": "daily-2026-11-05",
+    "car": "McLaren Artura",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "deep_work",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "seo",
+    "thumb_style": "clean",
+    "word": "Night Run",
+    "statement": "The garage is quiet. Your goals aren't.",
+    "character": "wyatt",
+    "songs": [
+      "Last Hour",
+      "Night Rev",
+      "Warm Skyline",
+      "Winter Showroom",
+      "Neon Overpass",
+      "Long Skyline",
+      "Second Radio",
+      "Open Hour"
+    ]
   }
 ]
