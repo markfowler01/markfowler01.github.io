@@ -97,5 +97,35 @@
     "youtube": "1yZRFRqDE24",
     "short": "WRvB1_Z6DRY",
     "short2": "jETsTlQO7Dc"
+  },
+  {
+    "date": "2026-11-05",
+    "photo": "2026-11-05-carrera-gt.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 CEO Mode | Carrera GT Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-05",
+    "car": "Porsche Carrera GT",
+    "scene": "studio_before_dawn",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "CEO Mode",
+    "statement": "No shortcuts. Just miles.",
+    "character": null,
+    "songs": [
+      "Last Hour",
+      "Night Rev",
+      "Warm Skyline",
+      "Winter Showroom",
+      "Neon Overpass",
+      "Long Skyline",
+      "Second Radio",
+      "Open Hour"
+    ]
   }
 ]
