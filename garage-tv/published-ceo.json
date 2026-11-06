@@ -130,5 +130,35 @@
     "youtube": "fJRCqdi5RgM",
     "short": "v98YKzJvvJQ",
     "short2": "jsd_k3DAeyo"
+  },
+  {
+    "date": "2026-11-06",
+    "photo": "2026-11-06-mclaren-senna.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Built Different | McLaren Senna Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-06",
+    "car": "McLaren Senna",
+    "scene": "studio_city_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Built Different",
+    "statement": "Inch by inch, it adds up.",
+    "character": null,
+    "songs": [
+      "Midnight Signal",
+      "Late Detour",
+      "Low Rev",
+      "Wet Garage",
+      "Warm Drive",
+      "Wet Drive",
+      "Idle Window",
+      "Velvet Parking"
+    ]
   }
 ]
