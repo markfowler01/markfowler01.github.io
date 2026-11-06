@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05 11:28 UTC",
+  "updated": "2026-11-06 11:16 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 18,
-        "counted": 17,
+        "videos": 19,
+        "counted": 18,
         "avg_views": 3
       },
       "openai": {
@@ -25,9 +25,9 @@
     },
     "music": {
       "gemini": {
-        "videos": 12,
-        "counted": 11,
-        "avg_views": 3
+        "videos": 13,
+        "counted": 12,
+        "avg_views": 4
       },
       "openai": {
         "videos": 1,
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-11-05",
-    "subscribers": 1,
-    "views": 1082,
-    "videos": 68,
-    "watch_hours": 30.1
+    "date": "2026-11-06",
+    "subscribers": 2,
+    "views": 1085,
+    "videos": 71,
+    "watch_hours": 30.2
   },
   "goals": {
     "fan_funding": {
@@ -152,21 +152,41 @@
       "views": 1082,
       "videos": 68,
       "watch_hours": 30.1
+    },
+    {
+      "date": "2026-11-06",
+      "subscribers": 2,
+      "views": 1085,
+      "videos": 71,
+      "watch_hours": 30.2
     }
   ],
   "videos": [
     {
-      "date": "2026-11-05",
-      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | McLaren Artura",
+      "date": "2026-11-06",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | Ferrari 296 GTB",
       "maker": "gemini",
       "kind": "music",
-      "youtube": "_akxzp1QnOU",
+      "youtube": "Tn6pcwzpW6A",
       "views": null,
       "likes": null,
       "short_views": null,
       "short2_views": null,
       "subscribers": 0,
       "public": false
+    },
+    {
+      "date": "2026-11-05",
+      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | McLaren Artura",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "_akxzp1QnOU",
+      "views": 3,
+      "likes": 0,
+      "short_views": 3,
+      "short2_views": 2,
+      "subscribers": 0,
+      "public": true
     },
     {
       "date": "2026-11-04",
@@ -200,7 +220,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "maOB_9YEG8M",
-      "views": 2,
+      "views": 3,
       "likes": 0,
       "short_views": 5,
       "short2_views": 1,
@@ -213,7 +233,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "e2D6Ynan6EI",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "short_views": 29,
       "short2_views": 9,
@@ -449,7 +469,7 @@
       "youtube": "jswov9PNLTY",
       "views": 5,
       "likes": 0,
-      "short_views": 127,
+      "short_views": 128,
       "short2_views": null,
       "subscribers": 0,
       "public": true
