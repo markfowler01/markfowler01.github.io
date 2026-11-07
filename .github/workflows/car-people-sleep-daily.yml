@@ -1,4 +1,4 @@
-name: PARKED FM daily video
+name: LoFi Twins daily video
 
 # Every morning: the car engine picks an exotic car and scene and has it painted, rotating a
 # picture test (Nano Banana photo / ChatGPT photo / Sora moving clip) when both GEMINI_API_KEY and
@@ -38,7 +38,7 @@ on:
       character:
         description: "Who sits at the desk (auto = they take turns)"
         type: choice
-        options: [auto, kyleighanne, wyatt]
+        options: [auto, kyleighanne, wyatt, twins]
         default: auto
       only_if_missing:
         description: "Skip if today's video is already up (the on-time starter sets this)"
