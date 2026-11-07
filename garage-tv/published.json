@@ -711,5 +711,35 @@
     "youtube": "Tn6pcwzpW6A",
     "short": "vbcdUsCIs0s",
     "short2": "02PsvXXq6AY"
+  },
+  {
+    "date": "2026-11-07",
+    "photo": "2026-11-07-pagani-huayra.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Pagani Huayra",
+    "tag": "daily-2026-11-07",
+    "car": "Pagani Huayra",
+    "scene": "studio_before_dawn",
+    "maker": "gemini",
+    "music_style": "deep_work",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "seo",
+    "thumb_style": "clean",
+    "word": "Stay Hard",
+    "statement": "Small steps. Every night.",
+    "character": "wyatt",
+    "songs": [
+      "Empty Mile",
+      "Warm Signal",
+      "Long Window",
+      "Warm Window",
+      "Velvet Tires",
+      "Last Engine",
+      "Late Engine",
+      "Wet Mile"
+    ]
   }
 ]
