@@ -426,6 +426,13 @@ CHARACTERS = {
              "stripe down one sleeve, and large matte-black over-ear headphones",
 }
 ACTIVE_CHARACTERS = ["kyleighanne", "wyatt"]
+# the channel is LoFi Twins now (Mark, Nov 7): "I want both of the twins in there sometimes", so every
+# third day they sit side by side; the rotation is Kyleighanne, Wyatt, both
+TWINS = "twins"
+# who is at the desk, for the description
+WHO = {"kyleighanne": "Kyleighanne, one of the twins, at the desk, ", "wyatt": "Wyatt, one of the twins, at the desk, ",
+       TWINS: "the twins, Kyleighanne and Wyatt, side by side at the desk, "}
+ROTATION = ["kyleighanne", "wyatt", TWINS]
 ILLUSTRATED_PROMPT = (
     "A high-end, clean, stylized hand-drawn anime illustration, 16:9: a single still frame from a premium anime film, "
     "with crisp clean line work, cel shading and soft painterly lighting. A sleek, high-end night garage workspace at "
@@ -496,9 +503,18 @@ def prompt_for(scene, color, car, character=None):
                   "leaning in slightly towards "
                   "the glowing trading screens, calm and focused, lit by the screens; drawn in proportion to the room, "
                   "smaller than the car. " if character in CHARACTERS else "")
+        if character == TWINS:  # both twins side by side (Mark, Nov 7)
+            person = ("Sitting side by side at the desk in two office chairs, seen from behind and to the side so the "
+                      "sides of their faces show in profile, are the twins: on the left, "
+                      f"{CHARACTERS['kyleighanne']}; on the right, {CHARACTERS['wyatt']}. Each has their own keyboard "
+                      "and glowing trading screens; both are right-handed: the left hand on the keyboard and the right "
+                      "hand on a computer mouse on a mouse pad to the RIGHT of their keyboard, hands and mice clearly "
+                      "visible. Both lean in slightly towards the screens, calm and focused, lit by the screens; drawn "
+                      "in proportion to the room, smaller than the car. ")
+        rule = ("Only those two people, no one else. " if character == TWINS else
+                "Only that one person, no one else. " if person else "No people, no characters. ")
         return ILLUSTRATED_PROMPT.format(color=color, car=car, view_line=f"Through the windows, {view}. ",
-                                         person_line=person,
-                                         people_rule="Only that one person, no one else. " if person else "No people, no characters. ")
+                                         person_line=person, people_rule=rule)
     if room.get("prompt") == "studio" and STUDIO_LOOK == "photo_polished":
         return STUDIO_PROMPT_POLISHED.format(color=color, car=car, view=view)
     if room.get("prompt") == "studio":
@@ -570,12 +586,18 @@ def pick(day, published):
 
 
 def pick_character(published):
-    """The two characters take turns: the one who didn't appear last time (or as forced for a test)."""
-    if os.environ.get("FORCE_CHARACTER") in CHARACTERS:
+    """Kyleighanne, Wyatt, then both twins together, in turn (or as forced for a test)."""
+    if os.environ.get("FORCE_CHARACTER") in [*CHARACTERS, TWINS]:
         return os.environ["FORCE_CHARACTER"]
     last = next((e.get("character") for e in reversed(published) if e.get("character")), None)
-    others = [c for c in ACTIVE_CHARACTERS if c != last]
-    return (others or ACTIVE_CHARACTERS)[0]
+    return ROTATION[(ROTATION.index(last) + 1) % len(ROTATION)] if last in ROTATION else ROTATION[0]
+
+
+def character_refs(character):
+    """The approved reference pictures for a character, or for both twins (Kyleighanne's first)."""
+    ids = ["kyleighanne", "wyatt"] if character == TWINS else [character] if character else []
+    refs = [os.path.join(HERE, "characters", f"{c}.webp") for c in ids]
+    return [r for r in refs if os.path.exists(r)] if refs and all(os.path.exists(r) for r in refs) else []
 
 
 def sidecar(choice):
@@ -631,10 +653,11 @@ def sidecar(choice):
                 (f"A {hours}-hour deep focus ambient mix specifically curated for day traders, software developers, "
                  "and late-night grinders who need to lock in maximum concentration. Perfect background audio loop "
                  "for chart analysis, coding, and deep workspace productivity.\n\n"
-                 f"On screen: a {choice['color']} {choice['car']} in the Night Studio beside a dual-monitor trading "
-                 f"setup. Sound: {ms['words']}, with soft rain on the glass. No talking, no lyrics.\n\n"
+                 f"On screen: {WHO.get(choice.get('character'), '')}a {choice['color']} {choice['car']} in the Night "
+                 f"Studio beside a dual-monitor trading setup. Sound: {ms['words']}, with soft rain on the glass. No "
+                 "talking, no lyrics.\n\n"
                  f"Every track is original, made for {C['name']}.\n\n"
-                 f"#deepfocus #tradingmusic #codingmusic #studymusic #lofi #{tag}") if deep and C["brief"] else
+                 f"#{C['hashtag']} #deepfocus #tradingmusic #codingmusic #studymusic #lofi #{tag}") if deep and C["brief"] else
                 f"{series['name']}: a {choice['color']} {choice['car']} {where}, {sc['words']}. "
                 f"{hours} hours of {ms['words']}, music only, for working, studying, "
                 "relaxing or drifting off to sleep.\n\n"
@@ -732,6 +755,14 @@ def generate_gemini(prompt, out_path, reference=None):
         ["gemini-3-pro-image-preview", "gemini-2.5-flash-image"]
     for i, model in enumerate(models):
         try:
+            if isinstance(reference, list) and len(reference) == 2:  # both twins: one reference each
+                return gemini_image(model, "The two people at the desk must be the same characters as in these two "
+                                    "reference pictures: the young woman from the first, the young man from the "
+                                    "second (same hair, same hoodies, same headphones, same art style). Only their "
+                                    "looks come from the references: their poses, hands, positions and the whole room "
+                                    "follow this description: " + prompt, out_path, source=reference)
+            if isinstance(reference, list):
+                reference = reference[0] if reference else None
             if reference:  # the approved character picture, so the same person shows up every day
                 return gemini_image(model, "The person at the desk must be the same character as in this reference "
                                     "picture (same hair, same hoodie, same headphones, same art style). Only the "
@@ -751,9 +782,9 @@ def gemini_image(model, prompt, out_path, source=None):
     if "pro" in model:
         image_config["imageSize"] = "2K"
     parts = [{"text": prompt}]
-    if source:
+    for src in reversed(source if isinstance(source, list) else [source] if source else []):
         buf = io.BytesIO()
-        Image.open(source).convert("RGB").save(buf, "PNG")
+        Image.open(src).convert("RGB").save(buf, "PNG")
         parts.insert(0, {"inline_data": {"mime_type": "image/png", "data": base64.b64encode(buf.getvalue()).decode()}})
     body = json.dumps({
         "contents": [{"parts": parts}],
@@ -968,8 +999,7 @@ def main():
         return
     os.makedirs(os.path.join(HERE, C["stills"]), exist_ok=True)
     base = os.path.join(HERE, C["stills"], f"{day.isoformat()}-{slug(choice['short'])}")
-    ref = os.path.join(HERE, "characters", f"{choice.get('character')}.webp") if choice.get("character") else None
-    ref = ref if ref and os.path.exists(ref) else None
+    ref = character_refs(choice.get("character")) or None
     meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker, ref)
     for _ in range(2):  # an outdoor picture that came out as two side-by-side photos gets painted again
         if not (ROOMS[choice["scene"]["room"]].get("outdoor") and looks_split(base + ".webp")):
