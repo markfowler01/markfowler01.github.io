@@ -1,7 +1,8 @@
 """Which YouTube channel a run is for (the CHANNEL environment variable). Each channel keeps its own
 log of videos, its own pictures and its own look; the same engine makes both.
 
-  parkedfm  PARKED FM (the default): the illustrated Night Studio, Kyleighanne and Wyatt at the desk,
+  parkedfm  LoFi Twins, formerly PARKED FM (the default): the illustrated Night Studio, the twins
+            Kyleighanne and Wyatt at the desk (one, the other, or both),
             the brief's search titles and clean thumbnails, 3 hours, the three music packages
   ceo       CEO Focus (Mark, Nov 2): the sister channel that keeps the Oct 30 Deep Work look, a
             realistic Night Studio photo, one glowing word on the thumbnail, "Deep Work Music"
@@ -10,7 +11,8 @@ log of videos, its own pictures and its own look; the same engine makes both.
 import os
 
 CHANNELS = {
-    "parkedfm": dict(name="PARKED FM", brand="PARKED FM", slug="parked-fm", hashtag="parkedfm",
+    # renamed LoFi Twins on YouTube (Mark, Nov 7); the key, file names and logs keep "parked-fm"
+    "parkedfm": dict(name="LoFi Twins", brand="LOFI TWINS", slug="parked-fm", hashtag="lofitwins",
                      log="published.json", stills="stills", tag="daily", look="illustrated",
                      title_styles=["seo"], thumb_styles=["clean"], music=["grinder", "deep_work", "chill_trader"],
                      minutes=180, characters=True, brief=True),

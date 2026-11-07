@@ -206,10 +206,9 @@ def main():
     if args.bob:
         import boxes
         found = boxes.find(args.boxes_from or args.image, "head")
-        if found:
-            hx0, hy0, hx1, hy1 = found[0]
+        if found:  # one head, or both twins' (Mark, Nov 7), each nodding a touch apart from the other
             nods = max(1, round(args.bob / 2 * args.seconds / 60))  # one nod every other beat: calmer
-            bob = dict(box=(hx0, hy0, hx1, hy1), nods=nods)
+            bob = dict(heads=[(tuple(b), k * 0.22) for k, b in enumerate(found[:2])], nods=nods)
 
     # the hand on the mouse (Mark, Nov 2): hand and mouse glide a few pixels around the desk, with pauses,
     # on a closed path (whole numbers of cycles per loop) so the loop stays seamless
@@ -217,9 +216,9 @@ def main():
     if args.mouse:
         import boxes
         found = boxes.find(args.boxes_from or args.image, "mouse")
-        if found:
-            mouse = dict(box=found[0], cycles=[(int(rng.integers(5, 9)), rng.uniform(0, 6.3)),
-                                               (int(rng.integers(11, 17)), rng.uniform(0, 6.3))])
+        if found:  # each hand on a mouse (both twins on their day) moves on its own path
+            mouse = [dict(box=tuple(b), cycles=[(int(rng.integers(5, 9)), rng.uniform(0, 6.3)),
+                                                (int(rng.integers(11, 17)), rng.uniform(0, 6.3))]) for b in found[:2]]
 
     film = None
     if args.film:
@@ -316,15 +315,14 @@ def main():
                 y = mtop - mw * 0.05 - mw * 2.2 * u
                 r = mw * (0.10 + 0.30 * u)
                 blob(frame, x, y, r, r * 2.2, (0.96, 0.96, 0.98), 0.42 * fade, add=False)
-        if bob:
-            bx0, by0, bx1, by1 = bob["box"]
+        for (bx0, by0, bx1, by1), lag in (bob["heads"] if bob else []):
             X0 = (bx0 * BW - ox) * W / cw; X1 = (bx1 * BW - ox) * W / cw
             Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
             hw, hh = X1 - X0, Y1 - Y0
             ax0, ax1 = int(max(0, X0 - 0.15 * hw)), int(min(W, X1 + 0.15 * hw))
             ay0, ay1 = int(max(0, Y0 - 0.15 * hh)), int(min(H, Y1 + 0.15 * hh))
             if ax1 - ax0 > 8 and ay1 - ay0 > 8:
-                dip = max(0.0, math.sin(2 * math.pi * bob["nods"] * t)) ** 2 * hh * 0.028  # px down on the beat
+                dip = max(0.0, math.sin(2 * math.pi * (bob["nods"] * t - lag))) ** 2 * hh * 0.028  # px down on the beat
                 region = frame[ay0:ay1, ax0:ax1]
                 src = np.arange(ay1 - ay0, dtype=np.float32) - dip  # each row takes the row `dip` above it
                 lo = np.clip(np.floor(src).astype(int), 0, ay1 - ay0 - 1)
@@ -339,15 +337,15 @@ def main():
                 r = np.sqrt(xx ** 2 + np.maximum(yy, 0) ** 2 * 1.8 + np.minimum(yy, 0) ** 2)
                 m = np.clip((1.12 - r) / 0.22, 0, 1)[..., None]
                 frame[ay0:ay1, ax0:ax1] = region * (1 - m) + moved * m
-        if mouse:
-            bx0, by0, bx1, by1 = mouse["box"]
+        for mz in (mouse or []):
+            bx0, by0, bx1, by1 = mz["box"]
             X0 = (bx0 * BW - ox) * W / cw; X1 = (bx1 * BW - ox) * W / cw
             Y0 = (by0 * BH - oy) * H / ch; Y1 = (by1 * BH - oy) * H / ch
             mw_, mh_ = X1 - X0, Y1 - Y0
             ax0, ax1 = int(max(0, X0 - 0.25 * mw_)), int(min(W, X1 + 0.25 * mw_))
             ay0, ay1 = int(max(0, Y0 - 0.25 * mh_)), int(min(H, Y1 + 0.25 * mh_))
             if ax1 - ax0 > 8 and ay1 - ay0 > 8:
-                (c1, p1), (c2, p2) = mouse["cycles"]
+                (c1, p1), (c2, p2) = mz["cycles"]
                 # short moves with still moments between them: a sine pushed through a soft "step"
                 step = lambda v: math.copysign(abs(v) ** 0.35, v)  # noqa: E731
                 dx = mw_ * 0.10 * (0.7 * step(math.sin(2 * math.pi * c1 * t + p1)) + 0.3 * math.sin(2 * math.pi * c2 * t + p2))
