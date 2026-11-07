@@ -27,7 +27,7 @@ from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import learn  # noqa: E402  (make more of what viewers like)
-from channel import C  # noqa: E402  (PARKED FM or CEO Focus: each has its own look, log and pictures)
+from channel import C, CHANNEL  # noqa: E402  (PARKED FM or CEO Focus: each has its own look, log and pictures)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -1037,6 +1037,16 @@ def main():
     published = json.load(open(pub_path)) if os.path.exists(pub_path) else []
 
     choice = pick(day, published)
+    # Mark's one-off asks for a given day ("tomorrow do a red 1994 Corvette on CEO Focus"):
+    # requests.json holds {channel: {date: {car, short, color}}}; anything not asked stays as picked
+    req_path = os.path.join(HERE, "requests.json")
+    asked = (json.load(open(req_path)).get(CHANNEL, {}).get(day.isoformat(), {})
+             if os.path.exists(req_path) else {})
+    for k in ("car", "short", "color"):
+        if asked.get(k):
+            choice[k] = asked[k]
+    if asked:
+        print("Mark's request for today:", asked)
     if os.environ.get("FORCE_SOUND") == "music":  # a hand-started run can ask for a music day
         choice["sound"] = "lofi"
     elif os.environ.get("FORCE_SOUND") == "soundscape" and choice["sound"] == "lofi":
