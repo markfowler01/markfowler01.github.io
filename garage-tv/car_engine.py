@@ -47,7 +47,47 @@ CARS = [
     ("Mercedes-AMG GT Black Series", "AMG GT Black Series"), ("Mercedes-AMG One", "AMG One"),
     ("Maserati MC20", "Maserati MC20"), ("Rimac Nevera", "Rimac Nevera"), ("Nissan GT-R Nismo", "GT-R Nismo"),
     ("Acura NSX Type S", "NSX Type S"), ("Chevrolet Corvette ZR1", "Corvette ZR1"), ("Lotus Evija", "Lotus Evija"),
+    # more kinds of car, so the days don't all look alike (Mark, Nov 7: "the cars look very similar")
+    # classics
+    ("Ferrari F40", "Ferrari F40"), ("Lamborghini Miura", "Lamborghini Miura"), ("Jaguar E-Type", "Jaguar E-Type"),
+    ("Porsche 911 Carrera RS 2.7", "911 Carrera RS 2.7"), ("Mercedes-Benz 300SL Gullwing", "300SL Gullwing"),
+    ("Lamborghini Countach LP400", "Countach LP400"), ("Aston Martin DB5", "Aston Martin DB5"), ("BMW M1", "BMW M1"),
+    # JDM
+    ("Toyota Supra MK4", "Supra MK4"), ("Nissan Skyline GT-R R34", "Skyline GT-R R34"), ("Mazda RX-7 FD", "Mazda RX-7"),
+    ("Honda NSX (1991)", "Honda NSX"), ("Toyota 2000GT", "Toyota 2000GT"), ("Nissan Fairlady Z 432", "Fairlady Z"),
+    # American muscle
+    ("1967 Shelby GT500", "Shelby GT500"), ("1969 Dodge Charger R/T", "Dodge Charger"),
+    ("1969 Chevrolet Camaro Z/28", "Camaro Z/28"), ("1970 Plymouth Barracuda", "Plymouth Barracuda"),
+    # off-road and trucks
+    ("Mercedes-AMG G63", "AMG G63"), ("Land Rover Defender 110", "Land Rover Defender"),
+    ("Ford Bronco Raptor", "Bronco Raptor"), ("Porsche 911 Dakar", "911 Dakar"),
+    # luxury grand tourers
+    ("Rolls-Royce Spectre", "Rolls-Royce Spectre"), ("Bentley Continental GT", "Bentley Continental GT"),
+    # electric
+    ("Porsche Taycan Turbo S", "Taycan Turbo S"),
 ]
+# what kind of car each is; the next day's car is always a different kind (else a modern supercar)
+KIND = {
+    **{c: "hypercar" for c in ("Bugatti Chiron", "Pagani Huayra", "Koenigsegg Jesko", "Aston Martin Valkyrie",
+                               "Mercedes-AMG One", "McLaren P1", "Porsche 918 Spyder", "McLaren Senna", "Rimac Nevera",
+                               "Lotus Evija")},
+    **{c: "classic" for c in ("Ferrari F40", "Lamborghini Miura", "Jaguar E-Type", "Porsche 911 Carrera RS 2.7",
+                              "Mercedes-Benz 300SL Gullwing", "Lamborghini Countach LP400", "Aston Martin DB5", "BMW M1",
+                              "Porsche Carrera GT")},
+    **{c: "jdm" for c in ("Toyota Supra MK4", "Nissan Skyline GT-R R34", "Mazda RX-7 FD", "Honda NSX (1991)",
+                          "Toyota 2000GT", "Nissan Fairlady Z 432", "Nissan GT-R Nismo", "Acura NSX Type S", "Lexus LFA")},
+    **{c: "american" for c in ("1967 Shelby GT500", "1969 Dodge Charger R/T", "1969 Chevrolet Camaro Z/28",
+                               "1970 Plymouth Barracuda", "Chevrolet Corvette ZR1", "Ford GT")},
+    **{c: "offroad" for c in ("Mercedes-AMG G63", "Land Rover Defender 110", "Ford Bronco Raptor", "Porsche 911 Dakar")},
+    **{c: "grand tourer" for c in ("Rolls-Royce Spectre", "Bentley Continental GT", "Ferrari Roma", "Ferrari 812 Superfast",
+                                   "Ferrari 12Cilindri", "Aston Martin DBS", "Aston Martin Vantage", "Porsche Taycan Turbo S")},
+}
+
+
+def kind_of(car):
+    return KIND.get(car, "supercar") if car else None
+
+
 COLORS = ["rosso red", "gloss black", "chalk grey", "pearl white", "midnight blue", "british racing green",
           "papaya orange", "liquid silver", "satin black", "giallo yellow", "gunmetal grey", "deep burgundy"]
 
@@ -413,7 +453,12 @@ STUDIO_PROMPT = (
 # The Night Studio's look (Mark, Nov 1): "illustrated" (a premium hand-drawn anime look, the brand from now
 # on; photoreal AI read as fake) or "photo" (STUDIO_PROMPT above)
 STUDIO_LOOK = C["look"]  # "illustrated" (PARKED FM), "photo_polished" (CEO Focus) or "photo"
-ILLUSTRATED_COLOR = "metallic red"  # the brand's car colour in the illustrated look
+ILLUSTRATED_COLOR = "metallic red"  # the old brand colour; the drawn studio now changes colour daily
+# the drawn studio's paint colours (Mark, Nov 7: every car was red, so they all looked alike); none of the
+# last five days' colours comes back
+ILLUSTRATED_COLORS = ["metallic red", "pearl white", "gloss black", "electric blue", "papaya orange", "lime green",
+                      "giallo yellow", "liquid silver", "deep purple", "british racing green", "matte grey",
+                      "sky blue", "midnight blue", "candy apple red", "teal", "sunset orange"]
 # The person at the desk (Mark, Nov 2): two original characters, alternating day by day while the
 # channel learns which one gets more clicks. Seen from behind, so faces never give the art away. Once
 # a sample is approved, characters/<id>.webp holds the picture used as the character reference.
@@ -545,6 +590,11 @@ def pick(day, published):
     recent_cars = {e.get("car") for e in published[-20:]}
     recent_scenes = [e.get("scene") for e in published[-3:]]
     cars = [c for c in CARS if c[0] not in recent_cars] or CARS
+    # a different kind of car from yesterday's (classic, JDM, muscle, off-road, hypercar, ...), picked evenly
+    last_kind = kind_of(published[-1].get("car")) if published else None
+    kinds = sorted({kind_of(c[0]) for c in cars} - {last_kind}) or sorted({kind_of(c[0]) for c in cars})
+    kind = rng.choice(kinds)
+    cars = [c for c in cars if kind_of(c[0]) == kind]
     active = [s for s in SCENES if s["room"] in ACTIVE_ROOMS]
     scenes = [s for s in active if s["id"] not in recent_scenes] or active
     # each part of the video is picked with odds that follow how past videos did (learn.py);
@@ -575,8 +625,10 @@ def pick(day, published):
     recent_lines = {e.get("statement") for e in published[-6:]}
     line = learn.choose(rng, [x for x in STATEMENTS if x not in recent_lines] or STATEMENTS,
                         lambda e: e.get("statement"), history)
-    color = ILLUSTRATED_COLOR if STUDIO_LOOK == "illustrated" and ROOMS[scene["room"]].get("prompt") == "studio" \
-        else rng.choice(COLORS)
+    recent_colors = {e.get("color") for e in published[-5:]}
+    palette = ILLUSTRATED_COLORS if STUDIO_LOOK == "illustrated" and ROOMS[scene["room"]].get("prompt") == "studio" \
+        else COLORS
+    color = rng.choice([c for c in palette if c not in recent_colors] or palette)
     return dict(car=car, short=short, color=color, scene=scene, sound=sound, music_style=style,
                 title_style=title_style, thumb_style=thumb_style, word=word, music_lead=lead, music_tempo=tempo,
                 music_key=rng.choice(MUSIC_KEYS),
@@ -621,6 +673,7 @@ def sidecar(choice):
         "label": series["name"].upper(),
         "slug": slug(short),
         "car": choice["car"],
+        "color": choice["color"],
         "scene": sc["id"],
         "room": sc["room"],
         "title_style": choice.get("title_style", "scene_first"),

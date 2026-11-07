@@ -943,7 +943,7 @@ def main():
         log = load_published()
         log.append(dict(date=day.isoformat(), photo=os.path.basename(p["photo"]), recipe=p["recipe"],
                         grade=p["grade"], title=title, tag=p["tag"],
-                        car=meta.get("car"), scene=meta.get("scene"), maker=meta.get("maker"),
+                        car=meta.get("car"), color=meta.get("color"), scene=meta.get("scene"), maker=meta.get("maker"),
                         music_style=meta.get("music_style") if p["recipe"] == "lofi" else None,
                         music_lead=meta.get("music_lead") if p["recipe"] == "lofi" else None,
                         music_tempo=meta.get("music_tempo") if p["recipe"] == "lofi" else None,
