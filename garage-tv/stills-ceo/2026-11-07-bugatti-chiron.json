@@ -1,0 +1,53 @@
+{
+  "rotate": false,
+  "recipes": [
+    "lofi"
+  ],
+  "daily_sound": "lofi",
+  "bed": "rain",
+  "rain": 0,
+  "dust": 40,
+  "grades": [
+    "bright"
+  ],
+  "series": "Midnight Garage",
+  "text_side": "right",
+  "text_scale": 0.66,
+  "title": "Bugatti Chiron in the Night Studio on a Rainy Night",
+  "label": "MIDNIGHT GARAGE",
+  "slug": "bugatti-chiron",
+  "car": "Bugatti Chiron",
+  "scene": "studio_rain_night",
+  "room": "studio",
+  "title_style": "deep_work",
+  "thumb_style": "word",
+  "word": "Boss Mode",
+  "statement": "Phone down. Mind on.",
+  "character": null,
+  "minutes": 120,
+  "music_style": "deep_focus",
+  "music_lead": "felt piano",
+  "music_tempo": "slow",
+  "music_key": "A minor",
+  "sound_name": "Deep Focus",
+  "title_tail": "Deep Focus Music for Work",
+  "tags": [
+    "deep work music",
+    "focus music",
+    "music for work",
+    "concentration music",
+    "study music",
+    "boss mode",
+    "bugatti chiron",
+    "bugatti chiron",
+    "midnight garage",
+    "deep focus",
+    "exotic cars",
+    "supercar",
+    "lofi for work",
+    "focus music"
+  ],
+  "description": "Welcome into the quiet comfort of the Night Studio, where a rosso red Bugatti Chiron rests beneath low light while rain streaks down the glass, blurring the distant city into soft glowing colors. For two peaceful hours, you are enveloped in ambient electronic music only, carried by warm synth pads, a soft deep bass, and a gentle beat. It is a soothing haven made for you to focus on your work, sink into studying, or simply relax.\n\nNo talking. No lyrics. No sudden sounds. Every track is original, made for CEO Focus.\n\nCEO Focus | Dream Cars. Easy Listening.\n\n#ceofocus #deepfocus #musicforwork #focusmusic #bugattichiron",
+  "maker": "gemini",
+  "photo_off": "off/2026-11-07-bugatti-chiron.webp"
+}

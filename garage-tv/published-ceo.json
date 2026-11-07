@@ -163,5 +163,35 @@
     "youtube": "t2I6ON91alQ",
     "short": "k9WO64J7dX8",
     "short2": "8WTKthNBy3o"
+  },
+  {
+    "date": "2026-11-07",
+    "photo": "2026-11-07-bugatti-chiron.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Boss Mode | Bugatti Chiron Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-07",
+    "car": "Bugatti Chiron",
+    "scene": "studio_rain_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "felt piano",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Boss Mode",
+    "statement": "Phone down. Mind on.",
+    "character": null,
+    "songs": [
+      "Empty Mile",
+      "Warm Signal",
+      "Long Window",
+      "Warm Window",
+      "Velvet Tires",
+      "Last Engine",
+      "Late Engine",
+      "Wet Mile"
+    ]
   }
 ]
