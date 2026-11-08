@@ -196,5 +196,36 @@
     "youtube": "CqH36NSBcyM",
     "short": "YY_MoA-093E",
     "short2": "g2TWZA2q98s"
+  },
+  {
+    "date": "2026-11-08",
+    "photo": "2026-11-08-1994-corvette.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Apex | 1994 Corvette Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-08",
+    "car": "1994 Chevrolet Corvette (C4)",
+    "color": "torch red",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "soft guitar",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Apex",
+    "statement": "Begin badly. Fix it later.",
+    "character": null,
+    "songs": [
+      "Midnight Overpass",
+      "Midnight Parking",
+      "Last Mile",
+      "Open Hour",
+      "Night Hour",
+      "Low Tunnel",
+      "Midnight Gear",
+      "Neon Coffee"
+    ]
   }
 ]
