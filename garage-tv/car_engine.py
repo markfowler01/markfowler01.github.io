@@ -1038,11 +1038,11 @@ def main():
 
     choice = pick(day, published)
     # Mark's one-off asks for a given day ("tomorrow do a red 1994 Corvette on CEO Focus"):
-    # requests.json holds {channel: {date: {car, short, color}}}; anything not asked stays as picked
+    # requests.json holds {channel: {date: {car, short, color, character}}}; anything not asked stays as picked
     req_path = os.path.join(HERE, "requests.json")
     asked = (json.load(open(req_path)).get(CHANNEL, {}).get(day.isoformat(), {})
              if os.path.exists(req_path) else {})
-    for k in ("car", "short", "color"):
+    for k in ("car", "short", "color", "character"):
         if asked.get(k):
             choice[k] = asked[k]
     if asked:
@@ -1063,7 +1063,21 @@ def main():
     os.makedirs(os.path.join(HERE, C["stills"]), exist_ok=True)
     base = os.path.join(HERE, C["stills"], f"{day.isoformat()}-{slug(choice['short'])}")
     ref = character_refs(choice.get("character")) or None
+    if choice.get("character"):  # only Nano Banana takes the character pictures
+        maker = "gemini"
     meta["maker"] = generate(prompt, base + ".webp", "openai" if maker == "sora" else maker, ref)
+    # Nov 8: a twins day came out with only one twin. Count the people Gemini sees at the desk and paint
+    # again (twice at most) until both twins, or the day's one person, are there
+    need = 2 if choice.get("character") == TWINS else 1 if choice.get("character") else 0
+    for attempt in range(2):
+        if not need or not os.environ.get("GEMINI_API_KEY"):
+            break
+        import boxes
+        heads = boxes.find(base + ".webp", "head")
+        if len(heads) >= need:
+            break
+        print(f"the picture shows {len(heads)} of the {need} people at the desk; painting it again", file=sys.stderr)
+        meta["maker"] = generate(prompt, base + ".webp", "gemini", ref)
     for _ in range(2):  # an outdoor picture that came out as two side-by-side photos gets painted again
         if not (ROOMS[choice["scene"]["room"]].get("outdoor") and looks_split(base + ".webp")):
             break
