@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-07 11:34 UTC",
+  "updated": "2026-11-08 11:41 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 20,
-        "counted": 19,
+        "videos": 21,
+        "counted": 20,
         "avg_views": 3
       },
       "openai": {
@@ -25,8 +25,8 @@
     },
     "music": {
       "gemini": {
-        "videos": 14,
-        "counted": 13,
+        "videos": 15,
+        "counted": 14,
         "avg_views": 3
       },
       "openai": {
@@ -44,7 +44,7 @@
       "gemini": {
         "videos": 6,
         "counted": 6,
-        "avg_views": 2
+        "avg_views": 3
       },
       "openai": {
         "videos": 5,
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-11-07",
+    "date": "2026-11-08",
     "subscribers": 2,
-    "views": 1094,
-    "videos": 74,
-    "watch_hours": 31.2
+    "views": 1095,
+    "videos": 77,
+    "watch_hours": 31.9
   },
   "goals": {
     "fan_funding": {
@@ -166,21 +166,41 @@
       "views": 1094,
       "videos": 74,
       "watch_hours": 31.2
+    },
+    {
+      "date": "2026-11-08",
+      "subscribers": 2,
+      "views": 1095,
+      "videos": 77,
+      "watch_hours": 31.9
     }
   ],
   "videos": [
     {
-      "date": "2026-11-07",
-      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Pagani Huayra",
+      "date": "2026-11-08",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | Corvette ZR1",
       "maker": "gemini",
       "kind": "music",
-      "youtube": "Jqn9kX-tMkA",
+      "youtube": "2iuGGpR9D1M",
       "views": null,
       "likes": null,
       "short_views": null,
       "short2_views": null,
       "subscribers": 0,
       "public": false
+    },
+    {
+      "date": "2026-11-07",
+      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Pagani Huayra",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "Jqn9kX-tMkA",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
     },
     {
       "date": "2026-11-06",
@@ -292,7 +312,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "WwOg3Ezqdbk",
-      "views": 1,
+      "views": 2,
       "likes": 0,
       "short_views": 12,
       "short2_views": 7,
@@ -305,7 +325,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "lpZGT1qQW2w",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "short_views": 31,
       "short2_views": 14,
@@ -409,7 +429,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "V4DuhPr5I-I",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "short_views": 62,
       "short2_views": null,
@@ -437,7 +457,7 @@
       "youtube": "18Fds4Xq4Ac",
       "views": 14,
       "likes": 0,
-      "short_views": 90,
+      "short_views": 91,
       "short2_views": null,
       "subscribers": 0,
       "public": true
@@ -476,7 +496,7 @@
       "youtube": "5VXE7LCN7D4",
       "views": 1,
       "likes": 0,
-      "short_views": 31,
+      "short_views": 32,
       "short2_views": null,
       "subscribers": 0,
       "public": true
