@@ -230,5 +230,36 @@
     "youtube": "8prtlXqJPxs",
     "short": "j7k7_34aLyw",
     "short2": "GHdmG3CLEeg"
+  },
+  {
+    "date": "2026-11-09",
+    "photo": "2026-11-09-911-carrera-rs-2-7.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Night Run | 911 Carrera RS 2.7 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-09",
+    "car": "Porsche 911 Carrera RS 2.7",
+    "color": "chalk grey",
+    "scene": "studio_snow_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Night Run",
+    "statement": "The garage is quiet. Your goals aren't.",
+    "character": null,
+    "songs": [
+      "Neon Tunnel",
+      "Night Overpass",
+      "Hazy Exit",
+      "Wet Radio",
+      "Idle Exit",
+      "Last Shift",
+      "Neon Radio",
+      "Empty Overpass"
+    ]
   }
 ]
