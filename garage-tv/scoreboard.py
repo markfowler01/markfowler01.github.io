@@ -173,6 +173,11 @@ def refresh(key):
 
 
 if __name__ == "__main__":
+    # --log is read straight from the command line: a YouTube id can start with "-" (Nov 9: -IC9xTUuqMM),
+    # which argparse would take for an option
+    if sys.argv[1:2] == ["--log"]:
+        log_ids(*[x for x in sys.argv[2:6] if x])
+        sys.exit(0)
     ap = argparse.ArgumentParser(usage=__doc__)
     ap.add_argument("--log", nargs="+", metavar="TAG VIDEO_ID [SHORT_ID [SHORT2_ID]]")
     a = ap.parse_args()
