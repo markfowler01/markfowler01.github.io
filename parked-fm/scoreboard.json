@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-08 11:41 UTC",
+  "updated": "2026-11-10 01:29 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 21,
-        "counted": 20,
+        "videos": 23,
+        "counted": 23,
         "avg_views": 3
       },
       "openai": {
@@ -25,8 +25,8 @@
     },
     "music": {
       "gemini": {
-        "videos": 15,
-        "counted": 14,
+        "videos": 17,
+        "counted": 17,
         "avg_views": 3
       },
       "openai": {
@@ -59,10 +59,10 @@
     }
   },
   "channel": {
-    "date": "2026-11-08",
+    "date": "2026-11-10",
     "subscribers": 2,
-    "views": 1095,
-    "videos": 77,
+    "views": 1111,
+    "videos": 83,
     "watch_hours": 31.9
   },
   "goals": {
@@ -173,21 +173,54 @@
       "views": 1095,
       "videos": 77,
       "watch_hours": 31.9
+    },
+    {
+      "date": "2026-11-10",
+      "subscribers": 2,
+      "views": 1111,
+      "videos": 83,
+      "watch_hours": 31.9
     }
   ],
   "videos": [
+    {
+      "date": "2026-11-10",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "8luDpRK4FyQ",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
+    {
+      "date": "2026-11-09",
+      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | McLaren 750S",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "-IC9xTUuqMM",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
     {
       "date": "2026-11-08",
       "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | Corvette ZR1",
       "maker": "gemini",
       "kind": "music",
       "youtube": "2iuGGpR9D1M",
-      "views": null,
-      "likes": null,
-      "short_views": null,
-      "short2_views": null,
+      "views": 1,
+      "likes": 0,
+      "short_views": 1,
+      "short2_views": 0,
       "subscribers": 0,
-      "public": false
+      "public": true
     },
     {
       "date": "2026-11-07",
@@ -197,7 +230,7 @@
       "youtube": "Jqn9kX-tMkA",
       "views": 0,
       "likes": 0,
-      "short_views": 0,
+      "short_views": 1,
       "short2_views": 0,
       "subscribers": 0,
       "public": true
@@ -221,9 +254,9 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "_akxzp1QnOU",
-      "views": 3,
+      "views": 1,
       "likes": 0,
-      "short_views": 3,
+      "short_views": 4,
       "short2_views": 3,
       "subscribers": 0,
       "public": true
@@ -234,7 +267,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "bus3LXO72iM",
-      "views": 1,
+      "views": 2,
       "likes": 0,
       "short_views": 0,
       "short2_views": 0,
@@ -260,7 +293,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "maOB_9YEG8M",
-      "views": 3,
+      "views": 2,
       "likes": 0,
       "short_views": 5,
       "short2_views": 1,
@@ -338,7 +371,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "RdUBBfpHW4A",
-      "views": 19,
+      "views": 20,
       "likes": 1,
       "short_views": 11,
       "short2_views": 3,
@@ -379,8 +412,8 @@
       "youtube": "7_Kc_WvkAQQ",
       "views": 1,
       "likes": 0,
-      "short_views": 9,
-      "short2_views": 3,
+      "short_views": 12,
+      "short2_views": 4,
       "subscribers": 0,
       "public": true
     },
@@ -416,7 +449,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "M5WLDvVRAAs",
-      "views": 0,
+      "views": 1,
       "likes": 0,
       "short_views": 3,
       "short2_views": null,
@@ -442,7 +475,7 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "TUzsUEcyrUg",
-      "views": 2,
+      "views": 3,
       "likes": 0,
       "short_views": 46,
       "short2_views": null,
@@ -455,7 +488,7 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "18Fds4Xq4Ac",
-      "views": 14,
+      "views": 15,
       "likes": 0,
       "short_views": 91,
       "short2_views": null,
@@ -483,7 +516,7 @@
       "youtube": "mCOHInDELN0",
       "views": 4,
       "likes": 0,
-      "short_views": 67,
+      "short_views": 68,
       "short2_views": null,
       "subscribers": 0,
       "public": true
@@ -494,7 +527,7 @@
       "maker": "openai",
       "kind": "soundscape",
       "youtube": "5VXE7LCN7D4",
-      "views": 1,
+      "views": 2,
       "likes": 0,
       "short_views": 32,
       "short2_views": null,
@@ -509,7 +542,7 @@
       "youtube": "jswov9PNLTY",
       "views": 5,
       "likes": 0,
-      "short_views": 128,
+      "short_views": 127,
       "short2_views": null,
       "subscribers": 0,
       "public": true
@@ -520,7 +553,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "CHey6IuHnKc",
-      "views": 2,
+      "views": 4,
       "likes": 0,
       "short_views": 62,
       "short2_views": null,
