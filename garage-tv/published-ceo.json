@@ -264,5 +264,36 @@
     "youtube": "0Ay3xjYeGsk",
     "short": "OdsgXjTJA7I",
     "short2": "cWNMbN-l0vo"
+  },
+  {
+    "date": "2026-11-10",
+    "photo": "2026-11-10-dodge-charger.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Embrace The Grind | Dodge Charger Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-10",
+    "car": "1969 Dodge Charger R/T",
+    "color": "rosso red",
+    "scene": "studio_city_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Embrace The Grind",
+    "statement": "Every session is a vote for who you're becoming.",
+    "character": null,
+    "songs": [
+      "Low Radio",
+      "Slow Exit",
+      "Midnight Shift",
+      "Wet Glow",
+      "Empty Mile",
+      "Midnight Glow",
+      "Soft Asphalt",
+      "Wet Showroom"
+    ]
   }
 ]
