@@ -298,5 +298,36 @@
     "youtube": "S0HNxAaBZ0M",
     "short": "fxW7jB5r5HA",
     "short2": "pMwJQHLAUtw"
+  },
+  {
+    "date": "2026-11-11",
+    "photo": "2026-11-11-mazda-rx-7.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Hyperfocus | Mazda RX-7 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-11",
+    "car": "Mazda RX-7 FD",
+    "color": "giallo yellow",
+    "scene": "studio_2am",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Hyperfocus",
+    "statement": "Don't plan the whole night. Plan the next hour.",
+    "character": null,
+    "songs": [
+      "Wet Parking",
+      "Winter Engine",
+      "Empty Hour",
+      "Amber Radio",
+      "Neon Shift",
+      "Slow Coffee",
+      "Late Tires",
+      "Low Overpass"
+    ]
   }
 ]
