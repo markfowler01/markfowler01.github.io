@@ -846,5 +846,36 @@
     "youtube": "8luDpRK4FyQ",
     "short": "u_V6YQe74w8",
     "short2": "MlG0UlG1hyk"
+  },
+  {
+    "date": "2026-11-11",
+    "photo": "2026-11-11-shelby-gt500.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Shelby GT500",
+    "tag": "daily-2026-11-11",
+    "car": "1967 Shelby GT500",
+    "color": "sky blue",
+    "scene": "studio_rain_night",
+    "maker": "gemini",
+    "music_style": "deep_work",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "seo",
+    "thumb_style": "clean",
+    "word": "Torque",
+    "statement": "Lock in. The world can wait.",
+    "character": "wyatt",
+    "songs": [
+      "Wet Parking",
+      "Winter Engine",
+      "Empty Hour",
+      "Amber Radio",
+      "Neon Shift",
+      "Slow Coffee",
+      "Late Tires",
+      "Low Overpass"
+    ]
   }
 ]
