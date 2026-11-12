@@ -332,5 +332,36 @@
     "youtube": "DtF2C2om_WI",
     "short": "URW6eX3Pg7s",
     "short2": "GR34v7pMZw8"
+  },
+  {
+    "date": "2026-11-12",
+    "photo": "2026-11-12-corvette-zr1.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Own It | Corvette ZR1 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-12",
+    "car": "Chevrolet Corvette ZR1",
+    "color": "midnight blue",
+    "scene": "studio_before_dawn",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Own It",
+    "statement": "Excuses don't build anything.",
+    "character": null,
+    "songs": [
+      "Hazy Hour",
+      "Warm Rev",
+      "Silver Window",
+      "Second Tunnel",
+      "Soft Hour",
+      "Silver Drive",
+      "Open Radio",
+      "Amber Hour"
+    ]
   }
 ]
