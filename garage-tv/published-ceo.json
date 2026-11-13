@@ -366,5 +366,36 @@
     "youtube": "HESe7Gss4yU",
     "short": "kWmMHrwneyU",
     "short2": "Ay-rjAkRlcY"
+  },
+  {
+    "date": "2026-11-13",
+    "photo": "2026-11-13-911-gt3-rs.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 In The Zone | 911 GT3 RS Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-13",
+    "car": "Porsche 911 GT3 RS",
+    "color": "gloss black",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "soft guitar",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "In The Zone",
+    "statement": "Deep work is a quiet flex.",
+    "character": null,
+    "songs": [
+      "Slow Engine",
+      "Midnight Hour",
+      "Slow Gear",
+      "Late Garage",
+      "Quiet Shift",
+      "Last Hour",
+      "Wet Exit",
+      "Warm Signal"
+    ]
   }
 ]
