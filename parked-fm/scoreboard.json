@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13 11:24 UTC",
+  "updated": "2026-11-14 11:15 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 26,
-        "counted": 25,
+        "videos": 27,
+        "counted": 26,
         "avg_views": 3
       },
       "openai": {
@@ -25,8 +25,8 @@
     },
     "music": {
       "gemini": {
-        "videos": 20,
-        "counted": 19,
+        "videos": 21,
+        "counted": 20,
         "avg_views": 3
       },
       "openai": {
@@ -59,10 +59,10 @@
     }
   },
   "channel": {
-    "date": "2026-11-13",
-    "subscribers": 3,
-    "views": 1121,
-    "videos": 92,
+    "date": "2026-11-14",
+    "subscribers": 2,
+    "views": 1129,
+    "videos": 95,
     "watch_hours": 32.0
   },
   "goals": {
@@ -201,21 +201,41 @@
       "views": 1121,
       "videos": 92,
       "watch_hours": 32.0
+    },
+    {
+      "date": "2026-11-14",
+      "subscribers": 2,
+      "views": 1129,
+      "videos": 95,
+      "watch_hours": 32.0
     }
   ],
   "videos": [
     {
-      "date": "2026-11-13",
-      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | Bronco Raptor",
+      "date": "2026-11-14",
+      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | Huracan STO",
       "maker": "gemini",
       "kind": "music",
-      "youtube": "D0XD-kwE5iw",
+      "youtube": "KP4LQueJ_h0",
       "views": null,
       "likes": null,
       "short_views": null,
       "short2_views": null,
       "subscribers": 0,
       "public": false
+    },
+    {
+      "date": "2026-11-13",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | Bronco Raptor",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "D0XD-kwE5iw",
+      "views": 0,
+      "likes": 0,
+      "short_views": 1,
+      "short2_views": 1,
+      "subscribers": 0,
+      "public": true
     },
     {
       "date": "2026-11-12",
@@ -225,7 +245,7 @@
       "youtube": "COuXHNdrR80",
       "views": 0,
       "likes": 0,
-      "short_views": 1,
+      "short_views": 2,
       "short2_views": 1,
       "subscribers": 0,
       "public": true
@@ -431,7 +451,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "RdUBBfpHW4A",
-      "views": 23,
+      "views": 26,
       "likes": 1,
       "short_views": 12,
       "short2_views": 3,
