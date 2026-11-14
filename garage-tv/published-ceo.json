@@ -400,5 +400,36 @@
     "youtube": "6N-H8SGXQcA",
     "short": "dxhMhJLT_Gc",
     "short2": "xMH54Q6gVbI"
+  },
+  {
+    "date": "2026-11-14",
+    "photo": "2026-11-14-land-rover-defender.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Empire | Land Rover Defender Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-14",
+    "car": "Land Rover Defender 110",
+    "color": "pearl white",
+    "scene": "studio_snow_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "electric piano",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Empire",
+    "statement": "The city sleeps. You build.",
+    "character": null,
+    "songs": [
+      "Open Overpass",
+      "Velvet Tunnel",
+      "Night Window",
+      "Open Glow",
+      "Last Tunnel",
+      "Open Garage",
+      "Second Coffee",
+      "Velvet Engine"
+    ]
   }
 ]
