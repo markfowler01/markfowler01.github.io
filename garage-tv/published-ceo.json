@@ -434,5 +434,36 @@
     "youtube": "8mOFi8qG7Sk",
     "short": "Osbx2lIGu0A",
     "short2": "8Cziy5Rjmbw"
+  },
+  {
+    "date": "2026-11-15",
+    "photo": "2026-11-15-shelby-gt500.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Torque | Shelby GT500 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-15",
+    "car": "1967 Shelby GT500",
+    "color": "satin black",
+    "scene": "studio_rain_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Torque",
+    "statement": "Lock in. The world can wait.",
+    "character": null,
+    "songs": [
+      "Rainy Tires",
+      "Winter Glow",
+      "Slow Window",
+      "Long Exit",
+      "Open Lights",
+      "Hazy Tunnel",
+      "Velvet Window",
+      "Empty Detour"
+    ]
   }
 ]
