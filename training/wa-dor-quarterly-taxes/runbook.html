@@ -29,10 +29,13 @@
   .fill { display:inline-block; min-width: 220px; border-bottom: 1px solid var(--black); }
   footer { margin-top: 40px; color: var(--gray); font-size: 13px; border-top: 1px solid var(--line); padding-top: 12px; }
   a { color: var(--orange-dark); }
+  figure { margin: 12px 0 18px; }
+  figure img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; display: block; }
+  figcaption { color: var(--gray); font-size: 13px; margin-top: 4px; }
   @media print {
     main { padding: 0; max-width: none; }
     h2 { break-after: avoid; }
-    ul.check li, tr, .callout { break-inside: avoid; }
+    ul.check li, tr, .callout, figure { break-inside: avoid; }
     a { color: var(--black); text-decoration: none; }
   }
 </style>
@@ -42,11 +45,11 @@
 <header>
   <div class="kicker">Absolute ADAS · Internal runbook</div>
   <h1>Filing &amp; paying the quarterly Washington excise tax return</h1>
-  <div class="meta">Washington State Department of Revenue (DOR) · Companion to the training video · Facts checked against dor.wa.gov, November 2026</div>
+  <div class="meta">Washington State Department of Revenue (DOR) · Companion to the training video · Screens from our Q3 2026 filing · DOR facts checked November 2026</div>
 </header>
 
 <div class="callout">
-  <strong>What this is:</strong> Washington has no state income tax. Instead we report our gross income for <strong>B&amp;O</strong> (business &amp; occupation) tax and send in the <strong>retail sales tax</strong> we collected. Both go on one combined excise tax return, which is filed and paid electronically in <strong>My DOR</strong>. Our account files <strong>quarterly</strong>.
+  <strong>What this is:</strong> Washington has no state income tax. Instead we pay <strong>B&amp;O</strong> (business &amp; occupation) tax on our gross receipts, reported on one line: <strong>Service and Other Activities</strong>. We file and pay electronically in <strong>My DOR</strong> every quarter. <strong>The whole job:</strong> take one number from Zoho Books, put it on one line in My DOR, leave everything else at 0.00, and pay by ACH Debit.
 </div>
 
 <h2>Deadlines</h2>
@@ -57,70 +60,90 @@
   <tr><td>Q3</td><td>Jul – Sep</td><td>October 31</td><td>October 20</td></tr>
   <tr><td>Q4</td><td>Oct – Dec</td><td>January 31</td><td>January 20</td></tr>
 </table>
-<p>If a due date falls on a weekend or holiday, it moves to the next business day. For example, <strong>Q4 2026 is due Monday, Feb 1, 2027</strong>. Always confirm the date on DOR's <a href="https://dor.wa.gov/file-pay-taxes/filing-frequencies-due-dates">due-dates page</a>. The return must be submitted by <strong>11:59 p.m. Pacific</strong> on the due date.</p>
+<p>If a due date falls on a weekend or holiday, it moves to the next business day (for example, <strong>Q4 2026 is due Monday, Feb 1, 2027</strong>). My DOR shows the exact due date at the top of every return. Submit by <strong>11:59 p.m. Pacific</strong> on the due date.</p>
 
-<h2><span class="n">0</span>Before you start: gather</h2>
+<h2><span class="n">1</span>Zoho Books: get the quarter's total</h2>
 <ul class="check">
-  <li>Your <strong>own</strong> SecureAccess Washington (SAW) login, added to our My DOR account by the owner. Never share logins.</li>
-  <li>Zoho Books sales report for the quarter: invoiced totals by month.</li>
-  <li>Retail sales tax collected for the quarter, broken out by <strong>job location</strong> (shop address).</li>
-  <li>List of wholesale customers (shops that gave us a reseller permit), with permits on file.</li>
-  <li>Jobs done outside Washington (e.g., Idaho) flagged separately. <em>Ask before entering these.</em></li>
-  <li>Last quarter's filed return (PDF in the shared drive) for comparison.</li>
+  <li>In Zoho Books, click <strong>Reports</strong>, then <strong>Payments Received</strong> under Report Category.</li>
+  <li>Open the report named <strong>Payments Received</strong>.</li>
+  <li>Set <strong>Date Range: Previous Quarter</strong> and run the report.</li>
+  <li>Check the dates under the company name (e.g., Q3 = 07.01 to 09.30).</li>
+  <li><strong>Export → PDF</strong> and save it. This is our backup.</li>
+  <li>Scroll to the bottom and write down the <strong>TOTAL</strong>: <span class="fill">$&nbsp;</span></li>
+</ul>
+<figure><img src="screens/01_zoho_reports_center.png" alt="Zoho Books Reports Center with Payments Received category highlighted"></figure>
+<figure><img src="screens/02_zoho_payments_received_category.png" alt="Payments Received report highlighted"></figure>
+<figure><img src="screens/03_zoho_payments_received_report.png" alt="Payments Received report with Previous Quarter filter, date check and Export highlighted"><figcaption>Customer details are blurred in this example.</figcaption></figure>
+
+<h2><span class="n">2</span>My DOR: log in &amp; open the return</h2>
+<ul class="check">
+  <li>Go to <a href="https://secure.dor.wa.gov">secure.dor.wa.gov</a> and sign in with <strong>your own</strong> SecureAccess Washington login (Mark adds you; never share logins).</li>
+  <li>Select <strong>ABSOLUTE ADAS LLC</strong> and click <strong>File return</strong> for the quarter you're filing.</li>
+  <li>Check the period and due date at the top. The wrong quarter is the most common mistake.</li>
 </ul>
 
-<h2><span class="n">1</span>Log in &amp; open the return</h2>
+<h2><span class="n">3</span>Select Taxes</h2>
 <ul class="check">
-  <li>Go to <a href="https://secure.dor.wa.gov">secure.dor.wa.gov</a> and sign in with SecureAccess Washington.</li>
-  <li>Select the <strong>Absolute ADAS</strong> account.</li>
-  <li>Find the open return for the correct period and click <strong>File return</strong>.</li>
-  <li>Double-check the period (quarter and year). This is the most common mistake.</li>
+  <li>Keep the <strong>same classifications as last period</strong> and click <strong>Next</strong>.</li>
+  <li>Do <strong>not</strong> click Add/Delete Tax Classifications without asking Mark.</li>
 </ul>
+<figure><img src="screens/04_dor_select_taxes.png" alt="Select Taxes screen showing current classifications"></figure>
 
-<h2><span class="n">2</span>Confirm the tax lines</h2>
+<h2><span class="n">4</span>Business &amp; Occupation</h2>
 <ul class="check">
-  <li>Use the <strong>same lines as last quarter</strong>. Compare against the prior return.</li>
-  <li>Typical lines: <strong>Retailing B&amp;O</strong> + <strong>Retail sales tax</strong>; <strong>Wholesaling B&amp;O</strong> for sales to shops with reseller permits.</li>
-  <li>Do <strong>not</strong> add or remove a line without owner approval.</li>
+  <li>Enter the Zoho <strong>TOTAL</strong> in <strong>Gross Amount</strong> on <strong>Service and Other Activities</strong>.</li>
+  <li><strong>Retailing stays 0.00.</strong></li>
+  <li>Tax is calculated automatically (1.5%). No deductions, no credits. Click <strong>Next</strong>.</li>
 </ul>
+<figure><img src="screens/05_dor_business_and_occupation.png" alt="B&amp;O screen with Zoho total entered on Service and Other Activities"></figure>
 
-<h2><span class="n">3</span>Enter gross amounts &amp; deductions</h2>
+<h2><span class="n">5</span>State Sales and Use &amp; Local Sales</h2>
 <ul class="check">
-  <li>Enter the total gross amount for each line from the Zoho Books report.</li>
-  <li>Enter any deductions (e.g., interstate / out-of-state work) with the reason DOR asks for. <em>Owner/CPA confirms deductions.</em></li>
-  <li>Let My DOR calculate the tax. The small business B&amp;O credit applies automatically if we qualify.</li>
+  <li>State Sales and Use: <strong>Retail Sales stays 0.00</strong>. We don't collect retail sales tax. Click <strong>Next</strong>.</li>
+  <li>Local Sales: <strong>Lake Stevens (3109) stays 0.00</strong>. The Difference box should read 0.00. Click <strong>Next</strong>.</li>
+  <li>If an invoice ever shows sales tax, stop and ask Mark.</li>
 </ul>
+<figure><img src="screens/06_dor_state_sales_and_use.png" alt="State Sales and Use screen with Retail Sales at 0.00"></figure>
+<figure><img src="screens/07_dor_local_sales.png" alt="Local Sales screen with Lake Stevens 3109 at 0.00"></figure>
 
-<h2><span class="n">4</span>Report sales tax by location</h2>
+<h2><span class="n">6</span>Summary</h2>
 <ul class="check">
-  <li>Washington sales tax is <strong>destination-based</strong>: report each sale under the location code where the work was done (usually the shop's address).</li>
-  <li>Look up unfamiliar addresses with DOR's <a href="https://dor.wa.gov/taxes-rates/sales-use-tax-rates">Tax Rate Lookup tool</a> to get the 4-digit location code.</li>
-  <li>Confirm the location totals add up to the Retail sales tax line.</li>
+  <li>Check the period and the Gross Amount match the Zoho TOTAL.</li>
+  <li><strong>Prepared By:</strong> your name. <strong>Phone:</strong> your number.</li>
+  <li><strong>E-Mail:</strong> <code>ar@absoluteadas.com</code></li>
+  <li>Buyers Sales and Use Preference Addendum: <strong>No</strong>. Click <strong>Next</strong>.</li>
 </ul>
+<figure><img src="screens/08_dor_summary_submitter.png" alt="Summary screen with Prepared By, phone, email and addendum fields"></figure>
 
-<h2><span class="n">5</span>Review before submitting</h2>
+<h2><span class="n">7</span>Return Totals</h2>
 <ul class="check">
-  <li>Every total matches the Zoho Books report.</li>
-  <li>Compare against last quarter. A large unexplained change means <strong>stop and ask</strong>.</li>
-  <li>Use <strong>Save</strong> if you need to come back. Nothing is filed until you submit.</li>
-  <li>Owner sign-off obtained before payment.</li>
+  <li>Estimated Penalty and Interest should be <strong>0.00</strong>. They only appear when the return is late (as in this example).</li>
+  <li><strong>Request Penalty Waiver:</strong> don't check it. Ask Mark.</li>
+  <li>Click <strong>Next</strong>.</li>
 </ul>
+<figure><img src="screens/09_dor_return_totals.png" alt="Return Totals screen"></figure>
 
-<h2><span class="n">6</span>Pay</h2>
+<h2><span class="n">8</span>Payment</h2>
 <ul class="check">
-  <li>Choose <strong>Bank Account (ACH Debit)</strong>. It's free and it's our standard method.</li>
-  <li>Choose a payment date <strong>on or before</strong> the due date.</li>
-  <li>Submit by <strong>11:59 p.m. Pacific</strong> on the due date.</li>
+  <li>Payment Method: <strong>Bank Account (ACH Debit)</strong>. It's free.</li>
+  <li>On the Payment screen, confirm our bank account and set the payment date <strong>on or before the due date</strong>.</li>
 </ul>
-<div class="callout"><strong>Don't</strong> pay by credit/debit card. The third-party processor charges a <strong>2.96% fee</strong> ($1 minimum). We don't use ACH Credit or mailed checks.</div>
+<div class="callout"><strong>Never</strong> use Credit or Debit Card (2.96% fee, $1 minimum) or <strong>No Payment</strong> (more penalties and interest).</div>
+<figure><img src="screens/10_dor_payment_method.png" alt="Payment Method screen with ACH Debit selected"></figure>
 
-<h2><span class="n">7</span>Save proof &amp; close out</h2>
+<h2><span class="n">9</span>Review &amp; Submit</h2>
 <ul class="check">
-  <li>Record the confirmation number: <span class="fill">&nbsp;</span></li>
-  <li>Download the filed return as a PDF.</li>
-  <li>Save both to the shared drive: <code>Taxes / WA DOR / YYYY-Qn</code></li>
+  <li>Check: <strong>Total Amount Due</strong>, <strong>Payment Method</strong> (ACH Debit), <strong>Payment Effective</strong> date (on or before the due date), and <strong>Payment Amount</strong> (equals the total due).</li>
+  <li>Click <strong>Submit</strong> once. Never pay the same return a second way, because that makes a duplicate payment.</li>
+</ul>
+<figure><img src="screens/11_dor_review_submit.png" alt="Review and Submit screen"></figure>
+
+<h2><span class="n">10</span>Save proof &amp; close out</h2>
+<ul class="check">
+  <li>Confirmation number: <span class="fill">&nbsp;</span></li>
+  <li>Download the filed return as a PDF and save it with the Zoho Payments Received PDF for the quarter.</li>
   <li>1–2 business days after the payment date, confirm the debit cleared the bank account.</li>
-  <li>Tell the owner it's done.</li>
+  <li>Tell Mark it's done.</li>
 </ul>
 
 <h2>Penalties: why the deadline matters</h2>
@@ -131,10 +154,10 @@
   <tr><td>After the last day of the second month</td><td>29%</td></tr>
 </table>
 <p>Interest is added on top, and the minimum penalty is $5.</p>
-<div class="callout stop"><strong>Always file on time</strong>, even if there were no sales (file a <em>no-business</em> return), and even if there's a problem paying. Tell the owner right away.</div>
+<div class="callout stop"><strong>Always file on time</strong>, even if there were no receipts (file a <em>no-business</em> return), and even if there's a problem paying. Tell Mark right away.</div>
 
-<h2>Heads up: rate change Jan 1, 2027</h2>
-<p>The <strong>Retailing B&amp;O</strong> rate rises from <strong>0.471% to 0.5%</strong> starting January 1, 2027. This affects the Q1 2027 return and later. My DOR applies it automatically, so there's nothing to change by hand.</p>
+<h2>Good to know</h2>
+<p>The Service and Other Activities rate depends on our <strong>prior-year</strong> income: 1.5% under $1 million, 1.75% from $1 million to under $5 million. My DOR picks the right line and rate. If the line name ever changes on Select Taxes, check with Mark before filing.</p>
 
 <h2>Not on this return</h2>
 <table>
@@ -148,13 +171,13 @@
 
 <h2>Who to ask</h2>
 <ul>
-  <li><strong>First:</strong> the owner.</li>
+  <li><strong>First:</strong> Mark.</li>
   <li><strong>DOR Telephone Information Center:</strong> 360-705-6705 (Mon–Fri 8–5 PT; closed Wed 8–9 a.m.)</li>
   <li><strong>My DOR / e-file help:</strong> 360-705-6709</li>
 </ul>
 
 <footer>
-  Internal training material, not tax advice. Rates, dates and payment options change, so confirm on <a href="https://dor.wa.gov">dor.wa.gov</a> and with our CPA. Sources: DOR <a href="https://dor.wa.gov/file-pay-taxes/filing-frequencies-due-dates/2026-excise-tax-return-due-dates">2026 due dates</a>, <a href="https://dor.wa.gov/manage-business/my-dor-help/tax-returns">My DOR tax returns help</a>, <a href="https://dor.wa.gov/forms-publications/publications-subject/special-notices/bo-tax-rate-increases-05-certain-activities-and-new-line-codes">B&amp;O 0.5% rate notice</a>, <a href="https://dor.wa.gov/file-pay-taxes/late-filing/penalty-waivers">penalties</a>.
+  Internal training material, not tax advice. Rates, dates and payment options change, so confirm on <a href="https://dor.wa.gov">dor.wa.gov</a> and with Mark. Sources: DOR <a href="https://dor.wa.gov/file-pay-taxes/filing-frequencies-due-dates/2026-excise-tax-return-due-dates">2026 due dates</a>, <a href="https://dor.wa.gov/manage-business/my-dor-help/tax-returns">My DOR tax returns help</a>, <a href="https://dor.wa.gov/forms-publications/publications-subject/special-notices/service-and-other-activities-rate-changes">Service &amp; Other rate tiers</a>, <a href="https://dor.wa.gov/file-pay-taxes/late-filing/penalty-waivers">penalties</a>.
 </footer>
 </main>
 </body>

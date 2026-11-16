@@ -55,10 +55,22 @@ def render_slide(i, s, path):
     x = 130
     d.text((x, 110), s["kicker"], font=font(34, 700), fill=ORANGE)
     y = 165
+    tsz = 60 if s.get("image") else 78
     for line in s["title"].split("\n"):
-        for wl in wrap(d, line, font(78, 800), W - x - 300):
-            d.text((x, y), wl, font=font(78, 800), fill=WHITE)
-            y += 96
+        for wl in wrap(d, line, font(tsz, 800), W - x - 300):
+            d.text((x, y), wl, font=font(tsz, 800), fill=WHITE)
+            y += int(tsz * 1.23)
+    if s.get("image"):
+        shot = Image.open(os.path.join(HERE, "screens", s["image"])).convert("RGB")
+        box_w, box_h = W - x - 90, H - y - 10 - 110
+        shot.thumbnail((box_w, box_h), Image.LANCZOS)
+        if shot.width < box_w and shot.height < box_h:  # upscale small shots to fill
+            r = min(box_w / shot.width, box_h / shot.height)
+            shot = shot.resize((int(shot.width * r), int(shot.height * r)), Image.LANCZOS)
+        sx, sy = x + (box_w - shot.width) // 2, y + 10
+        d.rectangle([sx - 6, sy - 6, sx + shot.width + 5, sy + shot.height + 5], fill=ORANGE)
+        im.paste(shot, (sx, sy))
+        s = dict(s, bullets=[])
     y += 40
     bf = font(44, 500)
     for b in s["bullets"]:
@@ -84,6 +96,10 @@ def tts(text, voice, out):
 # Narration is written the way the voice should say it; captions show the normal spelling.
 CAPTION_FIXES = [
     ("secure dot D O R dot W A dot gov", "secure.dor.wa.gov"),
+    ("A R at absolute A D A S dot com", "ar@absoluteadas.com"),
+    ("seventy-four thousand, seven hundred twenty-five dollars and sixty-one cents", "$74,725.61"),
+    ("one and a half percent", "1.5%"), ("three one zero nine", "3109"),
+    ("A C H", "ACH"), ("P D F", "PDF"), ("L L C", "LLC"),
     ("W A D O R", "WA DOR"), ("D O R", "DOR"), ("B and O", "B&O"), ("E S D", "ESD"), ("I R S", "IRS"),
     ("eleven fifty-nine p m", "11:59 p.m."), ("two point nine six percent", "2.96%"),
     ("point four seven one percent", "0.471%"), ("point five percent", "0.5%"),
