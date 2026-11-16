@@ -468,5 +468,36 @@
     "youtube": "rTKEmE-AKfg",
     "short": "hvFbhQgqIW4",
     "short2": "WzmxI6cklWM"
+  },
+  {
+    "date": "2026-11-16",
+    "photo": "2026-11-16-supra-mk4.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Win The Morning | Supra MK4 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-16",
+    "car": "Toyota Supra MK4",
+    "color": "chalk grey",
+    "scene": "studio_2am",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Win The Morning",
+    "statement": "Ten minutes in, you'll forget you didn't want to.",
+    "character": null,
+    "songs": [
+      "Amber Detour",
+      "Winter Asphalt",
+      "Low Drive",
+      "Open Lane",
+      "Last Skyline",
+      "Long Detour",
+      "Rainy Shift",
+      "Slow Coffee"
+    ]
   }
 ]
