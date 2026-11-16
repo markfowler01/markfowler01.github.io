@@ -1,0 +1,251 @@
+1
+00:00:00,600 --> 00:00:02,552
+Welcome to Absolute ADAS.
+
+2
+00:00:02,902 --> 00:00:10,646
+This training walks you through filing and paying our quarterly excise tax return with the Washington State Department of Revenue, also called DOR.
+
+3
+00:00:10,995 --> 00:00:15,395
+Keep the runbook open while you watch. It has every step as a checklist you can tick off.
+
+4
+00:00:16,996 --> 00:00:19,476
+Washington doesn't have a state income tax.
+
+5
+00:00:19,826 --> 00:00:25,938
+Instead, businesses pay B&O tax, which stands for business and occupation, on gross income.
+
+6
+00:00:26,288 --> 00:00:30,224
+We also send in the retail sales tax we collected from customers.
+
+7
+00:00:30,573 --> 00:00:36,077
+All of it goes on one combined excise tax return, which we file and pay online in My DOR.
+
+8
+00:00:36,427 --> 00:00:42,219
+Washington requires businesses to file and pay electronically, so paper returns aren't an option for us.
+
+9
+00:00:43,820 --> 00:00:47,579
+Quarterly returns are due on the last day of the month after the quarter ends.
+
+10
+00:00:47,929 --> 00:00:53,641
+That's April thirtieth, July thirty-first, October thirty-first, and January thirty-first.
+
+11
+00:00:53,991 --> 00:00:58,280
+If the due date lands on a weekend or holiday, it moves to the next business day.
+
+12
+00:00:58,629 --> 00:01:07,701
+For example, the fourth quarter 2026 return is due Monday, February first, 2027, because January thirty-first is a Sunday.
+
+13
+00:01:08,051 --> 00:01:13,523
+Don't cut it close, though. Our internal target is to have the return filed by the twentieth of the due month.
+
+14
+00:01:15,123 --> 00:01:17,507
+Before you log in, gather what you need.
+
+15
+00:01:17,858 --> 00:01:24,306
+First, your own SecureAccess Washington login. The owner adds you as a user on our account. Never share a login.
+
+16
+00:01:24,656 --> 00:01:29,359
+Second, the sales report for the quarter from Zoho Books, with invoiced totals.
+
+17
+00:01:29,710 --> 00:01:34,926
+Third, the sales tax we collected, broken out by the location where each job was done.
+
+18
+00:01:35,275 --> 00:01:40,331
+Fourth, a list of shops we sold to at wholesale. They need a reseller permit on file with us.
+
+19
+00:01:40,682 --> 00:01:48,426
+And finally, flag any jobs done outside Washington, like our Idaho work. Those are handled differently, so ask before entering them.
+
+20
+00:01:50,025 --> 00:01:56,009
+Step one. Go to secure.dor.wa.gov and sign in with SecureAccess Washington.
+
+21
+00:01:56,359 --> 00:01:58,439
+Select the Absolute ADAS account.
+
+22
+00:01:58,789 --> 00:02:02,837
+Find the open return for the quarter you're filing and click File return.
+
+23
+00:02:03,187 --> 00:02:07,283
+Double-check the period. Filing the wrong quarter is the most common mistake.
+
+24
+00:02:08,883 --> 00:02:12,003
+Step two. The return asks which tax lines apply.
+
+25
+00:02:12,353 --> 00:02:17,937
+Use the same lines we filed last quarter. You can see them on the prior return in My DOR.
+
+26
+00:02:18,287 --> 00:02:26,127
+Usually that's Retailing B&O plus retail sales tax, and Wholesaling B&O for sales to shops that gave us a reseller permit.
+
+27
+00:02:26,477 --> 00:02:31,373
+Never add or remove a line on your own. If something looks different, stop and ask.
+
+28
+00:02:32,973 --> 00:02:38,653
+Step three. For each line, enter the total gross amount for the quarter, straight from the Zoho Books report.
+
+29
+00:02:39,003 --> 00:02:44,715
+If a deduction applies, such as work done out of state, enter it with the reason DOR asks for.
+
+30
+00:02:45,066 --> 00:02:51,098
+My DOR calculates the tax for you, and applies the small business credit automatically if we qualify.
+
+31
+00:02:52,697 --> 00:02:56,345
+Step four. Retail sales tax is reported by location.
+
+32
+00:02:56,695 --> 00:03:03,735
+Washington is destination-based, so the rate depends on where the work was done, usually the shop's address, not our office.
+
+33
+00:03:04,085 --> 00:03:11,269
+Each location has a four-digit location code. Look up any you don't recognize with DOR's Tax Rate Lookup tool.
+
+34
+00:03:11,619 --> 00:03:15,843
+When you're done, the location totals must add up to the retail sales tax line.
+
+35
+00:03:17,443 --> 00:03:19,651
+Step five. Review before you submit.
+
+36
+00:03:20,001 --> 00:03:22,801
+Check that every total matches the Zoho Books report.
+
+37
+00:03:23,151 --> 00:03:28,863
+Then compare against last quarter. If something swings a lot and you can't explain why, stop and ask.
+
+38
+00:03:29,213 --> 00:03:33,662
+You can save the return and come back later. Nothing is filed until you submit.
+
+39
+00:03:34,012 --> 00:03:36,699
+Get the owner's sign-off before you move on to payment.
+
+40
+00:03:38,299 --> 00:03:39,867
+Step six. Pay.
+
+41
+00:03:40,217 --> 00:03:45,001
+Choose bank account, which is ACH debit. It's free, and it's how we always pay.
+
+42
+00:03:45,351 --> 00:03:52,567
+Pick a payment date on or before the due date, and make sure the return is submitted by 11:59 p.m. Pacific on the due date.
+
+43
+00:03:52,917 --> 00:03:58,117
+Don't use a credit or debit card. The processor charges a 2.96% fee.
+
+44
+00:03:59,717 --> 00:04:01,493
+Step seven. Save your proof.
+
+45
+00:04:01,843 --> 00:04:05,876
+Write down the confirmation number and download a PDF of the filed return.
+
+46
+00:04:06,225 --> 00:04:11,377
+Save both to the shared drive, under Taxes, WA DOR, then the year and quarter.
+
+47
+00:04:11,728 --> 00:04:16,367
+A day or two after the payment date, check the bank account to confirm the debit went through.
+
+48
+00:04:17,968 --> 00:04:19,792
+Here's why the deadline matters.
+
+49
+00:04:20,141 --> 00:04:24,509
+If the tax isn't paid by the due date, DOR adds a nine percent penalty.
+
+50
+00:04:24,860 --> 00:04:31,548
+It jumps to nineteen percent after the end of the following month, and twenty-nine percent after the end of the second month, plus interest.
+
+51
+00:04:31,897 --> 00:04:36,137
+Even in a quarter with no sales, we still have to file a no-business return.
+
+52
+00:04:36,487 --> 00:04:40,887
+If there's ever a problem paying, file on time anyway and tell the owner right away.
+
+53
+00:04:42,487 --> 00:04:43,415
+One heads-up.
+
+54
+00:04:43,765 --> 00:04:52,069
+Starting January first, 2027, the Retailing B&O rate goes up from 0.471% to 0.5%.
+
+55
+00:04:52,419 --> 00:05:01,299
+That affects the first quarter 2027 return and later. My DOR applies the new rate automatically, so you don't change anything by hand.
+
+56
+00:05:02,899 --> 00:05:05,987
+Some other quarterly filings are not part of this return.
+
+57
+00:05:06,337 --> 00:05:14,241
+Employment Security, or ESD, handles unemployment insurance, Paid Family and Medical Leave, and WA Cares.
+
+58
+00:05:14,591 --> 00:05:20,655
+Labor and Industries handles the workers' comp quarterly report, and federal estimated taxes go to the IRS.
+
+59
+00:05:21,005 --> 00:05:24,909
+Each one has its own system and deadlines. Those are covered separately.
+
+60
+00:05:26,509 --> 00:05:37,149
+To recap: gather your numbers, log in, confirm the lines, enter the amounts, report sales tax by location, review, pay by ACH debit, and save your proof.
+
+61
+00:05:37,499 --> 00:05:40,603
+If anything doesn't look right, ask the owner first.
+
+62
+00:05:40,953 --> 00:05:47,033
+DOR's taxpayer services line is 360-705-6705.
+
+63
+00:05:47,383 --> 00:05:49,655
+Thanks for watching, and welcome to the team.

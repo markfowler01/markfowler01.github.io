@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>WA DOR Quarterly Tax Runbook</title>
+<style>
+  :root { --black:#0a0a0a; --orange:#CD4419; --orange-dark:#b33a15; --gray:#666; --line:#e2e2e2; --bg:#fff; --soft:#faf6f4; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--black); font:16px/1.55 Montserrat, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { border-left: 8px solid var(--orange); padding: 4px 0 4px 18px; margin-bottom: 28px; }
+  .kicker { color: var(--orange); font-weight: 700; letter-spacing: .08em; font-size: 13px; text-transform: uppercase; }
+  h1 { margin: 4px 0 6px; font-size: 30px; line-height: 1.2; }
+  .meta { color: var(--gray); font-size: 14px; }
+  h2 { font-size: 20px; margin: 34px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--black); }
+  h2 .n { display:inline-block; background:var(--orange); color:#fff; border-radius:4px; padding:0 8px; margin-right:8px; font-size:16px; }
+  ul.check { list-style: none; padding: 0; margin: 8px 0; }
+  ul.check li { padding: 7px 0 7px 34px; position: relative; border-bottom: 1px solid var(--line); }
+  ul.check li::before { content:""; position:absolute; left:4px; top:10px; width:16px; height:16px; border:2px solid var(--black); border-radius:3px; }
+  table { width:100%; border-collapse: collapse; margin: 10px 0; font-size: 15px; }
+  th, td { text-align:left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--black); color:#fff; font-weight:600; }
+  .callout { background: var(--soft); border-left: 4px solid var(--orange); padding: 12px 16px; margin: 14px 0; border-radius: 0 6px 6px 0; }
+  .stop { border-left-color: #b00020; background: #fdf1f2; }
+  .stop strong { color:#b00020; }
+  code { background:#f1f1f1; padding: 1px 6px; border-radius: 4px; font-size: 14px; }
+  .fill { display:inline-block; min-width: 220px; border-bottom: 1px solid var(--black); }
+  footer { margin-top: 40px; color: var(--gray); font-size: 13px; border-top: 1px solid var(--line); padding-top: 12px; }
+  a { color: var(--orange-dark); }
+  @media print {
+    main { padding: 0; max-width: none; }
+    h2 { break-after: avoid; }
+    ul.check li, tr, .callout { break-inside: avoid; }
+    a { color: var(--black); text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="kicker">Absolute ADAS · Internal runbook</div>
+  <h1>Filing &amp; paying the quarterly Washington excise tax return</h1>
+  <div class="meta">Washington State Department of Revenue (DOR) · Companion to the training video · Facts checked against dor.wa.gov, November 2026</div>
+</header>
+
+<div class="callout">
+  <strong>What this is:</strong> Washington has no state income tax. Instead we report our gross income for <strong>B&amp;O</strong> (business &amp; occupation) tax and send in the <strong>retail sales tax</strong> we collected. Both go on one combined excise tax return, which is filed and paid electronically in <strong>My DOR</strong>. Our account files <strong>quarterly</strong>.
+</div>
+
+<h2>Deadlines</h2>
+<table>
+  <tr><th>Quarter</th><th>Months</th><th>Return &amp; payment due</th><th>Our target</th></tr>
+  <tr><td>Q1</td><td>Jan – Mar</td><td>April 30</td><td>April 20</td></tr>
+  <tr><td>Q2</td><td>Apr – Jun</td><td>July 31</td><td>July 20</td></tr>
+  <tr><td>Q3</td><td>Jul – Sep</td><td>October 31</td><td>October 20</td></tr>
+  <tr><td>Q4</td><td>Oct – Dec</td><td>January 31</td><td>January 20</td></tr>
+</table>
+<p>If a due date falls on a weekend or holiday, it moves to the next business day. For example, <strong>Q4 2026 is due Monday, Feb 1, 2027</strong>. Always confirm the date on DOR's <a href="https://dor.wa.gov/file-pay-taxes/filing-frequencies-due-dates">due-dates page</a>. The return must be submitted by <strong>11:59 p.m. Pacific</strong> on the due date.</p>
+
+<h2><span class="n">0</span>Before you start: gather</h2>
+<ul class="check">
+  <li>Your <strong>own</strong> SecureAccess Washington (SAW) login, added to our My DOR account by the owner. Never share logins.</li>
+  <li>Zoho Books sales report for the quarter: invoiced totals by month.</li>
+  <li>Retail sales tax collected for the quarter, broken out by <strong>job location</strong> (shop address).</li>
+  <li>List of wholesale customers (shops that gave us a reseller permit), with permits on file.</li>
+  <li>Jobs done outside Washington (e.g., Idaho) flagged separately. <em>Ask before entering these.</em></li>
+  <li>Last quarter's filed return (PDF in the shared drive) for comparison.</li>
+</ul>
+
+<h2><span class="n">1</span>Log in &amp; open the return</h2>
+<ul class="check">
+  <li>Go to <a href="https://secure.dor.wa.gov">secure.dor.wa.gov</a> and sign in with SecureAccess Washington.</li>
+  <li>Select the <strong>Absolute ADAS</strong> account.</li>
+  <li>Find the open return for the correct period and click <strong>File return</strong>.</li>
+  <li>Double-check the period (quarter and year). This is the most common mistake.</li>
+</ul>
+
+<h2><span class="n">2</span>Confirm the tax lines</h2>
+<ul class="check">
+  <li>Use the <strong>same lines as last quarter</strong>. Compare against the prior return.</li>
+  <li>Typical lines: <strong>Retailing B&amp;O</strong> + <strong>Retail sales tax</strong>; <strong>Wholesaling B&amp;O</strong> for sales to shops with reseller permits.</li>
+  <li>Do <strong>not</strong> add or remove a line without owner approval.</li>
+</ul>
+
+<h2><span class="n">3</span>Enter gross amounts &amp; deductions</h2>
+<ul class="check">
+  <li>Enter the total gross amount for each line from the Zoho Books report.</li>
+  <li>Enter any deductions (e.g., interstate / out-of-state work) with the reason DOR asks for. <em>Owner/CPA confirms deductions.</em></li>
+  <li>Let My DOR calculate the tax. The small business B&amp;O credit applies automatically if we qualify.</li>
+</ul>
+
+<h2><span class="n">4</span>Report sales tax by location</h2>
+<ul class="check">
+  <li>Washington sales tax is <strong>destination-based</strong>: report each sale under the location code where the work was done (usually the shop's address).</li>
+  <li>Look up unfamiliar addresses with DOR's <a href="https://dor.wa.gov/taxes-rates/sales-use-tax-rates">Tax Rate Lookup tool</a> to get the 4-digit location code.</li>
+  <li>Confirm the location totals add up to the Retail sales tax line.</li>
+</ul>
+
+<h2><span class="n">5</span>Review before submitting</h2>
+<ul class="check">
+  <li>Every total matches the Zoho Books report.</li>
+  <li>Compare against last quarter. A large unexplained change means <strong>stop and ask</strong>.</li>
+  <li>Use <strong>Save</strong> if you need to come back. Nothing is filed until you submit.</li>
+  <li>Owner sign-off obtained before payment.</li>
+</ul>
+
+<h2><span class="n">6</span>Pay</h2>
+<ul class="check">
+  <li>Choose <strong>Bank Account (ACH Debit)</strong>. It's free and it's our standard method.</li>
+  <li>Choose a payment date <strong>on or before</strong> the due date.</li>
+  <li>Submit by <strong>11:59 p.m. Pacific</strong> on the due date.</li>
+</ul>
+<div class="callout"><strong>Don't</strong> pay by credit/debit card. The third-party processor charges a <strong>2.96% fee</strong> ($1 minimum). We don't use ACH Credit or mailed checks.</div>
+
+<h2><span class="n">7</span>Save proof &amp; close out</h2>
+<ul class="check">
+  <li>Record the confirmation number: <span class="fill">&nbsp;</span></li>
+  <li>Download the filed return as a PDF.</li>
+  <li>Save both to the shared drive: <code>Taxes / WA DOR / YYYY-Qn</code></li>
+  <li>1–2 business days after the payment date, confirm the debit cleared the bank account.</li>
+  <li>Tell the owner it's done.</li>
+</ul>
+
+<h2>Penalties: why the deadline matters</h2>
+<table>
+  <tr><th>When the tax is still unpaid…</th><th>Penalty</th></tr>
+  <tr><td>After the due date</td><td>9%</td></tr>
+  <tr><td>After the last day of the following month</td><td>19%</td></tr>
+  <tr><td>After the last day of the second month</td><td>29%</td></tr>
+</table>
+<p>Interest is added on top, and the minimum penalty is $5.</p>
+<div class="callout stop"><strong>Always file on time</strong>, even if there were no sales (file a <em>no-business</em> return), and even if there's a problem paying. Tell the owner right away.</div>
+
+<h2>Heads up: rate change Jan 1, 2027</h2>
+<p>The <strong>Retailing B&amp;O</strong> rate rises from <strong>0.471% to 0.5%</strong> starting January 1, 2027. This affects the Q1 2027 return and later. My DOR applies it automatically, so there's nothing to change by hand.</p>
+
+<h2>Not on this return</h2>
+<table>
+  <tr><th>Filing</th><th>Agency</th></tr>
+  <tr><td>Unemployment insurance, Paid Family &amp; Medical Leave, WA Cares</td><td>Employment Security Dept (ESD)</td></tr>
+  <tr><td>Workers' comp quarterly report</td><td>Labor &amp; Industries (L&amp;I)</td></tr>
+  <tr><td>Federal estimated tax payments</td><td>IRS</td></tr>
+  <tr><td>Idaho sales/income tax for Idaho work</td><td>Idaho State Tax Commission</td></tr>
+</table>
+<p>Each has its own system and deadlines and is covered separately.</p>
+
+<h2>Who to ask</h2>
+<ul>
+  <li><strong>First:</strong> the owner.</li>
+  <li><strong>DOR Telephone Information Center:</strong> 360-705-6705 (Mon–Fri 8–5 PT; closed Wed 8–9 a.m.)</li>
+  <li><strong>My DOR / e-file help:</strong> 360-705-6709</li>
+</ul>
+
+<footer>
+  Internal training material, not tax advice. Rates, dates and payment options change, so confirm on <a href="https://dor.wa.gov">dor.wa.gov</a> and with our CPA. Sources: DOR <a href="https://dor.wa.gov/file-pay-taxes/filing-frequencies-due-dates/2026-excise-tax-return-due-dates">2026 due dates</a>, <a href="https://dor.wa.gov/manage-business/my-dor-help/tax-returns">My DOR tax returns help</a>, <a href="https://dor.wa.gov/forms-publications/publications-subject/special-notices/bo-tax-rate-increases-05-certain-activities-and-new-line-codes">B&amp;O 0.5% rate notice</a>, <a href="https://dor.wa.gov/file-pay-taxes/late-filing/penalty-waivers">penalties</a>.
+</footer>
+</main>
+</body>
+</html>
