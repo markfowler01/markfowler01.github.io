@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-15 11:16 UTC",
+  "updated": "2026-11-16 11:25 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 28,
-        "counted": 27,
+        "videos": 29,
+        "counted": 28,
         "avg_views": 3
       },
       "openai": {
@@ -25,8 +25,8 @@
     },
     "music": {
       "gemini": {
-        "videos": 22,
-        "counted": 21,
+        "videos": 23,
+        "counted": 22,
         "avg_views": 3
       },
       "openai": {
@@ -44,7 +44,7 @@
       "gemini": {
         "videos": 6,
         "counted": 6,
-        "avg_views": 3
+        "avg_views": 4
       },
       "openai": {
         "videos": 5,
@@ -59,11 +59,11 @@
     }
   },
   "channel": {
-    "date": "2026-11-15",
+    "date": "2026-11-16",
     "subscribers": 2,
-    "views": 1136,
-    "videos": 98,
-    "watch_hours": 32.0
+    "views": 1143,
+    "videos": 101,
+    "watch_hours": 32.1
   },
   "goals": {
     "fan_funding": {
@@ -215,15 +215,22 @@
       "views": 1136,
       "videos": 98,
       "watch_hours": 32.0
+    },
+    {
+      "date": "2026-11-16",
+      "subscribers": 2,
+      "views": 1143,
+      "videos": 101,
+      "watch_hours": 32.1
     }
   ],
   "videos": [
     {
-      "date": "2026-11-15",
-      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | NSX Type S",
+      "date": "2026-11-16",
+      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | 911 Dakar",
       "maker": "gemini",
       "kind": "music",
-      "youtube": "_dM2BL0YVck",
+      "youtube": "_KszN-CBBWY",
       "views": null,
       "likes": null,
       "short_views": null,
@@ -232,12 +239,25 @@
       "public": false
     },
     {
+      "date": "2026-11-15",
+      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | NSX Type S",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "_dM2BL0YVck",
+      "views": 0,
+      "likes": 0,
+      "short_views": 3,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
+    {
       "date": "2026-11-14",
       "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | Huracan STO",
       "maker": "gemini",
       "kind": "music",
       "youtube": "KP4LQueJ_h0",
-      "views": 2,
+      "views": 3,
       "likes": 0,
       "short_views": 1,
       "short2_views": 0,
@@ -252,7 +272,7 @@
       "youtube": "D0XD-kwE5iw",
       "views": 0,
       "likes": 0,
-      "short_views": 1,
+      "short_views": 2,
       "short2_views": 1,
       "subscribers": 0,
       "public": true
@@ -265,9 +285,9 @@
       "youtube": "COuXHNdrR80",
       "views": 0,
       "likes": 0,
-      "short_views": 2,
-      "short2_views": 1,
-      "subscribers": 0,
+      "short_views": 3,
+      "short2_views": 2,
+      "subscribers": 1,
       "public": true
     },
     {
@@ -317,7 +337,7 @@
       "youtube": "2iuGGpR9D1M",
       "views": 2,
       "likes": 0,
-      "short_views": 1,
+      "short_views": 2,
       "short2_views": 0,
       "subscribers": 0,
       "public": true
@@ -562,7 +582,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "V4DuhPr5I-I",
-      "views": 4,
+      "views": 5,
       "likes": 0,
       "short_views": 62,
       "short2_views": null,
