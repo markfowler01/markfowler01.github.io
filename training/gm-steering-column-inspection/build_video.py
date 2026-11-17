@@ -40,7 +40,8 @@ def wrap(draw, text, f, max_w):
     return lines
 
 
-def render_slide(i, s, path):
+def render_slide(i, s, path, shown=None):
+    """shown = how many bullets (or 1 = the image) are visible; None = everything."""
     im = Image.new("RGB", (W, H), BLACK)
     d = ImageDraw.Draw(im)
     # left accent bar + progress
@@ -60,7 +61,9 @@ def render_slide(i, s, path):
         for wl in wrap(d, line, font(tsz, 800), W - x - 300):
             d.text((x, y), wl, font=font(tsz, 800), fill=WHITE)
             y += int(tsz * 1.23)
-    if s.get("image"):
+    if s.get("image") and shown == 0:
+        s = dict(s, bullets=[])
+    elif s.get("image"):
         shot = Image.open(os.path.join(HERE, "screens", s["image"])).convert("RGB")
         box_w, box_h = W - x - 90, H - y - 10 - 110
         shot.thumbnail((box_w, box_h), Image.LANCZOS)
@@ -73,7 +76,7 @@ def render_slide(i, s, path):
         s = dict(s, bullets=[])
     y += 40
     bf = font(44, 500)
-    for b in s["bullets"]:
+    for b in (s["bullets"] if shown is None else s["bullets"][:shown]):
         lines = wrap(d, b, bf, W - x - 200)
         d.rectangle([x, y + 22, x + 14, y + 36], fill=ORANGE)
         for ln in lines:
@@ -118,15 +121,17 @@ def main():
         if i == 0:
             import shutil; shutil.copy(png, os.path.join(HERE, "thumbnail.png"))
         # narration: one wav per sentence, joined with silence
-        parts, t = [], PAD_START
+        pad0 = 2.2 if i == 0 else PAD_START  # let the music open the video
+        parts, t, starts = [], pad0, []
         for j, sent in enumerate(s["narration"]):
             wav = os.path.join(tmp, f"s{i:02}_{j:02}.wav")
             dur, sr = tts(sent, a.voice, wav)
             parts.append(wav)
+            starts.append(t)
             srt.append(f"{k}\n{ts(clock + t)} --> {ts(clock + t + dur)}\n{caption(sent)}\n")
             k += 1
             t += dur + GAP
-        total = t - GAP + PAD_END
+        total = t - GAP + (3.0 if i == len(SLIDES) - 1 else PAD_END)
         lst = os.path.join(tmp, f"s{i:02}.txt")
         with open(lst, "w") as f:
             f.write("\n".join(f"file '{p}'" for p in parts))
@@ -136,14 +141,32 @@ def main():
             inputs += ["-i", p]
             filt.append(f"[{j}:a]apad=pad_dur={GAP}[a{j}]")
         cat = "".join(f"[a{j}]" for j in range(len(parts)))
-        filt.append(f"{cat}concat=n={len(parts)}:v=0:a=1,adelay={int(PAD_START*1000)}:all=1,apad=whole_dur={total}[out]")
+        filt.append(f"{cat}concat=n={len(parts)}:v=0:a=1,adelay={int(pad0*1000)}:all=1,apad=whole_dur={total}[out]")
         audio = os.path.join(tmp, f"s{i:02}.m4a")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(filt),
                         "-map", "[out]", "-ar", "44100", "-ac", "2", "-c:a", "aac", "-b:a", "128k", audio], check=True)
         seg = os.path.join(tmp, f"s{i:02}.mp4")
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-framerate", "30", "-i", png, "-i", audio,
-                        "-t", f"{total:.3f}", "-c:v", "libx264", "-tune", "stillimage", "-pix_fmt", "yuv420p",
-                        "-c:a", "copy", "-shortest", seg], check=True)
+        # animated build: title first, then each bullet (or the image) fades in as it is talked about
+        nb = 1 if s.get("image") else len(s["bullets"])
+        ns = len(starts)
+        times = []
+        for b in range(nb):
+            tb = starts[min(ns - 1, (b * ns) // nb)] if nb > 1 else starts[0] + 0.3
+            times.append(max(tb, (times[-1] + 0.6) if times else 0.5))
+        vin, vf = ["-loop", "1", "-framerate", "30", "-t", f"{total:.3f}", "-i", os.path.join(tmp, f"s{i:02}_b0.png")], []
+        render_slide(i, s, os.path.join(tmp, f"s{i:02}_b0.png"), shown=0)
+        last = "0:v"
+        for b in range(nb):
+            pb = os.path.join(tmp, f"s{i:02}_b{b + 1}.png")
+            render_slide(i, s, pb, shown=b + 1)
+            vin += ["-loop", "1", "-framerate", "30", "-t", f"{total:.3f}", "-i", pb]
+            vf.append(f"[{b + 1}:v]format=rgba,fade=t=in:st={times[b]:.2f}:d=0.45:alpha=1[f{b}]")
+            vf.append(f"[{last}][f{b}]overlay=shortest=1[o{b}]")
+            last = f"o{b}"
+        vf.append(f"[{last}]fade=t=in:st=0:d=0.35,fade=t=out:st={total - 0.35:.2f}:d=0.35,format=yuv420p[v]")
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *vin, "-i", audio, "-filter_complex", ";".join(vf),
+                        "-map", "[v]", "-map", f"{nb + 1}:a", "-t", f"{total:.3f}", "-r", "30", "-c:v", "libx264",
+                        "-preset", "veryfast", "-crf", "20", "-c:a", "copy", seg], check=True)
         segs.append(seg)
         clock += total
         print(f"slide {i + 1}/{len(SLIDES)}  {total:5.1f}s")
@@ -153,8 +176,17 @@ def main():
     lst = os.path.join(tmp, "all.txt")
     with open(lst, "w") as f:
         f.write("\n".join(f"file '{p}'" for p in segs))
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst, "-i", srt_path,
-                    "-map", "0", "-map", "1", "-c", "copy", "-c:s", "mov_text", "-metadata:s:s:0", "language=eng",
+    # voice-only cut, then lay the music bed under it (ducked while the narrator talks)
+    voice_cut = os.path.join(tmp, "voice.mp4")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst,
+                    "-c", "copy", voice_cut], check=True)
+    mix = (f"[1:a]volume=0.9,afade=t=in:st=0:d=0.6,afade=t=out:st={clock - 3:.2f}:d=3[m];"
+           "[0:a]asplit[v1][v2];[m][v1]sidechaincompress=threshold=0.02:ratio=10:attack=30:release=700[md];"
+           "[v2][md]amix=inputs=2:normalize=0:duration=first[a]")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", voice_cut, "-stream_loop", "-1", "-i",
+                    os.path.join(HERE, "music-bed.m4a"), "-i", srt_path, "-filter_complex", mix,
+                    "-map", "0:v", "-map", "[a]", "-map", "2", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k",
+                    "-c:s", "mov_text", "-metadata:s:s:0", "language=eng", "-t", f"{clock:.2f}",
                     "-movflags", "+faststart", a.out], check=True)
     print(f"done: {a.out}  ({clock / 60:.1f} min)")
 
