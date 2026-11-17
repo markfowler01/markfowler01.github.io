@@ -1,0 +1,203 @@
+1
+00:00:00,600 --> 00:00:03,288
+Welcome to Absolute ADAS technician training.
+
+2
+00:00:03,638 --> 00:00:12,406
+This one covers the steering column inspection that General Motors requires after a collision, using a 2020 GM C Sierra as the example.
+
+3
+00:00:12,756 --> 00:00:20,403
+The numbers you'll see are examples from one truck. The method is what matters: look up the procedure for the exact vehicle in front of you.
+
+4
+00:00:22,003 --> 00:00:29,843
+After a collision, the vehicle has to go back to factory spec. The manufacturer publishes exactly which parts must be inspected or replaced.
+
+5
+00:00:30,193 --> 00:00:33,697
+Some of that guidance is loosely worded. Some of it is black and white.
+
+6
+00:00:34,047 --> 00:00:39,983
+A steering column is designed to collapse in a crash. It can be damaged with nothing visible from the driver's seat.
+
+7
+00:00:40,333 --> 00:00:46,605
+So if the inspection is required and nobody does it, the repair isn't complete, even if the truck drives fine.
+
+8
+00:00:48,205 --> 00:00:50,189
+Two things decide what's required.
+
+9
+00:00:50,539 --> 00:00:58,827
+First, how severe was the collision? Cosmetic damage only, damage beyond cosmetic without airbag deployment, or airbag deployment.
+
+10
+00:00:59,177 --> 00:01:07,385
+Second, how was this exact vehicle built? The VIN and the RPO option codes tell you which procedure and which specifications apply.
+
+11
+00:01:08,985 --> 00:01:11,449
+Step one. Look it up by VIN.
+
+12
+00:01:11,799 --> 00:01:15,480
+Enter the VIN in ALLDATA, or in GM service information.
+
+13
+00:01:15,829 --> 00:01:20,277
+Go to Body and Frame, then Repairs and Inspections Required After a Collision.
+
+14
+00:01:20,628 --> 00:01:28,787
+ALLDATA pulls from GM, but it sometimes has gaps. If something you expect isn't there, check GM service information directly.
+
+15
+00:01:30,387 --> 00:01:32,723
+Step two. Match the damage to the chart.
+
+16
+00:01:33,073 --> 00:01:37,441
+The page is laid out like a checklist, with a column for each level of severity.
+
+17
+00:01:37,792 --> 00:01:48,256
+The middle level is damage that exceeds minor outer body panel cosmetic distortion, without airbag deployment. Think more than dents and scratches: a bent bracket, frame rail, or support.
+
+18
+00:01:48,605 --> 00:01:57,197
+At that level the list is already long. It includes the steering wheel airbag, the steering wheel, the steering column, and the impact sensors.
+
+19
+00:01:57,548 --> 00:02:05,067
+Where it says inspect the steering column, it sends you to the steering column accident damage inspection procedure. That's the one we're doing here.
+
+20
+00:02:06,667 --> 00:02:09,115
+Step three. Find the RPO codes.
+
+21
+00:02:09,465 --> 00:02:17,385
+The procedure asks two questions: does the truck have a front floor console, and does it have RPO code N33 or N37?
+
+22
+00:02:17,735 --> 00:02:23,543
+RPO codes are three-character factory option codes. They tell you which steering column was installed.
+
+23
+00:02:23,893 --> 00:02:31,413
+Pull the build sheet by VIN. One free option is repair link shop dot com. Then press Ctrl+F and search for each code.
+
+24
+00:02:31,763 --> 00:02:37,347
+Our example truck has no floor console, and it has N37, a tilt and telescoping column.
+
+25
+00:02:38,947 --> 00:02:40,627
+Here's why the code matters.
+
+26
+00:02:40,977 --> 00:02:46,641
+In this example, the minimum overall length for the N37 column is 506 mm.
+
+27
+00:02:46,991 --> 00:02:50,479
+For the N33 column, it's 530 mm.
+
+28
+00:02:50,829 --> 00:02:57,517
+That's twenty-4 mm apart. Pick the wrong code, and a damaged column can pass, or a good one can fail.
+
+29
+00:02:59,117 --> 00:03:00,973
+Step four. Remove the column.
+
+30
+00:03:01,323 --> 00:03:05,819
+Follow the manufacturer's removal procedure, including the airbag safety steps.
+
+31
+00:03:06,169 --> 00:03:12,329
+The column has to come out and be stripped down to the bare column. That's the only way to get an accurate end to end measurement.
+
+32
+00:03:12,679 --> 00:03:17,671
+Before you measure, set the column fully telescoped in, which means fully collapsed.
+
+33
+00:03:19,271 --> 00:03:20,791
+Step five. Measure.
+
+34
+00:03:21,141 --> 00:03:25,669
+There are three checks. Use the manufacturer's illustration for the exact points.
+
+35
+00:03:26,019 --> 00:03:33,139
+One: the upper shaft end, where the steering wheel bolts on. In our example it must not be less than 58 mm.
+
+36
+00:03:33,489 --> 00:03:40,465
+Two: the overall length, end to end. For our example truck it must not be less than 506 mm.
+
+37
+00:03:40,815 --> 00:03:49,215
+Three: with the tilt lever unlocked, move the column in the radial and axial directions. In our example, the movement must not be more than 4 mm.
+
+38
+00:03:49,565 --> 00:03:54,077
+Measure in millimeters, with a tram gauge or a digital tape, and write each number down.
+
+39
+00:03:55,677 --> 00:03:57,549
+Step six. Pass or fail.
+
+40
+00:03:57,899 --> 00:04:05,371
+If any measurement is out of spec, the column is damaged. Discard it and install a new one. It doesn't get repaired or reused.
+
+41
+00:04:05,721 --> 00:04:10,489
+If everything is in spec, reinstall the column following the manufacturer's procedure.
+
+42
+00:04:10,839 --> 00:04:15,879
+If you're not sure where to measure or how to read the spec, stop and ask before you decide.
+
+43
+00:04:17,480 --> 00:04:19,032
+Step seven. Document it.
+
+44
+00:04:19,382 --> 00:04:24,230
+Save the procedure pages for this VIN, and the build sheet showing the RPO code.
+
+45
+00:04:24,579 --> 00:04:29,779
+Take a photo of each measurement with the tape visible, and record the numbers and the result in the job file.
+
+46
+00:04:30,129 --> 00:04:36,274
+Keep it with the pre-scan and post-scan reports. That's the proof the inspection was required and was done.
+
+47
+00:04:37,874 --> 00:04:43,153
+To recap. Look up the VIN and open Repairs and Inspections Required After a Collision.
+
+48
+00:04:43,504 --> 00:04:48,192
+Match the severity, then find the RPO code so you're on the right procedure.
+
+49
+00:04:48,541 --> 00:04:52,685
+Remove, strip, and collapse the column. Take the three measurements.
+
+50
+00:04:53,036 --> 00:04:57,708
+Out of spec, replace it. In spec, reinstall it. Document it either way.
+
+51
+00:04:58,057 --> 00:05:04,298
+And never reuse numbers from another vehicle, or from this video. Always pull the spec for the VIN you're working on.
