@@ -502,5 +502,36 @@
     "youtube": "MpnmC9l8GaQ",
     "short": "vcRipsMarC4",
     "short2": "0XHQq2heNTI"
+  },
+  {
+    "date": "2026-11-17",
+    "photo": "2026-11-17-bronco-raptor.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Calm Mind | Bronco Raptor Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-17",
+    "car": "Ford Bronco Raptor",
+    "color": "giallo yellow",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Calm Mind",
+    "statement": "Phone down. Mind on.",
+    "character": null,
+    "songs": [
+      "Midnight Mile",
+      "Wet Showroom",
+      "Wet Parking",
+      "Velvet Overpass",
+      "Late Window",
+      "Last Overpass",
+      "Night Detour",
+      "Quiet Drive"
+    ]
   }
 ]
