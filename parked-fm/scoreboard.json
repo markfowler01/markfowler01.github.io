@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16 11:25 UTC",
+  "updated": "2026-11-17 02:05 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 29,
-        "counted": 28,
+        "videos": 30,
+        "counted": 30,
         "avg_views": 3
       },
       "openai": {
@@ -25,9 +25,9 @@
     },
     "music": {
       "gemini": {
-        "videos": 23,
-        "counted": 22,
-        "avg_views": 3
+        "videos": 24,
+        "counted": 24,
+        "avg_views": 2
       },
       "openai": {
         "videos": 1,
@@ -59,10 +59,10 @@
     }
   },
   "channel": {
-    "date": "2026-11-16",
+    "date": "2026-11-17",
     "subscribers": 2,
-    "views": 1143,
-    "videos": 101,
+    "views": 1145,
+    "videos": 104,
     "watch_hours": 32.1
   },
   "goals": {
@@ -222,21 +222,41 @@
       "views": 1143,
       "videos": 101,
       "watch_hours": 32.1
+    },
+    {
+      "date": "2026-11-17",
+      "subscribers": 2,
+      "views": 1145,
+      "videos": 104,
+      "watch_hours": 32.1
     }
   ],
   "videos": [
+    {
+      "date": "2026-11-17",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | Ferrari F40",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "C0XeYJg5GTc",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
     {
       "date": "2026-11-16",
       "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | 911 Dakar",
       "maker": "gemini",
       "kind": "music",
       "youtube": "_KszN-CBBWY",
-      "views": null,
-      "likes": null,
-      "short_views": null,
-      "short2_views": null,
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
       "subscribers": 0,
-      "public": false
+      "public": true
     },
     {
       "date": "2026-11-15",
@@ -246,8 +266,8 @@
       "youtube": "_dM2BL0YVck",
       "views": 0,
       "likes": 0,
-      "short_views": 3,
-      "short2_views": 0,
+      "short_views": 5,
+      "short2_views": 2,
       "subscribers": 0,
       "public": true
     },
@@ -337,8 +357,8 @@
       "youtube": "2iuGGpR9D1M",
       "views": 2,
       "likes": 0,
-      "short_views": 2,
-      "short2_views": 0,
+      "short_views": 3,
+      "short2_views": 1,
       "subscribers": 0,
       "public": true
     },
@@ -493,7 +513,7 @@
       "youtube": "RdUBBfpHW4A",
       "views": 26,
       "likes": 1,
-      "short_views": 12,
+      "short_views": 13,
       "short2_views": 3,
       "subscribers": 0,
       "public": true
