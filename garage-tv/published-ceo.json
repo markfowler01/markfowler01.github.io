@@ -536,5 +536,36 @@
     "youtube": "DXKKW7C9LG4",
     "short": "Dv_wfR_Irso",
     "short2": "JAAg5WpZc08"
+  },
+  {
+    "date": "2026-11-18",
+    "photo": "2026-11-18-countach.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Prove It | Countach Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-18",
+    "car": "Lamborghini Countach LPI 800-4",
+    "color": "liquid silver",
+    "scene": "studio_city_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "warm synth pluck",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Prove It",
+    "statement": "One focused hour beats a perfect plan.",
+    "character": null,
+    "songs": [
+      "Winter Rev",
+      "Neon Glow",
+      "Hazy Parking",
+      "Velvet Radio",
+      "Idle Rev",
+      "Long Hour",
+      "Idle Skyline",
+      "Quiet Detour"
+    ]
   }
 ]
