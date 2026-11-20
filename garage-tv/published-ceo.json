@@ -604,5 +604,36 @@
     "youtube": "NVkRGwEabC0",
     "short": "oMCcVTurmGY",
     "short2": "sV05mGDcLRs"
+  },
+  {
+    "date": "2026-11-20",
+    "photo": "2026-11-20-911-dakar.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Deep Work | 911 Dakar Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-20",
+    "car": "Porsche 911 Dakar",
+    "color": "midnight blue",
+    "scene": "studio_before_dawn",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "electric piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Deep Work",
+    "statement": "Motivation shows up after you start.",
+    "character": null,
+    "songs": [
+      "Amber Tunnel",
+      "Long Glow",
+      "Empty Detour",
+      "Warm Overpass",
+      "Winter Tunnel",
+      "Warm Tires",
+      "Low Signal",
+      "Open Gear"
+    ]
   }
 ]
