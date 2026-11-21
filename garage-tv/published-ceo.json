@@ -638,5 +638,36 @@
     "youtube": "se1pxoOu9_g",
     "short": "j9nupRxYrhM",
     "short2": "zCIAynyb_dU"
+  },
+  {
+    "date": "2026-11-21",
+    "photo": "2026-11-21-ferrari-f40.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Boss Mode | Ferrari F40 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-21",
+    "car": "Ferrari F40",
+    "color": "gunmetal grey",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Boss Mode",
+    "statement": "Deep work is a quiet flex.",
+    "character": null,
+    "songs": [
+      "Amber Coffee",
+      "Idle Coffee",
+      "Silver Showroom",
+      "Long Gear",
+      "Soft Shift",
+      "Midnight Rev",
+      "Quiet Window",
+      "Neon Detour"
+    ]
   }
 ]
