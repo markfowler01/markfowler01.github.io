@@ -29,14 +29,14 @@
 <body>
 <div class="wrap">
   <h1>Absolute ADAS Email Signature</h1>
-  <p class="sub">Leave the fields as-is for the blank company template, or fill them in to make one person's signature.</p>
+  <p class="sub">Leave the fields as-is for the Zoho organization template, or fill them in to make one person's signature.</p>
 
   <div class="card">
     <h2>Details</h2>
     <div class="fields">
-      <div><label for="f-name">Full name</label><input id="f-name" value="[Full Name]"></div>
-      <div><label for="f-title">Job title</label><input id="f-title" value="[Job Title]"></div>
-      <div><label for="f-email">Email</label><input id="f-email" value="[name]@absoluteadas.com"></div>
+      <div><label for="f-name">Full name</label><input id="f-name" value="{{ Name }}"></div>
+      <div><label for="f-title">Job title</label><input id="f-title" value="{{ Designation }}"></div>
+      <div><label for="f-email">Email</label><input id="f-email" value="{{ Email Address }}"></div>
       <div><label for="f-phone">Phone</label><input id="f-phone" value="1-844-FIX-ADAS"></div>
     </div>
   </div>
@@ -77,12 +77,20 @@
 '      <span style="font-size:15px;font-weight:bold;color:' + RED + ';">' + esc(d.name) + '</span><br>\n' +
 '      <span style="color:#2a2a2a;">' + esc(d.title) + '</span><br>\n' +
 '      <span style="font-size:15px;font-weight:bold;color:' + RED + ';">Absolute ADAS</span><br>\n' +
-'      <a href="mailto:' + esc(d.email) + '" style="color:#2a2a2a;text-decoration:none;">' + esc(d.email) + '</a> | <span style="color:#2a2a2a;">' + esc(d.phone) + '</span><br>\n' +
+'      ' + emailHtml(d.email) + ' | <span style="color:#2a2a2a;">' + esc(d.phone) + '</span><br>\n' +
 '      <a href="https://www.absoluteadas.com" style="color:' + RED + ';text-decoration:none;">www.absoluteadas.com</a><br>\n' +
 '      <span style="font-size:12px;color:#777777;">Driving Safety forward, one calibration at a time</span>\n' +
 '    </td>\n' +
 '  </tr>\n' +
 '</table>';
+  }
+
+  // Only link the address when it is a real one, so a placeholder stays plain text.
+  function emailHtml(email) {
+    if (/^[^\s@{}\[\]]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return '<a href="mailto:' + esc(email) + '" style="color:#2a2a2a;text-decoration:none;">' + esc(email) + '</a>';
+    }
+    return '<span style="color:#2a2a2a;">' + esc(email) + '</span>';
   }
 
   function data() {
