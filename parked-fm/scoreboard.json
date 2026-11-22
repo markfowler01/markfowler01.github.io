@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-21 11:37 UTC",
+  "updated": "2026-11-22 11:28 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 34,
-        "counted": 33,
+        "videos": 35,
+        "counted": 34,
         "avg_views": 3
       },
       "openai": {
@@ -25,8 +25,8 @@
     },
     "music": {
       "gemini": {
-        "videos": 28,
-        "counted": 27,
+        "videos": 29,
+        "counted": 28,
         "avg_views": 3
       },
       "openai": {
@@ -59,10 +59,10 @@
     }
   },
   "channel": {
-    "date": "2026-11-21",
+    "date": "2026-11-22",
     "subscribers": 2,
-    "views": 1165,
-    "videos": 116,
+    "views": 1169,
+    "videos": 119,
     "watch_hours": 32.2
   },
   "goals": {
@@ -257,21 +257,41 @@
       "views": 1165,
       "videos": 116,
       "watch_hours": 32.2
+    },
+    {
+      "date": "2026-11-22",
+      "subscribers": 2,
+      "views": 1169,
+      "videos": 119,
+      "watch_hours": 32.2
     }
   ],
   "videos": [
     {
-      "date": "2026-11-21",
-      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | BMW M1",
+      "date": "2026-11-22",
+      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Dodge Charger",
       "maker": "gemini",
       "kind": "music",
-      "youtube": "J8WnovNQ82A",
+      "youtube": "78eaOgcXB5g",
       "views": null,
       "likes": null,
       "short_views": null,
       "short2_views": null,
       "subscribers": 0,
       "public": false
+    },
+    {
+      "date": "2026-11-21",
+      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | BMW M1",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "J8WnovNQ82A",
+      "views": 0,
+      "likes": 0,
+      "short_views": 4,
+      "short2_views": 2,
+      "subscribers": 0,
+      "public": true
     },
     {
       "date": "2026-11-20",
@@ -294,8 +314,8 @@
       "youtube": "Qr-kwzO8Lq8",
       "views": 0,
       "likes": 0,
-      "short_views": 1,
-      "short2_views": 0,
+      "short_views": 2,
+      "short2_views": 1,
       "subscribers": 0,
       "public": true
     },
@@ -331,7 +351,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "_KszN-CBBWY",
-      "views": 0,
+      "views": 2,
       "likes": 0,
       "short_views": 1,
       "short2_views": 0,
@@ -372,7 +392,7 @@
       "youtube": "D0XD-kwE5iw",
       "views": 0,
       "likes": 0,
-      "short_views": 1,
+      "short_views": 2,
       "short2_views": 1,
       "subscribers": 0,
       "public": true
@@ -552,7 +572,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "35C1uVs0jYU",
-      "views": 11,
+      "views": 12,
       "likes": 0,
       "short_views": 17,
       "short2_views": 4,
@@ -617,7 +637,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "Yf8D_kMPhjA",
-      "views": 5,
+      "views": 6,
       "likes": 0,
       "short_views": 13,
       "short2_views": 9,
@@ -682,7 +702,7 @@
       "maker": "gemini",
       "kind": "soundscape",
       "youtube": "V4DuhPr5I-I",
-      "views": 5,
+      "views": 6,
       "likes": 0,
       "short_views": 62,
       "short2_views": null,
