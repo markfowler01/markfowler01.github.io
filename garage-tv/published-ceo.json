@@ -672,5 +672,36 @@
     "youtube": "zeUB6G1YYSE",
     "short": "0xXnph12wek",
     "short2": "WD-extCvWrc"
+  },
+  {
+    "date": "2026-11-22",
+    "photo": "2026-11-22-camaro-z-28.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Silent Grind | Camaro Z/28 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-22",
+    "car": "1969 Chevrolet Camaro Z/28",
+    "color": "chalk grey",
+    "scene": "studio_city_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "electric piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Silent Grind",
+    "statement": "Show up tired. Show up anyway.",
+    "character": null,
+    "songs": [
+      "Night Skyline",
+      "Silver Window",
+      "Hazy Engine",
+      "Empty Skyline",
+      "Low Coffee",
+      "Late Lane",
+      "Silver Skyline",
+      "Rainy Gear"
+    ]
   }
 ]
