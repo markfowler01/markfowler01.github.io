@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22 11:28 UTC",
+  "updated": "2026-11-23 11:36 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 35,
-        "counted": 34,
+        "videos": 36,
+        "counted": 35,
         "avg_views": 3
       },
       "openai": {
@@ -25,9 +25,9 @@
     },
     "music": {
       "gemini": {
-        "videos": 29,
-        "counted": 28,
-        "avg_views": 3
+        "videos": 30,
+        "counted": 29,
+        "avg_views": 2
       },
       "openai": {
         "videos": 1,
@@ -59,10 +59,10 @@
     }
   },
   "channel": {
-    "date": "2026-11-22",
+    "date": "2026-11-23",
     "subscribers": 2,
-    "views": 1169,
-    "videos": 119,
+    "views": 1173,
+    "videos": 122,
     "watch_hours": 32.2
   },
   "goals": {
@@ -264,21 +264,41 @@
       "views": 1169,
       "videos": 119,
       "watch_hours": 32.2
+    },
+    {
+      "date": "2026-11-23",
+      "subscribers": 2,
+      "views": 1173,
+      "videos": 122,
+      "watch_hours": 32.2
     }
   ],
   "videos": [
     {
-      "date": "2026-11-22",
-      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Dodge Charger",
+      "date": "2026-11-23",
+      "title": "Late Night Crypto Trading Music \ud83d\udcca Deep Focus Beats for Coding & Stock Analysis | 911 Carrera RS 2.7",
       "maker": "gemini",
       "kind": "music",
-      "youtube": "78eaOgcXB5g",
+      "youtube": "WVG0h2PPRCE",
       "views": null,
       "likes": null,
       "short_views": null,
       "short2_views": null,
       "subscribers": 0,
       "public": false
+    },
+    {
+      "date": "2026-11-22",
+      "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Dodge Charger",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "78eaOgcXB5g",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
     },
     {
       "date": "2026-11-21",
@@ -442,7 +462,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "-IC9xTUuqMM",
-      "views": 0,
+      "views": 1,
       "likes": 0,
       "short_views": 0,
       "short2_views": 0,
@@ -624,9 +644,9 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "sUB-YWbB9Bk",
-      "views": 1,
+      "views": 0,
       "likes": 0,
-      "short_views": 3,
+      "short_views": 5,
       "short2_views": 1,
       "subscribers": 0,
       "public": true
