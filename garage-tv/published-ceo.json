@@ -706,5 +706,36 @@
     "youtube": "fqCADco5f88",
     "short": "FE9r9NAIseM",
     "short2": "hReDoTvChT8"
+  },
+  {
+    "date": "2026-11-23",
+    "photo": "2026-11-23-lotus-evija.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 No Excuses | Lotus Evija Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-23",
+    "car": "Lotus Evija",
+    "color": "gloss black",
+    "scene": "studio_snow_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "soft guitar",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "No Excuses",
+    "statement": "Stack small wins.",
+    "character": null,
+    "songs": [
+      "Rainy Exit",
+      "Warm Exit",
+      "Slow Window",
+      "Neon Mile",
+      "Warm Engine",
+      "Rainy Engine",
+      "Slow Gear",
+      "Last Engine"
+    ]
   }
 ]
