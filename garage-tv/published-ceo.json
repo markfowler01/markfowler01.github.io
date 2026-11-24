@@ -740,5 +740,36 @@
     "youtube": "xwEp9uNvPsk",
     "short": "GlZgUoTI7jc",
     "short2": "Cad1yB2G5fY"
+  },
+  {
+    "date": "2026-11-24",
+    "photo": "2026-11-24-audi-r8.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Do The Work | Audi R8 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-24",
+    "car": "Audi R8 V10",
+    "color": "satin black",
+    "scene": "studio_rain_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "electric piano",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Do The Work",
+    "statement": "Keep your foot on the gas.",
+    "character": null,
+    "songs": [
+      "Silver Garage",
+      "Idle Engine",
+      "Quiet Detour",
+      "Rainy Radio",
+      "Idle Skyline",
+      "Long Lights",
+      "Slow Shift",
+      "Velvet Skyline"
+    ]
   }
 ]
