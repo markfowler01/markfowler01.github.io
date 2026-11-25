@@ -774,5 +774,36 @@
     "youtube": "F_wFiggfnR8",
     "short": "nqiJV0GQEAY",
     "short2": "kOJoZB1S0Nk"
+  },
+  {
+    "date": "2026-11-25",
+    "photo": "2026-11-25-bmw-m1.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Top Gear | BMW M1 Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-25",
+    "car": "BMW M1",
+    "color": "papaya orange",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "soft guitar",
+    "music_tempo": "slow",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Top Gear",
+    "statement": "Two hours. One task. No excuses.",
+    "character": null,
+    "songs": [
+      "Night Hour",
+      "Open Lane",
+      "Silver Parking",
+      "Neon Radio",
+      "Quiet Rev",
+      "Hazy Window",
+      "Neon Gear",
+      "Quiet Asphalt"
+    ]
   }
 ]
