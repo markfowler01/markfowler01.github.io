@@ -1322,5 +1322,36 @@
     "youtube": "GfDjWIbp85o",
     "short": "SSNF9DoX3jw",
     "short2": "8IcZTqvSo3Q"
+  },
+  {
+    "date": "2026-11-25",
+    "photo": "2026-11-25-plymouth-barracuda.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Plymouth Barracuda",
+    "tag": "daily-2026-11-25",
+    "car": "1970 Plymouth Barracuda",
+    "color": "pearl white",
+    "scene": "studio_forest_night",
+    "maker": "gemini",
+    "music_style": "deep_work",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "seo",
+    "thumb_style": "clean",
+    "word": "Mindset",
+    "statement": "You're not behind. You're building.",
+    "character": "kyleighanne",
+    "songs": [
+      "Night Hour",
+      "Open Lane",
+      "Silver Parking",
+      "Neon Radio",
+      "Quiet Rev",
+      "Hazy Window",
+      "Neon Gear",
+      "Quiet Asphalt"
+    ]
   }
 ]
