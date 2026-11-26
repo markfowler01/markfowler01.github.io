@@ -808,5 +808,36 @@
     "youtube": "JmcrenOTn7s",
     "short": "mhtfj0OZLGw",
     "short2": "Yim3ArjTkZI"
+  },
+  {
+    "date": "2026-11-26",
+    "photo": "2026-11-26-ford-gt.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Legacy | Ford GT Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-26",
+    "car": "Ford GT",
+    "color": "giallo yellow",
+    "scene": "studio_city_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Legacy",
+    "statement": "Silence the noise. Do the work.",
+    "character": null,
+    "songs": [
+      "Last Shift",
+      "Second Window",
+      "Velvet Showroom",
+      "Empty Overpass",
+      "Hazy Showroom",
+      "Slow Hour",
+      "Quiet Asphalt",
+      "Amber Signal"
+    ]
   }
 ]
