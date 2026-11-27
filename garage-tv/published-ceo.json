@@ -842,5 +842,36 @@
     "youtube": "CRcS9-87wjs",
     "short": "xC8kpQ_aICQ",
     "short2": "I3YelljS8YA"
+  },
+  {
+    "date": "2026-11-27",
+    "photo": "2026-11-27-carrera-gt.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 Cruise Control | Carrera GT Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-27",
+    "car": "Porsche Carrera GT",
+    "color": "pearl white",
+    "scene": "studio_before_dawn",
+    "maker": "gemini",
+    "music_style": "deep_focus",
+    "music_lead": "soft guitar",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "Cruise Control",
+    "statement": "The city sleeps. You build.",
+    "character": null,
+    "songs": [
+      "Night Radio",
+      "Second Hour",
+      "Slow Asphalt",
+      "Amber Radio",
+      "Amber Signal",
+      "Low Engine",
+      "Night Showroom",
+      "Soft Gear"
+    ]
   }
 ]
