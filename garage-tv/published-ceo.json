@@ -876,5 +876,36 @@
     "youtube": "4JIBgleJCUQ",
     "short": "8X7qpi08M_w",
     "short2": "QBnMy3LxGKI"
+  },
+  {
+    "date": "2026-11-28",
+    "photo": "2026-11-28-aston-martin-vantage.webp",
+    "recipe": "lofi",
+    "grade": "none",
+    "title": "Deep Work Music \u2013 In The Zone | Aston Martin Vantage Night Studio | 2 Hours",
+    "tag": "ceo-2026-11-28",
+    "car": "Aston Martin Vantage",
+    "color": "liquid silver",
+    "scene": "studio_snow_night",
+    "maker": "gemini",
+    "music_style": "lofi_beats",
+    "music_lead": "felt piano",
+    "music_tempo": "upbeat",
+    "room": "studio",
+    "title_style": "deep_work",
+    "thumb_style": "word",
+    "word": "In The Zone",
+    "statement": "Little by little becomes a lot.",
+    "character": null,
+    "songs": [
+      "Velvet Gear",
+      "Low Mile",
+      "Silver Hour",
+      "Quiet Engine",
+      "Long Exit",
+      "Night Shift",
+      "Open Skyline",
+      "Hazy Window"
+    ]
   }
 ]
