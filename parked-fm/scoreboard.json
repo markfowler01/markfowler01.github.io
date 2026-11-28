@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27 02:02 UTC",
+  "updated": "2026-11-28 01:37 UTC",
   "names": {
     "gemini": "Nano Banana",
     "openai": "ChatGPT",
@@ -8,8 +8,8 @@
   "board": {
     "all": {
       "gemini": {
-        "videos": 40,
-        "counted": 40,
+        "videos": 41,
+        "counted": 41,
         "avg_views": 3
       },
       "openai": {
@@ -25,8 +25,8 @@
     },
     "music": {
       "gemini": {
-        "videos": 34,
-        "counted": 34,
+        "videos": 35,
+        "counted": 35,
         "avg_views": 2
       },
       "openai": {
@@ -59,10 +59,10 @@
     }
   },
   "channel": {
-    "date": "2026-11-27",
+    "date": "2026-11-28",
     "subscribers": 2,
-    "views": 1192,
-    "videos": 134,
+    "views": 1194,
+    "videos": 137,
     "watch_hours": 32.2
   },
   "goals": {
@@ -299,9 +299,29 @@
       "views": 1192,
       "videos": 134,
       "watch_hours": 32.2
+    },
+    {
+      "date": "2026-11-28",
+      "subscribers": 2,
+      "views": 1194,
+      "videos": 137,
+      "watch_hours": 32.2
     }
   ],
   "videos": [
+    {
+      "date": "2026-11-28",
+      "title": "Millionaire Mindset Study Ambience \ud83c\udfce\ufe0f 3-Hour Lofi Beats for Grinding & Deep Work | GT-R Nismo",
+      "maker": "gemini",
+      "kind": "music",
+      "youtube": "zzfPo8vh42Q",
+      "views": 0,
+      "likes": 0,
+      "short_views": 0,
+      "short2_views": 0,
+      "subscribers": 0,
+      "public": true
+    },
     {
       "date": "2026-11-27",
       "title": "40Hz Deep Work Ambience \ud83d\udcca 3-Hour Focus Music for Coding & Stock Analysis | Jaguar E-Type",
@@ -555,7 +575,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "2iuGGpR9D1M",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "short_views": 3,
       "short2_views": 1,
@@ -711,7 +731,7 @@
       "maker": "gemini",
       "kind": "music",
       "youtube": "RdUBBfpHW4A",
-      "views": 27,
+      "views": 28,
       "likes": 1,
       "short_views": 13,
       "short2_views": 3,
